@@ -27,59 +27,17 @@
 
       <nav class="nav-list" aria-label="Main navigation">
         <ul>
-          <li>
+          <li v-for="option in navOptions" :key="option.path">
             <a
               href="#"
               class="nav-item"
-              :title="!expanded ? 'Home' : ''"
-              @click.prevent="navigateTo('/')"
+              :title="!expanded ? option.label : ''"
+              @click.prevent="navigateTo(option.path)"
             >
               <span class="icon">
-                <img :src="homeIcon" alt="" aria-hidden="true" />
+                <img :src="option.icon" alt="" aria-hidden="true" />
               </span>
-              <span class="label" v-if="expanded">Home</span>
-            </a>
-          </li>
-
-          <li>
-            <a
-              href="#"
-              class="nav-item"
-              :title="!expanded ? 'Characters' : ''"
-              @click.prevent="navigateTo('/characters')"
-            >
-              <span class="icon">
-                <img :src="usersIcon" alt="" aria-hidden="true" />
-              </span>
-              <span class="label" v-if="expanded">Characters</span>
-            </a>
-          </li>
-
-          <li>
-            <a
-              href="#"
-              class="nav-item"
-              :title="!expanded ? 'Create' : ''"
-              @click.prevent="navigateTo('/create')"
-            >
-              <span class="icon">
-                <img :src="plusIcon" alt="" aria-hidden="true" />
-              </span>
-              <span class="label" v-if="expanded">Create</span>
-            </a>
-          </li>
-
-          <li>
-            <a
-              href="#"
-              class="nav-item"
-              :title="!expanded ? 'Settings' : ''"
-              @click.prevent="navigateTo('/settings')"
-            >
-              <span class="icon">
-                <img :src="settingsIcon" alt="" aria-hidden="true" />
-              </span>
-              <span class="label" v-if="expanded">Settings</span>
+              <span class="label" v-if="expanded">{{ option.label }}</span>
             </a>
           </li>
         </ul>
@@ -108,6 +66,14 @@
   // `expanded` controls whether the sidebar shows labels and takes more screen.
   // When false, the sidebar is a narrow icon-only strip for quick navigation.
   const expanded = ref(false);
+
+  const navOptions = [
+    { label: 'Home', icon: homeIcon, path: '/' },
+    { label: 'Characters', icon: usersIcon, path: '/characters' },
+    { label: 'Create', icon: plusIcon, path: '/create' },
+    { label: 'Settings', icon: settingsIcon, path: '/settings' },
+    { label: 'Resources', icon: settingsIcon, path: '/resources' },
+  ];
 
   function toggle() {
     expanded.value = !expanded.value;
