@@ -9,45 +9,46 @@
       <router-link :to="`/character/${char.id}`">
         {{ char.name }} (Level {{ char.level }})
       </router-link>
-      <img 
-      :src="icons.binIcon"
-      alt="Delete"
-      @click="charStore.deleteCharacter(char.id)"
-      class="deleteCharIcon"/>
+      <img
+        :src="icons.binIcon"
+        alt="Delete"
+        @click="charStore.deleteCharacter(char.id)"
+        class="deleteCharIcon"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useCharacterStore } from '../stores/characterStore'
-import { useRouter } from 'vue-router'
+  import { ref } from 'vue';
+  import { useCharacterStore } from '../stores/characterStore';
+  import { useRouter } from 'vue-router';
 
-import binIcon from '../assets/bin-svgrepo-com.svg'
+  import binIcon from '../assets/bin-svgrepo-com.svg';
 
-const charStore = useCharacterStore()
-const router = useRouter()
-const newCharName = ref('')
+  const charStore = useCharacterStore();
+  const router = useRouter();
+  const newCharName = ref('');
 
-const icons: Record<string, string> = {
-    binIcon: binIcon
-}
+  const icons: Record<string, string> = {
+    binIcon: binIcon,
+  };
 
-async function createCharacter() {
+  async function createCharacter() {
     if (!newCharName.value.trim()) {
-        newCharName.value = `New Character ${charStore.characters.length + 1}`
+      newCharName.value = `New Character ${charStore.characters.length + 1}`;
     }
 
-  const id = await charStore.createCharacter(newCharName.value)
-  router.push(`/character/${id}`)
-}
+    const id = await charStore.createCharacter(newCharName.value);
+    router.push(`/character/${id}`);
+  }
 </script>
 
 <style scoped>
-.deleteCharIcon {
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-  margin-left: 8px;
-}
+  .deleteCharIcon {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    margin-left: 8px;
+  }
 </style>

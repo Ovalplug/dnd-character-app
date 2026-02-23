@@ -118,10 +118,7 @@
         "ability": [
           {
             "choose": {
-              "from": [
-                "con",
-                "cha"
-              ],
+              "from": ["con", "cha"],
               "amount": 1
             }
           }
@@ -199,10 +196,7 @@
         "ability": [
           {
             "choose": {
-              "from": [
-                "con",
-                "wis"
-              ],
+              "from": ["con", "wis"],
               "amount": 1
             }
           }
@@ -251,10 +245,7 @@
         "ability": [
           {
             "choose": {
-              "from": [
-                "str",
-                "dex"
-              ],
+              "from": ["str", "dex"],
               "amount": 1
             }
           }
@@ -306,10 +297,7 @@
         "ability": [
           {
             "choose": {
-              "from": [
-                "str",
-                "cha"
-              ],
+              "from": ["str", "cha"],
               "amount": 1
             }
           }
@@ -340,10 +328,7 @@
         "ability": [
           {
             "choose": {
-              "from": [
-                "str",
-                "cha"
-              ],
+              "from": ["str", "cha"],
               "amount": 1
             }
           }
@@ -974,11 +959,7 @@
         "ability": [
           {
             "choose": {
-              "from": [
-                "int",
-                "wis",
-                "cha"
-              ],
+              "from": ["int", "wis", "cha"],
               "amount": 1
             }
           }
@@ -1064,11 +1045,7 @@
         "ability": [
           {
             "choose": {
-              "from": [
-                "str",
-                "con",
-                "wis"
-              ],
+              "from": ["str", "con", "wis"],
               "amount": 1
             }
           }
@@ -1142,14 +1119,7 @@
         "ability": [
           {
             "choose": {
-              "from": [
-                "str",
-                "dex",
-                "con",
-                "int",
-                "wis",
-                "cha"
-              ],
+              "from": ["str", "dex", "con", "int", "wis", "cha"],
               "amount": 1
             }
           }
@@ -1256,11 +1226,7 @@
         "ability": [
           {
             "choose": {
-              "from": [
-                "str",
-                "dex",
-                "con"
-              ],
+              "from": ["str", "dex", "con"],
               "amount": 1
             }
           }
@@ -1380,10 +1346,7 @@
         "ability": [
           {
             "choose": {
-              "from": [
-                "str",
-                "dex"
-              ],
+              "from": ["str", "dex"],
               "amount": 1
             }
           }
@@ -1422,14 +1385,7 @@
         "ability": [
           {
             "choose": {
-              "from": [
-                "str",
-                "dex",
-                "con",
-                "int",
-                "wis",
-                "cha"
-              ],
+              "from": ["str", "dex", "con", "int", "wis", "cha"],
               "amount": 1
             }
           }
@@ -1464,14 +1420,7 @@
         "ability": [
           {
             "choose": {
-              "from": [
-                "str",
-                "dex",
-                "con",
-                "int",
-                "wis",
-                "cha"
-              ],
+              "from": ["str", "dex", "con", "int", "wis", "cha"],
               "amount": 1
             }
           }
@@ -1513,11 +1462,7 @@
         "ability": [
           {
             "choose": {
-              "from": [
-                "int",
-                "wis",
-                "cha"
-              ],
+              "from": ["int", "wis", "cha"],
               "amount": 1
             }
           }
@@ -1539,11 +1484,7 @@
         "ability": [
           {
             "choose": {
-              "from": [
-                "str",
-                "dex",
-                "con"
-              ],
+              "from": ["str", "dex", "con"],
               "amount": 1
             }
           }
@@ -1587,10 +1528,7 @@
         "ability": [
           {
             "choose": {
-              "from": [
-                "str",
-                "dex"
-              ],
+              "from": ["str", "dex"],
               "amount": 1
             }
           }
@@ -1690,11 +1628,7 @@
         "ability": [
           {
             "choose": {
-              "from": [
-                "int",
-                "wis",
-                "cha"
-              ],
+              "from": ["int", "wis", "cha"],
               "amount": 1
             }
           }
@@ -1722,11 +1656,7 @@
         "ability": [
           {
             "choose": {
-              "from": [
-                "int",
-                "wis",
-                "cha"
-              ],
+              "from": ["int", "wis", "cha"],
               "amount": 1
             }
           }
@@ -1812,14 +1742,7 @@
         "ability": [
           {
             "choose": {
-              "from": [
-                "str",
-                "dex",
-                "con",
-                "int",
-                "wis",
-                "cha"
-              ],
+              "from": ["str", "dex", "con", "int", "wis", "cha"],
               "amount": 1
             },
             "hidden": true
@@ -1886,10 +1809,7 @@
         "ability": [
           {
             "choose": {
-              "from": [
-                "dex",
-                "int"
-              ],
+              "from": ["dex", "int"],
               "amount": 1
             }
           }
@@ -1911,9 +1831,7 @@
               {
                 "type": "entries",
                 "name": "Calculator",
-                "entries": [
-                  "This device makes doing sums easy."
-                ]
+                "entries": ["This device makes doing sums easy."]
               },
               {
                 "type": "entries",
@@ -1925,9 +1843,7 @@
               {
                 "type": "entries",
                 "name": "Timekeeper",
-                "entries": [
-                  "This pocket watch keeps accurate time."
-                ]
+                "entries": ["This pocket watch keeps accurate time."]
               },
               {
                 "type": "entries",
@@ -1955,9 +1871,7 @@
             "con": 1
           }
         ],
-        "traitTags": [
-          "Damage Resistance"
-        ],
+        "traitTags": ["Damage Resistance"],
         "entries": [
           {
             "name": "Revenant Subrace",
@@ -2042,10 +1956,7 @@
             "str": 1
           }
         ],
-        "traitTags": [
-          "Unarmed Strike",
-          "Skill Proficiency"
-        ],
+        "traitTags": ["Unarmed Strike", "Skill Proficiency"],
         "languageProficiencies": [
           {
             "common": true,
@@ -2055,10 +1966,7 @@
         "skillProficiencies": [
           {
             "choose": {
-              "from": [
-                "acrobatics",
-                "stealth"
-              ]
+              "from": ["acrobatics", "stealth"]
             }
           }
         ],
@@ -2108,9 +2016,7 @@
           {
             "type": "entries",
             "name": "Languages",
-            "entries": [
-              "You can speak, read, and write Common and Draconic."
-            ]
+            "entries": ["You can speak, read, and write Common and Draconic."]
           }
         ]
       }
@@ -2179,26 +2085,11 @@
             "additionalSpells": [
               {
                 "prepared": {
-                  "3": [
-                    "magic missile",
-                    "shield"
-                  ],
-                  "5": [
-                    "mirror image",
-                    "shatter"
-                  ],
-                  "9": [
-                    "hypnotic pattern",
-                    "lightning bolt"
-                  ],
-                  "13": [
-                    "fire shield",
-                    "greater invisibility"
-                  ],
-                  "17": [
-                    "passwall",
-                    "wall of force"
-                  ]
+                  "3": ["magic missile", "shield"],
+                  "5": ["mirror image", "shatter"],
+                  "9": ["hypnotic pattern", "lightning bolt"],
+                  "13": ["fire shield", "greater invisibility"],
+                  "17": ["passwall", "wall of force"]
                 }
               }
             ],
@@ -2298,35 +2189,14 @@
                       {
                         "type": "table",
                         "caption": "Armorer Spells",
-                        "colLabels": [
-                          "Artificer Level",
-                          "Spell"
-                        ],
-                        "colStyles": [
-                          "col-2 text-center",
-                          "col-10"
-                        ],
+                        "colLabels": ["Artificer Level", "Spell"],
+                        "colStyles": ["col-2 text-center", "col-10"],
                         "rows": [
-                          [
-                            "3rd",
-                            "magic missile, shield"
-                          ],
-                          [
-                            "5th",
-                            "mirror image, shatter"
-                          ],
-                          [
-                            "9th",
-                            "hypnotic pattern, lightning bolt"
-                          ],
-                          [
-                            "13th",
-                            "fire shield, greater invisibility"
-                          ],
-                          [
-                            "17th",
-                            "passwall, wall of force"
-                          ]
+                          ["3rd", "magic missile, shield"],
+                          ["5th", "mirror image, shatter"],
+                          ["9th", "hypnotic pattern, lightning bolt"],
+                          ["13th", "fire shield, greater invisibility"],
+                          ["17th", "passwall, wall of force"]
                         ]
                       }
                     ]
@@ -2489,14 +2359,8 @@
                       {
                         "type": "table",
                         "caption": "Wild Surge",
-                        "colLabels": [
-                          "d8",
-                          "Effect"
-                        ],
-                        "colStyles": [
-                          "col-1 text-center",
-                          "col-11"
-                        ],
+                        "colLabels": ["d8", "Effect"],
+                        "colStyles": ["col-1 text-center", "col-11"],
                         "rows": [
                           [
                             1,
@@ -2590,9 +2454,7 @@
                 "subclassSource": "UA",
                 "level": 14,
                 "header": 2,
-                "entries": [
-                  "At 14th level, you increase your magic reserves die to a d6."
-                ]
+                "entries": ["At 14th level, you increase your magic reserves die to a d6."]
               }
             ]
           },
@@ -2617,14 +2479,8 @@
                   {
                     "type": "table",
                     "caption": "Origin of the Beast",
-                    "colLabels": [
-                      "d4",
-                      "Origin"
-                    ],
-                    "colStyles": [
-                      "col-2 text-center",
-                      "col-10"
-                    ],
+                    "colLabels": ["d4", "Origin"],
+                    "colStyles": ["col-2 text-center", "col-10"],
                     "rows": [
                       [
                         "1",
@@ -2998,14 +2854,8 @@
                       {
                         "type": "table",
                         "caption": "Spirits' Tales",
-                        "colLabels": [
-                          "Bardic Insp. Die",
-                          "Tale"
-                        ],
-                        "colStyles": [
-                          "col-2 text-center",
-                          "col-10"
-                        ],
+                        "colLabels": ["Bardic Insp. Die", "Tale"],
+                        "colStyles": ["col-2 text-center", "col-10"],
                         "rows": [
                           [
                             1,
@@ -3120,26 +2970,11 @@
             "additionalSpells": [
               {
                 "prepared": {
-                  "1": [
-                    "comprehend languages",
-                    "remote access"
-                  ],
-                  "3": [
-                    "find vehicle",
-                    "heat metal"
-                  ],
-                  "5": [
-                    "lightning bolt",
-                    "protection from ballistics"
-                  ],
-                  "7": [
-                    "locate creature",
-                    "synchronicity"
-                  ],
-                  "9": [
-                    "commune with city",
-                    "shutdown"
-                  ]
+                  "1": ["comprehend languages", "remote access"],
+                  "3": ["find vehicle", "heat metal"],
+                  "5": ["lightning bolt", "protection from ballistics"],
+                  "7": ["locate creature", "synchronicity"],
+                  "9": ["commune with city", "shutdown"]
                 }
               }
             ],
@@ -3160,35 +2995,14 @@
                   {
                     "type": "table",
                     "caption": "City Domain Spells",
-                    "colLabels": [
-                      "Cleric Level",
-                      "Spells"
-                    ],
-                    "colStyles": [
-                      "col-3 text-center",
-                      "col-9"
-                    ],
+                    "colLabels": ["Cleric Level", "Spells"],
+                    "colStyles": ["col-3 text-center", "col-9"],
                     "rows": [
-                      [
-                        "1st",
-                        "comprehend languages, remote access*"
-                      ],
-                      [
-                        "3rd",
-                        "find vehicle*, heat metal"
-                      ],
-                      [
-                        "5th",
-                        "lightning bolt, protection from ballistics*"
-                      ],
-                      [
-                        "7th",
-                        "locate creature, synchronicity*"
-                      ],
-                      [
-                        "9th",
-                        "commune with city*, shutdown*"
-                      ]
+                      ["1st", "comprehend languages, remote access*"],
+                      ["3rd", "find vehicle*, heat metal"],
+                      ["5th", "lightning bolt, protection from ballistics*"],
+                      ["7th", "locate creature, synchronicity*"],
+                      ["9th", "commune with city*, shutdown*"]
                     ]
                   },
                   {
@@ -3318,26 +3132,11 @@
             "additionalSpells": [
               {
                 "prepared": {
-                  "1": [
-                    "compelled duel",
-                    "protection from evil and good"
-                  ],
-                  "3": [
-                    "aid",
-                    "protection from poison"
-                  ],
-                  "5": [
-                    "protection from energy",
-                    "slow"
-                  ],
-                  "7": [
-                    "guardian of faith",
-                    "Otiluke's resilient sphere"
-                  ],
-                  "9": [
-                    "antilife shell",
-                    "wall of force"
-                  ]
+                  "1": ["compelled duel", "protection from evil and good"],
+                  "3": ["aid", "protection from poison"],
+                  "5": ["protection from energy", "slow"],
+                  "7": ["guardian of faith", "Otiluke's resilient sphere"],
+                  "9": ["antilife shell", "wall of force"]
                 }
               }
             ],
@@ -3357,35 +3156,14 @@
                   {
                     "type": "table",
                     "caption": "Protection Domain Spells",
-                    "colLabels": [
-                      "Cleric Level",
-                      "Spells"
-                    ],
-                    "colStyles": [
-                      "col-3 text-center",
-                      "col-9"
-                    ],
+                    "colLabels": ["Cleric Level", "Spells"],
+                    "colStyles": ["col-3 text-center", "col-9"],
                     "rows": [
-                      [
-                        "1st",
-                        "compelled duel, protection from evil and good"
-                      ],
-                      [
-                        "3rd",
-                        "aid, protection from poison"
-                      ],
-                      [
-                        "5th",
-                        "protection from energy, slow"
-                      ],
-                      [
-                        "7th",
-                        "guardian of faith, Otiluke's resilient sphere"
-                      ],
-                      [
-                        "9th",
-                        "antilife shell, wall of force"
-                      ]
+                      ["1st", "compelled duel, protection from evil and good"],
+                      ["3rd", "aid, protection from poison"],
+                      ["5th", "protection from energy, slow"],
+                      ["7th", "guardian of faith, Otiluke's resilient sphere"],
+                      ["9th", "antilife shell, wall of force"]
                     ]
                   },
                   {
@@ -3501,26 +3279,11 @@
             "additionalSpells": [
               {
                 "prepared": {
-                  "1": [
-                    "faerie fire",
-                    "sleep"
-                  ],
-                  "3": [
-                    "darkness",
-                    "invisibility"
-                  ],
-                  "5": [
-                    "aura of vitality",
-                    "Leomund's tiny hut"
-                  ],
-                  "7": [
-                    "aura of life",
-                    "greater invisibility"
-                  ],
-                  "9": [
-                    "circle of power",
-                    "dream"
-                  ]
+                  "1": ["faerie fire", "sleep"],
+                  "3": ["darkness", "invisibility"],
+                  "5": ["aura of vitality", "Leomund's tiny hut"],
+                  "7": ["aura of life", "greater invisibility"],
+                  "9": ["circle of power", "dream"]
                 }
               }
             ],
@@ -3540,35 +3303,14 @@
                   {
                     "type": "table",
                     "caption": "Twilight Domain Spells",
-                    "colLabels": [
-                      "Cleric Level",
-                      "Spells"
-                    ],
-                    "colStyles": [
-                      "col-3 text-center",
-                      "col-9"
-                    ],
+                    "colLabels": ["Cleric Level", "Spells"],
+                    "colStyles": ["col-3 text-center", "col-9"],
                     "rows": [
-                      [
-                        "1st",
-                        "faerie fire, sleep"
-                      ],
-                      [
-                        "3rd",
-                        "darkness, invisibility"
-                      ],
-                      [
-                        "5th",
-                        "aura of vitality, Leomund's tiny hut"
-                      ],
-                      [
-                        "7th",
-                        "aura of life, greater invisibility"
-                      ],
-                      [
-                        "9th",
-                        "circle of power, dream"
-                      ]
+                      ["1st", "faerie fire, sleep"],
+                      ["3rd", "darkness, invisibility"],
+                      ["5th", "aura of vitality, Leomund's tiny hut"],
+                      ["7th", "aura of life, greater invisibility"],
+                      ["9th", "circle of power, dream"]
                     ]
                   },
                   {
@@ -3720,26 +3462,11 @@
             "additionalSpells": [
               {
                 "prepared": {
-                  "1": [
-                    "charm person",
-                    "heroism"
-                  ],
-                  "3": [
-                    "enthrall",
-                    "warding bond"
-                  ],
-                  "5": [
-                    "beacon of hope",
-                    "hypnotic pattern"
-                  ],
-                  "7": [
-                    "aura of purity",
-                    "confusion"
-                  ],
-                  "9": [
-                    "greater restoration",
-                    "hold monster"
-                  ]
+                  "1": ["charm person", "heroism"],
+                  "3": ["enthrall", "warding bond"],
+                  "5": ["beacon of hope", "hypnotic pattern"],
+                  "7": ["aura of purity", "confusion"],
+                  "9": ["greater restoration", "hold monster"]
                 }
               }
             ],
@@ -3759,106 +3486,37 @@
                   {
                     "type": "table",
                     "caption": "Love Deities",
-                    "colLabels": [
-                      "Deity",
-                      "Pantheon"
-                    ],
-                    "colStyles": [
-                      "col-6",
-                      "col-6"
-                    ],
+                    "colLabels": ["Deity", "Pantheon"],
+                    "colStyles": ["col-6", "col-6"],
                     "rows": [
-                      [
-                        "Aengus",
-                        "Celtic"
-                      ],
-                      [
-                        "Aphrodite",
-                        "Greek"
-                      ],
-                      [
-                        "Balder",
-                        "Norse"
-                      ],
-                      [
-                        "Berronar Truesilver",
-                        "Dwarven"
-                      ],
-                      [
-                        "Boldrei",
-                        "Eberron"
-                      ],
-                      [
-                        "Cyrrollalee",
-                        "Halfling"
-                      ],
-                      [
-                        "Freya",
-                        "Norse"
-                      ],
-                      [
-                        "Hanali Celanil",
-                        "Elven"
-                      ],
-                      [
-                        "Hathor",
-                        "Egyptian"
-                      ],
-                      [
-                        "Mishakal",
-                        "Dragonlance"
-                      ],
-                      [
-                        "Myhriss",
-                        "Greyhawk"
-                      ],
-                      [
-                        "Sharindlar",
-                        "Dwarven"
-                      ],
-                      [
-                        "Sheyanna Flaxenstrand",
-                        "Gnomish"
-                      ],
-                      [
-                        "Sune",
-                        "Forgotten Realms"
-                      ]
+                      ["Aengus", "Celtic"],
+                      ["Aphrodite", "Greek"],
+                      ["Balder", "Norse"],
+                      ["Berronar Truesilver", "Dwarven"],
+                      ["Boldrei", "Eberron"],
+                      ["Cyrrollalee", "Halfling"],
+                      ["Freya", "Norse"],
+                      ["Hanali Celanil", "Elven"],
+                      ["Hathor", "Egyptian"],
+                      ["Mishakal", "Dragonlance"],
+                      ["Myhriss", "Greyhawk"],
+                      ["Sharindlar", "Dwarven"],
+                      ["Sheyanna Flaxenstrand", "Gnomish"],
+                      ["Sune", "Forgotten Realms"]
                     ]
                   },
                   "Clerics of these gods preside over marriages and other familial bonding customs, but they also nurture the emotional bonds of friendship and camaraderie. Their divine blessings bolster and protect allies in battle through these deep bonds and enkindle flares of infatuation to spur their allies and confound their foes.",
                   {
                     "type": "table",
                     "caption": "Love Domain Spells",
-                    "colLabels": [
-                      "Cleric Level",
-                      "Spells"
-                    ],
-                    "colStyles": [
-                      "col-3 text-center",
-                      "col-9"
-                    ],
+                    "colLabels": ["Cleric Level", "Spells"],
+                    "colStyles": ["col-3 text-center", "col-9"],
                     "rows": [
-                      [
-                        "1st",
-                        "charm person, heroism"
-                      ],
-                      [
-                        "3rd",
-                        "enthrall, warding bond"
-                      ],
-                      [
-                        "5th",
-                        "beacon of hope, hypnotic pattern"
-                      ],
-                      [
-                        "7th",
-                        "aura of purity, confusion"
-                      ],
-                      [
-                        "9th",
-                        "greater restoration, hold monster"
-                      ]
+                      ["1st", "charm person, heroism"],
+                      ["3rd", "enthrall, warding bond"],
+                      ["5th", "beacon of hope, hypnotic pattern"],
+                      ["7th", "aura of purity, confusion"],
+                      ["9th", "greater restoration, hold monster"]
                     ]
                   },
                   {
@@ -3974,26 +3632,11 @@
             "additionalSpells": [
               {
                 "prepared": {
-                  "1": [
-                    "heroism",
-                    "shield of faith"
-                  ],
-                  "3": [
-                    "aid",
-                    "warding bond"
-                  ],
-                  "5": [
-                    "beacon of hope",
-                    "sending"
-                  ],
-                  "7": [
-                    "aura of purity",
-                    "guardian of faith"
-                  ],
-                  "9": [
-                    "greater restoration",
-                    "Rary's telepathic bond"
-                  ]
+                  "1": ["heroism", "shield of faith"],
+                  "3": ["aid", "warding bond"],
+                  "5": ["beacon of hope", "sending"],
+                  "7": ["aura of purity", "guardian of faith"],
+                  "9": ["greater restoration", "Rary's telepathic bond"]
                 }
               }
             ],
@@ -4013,89 +3656,32 @@
                   {
                     "type": "table",
                     "caption": "Unity Deities",
-                    "colLabels": [
-                      "Deity",
-                      "Pantheon"
-                    ],
-                    "colStyles": [
-                      "col-6",
-                      "col-6"
-                    ],
+                    "colLabels": ["Deity", "Pantheon"],
+                    "colStyles": ["col-6", "col-6"],
                     "rows": [
-                      [
-                        "Angharradh",
-                        "Elven"
-                      ],
-                      [
-                        "Athena",
-                        "Greek"
-                      ],
-                      [
-                        "Berronar Truesilver",
-                        "Dwarven"
-                      ],
-                      [
-                        "Boldrei",
-                        "Eberron"
-                      ],
-                      [
-                        "Cyrrollalee",
-                        "Halfling"
-                      ],
-                      [
-                        "Eldath",
-                        "Forgotten Realms"
-                      ],
-                      [
-                        "Gaerdal Ironhand",
-                        "Gnomish"
-                      ],
-                      [
-                        "Heimdall",
-                        "Norse"
-                      ],
-                      [
-                        "Paladine",
-                        "Dragonlance"
-                      ],
-                      [
-                        "Rao",
-                        "Greyhawk"
-                      ]
+                      ["Angharradh", "Elven"],
+                      ["Athena", "Greek"],
+                      ["Berronar Truesilver", "Dwarven"],
+                      ["Boldrei", "Eberron"],
+                      ["Cyrrollalee", "Halfling"],
+                      ["Eldath", "Forgotten Realms"],
+                      ["Gaerdal Ironhand", "Gnomish"],
+                      ["Heimdall", "Norse"],
+                      ["Paladine", "Dragonlance"],
+                      ["Rao", "Greyhawk"]
                     ]
                   },
                   {
                     "type": "table",
                     "caption": "Unity Domain Spells",
-                    "colLabels": [
-                      "Cleric Level",
-                      "Spells"
-                    ],
-                    "colStyles": [
-                      "col-3 text-center",
-                      "col-9"
-                    ],
+                    "colLabels": ["Cleric Level", "Spells"],
+                    "colStyles": ["col-3 text-center", "col-9"],
                     "rows": [
-                      [
-                        "1st",
-                        "heroism, shield of faith"
-                      ],
-                      [
-                        "3rd",
-                        "aid, warding bond"
-                      ],
-                      [
-                        "5th",
-                        "beacon of hope, sending"
-                      ],
-                      [
-                        "7th",
-                        "aura of purity, guardian of faith"
-                      ],
-                      [
-                        "9th",
-                        "greater restoration, Rary's telepathic bond"
-                      ]
+                      ["1st", "heroism, shield of faith"],
+                      ["3rd", "aid, warding bond"],
+                      ["5th", "beacon of hope, sending"],
+                      ["7th", "aura of purity, guardian of faith"],
+                      ["9th", "greater restoration, Rary's telepathic bond"]
                     ]
                   },
                   {
@@ -4297,22 +3883,10 @@
             "additionalSpells": [
               {
                 "prepared": {
-                  "3": [
-                    "locate animals or plants",
-                    "scorching ray"
-                  ],
-                  "5": [
-                    "fireball",
-                    "plant growth"
-                  ],
-                  "7": [
-                    "aura of life",
-                    "fire shield"
-                  ],
-                  "9": [
-                    "flame strike",
-                    "raise dead"
-                  ]
+                  "3": ["locate animals or plants", "scorching ray"],
+                  "5": ["fireball", "plant growth"],
+                  "7": ["aura of life", "fire shield"],
+                  "9": ["flame strike", "raise dead"]
                 }
               }
             ],
@@ -4345,31 +3919,13 @@
                       {
                         "type": "table",
                         "caption": "Circle of Wildfire Spells",
-                        "colLabels": [
-                          "Druid Level",
-                          "Circle Spells"
-                        ],
-                        "colStyles": [
-                          "col-3 text-center",
-                          "col-9"
-                        ],
+                        "colLabels": ["Druid Level", "Circle Spells"],
+                        "colStyles": ["col-3 text-center", "col-9"],
                         "rows": [
-                          [
-                            "3rd",
-                            "locate animals or plants, scorching ray"
-                          ],
-                          [
-                            "5th",
-                            "fireball, plant growth"
-                          ],
-                          [
-                            "7th",
-                            "aura of life, fire shield"
-                          ],
-                          [
-                            "9th",
-                            "flame strike, raise dead"
-                          ]
+                          ["3rd", "locate animals or plants, scorching ray"],
+                          ["5th", "fireball, plant growth"],
+                          ["7th", "aura of life, fire shield"],
+                          ["9th", "flame strike, raise dead"]
                         ]
                       }
                     ]
@@ -4477,39 +4033,18 @@
                       {
                         "type": "table",
                         "caption": "Star Map",
-                        "colLabels": [
-                          "d6",
-                          "Map Form"
-                        ],
-                        "colStyles": [
-                          "col-2 text-center",
-                          "col-10"
-                        ],
+                        "colLabels": ["d6", "Map Form"],
+                        "colStyles": ["col-2 text-center", "col-10"],
                         "rows": [
-                          [
-                            "1",
-                            "A scroll of living wood that aligns with heavenly bodies"
-                          ],
-                          [
-                            "2",
-                            "A stone tablet with fine holes drilled through it"
-                          ],
-                          [
-                            "3",
-                            "A speckled owlbear hide, tooled with raised marks"
-                          ],
-                          [
-                            "4",
-                            "A collection of maps bound in an ebony cover"
-                          ],
+                          ["1", "A scroll of living wood that aligns with heavenly bodies"],
+                          ["2", "A stone tablet with fine holes drilled through it"],
+                          ["3", "A speckled owlbear hide, tooled with raised marks"],
+                          ["4", "A collection of maps bound in an ebony cover"],
                           [
                             "5",
                             "A crystal that projects starry patterns when placed before a light"
                           ],
-                          [
-                            "6",
-                            "Tempered glass disks that align to depict constellations"
-                          ]
+                          ["6", "Tempered glass disks that align to depict constellations"]
                         ]
                       },
                       "If you lose your map, you can perform a 1-hour ceremony to magically create a replacement. This ceremony can be performed during a short or long rest, and it destroys the previous map.",
@@ -4774,9 +4309,7 @@
                 "subclassSource": "UA",
                 "level": 18,
                 "header": 2,
-                "entries": [
-                  "At 18th level, your superiority dice turn into d12s."
-                ]
+                "entries": ["At 18th level, your superiority dice turn into d12s."]
               }
             ]
           },
@@ -4896,9 +4429,7 @@
                 "subclassSource": "UA",
                 "level": 7,
                 "header": 2,
-                "entries": [
-                  "You gain another superiority die at 7th level."
-                ]
+                "entries": ["You gain another superiority die at 7th level."]
               },
               {
                 "name": "Improved Combat Superiority",
@@ -4924,9 +4455,7 @@
                 "subclassSource": "UA",
                 "level": 15,
                 "header": 2,
-                "entries": [
-                  "You gain another superiority die at 15th level."
-                ]
+                "entries": ["You gain another superiority die at 15th level."]
               },
               {
                 "name": "Relentless",
@@ -4952,9 +4481,7 @@
                 "subclassSource": "UA",
                 "level": 18,
                 "header": 2,
-                "entries": [
-                  "At 18th level, your superiority dice turn into d12s."
-                ]
+                "entries": ["At 18th level, your superiority dice turn into d12s."]
               }
             ]
           },
@@ -5200,31 +4727,13 @@
                       {
                         "type": "table",
                         "caption": "Brute Bonus Damage",
-                        "colLabels": [
-                          "Fighter Level",
-                          "Damage Increase"
-                        ],
-                        "colStyles": [
-                          "col-6 text-center",
-                          "col-6 text-center"
-                        ],
+                        "colLabels": ["Fighter Level", "Damage Increase"],
+                        "colStyles": ["col-6 text-center", "col-6 text-center"],
                         "rows": [
-                          [
-                            "3rd",
-                            "1d4"
-                          ],
-                          [
-                            "10th",
-                            "1d6"
-                          ],
-                          [
-                            "16th",
-                            "1d8"
-                          ],
-                          [
-                            "20th",
-                            "1d10"
-                          ]
+                          ["3rd", "1d4"],
+                          ["10th", "1d6"],
+                          ["16th", "1d8"],
+                          ["20th", "1d10"]
                         ]
                       }
                     ]
@@ -6098,9 +5607,7 @@
                   {
                     "type": "entries",
                     "name": "Armor of the Spirit",
-                    "entries": [
-                      "You gain a +2 bonus to AC while you aren't incapacitated."
-                    ]
+                    "entries": ["You gain a +2 bonus to AC while you aren't incapacitated."]
                   },
                   {
                     "type": "entries",
@@ -6155,39 +5662,15 @@
                   {
                     "type": "table",
                     "caption": "Merciful Mask",
-                    "colLabels": [
-                      "d6",
-                      "Mask Appearance"
-                    ],
-                    "colStyles": [
-                      "col-2 text-center",
-                      "col-10"
-                    ],
+                    "colLabels": ["d6", "Mask Appearance"],
+                    "colStyles": ["col-2 text-center", "col-10"],
                     "rows": [
-                      [
-                        "1",
-                        "Raven"
-                      ],
-                      [
-                        "2",
-                        "Blank and white"
-                      ],
-                      [
-                        "3",
-                        "Crying visage"
-                      ],
-                      [
-                        "4",
-                        "Laughing visage"
-                      ],
-                      [
-                        "5",
-                        "Skull"
-                      ],
-                      [
-                        "6",
-                        "Butterfly"
-                      ]
+                      ["1", "Raven"],
+                      ["2", "Blank and white"],
+                      ["3", "Crying visage"],
+                      ["4", "Laughing visage"],
+                      ["5", "Skull"],
+                      ["6", "Butterfly"]
                     ]
                   },
                   {
@@ -6308,14 +5791,8 @@
                   {
                     "type": "table",
                     "caption": "Ascendant Dragon Origin",
-                    "colLabels": [
-                      "d6",
-                      "Origin"
-                    ],
-                    "colStyles": [
-                      "col-2 text-center",
-                      "col-10"
-                    ],
+                    "colLabels": ["d6", "Origin"],
+                    "colStyles": ["col-2 text-center", "col-10"],
                     "rows": [
                       [
                         "1",
@@ -6462,26 +5939,11 @@
             "additionalSpells": [
               {
                 "prepared": {
-                  "3": [
-                    "charm person",
-                    "expeditious retreat"
-                  ],
-                  "5": [
-                    "invisibility",
-                    "mirror image"
-                  ],
-                  "9": [
-                    "gaseous form",
-                    "haste"
-                  ],
-                  "13": [
-                    "confusion",
-                    "greater invisibility"
-                  ],
-                  "17": [
-                    "dominate person",
-                    "passwall"
-                  ]
+                  "3": ["charm person", "expeditious retreat"],
+                  "5": ["invisibility", "mirror image"],
+                  "9": ["gaseous form", "haste"],
+                  "13": ["confusion", "greater invisibility"],
+                  "17": ["dominate person", "passwall"]
                 }
               }
             ],
@@ -6526,35 +5988,14 @@
                       {
                         "type": "table",
                         "caption": "Oath of Treachery Spells",
-                        "colLabels": [
-                          "Paladin Level",
-                          "Spells"
-                        ],
-                        "colStyles": [
-                          "col-3 text-center",
-                          "col-9"
-                        ],
+                        "colLabels": ["Paladin Level", "Spells"],
+                        "colStyles": ["col-3 text-center", "col-9"],
                         "rows": [
-                          [
-                            "3rd",
-                            "charm person, expeditious retreat"
-                          ],
-                          [
-                            "5th",
-                            "invisibility, mirror image"
-                          ],
-                          [
-                            "9th",
-                            "gaseous form, haste"
-                          ],
-                          [
-                            "13th",
-                            "confusion, greater invisibility"
-                          ],
-                          [
-                            "17th",
-                            "dominate person, passwall"
-                          ]
+                          ["3rd", "charm person, expeditious retreat"],
+                          ["5th", "invisibility, mirror image"],
+                          ["9th", "gaseous form, haste"],
+                          ["13th", "confusion, greater invisibility"],
+                          ["17th", "dominate person, passwall"]
                         ]
                       }
                     ]
@@ -6677,26 +6118,11 @@
             "additionalSpells": [
               {
                 "prepared": {
-                  "3": [
-                    "expeditious retreat",
-                    "guiding bolt"
-                  ],
-                  "5": [
-                    "enhance ability",
-                    "enthrall"
-                  ],
-                  "9": [
-                    "haste",
-                    "protection from energy"
-                  ],
-                  "13": [
-                    "compulsion",
-                    "freedom of movement"
-                  ],
-                  "17": [
-                    "commune",
-                    "conjure volley"
-                  ]
+                  "3": ["expeditious retreat", "guiding bolt"],
+                  "5": ["enhance ability", "enthrall"],
+                  "9": ["haste", "protection from energy"],
+                  "13": ["compulsion", "freedom of movement"],
+                  "17": ["commune", "conjure volley"]
                 }
               }
             ],
@@ -6727,9 +6153,7 @@
                       {
                         "type": "entries",
                         "name": "Actions over Words",
-                        "entries": [
-                          "Strive to be known by deeds not words."
-                        ]
+                        "entries": ["Strive to be known by deeds not words."]
                       },
                       {
                         "type": "entries",
@@ -6770,35 +6194,14 @@
                       {
                         "type": "table",
                         "caption": "Oath of Heroism Spells",
-                        "colLabels": [
-                          "Paladin Level",
-                          "Spells"
-                        ],
-                        "colStyles": [
-                          "col-3 text-center",
-                          "col-9"
-                        ],
+                        "colLabels": ["Paladin Level", "Spells"],
+                        "colStyles": ["col-3 text-center", "col-9"],
                         "rows": [
-                          [
-                            "3rd",
-                            "expeditious retreat, guiding bolt"
-                          ],
-                          [
-                            "5th",
-                            "enhance ability, enthrall"
-                          ],
-                          [
-                            "9th",
-                            "haste, protection from energy"
-                          ],
-                          [
-                            "13th",
-                            "compulsion, freedom of movement"
-                          ],
-                          [
-                            "17th",
-                            "commune, conjure volley"
-                          ]
+                          ["3rd", "expeditious retreat, guiding bolt"],
+                          ["5th", "enhance ability, enthrall"],
+                          ["9th", "haste, protection from energy"],
+                          ["13th", "compulsion, freedom of movement"],
+                          ["17th", "commune, conjure volley"]
                         ]
                       }
                     ]
@@ -6906,26 +6309,11 @@
             "additionalSpells": [
               {
                 "prepared": {
-                  "3": [
-                    "alarm",
-                    "chromatic orb"
-                  ],
-                  "5": [
-                    "augury",
-                    "moonbeam"
-                  ],
-                  "9": [
-                    "counterspell",
-                    "nondetection"
-                  ],
-                  "13": [
-                    "aura of purity",
-                    "banishment"
-                  ],
-                  "17": [
-                    "hold monster",
-                    "hallow"
-                  ]
+                  "3": ["alarm", "chromatic orb"],
+                  "5": ["augury", "moonbeam"],
+                  "9": ["counterspell", "nondetection"],
+                  "13": ["aura of purity", "banishment"],
+                  "17": ["hold monster", "hallow"]
                 }
               }
             ],
@@ -6993,35 +6381,14 @@
                       {
                         "type": "table",
                         "caption": "Oath of the Watchers Spells  Spells",
-                        "colLabels": [
-                          "Paladin Level",
-                          "Spells"
-                        ],
-                        "colStyles": [
-                          "col-3 text-center",
-                          "col-9"
-                        ],
+                        "colLabels": ["Paladin Level", "Spells"],
+                        "colStyles": ["col-3 text-center", "col-9"],
                         "rows": [
-                          [
-                            "3rd",
-                            "alarm, chromatic orb"
-                          ],
-                          [
-                            "5th",
-                            "augury, moonbeam"
-                          ],
-                          [
-                            "9th",
-                            "counterspell, nondetection"
-                          ],
-                          [
-                            "13th",
-                            "aura of purity, banishment"
-                          ],
-                          [
-                            "17th",
-                            "hold monster, hallow"
-                          ]
+                          ["3rd", "alarm, chromatic orb"],
+                          ["5th", "augury, moonbeam"],
+                          ["9th", "counterspell, nondetection"],
+                          ["13th", "aura of purity, banishment"],
+                          ["17th", "hold monster, hallow"]
                         ]
                       }
                     ]
@@ -7127,21 +6494,11 @@
             "additionalSpells": [
               {
                 "prepared": {
-                  "3": [
-                    "entangle"
-                  ],
-                  "5": [
-                    "enhance ability"
-                  ],
-                  "9": [
-                    "conjure animals"
-                  ],
-                  "13": [
-                    "giant insect"
-                  ],
-                  "17": [
-                    "insect plague"
-                  ]
+                  "3": ["entangle"],
+                  "5": ["enhance ability"],
+                  "9": ["conjure animals"],
+                  "13": ["giant insect"],
+                  "17": ["insect plague"]
                 }
               }
             ],
@@ -7173,35 +6530,14 @@
                       {
                         "type": "table",
                         "caption": "Primeval Guardian Spells",
-                        "colLabels": [
-                          "Ranger Level",
-                          "Spells"
-                        ],
-                        "colStyles": [
-                          "col-3 text-center",
-                          "col-9"
-                        ],
+                        "colLabels": ["Ranger Level", "Spells"],
+                        "colStyles": ["col-3 text-center", "col-9"],
                         "rows": [
-                          [
-                            "3rd",
-                            "entangle"
-                          ],
-                          [
-                            "5th",
-                            "enhance ability"
-                          ],
-                          [
-                            "9th",
-                            "conjure animals"
-                          ],
-                          [
-                            "13th",
-                            "giant insect"
-                          ],
-                          [
-                            "17th",
-                            "insect plague"
-                          ]
+                          ["3rd", "entangle"],
+                          ["5th", "enhance ability"],
+                          ["9th", "conjure animals"],
+                          ["13th", "giant insect"],
+                          ["17th", "insect plague"]
                         ]
                       }
                     ]
@@ -7298,21 +6634,11 @@
             "additionalSpells": [
               {
                 "prepared": {
-                  "3": [
-                    "faerie fire"
-                  ],
-                  "5": [
-                    "web"
-                  ],
-                  "9": [
-                    "gaseous form"
-                  ],
-                  "13": [
-                    "giant insect"
-                  ],
-                  "17": [
-                    "insect plague"
-                  ]
+                  "3": ["faerie fire"],
+                  "5": ["web"],
+                  "9": ["gaseous form"],
+                  "13": ["giant insect"],
+                  "17": ["insect plague"]
                 }
               }
             ],
@@ -7344,35 +6670,14 @@
                       {
                         "type": "table",
                         "caption": "Swarmkeeper Spells",
-                        "colLabels": [
-                          "Ranger Level",
-                          "Spells"
-                        ],
-                        "colStyles": [
-                          "col-3 text-center",
-                          "col-9"
-                        ],
+                        "colLabels": ["Ranger Level", "Spells"],
+                        "colStyles": ["col-3 text-center", "col-9"],
                         "rows": [
-                          [
-                            "3rd",
-                            "faerie fire"
-                          ],
-                          [
-                            "5th",
-                            "web"
-                          ],
-                          [
-                            "9th",
-                            "gaseous form"
-                          ],
-                          [
-                            "13th",
-                            "giant insect"
-                          ],
-                          [
-                            "17th",
-                            "insect plague"
-                          ]
+                          ["3rd", "faerie fire"],
+                          ["5th", "web"],
+                          ["9th", "gaseous form"],
+                          ["13th", "giant insect"],
+                          ["17th", "insect plague"]
                         ]
                       }
                     ]
@@ -7478,21 +6783,11 @@
             "additionalSpells": [
               {
                 "prepared": {
-                  "3": [
-                    "charm person"
-                  ],
-                  "5": [
-                    "misty step"
-                  ],
-                  "9": [
-                    "dispel magic"
-                  ],
-                  "13": [
-                    "banishment"
-                  ],
-                  "17": [
-                    "mislead"
-                  ]
+                  "3": ["charm person"],
+                  "5": ["misty step"],
+                  "9": ["dispel magic"],
+                  "13": ["banishment"],
+                  "17": ["mislead"]
                 }
               }
             ],
@@ -7512,39 +6807,21 @@
                   {
                     "type": "table",
                     "caption": "Feywild Gifts",
-                    "colLabels": [
-                      "d6",
-                      "Gift"
-                    ],
-                    "colStyles": [
-                      "col-2 text-center",
-                      "col-10"
-                    ],
+                    "colLabels": ["d6", "Gift"],
+                    "colStyles": ["col-2 text-center", "col-10"],
                     "rows": [
                       [
                         "1",
                         "Illusory butterflies flutter around you while you take a short or long rest."
                       ],
-                      [
-                        "2",
-                        "Fresh, seasonal flowers sprout from your hair each dawn."
-                      ],
+                      ["2", "Fresh, seasonal flowers sprout from your hair each dawn."],
                       [
                         "3",
                         "You faintly smell of cinnamon, lavender, nutmeg, or another comforting herb or spice."
                       ],
-                      [
-                        "4",
-                        "Your shadow dances while no one is looking directly at it."
-                      ],
-                      [
-                        "5",
-                        "Delicate horns or antlers sprout from your head."
-                      ],
-                      [
-                        "6",
-                        "Your skin and hair change color to match the season at each dawn."
-                      ]
+                      ["4", "Your shadow dances while no one is looking directly at it."],
+                      ["5", "Delicate horns or antlers sprout from your head."],
+                      ["6", "Your skin and hair change color to match the season at each dawn."]
                     ]
                   },
                   {
@@ -7563,35 +6840,14 @@
                       {
                         "type": "table",
                         "caption": "Fey Wanderer Spells",
-                        "colLabels": [
-                          "Ranger Level",
-                          "Spells"
-                        ],
-                        "colStyles": [
-                          "col-3 text-center",
-                          "col-9"
-                        ],
+                        "colLabels": ["Ranger Level", "Spells"],
+                        "colStyles": ["col-3 text-center", "col-9"],
                         "rows": [
-                          [
-                            "3rd",
-                            "charm person"
-                          ],
-                          [
-                            "5th",
-                            "misty step"
-                          ],
-                          [
-                            "9th",
-                            "dispel magic"
-                          ],
-                          [
-                            "13th",
-                            "banishment"
-                          ],
-                          [
-                            "17th",
-                            "mislead"
-                          ]
+                          ["3rd", "charm person"],
+                          ["5th", "misty step"],
+                          ["9th", "dispel magic"],
+                          ["13th", "banishment"],
+                          ["17th", "mislead"]
                         ]
                       }
                     ]
@@ -7707,14 +6963,8 @@
                   {
                     "type": "table",
                     "caption": "",
-                    "colLabels": [
-                      "d6",
-                      "Origin"
-                    ],
-                    "colStyles": [
-                      "col-2 text-center",
-                      "col-10"
-                    ],
+                    "colLabels": ["d6", "Origin"],
+                    "colStyles": ["col-2 text-center", "col-10"],
                     "rows": [
                       [
                         "1",
@@ -7945,27 +7195,12 @@
                   {
                     "type": "table",
                     "caption": "Revived Capabilities",
-                    "colLabels": [
-                      "d3",
-                      "Capability"
-                    ],
-                    "colStyles": [
-                      "col-2 text-center",
-                      "col-10"
-                    ],
+                    "colLabels": ["d3", "Capability"],
+                    "colStyles": ["col-2 text-center", "col-10"],
                     "rows": [
-                      [
-                        "1",
-                        "You learn how to speak, read, and write one language of your choice."
-                      ],
-                      [
-                        "2",
-                        "You gain one skill or tool proficiency of your choice."
-                      ],
-                      [
-                        "3",
-                        "You gain proficiency with one saving throw of your choice."
-                      ]
+                      ["1", "You learn how to speak, read, and write one language of your choice."],
+                      ["2", "You gain one skill or tool proficiency of your choice."],
+                      ["3", "You gain proficiency with one saving throw of your choice."]
                     ]
                   },
                   "After you cast the spell with this feature, you can't do so again until you finish a short or long rest."
@@ -8388,39 +7623,18 @@
                   {
                     "type": "table",
                     "caption": "Phoenix Soul Quirks",
-                    "colLabels": [
-                      "d6",
-                      "Phoenix Soul"
-                    ],
-                    "colStyles": [
-                      "col-1 text-center",
-                      "col-11"
-                    ],
+                    "colLabels": ["d6", "Phoenix Soul"],
+                    "colStyles": ["col-1 text-center", "col-11"],
                     "rows": [
-                      [
-                        "1",
-                        "You absentmindedly ignite small fires that quickly sputter out."
-                      ],
-                      [
-                        "2",
-                        "You cackle like a fiend when you unleash your fire spells."
-                      ],
-                      [
-                        "3",
-                        "You admire fire, even if it burns your friends."
-                      ],
+                      ["1", "You absentmindedly ignite small fires that quickly sputter out."],
+                      ["2", "You cackle like a fiend when you unleash your fire spells."],
+                      ["3", "You admire fire, even if it burns your friends."],
                       [
                         "4",
                         "You are covered in burns that mark the first time your power manifested."
                       ],
-                      [
-                        "5",
-                        "You like your food charred."
-                      ],
-                      [
-                        "6",
-                        "You are brave to the point of recklessness."
-                      ]
+                      ["5", "You like your food charred."],
+                      ["6", "You are brave to the point of recklessness."]
                     ]
                   },
                   {
@@ -8696,31 +7910,16 @@
                       {
                         "type": "table",
                         "caption": "Metal Magic",
-                        "colLabels": [
-                          "Spell Level",
-                          "Spell"
-                        ],
-                        "colStyles": [
-                          "col-3 text-center",
-                          "col-9"
-                        ],
+                        "colLabels": ["Spell Level", "Spell"],
+                        "colStyles": ["col-3 text-center", "col-9"],
                         "rows": [
                           [
                             "1st",
                             "compelled duel, searing smite, thunderous smite, wrathful smite"
                           ],
-                          [
-                            "2nd",
-                            "branding smite, magic weapon"
-                          ],
-                          [
-                            "3rd",
-                            "blinding smite, elemental weapon"
-                          ],
-                          [
-                            "4th",
-                            "staggering smite"
-                          ]
+                          ["2nd", "branding smite, magic weapon"],
+                          ["3rd", "blinding smite, elemental weapon"],
+                          ["4th", "staggering smite"]
                         ]
                       }
                     ]
@@ -8833,47 +8032,15 @@
                       "At 1st level, you discover innate magical abilities within yourself that are based on your giant heritage. Select one of the giant types from the Mark of the Ordning table. At 1st and 3rd level, you learn the spells associated with your choice, as shown in the table. These spells count as sorcerer spells for you, but they don't count against your number of sorcerer spells known.",
                       {
                         "type": "table",
-                        "colLabels": [
-                          "Giant Type",
-                          "Spells at 1st Level",
-                          "Spells at 3rd Level"
-                        ],
-                        "colStyles": [
-                          "col-3",
-                          "col-3",
-                          "col-3"
-                        ],
+                        "colLabels": ["Giant Type", "Spells at 1st Level", "Spells at 3rd Level"],
+                        "colStyles": ["col-3", "col-3", "col-3"],
                         "rows": [
-                          [
-                            "Cloud Giant",
-                            "fog cloud, minor illusion",
-                            "invisibility"
-                          ],
-                          [
-                            "Fire Giant",
-                            "burning hands, fire bolt",
-                            "flaming sphere"
-                          ],
-                          [
-                            "Frost Giant",
-                            "armor of Agathys, ray of frost",
-                            "hold person"
-                          ],
-                          [
-                            "Hill Giant",
-                            "heroism, shillelagh",
-                            "enlarge/reduce"
-                          ],
-                          [
-                            "Stone Giant",
-                            "entangle, resistance",
-                            "spike growth"
-                          ],
-                          [
-                            "Storm Giant",
-                            "shocking grasp, thunderwave",
-                            "gust of wind"
-                          ]
+                          ["Cloud Giant", "fog cloud, minor illusion", "invisibility"],
+                          ["Fire Giant", "burning hands, fire bolt", "flaming sphere"],
+                          ["Frost Giant", "armor of Agathys, ray of frost", "hold person"],
+                          ["Hill Giant", "heroism, shillelagh", "enlarge/reduce"],
+                          ["Stone Giant", "entangle, resistance", "spike growth"],
+                          ["Storm Giant", "shocking grasp, thunderwave", "gust of wind"]
                         ]
                       }
                     ]
@@ -8988,26 +8155,11 @@
             "additionalSpells": [
               {
                 "prepared": {
-                  "1": [
-                    "arms of Hadar",
-                    "dissonant whispers"
-                  ],
-                  "3": [
-                    "calm emotions",
-                    "detect thoughts"
-                  ],
-                  "5": [
-                    "hunger of Hadar",
-                    "sending"
-                  ],
-                  "7": [
-                    "compulsion",
-                    "Evard's black tentacles"
-                  ],
-                  "9": [
-                    "modify memory",
-                    "Rary's telepathic bond"
-                  ]
+                  "1": ["arms of Hadar", "dissonant whispers"],
+                  "3": ["calm emotions", "detect thoughts"],
+                  "5": ["hunger of Hadar", "sending"],
+                  "7": ["compulsion", "Evard's black tentacles"],
+                  "9": ["modify memory", "Rary's telepathic bond"]
                 }
               }
             ],
@@ -9069,35 +8221,14 @@
                       {
                         "type": "table",
                         "caption": "Psionic Spells",
-                        "colLabels": [
-                          "Sorcerer Level",
-                          "Spells"
-                        ],
-                        "colStyles": [
-                          "col-3 text-center",
-                          "col-9"
-                        ],
+                        "colLabels": ["Sorcerer Level", "Spells"],
+                        "colStyles": ["col-3 text-center", "col-9"],
                         "rows": [
-                          [
-                            "1st",
-                            "arms of Hadar, dissonant whispers"
-                          ],
-                          [
-                            "3rd",
-                            "calm emotions, detect thoughts"
-                          ],
-                          [
-                            "5th",
-                            "hunger of Hadar, sending"
-                          ],
-                          [
-                            "7th",
-                            "compulsion, Evard's black tentacles"
-                          ],
-                          [
-                            "9th",
-                            "modify memory, Rary's telepathic bond"
-                          ]
+                          ["1st", "arms of Hadar, dissonant whispers"],
+                          ["3rd", "calm emotions, detect thoughts"],
+                          ["5th", "hunger of Hadar, sending"],
+                          ["7th", "compulsion, Evard's black tentacles"],
+                          ["9th", "modify memory, Rary's telepathic bond"]
                         ]
                       }
                     ]
@@ -9199,26 +8330,11 @@
             "additionalSpells": [
               {
                 "prepared": {
-                  "1": [
-                    "alarm",
-                    "protection from evil and good"
-                  ],
-                  "3": [
-                    "find traps",
-                    "heat metal"
-                  ],
-                  "5": [
-                    "counterspell",
-                    "glyph of warding"
-                  ],
-                  "7": [
-                    "arcane eye",
-                    "Otiluke's resilient sphere"
-                  ],
-                  "9": [
-                    "animate objects",
-                    "wall of force"
-                  ]
+                  "1": ["alarm", "protection from evil and good"],
+                  "3": ["find traps", "heat metal"],
+                  "5": ["counterspell", "glyph of warding"],
+                  "7": ["arcane eye", "Otiluke's resilient sphere"],
+                  "9": ["animate objects", "wall of force"]
                 }
               }
             ],
@@ -9238,31 +8354,13 @@
                   {
                     "type": "table",
                     "caption": "Manifestations of Mechanus",
-                    "colLabels": [
-                      "d6",
-                      "Manifestation"
-                    ],
-                    "colStyles": [
-                      "col-2 text-center",
-                      "col-10"
-                    ],
+                    "colLabels": ["d6", "Manifestation"],
+                    "colStyles": ["col-2 text-center", "col-10"],
                     "rows": [
-                      [
-                        "1",
-                        "Large, spectral cogwheels appear hovering behind you."
-                      ],
-                      [
-                        "2",
-                        "The hands of a clock appear in your eyes."
-                      ],
-                      [
-                        "3",
-                        "Your skin glows with a golden, metallic sheen."
-                      ],
-                      [
-                        "4",
-                        "Your features become unnaturally angular, like geometric objects."
-                      ],
+                      ["1", "Large, spectral cogwheels appear hovering behind you."],
+                      ["2", "The hands of a clock appear in your eyes."],
+                      ["3", "Your skin glows with a golden, metallic sheen."],
+                      ["4", "Your features become unnaturally angular, like geometric objects."],
                       [
                         "5",
                         "Your spellcasting focus takes the form of a miniature Spawning Stone or other creation of Primus."
@@ -9289,35 +8387,14 @@
                       {
                         "type": "table",
                         "caption": "Clockwork Spells",
-                        "colLabels": [
-                          "Sorcerer Level",
-                          "Spells"
-                        ],
-                        "colStyles": [
-                          "col-3 text-center",
-                          "col-9"
-                        ],
+                        "colLabels": ["Sorcerer Level", "Spells"],
+                        "colStyles": ["col-3 text-center", "col-9"],
                         "rows": [
-                          [
-                            "1st",
-                            "alarm, protection from evil and good"
-                          ],
-                          [
-                            "3rd",
-                            "find traps, heat metal"
-                          ],
-                          [
-                            "5th",
-                            "counterspell, glyph of warding"
-                          ],
-                          [
-                            "7th",
-                            "arcane eye, Otiluke's resilient sphere"
-                          ],
-                          [
-                            "9th",
-                            "animate objects, wall of force"
-                          ]
+                          ["1st", "alarm, protection from evil and good"],
+                          ["3rd", "find traps, heat metal"],
+                          ["5th", "counterspell, glyph of warding"],
+                          ["7th", "arcane eye, Otiluke's resilient sphere"],
+                          ["9th", "animate objects, wall of force"]
                         ]
                       }
                     ]
@@ -9420,14 +8497,8 @@
                   {
                     "type": "table",
                     "caption": "Psionic Origins",
-                    "colLabels": [
-                      "d10",
-                      "Origin"
-                    ],
-                    "colStyles": [
-                      "col-2 text-center",
-                      "col-10"
-                    ],
+                    "colLabels": ["d10", "Origin"],
+                    "colStyles": ["col-2 text-center", "col-10"],
                     "rows": [
                       [
                         1,
@@ -9602,26 +8673,11 @@
             "additionalSpells": [
               {
                 "expanded": {
-                  "1": [
-                    "infallible relay",
-                    "remote access"
-                  ],
-                  "2": [
-                    "arcane hacking",
-                    "digital phantom"
-                  ],
-                  "3": [
-                    "haywire",
-                    "invisibility to cameras"
-                  ],
-                  "4": [
-                    "conjure knowbot",
-                    "system backdoor"
-                  ],
-                  "5": [
-                    "shutdown",
-                    "synchronicity"
-                  ]
+                  "1": ["infallible relay", "remote access"],
+                  "2": ["arcane hacking", "digital phantom"],
+                  "3": ["haywire", "invisibility to cameras"],
+                  "4": ["conjure knowbot", "system backdoor"],
+                  "5": ["shutdown", "synchronicity"]
                 }
               }
             ],
@@ -9646,35 +8702,14 @@
                       {
                         "type": "table",
                         "caption": "Ghost in the Machine Expanded Spells",
-                        "colLabels": [
-                          "Spell Level",
-                          "Spells"
-                        ],
-                        "colStyles": [
-                          "col-3 text-center",
-                          "col-9"
-                        ],
+                        "colLabels": ["Spell Level", "Spells"],
+                        "colStyles": ["col-3 text-center", "col-9"],
                         "rows": [
-                          [
-                            "1st",
-                            "infallible relay*, remote access*"
-                          ],
-                          [
-                            "2nd",
-                            "arcane hacking*, digital phantom*"
-                          ],
-                          [
-                            "3rd",
-                            "haywire*, invisibility to cameras*"
-                          ],
-                          [
-                            "4th",
-                            "conjure knowbot*, system backdoor*"
-                          ],
-                          [
-                            "5th",
-                            "shutdown*, synchronicity*"
-                          ]
+                          ["1st", "infallible relay*, remote access*"],
+                          ["2nd", "arcane hacking*, digital phantom*"],
+                          ["3rd", "haywire*, invisibility to cameras*"],
+                          ["4th", "conjure knowbot*, system backdoor*"],
+                          ["5th", "shutdown*, synchronicity*"]
                         ]
                       }
                     ]
@@ -9689,9 +8724,7 @@
                     "subclassSource": "UA",
                     "level": 1,
                     "header": 1,
-                    "entries": [
-                      "At 1st level, you gain proficiency with hacking tools."
-                    ]
+                    "entries": ["At 1st level, you gain proficiency with hacking tools."]
                   },
                   {
                     "name": "Information Surge",
@@ -9765,21 +8798,11 @@
             "additionalSpells": [
               {
                 "expanded": {
-                  "1": [
-                    "burning hands"
-                  ],
-                  "2": [
-                    "flaming sphere"
-                  ],
-                  "3": [
-                    "daylight"
-                  ],
-                  "4": [
-                    "fire shield"
-                  ],
-                  "5": [
-                    "flame strike"
-                  ]
+                  "1": ["burning hands"],
+                  "2": ["flaming sphere"],
+                  "3": ["daylight"],
+                  "4": ["fire shield"],
+                  "5": ["flame strike"]
                 }
               }
             ],
@@ -9800,14 +8823,8 @@
                   {
                     "type": "table",
                     "caption": "Undying Light Flaws",
-                    "colLabels": [
-                      "d6",
-                      "Quirk"
-                    ],
-                    "colStyles": [
-                      "col-1 text-center",
-                      "col-11"
-                    ],
+                    "colLabels": ["d6", "Quirk"],
+                    "colStyles": ["col-1 text-center", "col-11"],
                     "rows": [
                       [
                         "1",
@@ -9817,18 +8834,9 @@
                         "2",
                         "You have a nervous compulsion to keep a bright light in even the barest shadow."
                       ],
-                      [
-                        "3",
-                        "You have a compulsion to enter and illuminate dark areas."
-                      ],
-                      [
-                        "4",
-                        "You have an overwhelming hatred of undead creatures."
-                      ],
-                      [
-                        "5",
-                        "You fidget and are irritable when you can't see the sun."
-                      ],
+                      ["3", "You have a compulsion to enter and illuminate dark areas."],
+                      ["4", "You have an overwhelming hatred of undead creatures."],
+                      ["5", "You fidget and are irritable when you can't see the sun."],
                       [
                         "6",
                         "In a dark area, you always carry a lit torch or lantern. Putting it down is an unbearable thought."
@@ -9843,35 +8851,14 @@
                       {
                         "type": "table",
                         "caption": "Undying Light Expanded Spells",
-                        "colLabels": [
-                          "Spell Level",
-                          "Spells"
-                        ],
-                        "colStyles": [
-                          "col-3 text-center",
-                          "col-9"
-                        ],
+                        "colLabels": ["Spell Level", "Spells"],
+                        "colStyles": ["col-3 text-center", "col-9"],
                         "rows": [
-                          [
-                            "1st",
-                            "burning hands"
-                          ],
-                          [
-                            "2nd",
-                            "flaming sphere"
-                          ],
-                          [
-                            "3rd",
-                            "daylight"
-                          ],
-                          [
-                            "4th",
-                            "fire shield"
-                          ],
-                          [
-                            "5th",
-                            "flame strike"
-                          ]
+                          ["1st", "burning hands"],
+                          ["2nd", "flaming sphere"],
+                          ["3rd", "daylight"],
+                          ["4th", "fire shield"],
+                          ["5th", "flame strike"]
                         ]
                       }
                     ]
@@ -9946,26 +8933,11 @@
             "additionalSpells": [
               {
                 "expanded": {
-                  "1": [
-                    "feather fall",
-                    "jump"
-                  ],
-                  "2": [
-                    "levitate",
-                    "locate object"
-                  ],
-                  "3": [
-                    "clairvoyance",
-                    "sending"
-                  ],
-                  "4": [
-                    "arcane eye",
-                    "locate creature"
-                  ],
-                  "5": [
-                    "legend lore",
-                    "passwall"
-                  ]
+                  "1": ["feather fall", "jump"],
+                  "2": ["levitate", "locate object"],
+                  "3": ["clairvoyance", "sending"],
+                  "4": ["arcane eye", "locate creature"],
+                  "5": ["legend lore", "passwall"]
                 }
               }
             ],
@@ -9990,35 +8962,14 @@
                       {
                         "type": "table",
                         "caption": "Seeker Expanded Spells",
-                        "colLabels": [
-                          "Spell Level",
-                          "Spells"
-                        ],
-                        "colStyles": [
-                          "col-3 text-center",
-                          "col-9"
-                        ],
+                        "colLabels": ["Spell Level", "Spells"],
+                        "colStyles": ["col-3 text-center", "col-9"],
                         "rows": [
-                          [
-                            "1st",
-                            "feather fall, jump"
-                          ],
-                          [
-                            "2nd",
-                            "levitate, locate object"
-                          ],
-                          [
-                            "3rd",
-                            "clairvoyance, sending"
-                          ],
-                          [
-                            "4th",
-                            "arcane eye, locate creature"
-                          ],
-                          [
-                            "5th",
-                            "legend lore, passwall"
-                          ]
+                          ["1st", "feather fall, jump"],
+                          ["2nd", "levitate, locate object"],
+                          ["3rd", "clairvoyance, sending"],
+                          ["4th", "arcane eye, locate creature"],
+                          ["5th", "legend lore, passwall"]
                         ]
                       }
                     ]
@@ -10095,26 +9046,11 @@
             "additionalSpells": [
               {
                 "expanded": {
-                  "1": [
-                    "false life",
-                    "sanctuary"
-                  ],
-                  "2": [
-                    "silence",
-                    "spiritual weapon"
-                  ],
-                  "3": [
-                    "feign death",
-                    "speak with dead"
-                  ],
-                  "4": [
-                    "ice storm",
-                    "locate creature"
-                  ],
-                  "5": [
-                    "commune",
-                    "cone of cold"
-                  ]
+                  "1": ["false life", "sanctuary"],
+                  "2": ["silence", "spiritual weapon"],
+                  "3": ["feign death", "speak with dead"],
+                  "4": ["ice storm", "locate creature"],
+                  "5": ["commune", "cone of cold"]
                 }
               }
             ],
@@ -10139,35 +9075,14 @@
                       {
                         "type": "table",
                         "caption": "Raven Queen Expanded Spells",
-                        "colLabels": [
-                          "Spell Level",
-                          "Spells"
-                        ],
-                        "colStyles": [
-                          "col-3 text-center",
-                          "col-9"
-                        ],
+                        "colLabels": ["Spell Level", "Spells"],
+                        "colStyles": ["col-3 text-center", "col-9"],
                         "rows": [
-                          [
-                            "1st",
-                            "false life, sanctuary"
-                          ],
-                          [
-                            "2nd",
-                            "silence, spiritual weapon"
-                          ],
-                          [
-                            "3rd",
-                            "feign death, speak with dead"
-                          ],
-                          [
-                            "4th",
-                            "ice storm, locate creature"
-                          ],
-                          [
-                            "5th",
-                            "commune, cone of cold"
-                          ]
+                          ["1st", "false life, sanctuary"],
+                          ["2nd", "silence, spiritual weapon"],
+                          ["3rd", "feign death, speak with dead"],
+                          ["4th", "ice storm, locate creature"],
+                          ["5th", "commune, cone of cold"]
                         ]
                       }
                     ]
@@ -10244,26 +9159,11 @@
             "additionalSpells": [
               {
                 "expanded": {
-                  "1": [
-                    "create or destroy water",
-                    "thunderwave"
-                  ],
-                  "2": [
-                    "gust of wind",
-                    "silence"
-                  ],
-                  "3": [
-                    "lightning bolt",
-                    "sleet storm"
-                  ],
-                  "4": [
-                    "control water",
-                    "Evard's black tentacles"
-                  ],
-                  "5": [
-                    "commune with nature",
-                    "cone of cold"
-                  ]
+                  "1": ["create or destroy water", "thunderwave"],
+                  "2": ["gust of wind", "silence"],
+                  "3": ["lightning bolt", "sleet storm"],
+                  "4": ["control water", "Evard's black tentacles"],
+                  "5": ["commune with nature", "cone of cold"]
                 }
               }
             ],
@@ -10303,35 +9203,14 @@
                       {
                         "type": "table",
                         "caption": "Lurker Expanded Spells",
-                        "colLabels": [
-                          "Spell Level",
-                          "Spells"
-                        ],
-                        "colStyles": [
-                          "col-3 text-center",
-                          "col-9"
-                        ],
+                        "colLabels": ["Spell Level", "Spells"],
+                        "colStyles": ["col-3 text-center", "col-9"],
                         "rows": [
-                          [
-                            "1st",
-                            "create or destroy water, thunderwave"
-                          ],
-                          [
-                            "2nd",
-                            "gust of wind, silence"
-                          ],
-                          [
-                            "3rd",
-                            "lightning bolt, sleet storm"
-                          ],
-                          [
-                            "4th",
-                            "control water, Evard's black tentacles"
-                          ],
-                          [
-                            "5th",
-                            "commune with nature, cone of cold"
-                          ]
+                          ["1st", "create or destroy water, thunderwave"],
+                          ["2nd", "gust of wind, silence"],
+                          ["3rd", "lightning bolt, sleet storm"],
+                          ["4th", "control water, Evard's black tentacles"],
+                          ["5th", "commune with nature, cone of cold"]
                         ]
                       }
                     ]
@@ -10464,26 +9343,11 @@
             "additionalSpells": [
               {
                 "expanded": {
-                  "1": [
-                    "fog cloud",
-                    "sleep"
-                  ],
-                  "2": [
-                    "enlarge/reduce",
-                    "phantasmal force"
-                  ],
-                  "3": [
-                    "create food and water",
-                    "protection from energy"
-                  ],
-                  "4": [
-                    "polymorph",
-                    "phantasmal killer"
-                  ],
-                  "5": [
-                    "Bigby's hand",
-                    "creation"
-                  ]
+                  "1": ["fog cloud", "sleep"],
+                  "2": ["enlarge/reduce", "phantasmal force"],
+                  "3": ["create food and water", "protection from energy"],
+                  "4": ["polymorph", "phantasmal killer"],
+                  "5": ["Bigby's hand", "creation"]
                 }
               }
             ],
@@ -10508,35 +9372,14 @@
                       {
                         "type": "table",
                         "caption": "Noble Genie Expanded Spells",
-                        "colLabels": [
-                          "Spell Level",
-                          "Spells"
-                        ],
-                        "colStyles": [
-                          "col-3 text-center",
-                          "col-9"
-                        ],
+                        "colLabels": ["Spell Level", "Spells"],
+                        "colStyles": ["col-3 text-center", "col-9"],
                         "rows": [
-                          [
-                            "1st",
-                            "fog cloud, sleep"
-                          ],
-                          [
-                            "2nd",
-                            "enlarge/reduce, phantasmal force"
-                          ],
-                          [
-                            "3rd",
-                            "create food and water, protection from energy"
-                          ],
-                          [
-                            "4th",
-                            "polymorph, phantasmal killer"
-                          ],
-                          [
-                            "5th",
-                            "Bigby's hand, creation"
-                          ]
+                          ["1st", "fog cloud, sleep"],
+                          ["2nd", "enlarge/reduce, phantasmal force"],
+                          ["3rd", "create food and water, protection from energy"],
+                          ["4th", "polymorph, phantasmal killer"],
+                          ["5th", "Bigby's hand, creation"]
                         ]
                       }
                     ]
@@ -10557,39 +9400,15 @@
                       {
                         "type": "table",
                         "caption": "Collector's Vessel",
-                        "colLabels": [
-                          "d6",
-                          "Vessel"
-                        ],
-                        "colStyles": [
-                          "col-2 text-center",
-                          "col-10"
-                        ],
+                        "colLabels": ["d6", "Vessel"],
+                        "colStyles": ["col-2 text-center", "col-10"],
                         "rows": [
-                          [
-                            "1",
-                            "Oil lamp"
-                          ],
-                          [
-                            "2",
-                            "Urn"
-                          ],
-                          [
-                            "3",
-                            "Ring with a compartment"
-                          ],
-                          [
-                            "4",
-                            "Stoppered bottle"
-                          ],
-                          [
-                            "5",
-                            "Hollow statuette"
-                          ],
-                          [
-                            "6",
-                            "Ornate lantern"
-                          ]
+                          ["1", "Oil lamp"],
+                          ["2", "Urn"],
+                          ["3", "Ring with a compartment"],
+                          ["4", "Stoppered bottle"],
+                          ["5", "Hollow statuette"],
+                          ["6", "Ornate lantern"]
                         ]
                       },
                       "If you lose your vessel, you can perform a 1 hour ceremony to receive a replacement from your patron. This ceremony can be performed during a short or long rest, and it destroys the previous vessel. The vessel vanishes in a flare of elemental power when you die.",
@@ -10696,110 +9515,42 @@
             "additionalSpells": [
               {
                 "expanded": {
-                  "1": [
-                    "detect evil and good",
-                    "sanctuary"
-                  ],
-                  "2": [
-                    "phantasmal force",
-                    "spike growth"
-                  ],
-                  "3": [
-                    "create food and water",
-                    "meld into stone"
-                  ],
-                  "4": [
-                    "phantasmal killer",
-                    "stone shape"
-                  ],
-                  "5": [
-                    "creation",
-                    "wall of stone"
-                  ],
-                  "9": [
-                    "wish"
-                  ]
+                  "1": ["detect evil and good", "sanctuary"],
+                  "2": ["phantasmal force", "spike growth"],
+                  "3": ["create food and water", "meld into stone"],
+                  "4": ["phantasmal killer", "stone shape"],
+                  "5": ["creation", "wall of stone"],
+                  "9": ["wish"]
                 }
               },
               {
                 "expanded": {
-                  "1": [
-                    "detect evil and good",
-                    "thunderwave"
-                  ],
-                  "2": [
-                    "phantasmal force",
-                    "gust of wind"
-                  ],
-                  "3": [
-                    "create food and water",
-                    "wind wall"
-                  ],
-                  "4": [
-                    "phantasmal killer",
-                    "greater invisibility"
-                  ],
-                  "5": [
-                    "creation",
-                    "seeming"
-                  ],
-                  "9": [
-                    "wish"
-                  ]
+                  "1": ["detect evil and good", "thunderwave"],
+                  "2": ["phantasmal force", "gust of wind"],
+                  "3": ["create food and water", "wind wall"],
+                  "4": ["phantasmal killer", "greater invisibility"],
+                  "5": ["creation", "seeming"],
+                  "9": ["wish"]
                 }
               },
               {
                 "expanded": {
-                  "1": [
-                    "detect evil and good",
-                    "burning hands"
-                  ],
-                  "2": [
-                    "phantasmal force",
-                    "scorching ray"
-                  ],
-                  "3": [
-                    "create food and water",
-                    "fireball"
-                  ],
-                  "4": [
-                    "phantasmal killer",
-                    "fire shield"
-                  ],
-                  "5": [
-                    "creation",
-                    "flame strike"
-                  ],
-                  "9": [
-                    "wish"
-                  ]
+                  "1": ["detect evil and good", "burning hands"],
+                  "2": ["phantasmal force", "scorching ray"],
+                  "3": ["create food and water", "fireball"],
+                  "4": ["phantasmal killer", "fire shield"],
+                  "5": ["creation", "flame strike"],
+                  "9": ["wish"]
                 }
               },
               {
                 "expanded": {
-                  "1": [
-                    "detect evil and good",
-                    "fog cloud"
-                  ],
-                  "2": [
-                    "phantasmal force",
-                    "blur"
-                  ],
-                  "3": [
-                    "create food and water",
-                    "sleet storm"
-                  ],
-                  "4": [
-                    "phantasmal killer",
-                    "control water"
-                  ],
-                  "5": [
-                    "creation",
-                    "cone of cold"
-                  ],
-                  "9": [
-                    "wish"
-                  ]
+                  "1": ["detect evil and good", "fog cloud"],
+                  "2": ["phantasmal force", "blur"],
+                  "3": ["create food and water", "sleet storm"],
+                  "4": ["phantasmal killer", "control water"],
+                  "5": ["creation", "cone of cold"],
+                  "9": ["wish"]
                 }
               }
             ],
@@ -10819,37 +9570,13 @@
                   {
                     "type": "table",
                     "caption": "Genie Kind",
-                    "colLabels": [
-                      "d4",
-                      "Kind",
-                      "Element"
-                    ],
-                    "colStyles": [
-                      "col-2 text-center",
-                      "col-5",
-                      "col-5"
-                    ],
+                    "colLabels": ["d4", "Kind", "Element"],
+                    "colStyles": ["col-2 text-center", "col-5", "col-5"],
                     "rows": [
-                      [
-                        1,
-                        "Dao",
-                        "Earth"
-                      ],
-                      [
-                        2,
-                        "Djinni",
-                        "Air"
-                      ],
-                      [
-                        3,
-                        "Efreeti",
-                        "Fire"
-                      ],
-                      [
-                        4,
-                        "Marid",
-                        "Water"
-                      ]
+                      [1, "Dao", "Earth"],
+                      [2, "Djinni", "Air"],
+                      [3, "Efreeti", "Fire"],
+                      [4, "Marid", "Water"]
                     ]
                   },
                   {
@@ -10918,14 +9645,7 @@
                             "flame strike",
                             "cone of cold"
                           ],
-                          [
-                            "9th",
-                            "wish",
-                            "—",
-                            "—",
-                            "—",
-                            "—"
-                          ]
+                          ["9th", "wish", "—", "—", "—", "—"]
                         ]
                       }
                     ]
@@ -10946,39 +9666,15 @@
                       {
                         "type": "table",
                         "caption": "Genie's Vessel",
-                        "colLabels": [
-                          "d6",
-                          "Vessel"
-                        ],
-                        "colStyles": [
-                          "col-2 text-center",
-                          "col-10"
-                        ],
+                        "colLabels": ["d6", "Vessel"],
+                        "colStyles": ["col-2 text-center", "col-10"],
                         "rows": [
-                          [
-                            1,
-                            "Oil lamp"
-                          ],
-                          [
-                            2,
-                            "Urn"
-                          ],
-                          [
-                            3,
-                            "Ring with a compartment"
-                          ],
-                          [
-                            4,
-                            "Stoppered bottle"
-                          ],
-                          [
-                            5,
-                            "Hollow statuette"
-                          ],
-                          [
-                            6,
-                            "Ornate lantern"
-                          ]
+                          [1, "Oil lamp"],
+                          [2, "Urn"],
+                          [3, "Ring with a compartment"],
+                          [4, "Stoppered bottle"],
+                          [5, "Hollow statuette"],
+                          [6, "Ornate lantern"]
                         ]
                       },
                       "While you are touching the vessel, you can use it in the following ways:",
@@ -11063,26 +9759,11 @@
             "additionalSpells": [
               {
                 "expanded": {
-                  "1": [
-                    "bane",
-                    "false life"
-                  ],
-                  "2": [
-                    "blindness/deafness",
-                    "phantasmal force"
-                  ],
-                  "3": [
-                    "speak with dead",
-                    "phantom steed"
-                  ],
-                  "4": [
-                    "death ward",
-                    "greater invisibility"
-                  ],
-                  "5": [
-                    "antilife shell",
-                    "cloudkill"
-                  ]
+                  "1": ["bane", "false life"],
+                  "2": ["blindness/deafness", "phantasmal force"],
+                  "3": ["speak with dead", "phantom steed"],
+                  "4": ["death ward", "greater invisibility"],
+                  "5": ["antilife shell", "cloudkill"]
                 }
               }
             ],
@@ -11106,35 +9787,14 @@
                       {
                         "type": "table",
                         "caption": "Undead Expanded Spells",
-                        "colLabels": [
-                          "Spell Level",
-                          "Spells"
-                        ],
-                        "colStyles": [
-                          "col-3 text-center",
-                          "col-9"
-                        ],
+                        "colLabels": ["Spell Level", "Spells"],
+                        "colStyles": ["col-3 text-center", "col-9"],
                         "rows": [
-                          [
-                            "1st",
-                            "bane, false life"
-                          ],
-                          [
-                            "2nd",
-                            "blindness/deafness, phantasmal force"
-                          ],
-                          [
-                            "3rd",
-                            "speak with dead, phantom steed"
-                          ],
-                          [
-                            "4th",
-                            "death ward, greater invisibility"
-                          ],
-                          [
-                            "5th",
-                            "antilife shell, cloudkill"
-                          ]
+                          ["1st", "bane, false life"],
+                          ["2nd", "blindness/deafness, phantasmal force"],
+                          ["3rd", "speak with dead, phantom steed"],
+                          ["4th", "death ward, greater invisibility"],
+                          ["5th", "antilife shell, cloudkill"]
                         ]
                       }
                     ]
@@ -11593,9 +10253,7 @@
                     "subclassSource": "UA",
                     "level": 2,
                     "header": 1,
-                    "entries": [
-                      "At 2nd level, you gain proficiency with two tools of your choice."
-                    ]
+                    "entries": ["At 2nd level, you gain proficiency with two tools of your choice."]
                   },
                   {
                     "name": "Arcanomechanical Armor",
@@ -11637,51 +10295,18 @@
                       {
                         "type": "table",
                         "caption": "Reckless Casting",
-                        "colLabels": [
-                          "d10",
-                          "Cantrip"
-                        ],
-                        "colStyles": [
-                          "col-2",
-                          "col-10"
-                        ],
+                        "colLabels": ["d10", "Cantrip"],
+                        "colStyles": ["col-2", "col-10"],
                         "rows": [
-                          [
-                            "1",
-                            "acid splash"
-                          ],
-                          [
-                            "2",
-                            "chill touch"
-                          ],
-                          [
-                            "3",
-                            "fire bolt"
-                          ],
-                          [
-                            "4",
-                            "light"
-                          ],
-                          [
-                            "5",
-                            "poison spray"
-                          ],
-                          [
-                            "6",
-                            "ray of frost"
-                          ],
-                          [
-                            "7",
-                            "shocking grasp"
-                          ],
-                          [
-                            "8",
-                            "sacred flame"
-                          ],
-                          [
-                            "9",
-                            "thorn whip"
-                          ],
+                          ["1", "acid splash"],
+                          ["2", "chill touch"],
+                          ["3", "fire bolt"],
+                          ["4", "light"],
+                          ["5", "poison spray"],
+                          ["6", "ray of frost"],
+                          ["7", "shocking grasp"],
+                          ["8", "sacred flame"],
+                          ["9", "thorn whip"],
                           [
                             "10",
                             "Roll twice and cast each cantrip, but if you roll another 10 on either die, you cast nothing, wasting your action."
@@ -11690,51 +10315,18 @@
                       },
                       {
                         "type": "table",
-                        "colLabels": [
-                          "d10",
-                          "1st-Level Spell"
-                        ],
-                        "colStyles": [
-                          "col-2",
-                          "col-10"
-                        ],
+                        "colLabels": ["d10", "1st-Level Spell"],
+                        "colStyles": ["col-2", "col-10"],
                         "rows": [
-                          [
-                            "1",
-                            "burning hands"
-                          ],
-                          [
-                            "2",
-                            "chromatic orb"
-                          ],
-                          [
-                            "3",
-                            "color spray"
-                          ],
-                          [
-                            "4",
-                            "faerie fire"
-                          ],
-                          [
-                            "5",
-                            "false life"
-                          ],
-                          [
-                            "6",
-                            "fog cloud"
-                          ],
-                          [
-                            "7",
-                            "jump"
-                          ],
-                          [
-                            "8",
-                            "magic missile"
-                          ],
-                          [
-                            "9",
-                            "thunderwave"
-                          ],
+                          ["1", "burning hands"],
+                          ["2", "chromatic orb"],
+                          ["3", "color spray"],
+                          ["4", "faerie fire"],
+                          ["5", "false life"],
+                          ["6", "fog cloud"],
+                          ["7", "jump"],
+                          ["8", "magic missile"],
+                          ["9", "thunderwave"],
                           [
                             "10",
                             "Roll twice and cast each spell, but if you roll another 10 on either die, you cast nothing, wasting your action but not the spell slot."
@@ -11743,51 +10335,18 @@
                       },
                       {
                         "type": "table",
-                        "colLabels": [
-                          "d10",
-                          "2nd-Level Spell"
-                        ],
-                        "colStyles": [
-                          "col-2",
-                          "col-10"
-                        ],
+                        "colLabels": ["d10", "2nd-Level Spell"],
+                        "colStyles": ["col-2", "col-10"],
                         "rows": [
-                          [
-                            "1",
-                            "blur"
-                          ],
-                          [
-                            "2",
-                            "darkness"
-                          ],
-                          [
-                            "3",
-                            "enlarge/reduce"
-                          ],
-                          [
-                            "4",
-                            "gust of wind"
-                          ],
-                          [
-                            "5",
-                            "invisibility"
-                          ],
-                          [
-                            "6",
-                            "levitate"
-                          ],
-                          [
-                            "7",
-                            "Melf's acid arrow"
-                          ],
-                          [
-                            "8",
-                            "scorching ray"
-                          ],
-                          [
-                            "9",
-                            "shatter"
-                          ],
+                          ["1", "blur"],
+                          ["2", "darkness"],
+                          ["3", "enlarge/reduce"],
+                          ["4", "gust of wind"],
+                          ["5", "invisibility"],
+                          ["6", "levitate"],
+                          ["7", "Melf's acid arrow"],
+                          ["8", "scorching ray"],
+                          ["9", "shatter"],
                           [
                             "10",
                             "Roll twice and cast each spell, but if you roll another 10 on either die, you cast nothing, wasting your action but not the spell slot."
@@ -11796,51 +10355,18 @@
                       },
                       {
                         "type": "table",
-                        "colLabels": [
-                          "d10",
-                          "3rd-Level Spell"
-                        ],
-                        "colStyles": [
-                          "col-2",
-                          "col-10"
-                        ],
+                        "colLabels": ["d10", "3rd-Level Spell"],
+                        "colStyles": ["col-2", "col-10"],
                         "rows": [
-                          [
-                            "1",
-                            "blink"
-                          ],
-                          [
-                            "2",
-                            "fear"
-                          ],
-                          [
-                            "3",
-                            "feign death"
-                          ],
-                          [
-                            "4",
-                            "fireball"
-                          ],
-                          [
-                            "5",
-                            "fly"
-                          ],
-                          [
-                            "6",
-                            "gaseous form"
-                          ],
-                          [
-                            "7",
-                            "lightning bolt"
-                          ],
-                          [
-                            "8",
-                            "sleet storm"
-                          ],
-                          [
-                            "9",
-                            "stinking cloud"
-                          ],
+                          ["1", "blink"],
+                          ["2", "fear"],
+                          ["3", "feign death"],
+                          ["4", "fireball"],
+                          ["5", "fly"],
+                          ["6", "gaseous form"],
+                          ["7", "lightning bolt"],
+                          ["8", "sleet storm"],
+                          ["9", "stinking cloud"],
                           [
                             "10",
                             "Roll twice and cast each spell, but if you roll another 10 on either die, you cast nothing, wasting your action but not the spell slot."
@@ -11849,51 +10375,18 @@
                       },
                       {
                         "type": "table",
-                        "colLabels": [
-                          "d10",
-                          "4th-Level Spell"
-                        ],
-                        "colStyles": [
-                          "col-2",
-                          "col-10"
-                        ],
+                        "colLabels": ["d10", "4th-Level Spell"],
+                        "colStyles": ["col-2", "col-10"],
                         "rows": [
-                          [
-                            "1",
-                            "blight"
-                          ],
-                          [
-                            "2",
-                            "confusion"
-                          ],
-                          [
-                            "3",
-                            "Evard's black tentacles"
-                          ],
-                          [
-                            "4",
-                            "fire shield"
-                          ],
-                          [
-                            "5",
-                            "greater invisibility"
-                          ],
-                          [
-                            "6",
-                            "ice storm"
-                          ],
-                          [
-                            "7",
-                            "phantasmal killer"
-                          ],
-                          [
-                            "8",
-                            "stoneskin"
-                          ],
-                          [
-                            "9",
-                            "wall of fire"
-                          ],
+                          ["1", "blight"],
+                          ["2", "confusion"],
+                          ["3", "Evard's black tentacles"],
+                          ["4", "fire shield"],
+                          ["5", "greater invisibility"],
+                          ["6", "ice storm"],
+                          ["7", "phantasmal killer"],
+                          ["8", "stoneskin"],
+                          ["9", "wall of fire"],
                           [
                             "10",
                             "Roll twice and cast each spell, but if you roll another 10 on either die, you cast nothing, wasting your action but not the spell slot."
@@ -11902,51 +10395,18 @@
                       },
                       {
                         "type": "table",
-                        "colLabels": [
-                          "d10",
-                          "5th-Level Spell"
-                        ],
-                        "colStyles": [
-                          "col-2",
-                          "col-10"
-                        ],
+                        "colLabels": ["d10", "5th-Level Spell"],
+                        "colStyles": ["col-2", "col-10"],
                         "rows": [
-                          [
-                            "1",
-                            "cloudkill"
-                          ],
-                          [
-                            "2",
-                            "cone of cold"
-                          ],
-                          [
-                            "3",
-                            "destructive wave"
-                          ],
-                          [
-                            "4",
-                            "flame strike"
-                          ],
-                          [
-                            "5",
-                            "hold monster"
-                          ],
-                          [
-                            "6",
-                            "insect plague"
-                          ],
-                          [
-                            "7",
-                            "mass cure wounds"
-                          ],
-                          [
-                            "8",
-                            "wall of force"
-                          ],
-                          [
-                            "9",
-                            "wall of stone"
-                          ],
+                          ["1", "cloudkill"],
+                          ["2", "cone of cold"],
+                          ["3", "destructive wave"],
+                          ["4", "flame strike"],
+                          ["5", "hold monster"],
+                          ["6", "insect plague"],
+                          ["7", "mass cure wounds"],
+                          ["8", "wall of force"],
+                          ["9", "wall of stone"],
                           [
                             "10",
                             "Roll twice and cast each spell, but if you roll another 10 on either die, you cast nothing, wasting your action but not the spell slot."

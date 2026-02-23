@@ -1,10 +1,9 @@
-import type { Component } from 'vue'
+import type { Component } from 'vue';
 
 export type AppRoute = {
-	path: string
-	name: string
-	component: Component
-}
+  path: string;
+  name: string;
+  component: Component;
+};
 
-export type Routes = AppRoute[]
-
+export type Routes = AppRoute[];
