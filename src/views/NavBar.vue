@@ -10,6 +10,7 @@
       <header class="sidebar-header">
         <div class="brand-wrap">
           <button
+            type="button"
             class="expand-btn"
             @click="toggle"
             :aria-expanded="expanded"
@@ -56,12 +57,12 @@
   import { ref, watchEffect } from 'vue';
   import router from '../router';
 
-  import menuIcon from '../assets/icons/menu.svg';
-  import closeIcon from '../assets/icons/close.svg';
-  import homeIcon from '../assets/icons/home.svg';
-  import usersIcon from '../assets/icons/users.svg';
-  import plusIcon from '../assets/icons/plus.svg';
-  import settingsIcon from '../assets/icons/settings.svg';
+  import menuIcon from '../assets/icons/menu.svg?url';
+  import closeIcon from '../assets/icons/close.svg?url';
+  import homeIcon from '../assets/icons/home.svg?url';
+  import usersIcon from '../assets/icons/users.svg?url';
+  import plusIcon from '../assets/icons/plus.svg?url';
+  import settingsIcon from '../assets/icons/settings.svg?url';
 
   // `expanded` controls whether the sidebar shows labels and takes more screen.
   // When false, the sidebar is a narrow icon-only strip for quick navigation.
