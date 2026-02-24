@@ -45,6 +45,9 @@
       </nav>
 
       <footer class="sidebar-footer">
+        <slot>
+            <!-- toggle for debug mode -->
+        </slot>
         <slot name="footer">V 0.1</slot>
       </footer>
     </aside>

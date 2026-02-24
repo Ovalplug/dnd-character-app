@@ -45,8 +45,8 @@ export const useDataStore = defineStore('data', {
         }),
       ]);
 
-      datasets = [official, ua];
-      allData = datasets.flat();
+      datasets = [...official, ...ua];
+      allData = datasets;
 
       this.rawDatasets = datasets;
       this.feats = aggregate('feats');
@@ -62,6 +62,7 @@ export const useDataStore = defineStore('data', {
     },
 
     reload() {
+      this.loaded = false;
       return this.init();
     },
 
