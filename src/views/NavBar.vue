@@ -3,7 +3,7 @@
     <aside
       id="sidebar"
       class="sidebar"
-      :class="{ expanded: expanded, collapsed: !expanded }"
+      :class="{ expanded: expanded, collapsed: !expanded, 'debug-active': debug }"
       @keydown.esc="collapse"
       tabindex="-1"
     >
@@ -46,8 +46,18 @@
 
       <footer class="sidebar-footer">
         <slot>
-            <!-- toggle for debug mode -->
+          <label class="debug-toggle" title="Toggle debug">
+            <input
+              type="checkbox"
+              :checked="debug"
+              @change="onToggleDebug($event)"
+              aria-label="Toggle debug mode"
+            />
+            <span class="label" v-if="expanded">Debug</span>
+            <span class="debug-state" v-if="expanded">{{ debug ? 'On' : 'Off' }}</span>
+          </label>
         </slot>
+        <br />
         <slot name="footer">V 0.1</slot>
       </footer>
     </aside>
@@ -57,8 +67,9 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, watchEffect } from 'vue';
+  import { ref, watchEffect, onMounted } from 'vue';
   import router from '../router';
+  import { useDebug } from '../composables/useDebug';
 
   import menuIcon from '../assets/icons/menu.svg?url';
   import closeIcon from '../assets/icons/close.svg?url';
@@ -70,6 +81,13 @@
   // `expanded` controls whether the sidebar shows labels and takes more screen.
   // When false, the sidebar is a narrow icon-only strip for quick navigation.
   const expanded = ref(false);
+
+  const { debug, initDebug, setDebug } = useDebug();
+
+  async function onToggleDebug(e: Event) {
+    const input = e.target as HTMLInputElement;
+    await setDebug(!!input.checked);
+  }
 
   const navOptions = [
     { label: 'Home', icon: homeIcon, path: '/' },
@@ -96,6 +114,10 @@
   watchEffect(() => {
     if (expanded.value) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = '';
+  });
+
+  onMounted(async () => {
+    await initDebug();
   });
 </script>
 
@@ -209,6 +231,28 @@
   .sidebar-footer {
     padding: 12px 8px;
     border-top: 1px solid #eee;
+  }
+
+  .debug-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .debug-toggle input {
+    width: 18px;
+    height: 18px;
+  }
+  .debug-state {
+    font-size: 0.85rem;
+    color: #666;
+  }
+
+  /* Debug background when debug mode is enabled */
+  .sidebar.debug-active {
+    background: #ec6d6d;
+    transition: background 200ms ease;
   }
 
   /* When expanded on mobile, make the panel full-screen */

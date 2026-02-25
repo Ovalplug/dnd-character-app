@@ -7,3 +7,13 @@ export type AppRoute = {
 };
 
 export type Routes = AppRoute[];
+
+export type Feat = {
+  name: string;
+  description?: string;
+  source?: string;
+  level?: number;
+  prerequisite?: string[];
+};
+
+export type Feats = Feat[];

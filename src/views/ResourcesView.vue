@@ -7,7 +7,7 @@
     </div>
 
     <div v-else>
-      <div>
+      <div v-if="debug">
         <button @click="showData('all')">All data</button>
         <button @click="showData('feats')">Feats</button>
         <button @click="showData('races')">Races</button>
@@ -18,17 +18,20 @@
         <button @click="showData('eInvocations')">Eldritch Invocations</button>
         <button @click="showData('aInfusions')">Artificer Infusions</button>
         <button @click="showData('subclasses')">Subclasses</button>
+        <button @click="showNoData">Hide all</button>
+
+        <pre v-if="show_rawDatasets">{{ dataStore.rawDatasets }}</pre>
+        <pre v-if="show_feats">{{ dataStore.feats }}</pre>
+        <pre v-if="show_races">{{ dataStore.races }}</pre>
+        <pre v-if="show_backgrounds">{{ dataStore.backgrounds }}</pre>
+        <pre v-if="show_backgroundFluff">{{ dataStore.backgroundFluff }}</pre>
+        <pre v-if="show_raceFluff">{{ dataStore.raceFluff }}</pre>
+        <pre v-if="show_classes">{{ dataStore.classes }}</pre>
+        <pre v-if="show_eInvocations">{{ dataStore.eInvocations }}</pre>
+        <pre v-if="show_aInfusions">{{ dataStore.aInfusions }}</pre>
+        <pre v-if="show_subclasses">{{ dataStore.subclasses }}</pre>
       </div>
-      <pre v-if="show_rawDatasets">{{ dataStore.rawDatasets }}</pre>
-      <pre v-if="show_feats">{{ dataStore.feats }}</pre>
-      <pre v-if="show_races">{{ dataStore.races }}</pre>
-      <pre v-if="show_backgrounds">{{ dataStore.backgrounds }}</pre>
-      <pre v-if="show_backgroundFluff">{{ dataStore.backgroundFluff }}</pre>
-      <pre v-if="show_raceFluff">{{ dataStore.raceFluff }}</pre>
-      <pre v-if="show_classes">{{ dataStore.classes }}</pre>
-      <pre v-if="show_eInvocations">{{ dataStore.eInvocations }}</pre>
-      <pre v-if="show_aInfusions">{{ dataStore.aInfusions }}</pre>
-      <pre v-if="show_subclasses">{{ dataStore.subclasses }}</pre>
+      <AllFeats :feats="dataStore.feats"></AllFeats>
     </div>
   </div>
 </template>
@@ -37,6 +40,10 @@
   import { onMounted, ref } from 'vue';
   import { useDataStore } from '../stores/dataStore';
   import Loading from '../components/Loading.vue';
+  import { useDebug } from '../composables/useDebug';
+  import AllFeats from '../components/AllFeats.vue';
+
+  const { debug, initDebug } = useDebug();
 
   const dataStore = useDataStore();
 
@@ -52,6 +59,7 @@
   const show_subclasses = ref(false);
 
   onMounted(async () => {
+    await initDebug();
     if (!dataStore.loaded) {
       try {
         await dataStore.init();
