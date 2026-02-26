@@ -7,7 +7,12 @@
     </div>
   </ul>
   <PopOut :title="featTitle" v-if="selectedFeat" :onClose="deselectFeat">
-    <p>me me me</p>
+    <div v-if="debug">
+      <pre>{{ JSON.stringify(selectedFeat, null, 2) }}</pre>
+    </div>
+    <div>
+      <SingleFeat :feat="selectedFeat" />
+    </div>
   </PopOut>
 </template>
 
@@ -15,27 +20,42 @@
   //   import router from '../router';
   import type { Feat } from '../types';
   import PopOut from './PopOut.vue';
-  import { computed, ref } from 'vue';
+  import { computed, onMounted, ref } from 'vue';
+  import { useDebug } from '../composables/useDebug';
+  import { useDataStore } from '../stores/dataStore';
+  import SingleFeat from './SingleFeat.vue';
+
+  const { debug, initDebug } = useDebug();
+  const dataStore = useDataStore();
 
   const { feats } = defineProps<{ feats: Feat[] }>();
   feats.sort((a, b) => a.name.localeCompare(b.name));
+  const selectedFeat = ref<Feat | null>(null);
 
-  const selectedFeat = ref<string | null>(null);
   const featTitle = computed(() => {
-    const feat = feats.find(f => queryParameterisedFeatName(f.name) === selectedFeat.value);
-    return feat ? feat.name : '';
+    return selectedFeat.value ? selectedFeat.value.name : '';
   });
 
   function selectFeat(feat: Feat) {
-    selectedFeat.value = queryParameterisedFeatName(feat.name);
+    selectedFeat.value = feat;
   }
 
   function deselectFeat() {
     selectedFeat.value = null;
   }
-  function queryParameterisedFeatName(name: string) {
-    return name.toLowerCase().replace(/\s+/g, '-');
-  }
+
+  onMounted(async () => {
+    await initDebug();
+    if (!dataStore.loaded) {
+      try {
+        await dataStore.init();
+      } catch (err) {
+        // keep this simple; devs can improve error handling/UI later
+        // eslint-disable-next-line no-console
+        console.error('Failed to load data store', err);
+      }
+    }
+  });
 </script>
 
 <style scoped>
@@ -47,10 +67,5 @@
 
   .feat-item:hover {
     background-color: #f0f0f0;
-  }
-
-  .p2 {
-    font-size: 0.75rem;
-    color: #666;
   }
 </style>

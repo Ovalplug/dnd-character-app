@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-//   import { defineEmits } from 'vue';
+  //   import { defineEmits } from 'vue';
   import closeIcon from '../assets/icons/close.svg';
 
   const props = defineProps<{
