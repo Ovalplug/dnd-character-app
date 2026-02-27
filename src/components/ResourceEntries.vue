@@ -31,14 +31,14 @@
         <EntryTable :table="entry" />
       </div>
 
-      <div v-else-if="entry.type === 'section'">
+      <div v-else-if="(entry as any).type === 'section'">
         <h4 v-if="(entry as any).title">{{ (entry as any).title }}</h4>
         <div v-if="(entry as any).entries && (entry as any).entries.length">
           <ResourceEntries :entries="(entry as any).entries" />
         </div>
       </div>
 
-      <div v-else-if="entry.type === 'entries'">
+      <div v-else-if="(entry as any).type === 'entries'">
         <h4 v-if="(entry as any).name">{{ (entry as any).name }}</h4>
         <div v-if="(entry as any).entries && (entry as any).entries.length">
           <ResourceEntries :entries="(entry as any).entries" />
