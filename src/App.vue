@@ -22,6 +22,6 @@
 
 <style>
   .app-container {
-    margin-left: 64px;
+    margin-left: 12%;
   }
 </style>

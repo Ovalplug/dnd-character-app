@@ -44,6 +44,9 @@
           <ResourceEntries :entries="(entry as any).entries" />
         </div>
       </div>
+      <div v-else-if="(entry as any).type === 'image'">
+        <!-- do nothing with images right now -->
+      </div>
 
       <!-- catch div for unaccounted for entry types -->
       <div v-else>

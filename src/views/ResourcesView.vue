@@ -7,19 +7,20 @@
     </div>
 
     <div v-else>
-      <div v-if="debug">
-        <button @click="showData('all')">All data</button>
-        <button @click="showData('feats')">Feats</button>
+        <div v-if="debug">
+            <button @click="showData('all')">All data</button>
+            <button @click="showData('backgroundFluff')">Background fluff</button>
+            <button @click="showData('subclasses')">Subclasses</button>
+            <button @click="showData('raceFluff')">Race fluff</button>
+            <button @click="showNoData">Hide all</button>
+        </div>
         <button @click="showData('races')">Races</button>
         <button @click="showData('backgrounds')">Backgrounds</button>
-        <button @click="showData('backgroundFluff')">Background fluff</button>
-        <button @click="showData('raceFluff')">Race fluff</button>
         <button @click="showData('classes')">Classes</button>
+        <button @click="showData('feats')">Feats</button>
         <button @click="showData('eInvocations')">Eldritch Invocations</button>
         <button @click="showData('aInfusions')">Artificer Infusions</button>
-        <button @click="showData('subclasses')">Subclasses</button>
-        <button @click="showNoData">Hide all</button>
-
+        <div v-if="debug">
         <pre v-if="show_rawDatasets">{{ dataStore.rawDatasets }}</pre>
         <pre v-if="show_feats">{{ dataStore.feats }}</pre>
         <pre v-if="show_races">{{ dataStore.races }}</pre>
@@ -31,7 +32,7 @@
         <pre v-if="show_aInfusions">{{ dataStore.aInfusions }}</pre>
         <pre v-if="show_subclasses">{{ dataStore.subclasses }}</pre>
       </div>
-      <AllFeats :feats="dataStore.feats"></AllFeats>
+      <AllFeats v-if="show_feats" :feats="dataStore.feats"></AllFeats>
     </div>
   </div>
 </template>
