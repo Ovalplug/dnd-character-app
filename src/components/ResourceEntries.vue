@@ -38,9 +38,17 @@
         </div>
       </div>
 
+      <div v-else-if="entry.type === 'entries'">
+        <h4 v-if="(entry as any).name">{{ (entry as any).name }}</h4>
+        <div v-if="(entry as any).entries && (entry as any).entries.length">
+          <ResourceEntries :entries="(entry as any).entries" />
+        </div>
+      </div>
+
       <!-- catch div for unaccounted for entry types -->
       <div v-else>
         <p>Unaccounted entry type: {{ (entry as any).type || 'unknown' }}</p>
+        <pre>{{ JSON.stringify(entry, null, 2) }}</pre>
       </div>
     </template>
   </div>

@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-  //   import { defineEmits } from 'vue';
+  import { onMounted, onBeforeUnmount } from 'vue';
   import closeIcon from '../assets/icons/close.svg';
 
   const props = defineProps<{
@@ -27,6 +27,48 @@
   const emit = defineEmits<{
     (e: 'close'): void;
   }>();
+
+  function lockScroll() {
+    const body = document.body;
+    const prev = parseInt(body.dataset.popoutCount || '0', 10);
+    const next = prev + 1;
+    body.dataset.popoutCount = String(next);
+
+    if (next === 1) {
+      const scrollY = window.scrollY || window.pageYOffset || 0;
+      body.dataset.popoutScrollY = String(scrollY);
+      body.style.position = 'fixed';
+      body.style.top = `-${scrollY}px`;
+      body.style.left = '0';
+      body.style.right = '0';
+      body.style.width = '100%';
+    }
+  }
+
+  function unlockScroll() {
+    const body = document.body;
+    const prev = parseInt(body.dataset.popoutCount || '0', 10);
+    const next = Math.max(0, prev - 1);
+    if (next > 0) {
+      body.dataset.popoutCount = String(next);
+      return;
+    }
+
+    // last popout closing — restore
+    body.dataset.popoutCount = '0';
+    const scrollY = parseInt(body.dataset.popoutScrollY || '0', 10) || 0;
+    body.style.position = '';
+    body.style.top = '';
+    body.style.left = '';
+    body.style.right = '';
+    body.style.width = '';
+    delete body.dataset.popoutScrollY;
+    delete body.dataset.popoutCount;
+    window.scrollTo(0, scrollY);
+  }
+
+  onMounted(lockScroll);
+  onBeforeUnmount(unlockScroll);
 
   function handleClose() {
     if (typeof props.onClose === 'function') props.onClose();

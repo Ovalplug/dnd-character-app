@@ -46,6 +46,8 @@ export type EntryTable = {
   head?: string[];
   rows: (string[] | Entry[])[];
   entries?: Entry[];
+  colStyles?: string[];
+  colLabels?: string[];
 };
 
 export type EntrySection = {
