@@ -44,6 +44,14 @@
           <ResourceEntries :entries="(entry as any).entries" />
         </div>
       </div>
+      <div v-else-if="(entry as any).type === 'inset'">
+        <div class="inset">
+          <strong v-if="(entry as any).name">{{ (entry as any).name }}</strong>
+          <div v-if="(entry as any).entries && (entry as any).entries.length">
+            <ResourceEntries :entries="(entry as any).entries" />
+          </div>
+        </div>
+      </div>
       <div v-else-if="(entry as any).type === 'image'">
         <!-- do nothing with images right now -->
       </div>

@@ -339,4 +339,12 @@ textarea:focus {
   padding: 1.6rem;
 }
 
+.inset {
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius);
+}
+
 /* End of global styles */

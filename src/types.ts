@@ -61,3 +61,46 @@ export type Entry = string | EntryItem | EntryList | EntryTable | EntrySection;
 export type Entries = Entry[];
 
 export type Feats = Feat[];
+
+export type Ability = Partial<Record<'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha', number>>;
+
+export type LanguageProficiency = Record<string, boolean | number>;
+
+export type SkillProficiencies = Record<string, boolean>;
+
+export type ImageHref = {
+  type: string;
+  path?: string;
+  href?: string;
+};
+
+export type Image = {
+  type: 'image';
+  href: ImageHref;
+  title?: string;
+};
+
+export type Race = {
+  name: string;
+  source?: string;
+  page?: number;
+  size?: string;
+  speed?: number;
+  ability?: Ability[] | Ability;
+  traitTags?: string[];
+  languageProficiencies?: LanguageProficiency[];
+  skillProficiencies?: SkillProficiencies[];
+  entries?: Entries;
+  images?: Image[];
+};
+
+export type Races = Race[];
+
+export type RaceFluff = {
+  name: string;
+  source?: string;
+  entries?: Entries;
+  images?: Image[];
+};
+
+export type RaceFluffs = RaceFluff[];
