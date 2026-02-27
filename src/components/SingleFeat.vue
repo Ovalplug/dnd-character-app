@@ -1,7 +1,7 @@
 <template>
   <div>
     <p>
-      Source: {{ props.feat.source }} <span class="p2">({{ props.feat.page }})</span>
+      Source: {{ props.feat.source }} <span class="p2">(page {{ props.feat.page }})</span>
     </p>
   </div>
   <div>
