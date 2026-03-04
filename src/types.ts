@@ -105,3 +105,8 @@ export type RaceFluff = {
 };
 
 export type RaceFluffs = RaceFluff[];
+
+export type Background = any; // Placeholder for future Background type definition
+export type Backgrounds = Background[];
+export type BackgroundFluff = any; // Placeholder for future BackgroundFluff type definition
+export type BackgroundFluffs = BackgroundFluff[];

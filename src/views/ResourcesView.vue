@@ -38,6 +38,11 @@
         :races="dataStore.races"
         :raceFluff="dataStore.raceFluff"
       ></AllRaces>
+      <AllBackgrounds
+        v-if="show_backgrounds"
+        :backgrounds="dataStore.backgrounds"
+        :background-fluffs="dataStore.backgroundFluff"
+      ></AllBackgrounds>
     </div>
   </div>
 </template>
@@ -49,6 +54,7 @@
   import { useDebug } from '../composables/useDebug';
   import AllFeats from '../components/AllFeats.vue';
   import AllRaces from '../components/AllRaces.vue';
+  import AllBackgrounds from '../components/AllBackgrounds.vue';
 
   const { debug, initDebug } = useDebug();
 
