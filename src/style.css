@@ -342,7 +342,7 @@ textarea:focus {
 .inset {
   align-items: center;
   gap: 0.4rem;
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 255, 255, 0.02) !important;
   padding: 0.25rem 0.6rem;
   border-radius: var(--radius);
 }

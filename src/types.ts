@@ -31,6 +31,7 @@ export type EntryItem = {
   type: 'item';
   name?: string;
   entries: Entry[];
+  entry?: Entry;
 };
 
 export type EntryList = {
