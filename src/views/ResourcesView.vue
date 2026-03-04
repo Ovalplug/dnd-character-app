@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>This is where all the resources stuff will go</h1>
+    <h1>Resources</h1>
 
     <div v-if="!dataStore.loaded">
       <Loading message="Loading resources..." :size="96" variant="bold"></Loading>
@@ -32,17 +32,14 @@
         <pre v-if="show_aInfusions">{{ dataStore.aInfusions }}</pre>
         <pre v-if="show_subclasses">{{ dataStore.subclasses }}</pre>
       </div>
-      <AllFeats v-if="show_feats" :feats="dataStore.feats"></AllFeats>
-      <AllRaces
-        v-if="show_races"
-        :races="dataStore.races"
-        :raceFluff="dataStore.raceFluff"
-      ></AllRaces>
+      <AllFeats v-if="show_feats" :feats="dataStore.feats" />
+      <AllRaces v-if="show_races" :races="dataStore.races" :raceFluff="dataStore.raceFluff" />
       <AllBackgrounds
         v-if="show_backgrounds"
         :backgrounds="dataStore.backgrounds"
         :background-fluffs="dataStore.backgroundFluff"
-      ></AllBackgrounds>
+      />
+      <AllInvocations v-if="show_eInvocations" :invocations="dataStore.eInvocations" />
     </div>
   </div>
 </template>
@@ -55,6 +52,7 @@
   import AllFeats from '../components/AllFeats.vue';
   import AllRaces from '../components/AllRaces.vue';
   import AllBackgrounds from '../components/AllBackgrounds.vue';
+  import AllInvocations from '../components/AllInvocations.vue';
 
   const { debug, initDebug } = useDebug();
 

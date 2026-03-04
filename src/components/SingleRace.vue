@@ -24,8 +24,8 @@
     fluff?: RaceFluff;
   }>();
 
-  const show_fluff = ref(false);
-  const show_base = ref(true);
+  const show_fluff = ref(true);
+  const show_base = ref(false);
   function showFluff() {
     show_fluff.value = true;
     show_base.value = false;

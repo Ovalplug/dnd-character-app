@@ -131,3 +131,14 @@ export type BackgroundFluff = {
   hasFluffImages?: boolean;
 } & Record<string, any>;
 export type BackgroundFluffs = BackgroundFluff[];
+
+export type Invocation = {
+  name: string;
+  source?: string;
+  page?: number;
+  // Entries or description field used by many resource objects
+  entries?: Entries;
+  desc?: string | Entries;
+  // allow other unknown fields from the source data
+} & Record<string, any>;
+export type Invocations = Invocation[];
