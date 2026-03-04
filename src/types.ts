@@ -106,7 +106,28 @@ export type RaceFluff = {
 
 export type RaceFluffs = RaceFluff[];
 
-export type Background = any; // Placeholder for future Background type definition
+export type Background = {
+  name: string;
+  source?: string;
+  page?: number;
+  entries?: Entries;
+  // Some JSON uses `desc` as string or array
+  desc?: string | Entries;
+  skillProficiencies?: string[] | SkillProficiencies;
+  languageProficiencies?: string[] | LanguageProficiency[] | LanguageProficiency;
+  toolProficiencies?: string[] | any[];
+  images?: Image[];
+  hasFluff?: boolean;
+  hasFluffImages?: boolean;
+  // allow other unknown fields from the source data
+} & Record<string, any>;
 export type Backgrounds = Background[];
-export type BackgroundFluff = any; // Placeholder for future BackgroundFluff type definition
+
+export type BackgroundFluff = {
+  name?: string;
+  source?: string;
+  entries?: Entries;
+  images?: Image[];
+  hasFluffImages?: boolean;
+} & Record<string, any>;
 export type BackgroundFluffs = BackgroundFluff[];

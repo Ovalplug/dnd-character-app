@@ -1,13 +1,13 @@
 <template>
   <div class="single-background">
     <h2>
-        {{ props.background.name }}<span class="p2"> ({{ props.background.source }})</span>
-      </h2>
+      {{ props.background.name }}<span class="p2"> ({{ props.background.source }})</span>
+    </h2>
 
     <div class="background-entries">
-        <button @click="showFluff">Fluff</button>
-        <button @click="showBase">Base</button>
-        <ResourceEntries :entries="entries" />
+      <button @click="showFluff">Fluff</button>
+      <button @click="showBase">Base</button>
+      <ResourceEntries :entries="entries" />
       <div v-if="entries.length === 0">
         <pre>{{ JSON.stringify(props.background, null, 2) }}</pre>
       </div>

@@ -44,13 +44,13 @@
 
   const selectedBackground = ref<Background | null>(null);
   const selectedBackgroundFluff = computed(() => {
-    if (!selectedBackground.value) return null;
+    if (!selectedBackground.value) return undefined;
     return (
       props.backgroundFluffs.find(
         fluff =>
           fluff.name === selectedBackground.value?.name &&
           fluff.source === selectedBackground.value?.source
-      ) || null
+      ) || undefined
     );
   });
 
