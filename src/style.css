@@ -2,16 +2,16 @@
   --max-width: 1200px;
   --radius: 12px;
   --gap: 1rem;
-
-  --color-bg: #0f1720;
-  --color-surface: #111319;
-  --color-muted: #98a0a6;
-  --color-primary: #8b5cf6;
-  --color-primary-600: #6c3ce6;
-  --color-accent: #f59e0b;
-  --color-danger: #ef4444;
-  --color-text: #e6eef6;
-  --color-card-shadow: 0 6px 18px rgba(2, 6, 23, 0.6);
+  /* Muted, parchment-inspired D&D palette */
+  --color-bg: #f4ecd8; /* parchment */
+  --color-surface: #efe6d0; /* panels */
+  --color-muted: #7a6b57; /* muted brown/ink */
+  --color-primary: #6b2e2e; /* deep burgundy */
+  --color-primary-600: #5a2727;
+  --color-accent: #c9a44b; /* warm gold */
+  --color-danger: #b73b3b; /* muted danger */
+  --color-text: #1f1b16; /* dark ink */
+  --color-card-shadow: 0 6px 18px rgba(31, 27, 22, 0.06);
 
   --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
 }
@@ -137,7 +137,7 @@ a:hover {
   background: linear-gradient(90deg, var(--color-primary), var(--color-primary-600));
   color: white;
   border: 1px solid rgba(0, 0, 0, 0.15);
-  box-shadow: 0 6px 14px rgba(35, 10, 80, 0.18);
+  box-shadow: 0 6px 14px rgba(107, 46, 46, 0.08);
 }
 .btn-ghost {
   background: transparent;
@@ -166,7 +166,7 @@ input:focus,
 select:focus,
 textarea:focus {
   outline: none;
-  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.12);
+  box-shadow: 0 0 0 4px rgba(201, 164, 75, 0.12);
   border-color: var(--color-primary);
 }
 
@@ -204,7 +204,7 @@ textarea:focus {
 .popout-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(2, 6, 23, 0.6);
+  background: rgba(16, 12, 8, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -218,7 +218,7 @@ textarea:focus {
   padding: 1rem;
   border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.03);
-  box-shadow: 0 20px 40px rgba(2, 6, 23, 0.6);
+  box-shadow: 0 20px 40px rgba(16, 12, 8, 0.45);
 }
 
 /* Loading spinner (for Loading.vue) */
@@ -313,20 +313,6 @@ textarea:focus {
     top: 0;
     padding: 0.6rem;
     border-radius: 10px;
-  }
-}
-
-/* Light theme support */
-@media (prefers-color-scheme: light) {
-  :root {
-    --color-bg: #f7fafc;
-    --color-surface: #ffffff;
-    --color-text: #121417;
-    --color-muted: #4a5568;
-    --color-card-shadow: 0 6px 20px rgba(15, 23, 32, 0.04);
-  }
-  a:hover {
-    color: var(--color-primary-600);
   }
 }
 
