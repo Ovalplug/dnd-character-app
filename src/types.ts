@@ -142,3 +142,15 @@ export type Invocation = {
   // allow other unknown fields from the source data
 } & Record<string, any>;
 export type Invocations = Invocation[];
+
+
+export type Prerequisite = {
+  type: string;
+  feat?: string;
+  spell?: string;
+  invocation?: string;
+  ability?: Partial<Record<'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha', number>>;
+  level?: number;
+};
+
+export type Prerequisites = Prerequisite[];

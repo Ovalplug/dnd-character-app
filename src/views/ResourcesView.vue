@@ -40,6 +40,7 @@
         :background-fluffs="dataStore.backgroundFluff"
       />
       <AllInvocations v-if="show_eInvocations" :invocations="dataStore.eInvocations" />
+      <AllInvocations v-if="show_aInfusions" :invocations="dataStore.aInfusions" />
     </div>
   </div>
 </template>
