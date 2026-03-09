@@ -6,7 +6,11 @@
       <span v-if="invocation.source">{{ invocation.source }}</span>
       <span v-if="invocation.page"> — p. {{ invocation.page }}</span>
     </p>
-    <Prerequisites class="invocation-meta" v-if="invocation.prerequisite" :prerequisites="invocation.prerequisite" />
+    <Prerequisites
+      class="invocation-meta"
+      v-if="invocation.prerequisite"
+      :prerequisites="invocation.prerequisite"
+    />
 
     <div v-if="hasDescString">
       <p>{{ invocation.desc }}</p>
@@ -26,7 +30,7 @@
   import { computed } from 'vue';
   import ResourceEntries from './ResourceEntries.vue';
   import type { Invocation } from '../types';
-import Prerequisites from './Prerequisites.vue';
+  import Prerequisites from './Prerequisites.vue';
 
   const props = defineProps<{
     invocation: Invocation;
