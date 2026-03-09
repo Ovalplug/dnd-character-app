@@ -7,7 +7,7 @@
         <div v-if="entry.entries && entry.entries.length">
           <ResourceEntries :entries="entry.entries" />
         </div>
-        <ul v-if="entry.items && entry.items.length">
+        <ul v-if="entry.items && entry.items.length" class="arrow-list">
           <li v-for="(item, k) in entry.items" :key="`item-${i}-${k}`">
             <div v-if="typeof item === 'string'">{{ item }}</div>
             <div v-else-if="item.type === 'item'">
