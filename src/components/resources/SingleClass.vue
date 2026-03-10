@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <select v-model="currSelectionString">
+  <div class="class-select-bar">
+    <select v-model="currSelectionString" class="class-select">
       <option v-for="option in classOptions" :key="option" :value="option">{{ option }}</option>
     </select>
   </div>
@@ -9,7 +9,7 @@
   </div>
   <div v-else>
     <div v-for="(table, i) in currSelection" :key="i">
-        <EntryTable :table="table" />
+      <EntryTable :table="table" />
     </div>
     <pre>{{ currSelection }}</pre>
   </div>
@@ -20,7 +20,7 @@
   import { useDataStore } from '../../stores/dataStore';
   import type { CharClass, Subclass } from '../../types';
   import ResourceEntries from './ResourceEntries.vue';
-    import EntryTable from './EntryTable.vue';
+  import EntryTable from './EntryTable.vue';
 
   const { initDebug } = useDebug();
   const dataStore = useDataStore();
@@ -73,3 +73,31 @@
     return returnArr.sort((a, b) => a.localeCompare(b));
   }
 </script>
+<style scoped>
+  .class-select-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem 0;
+  }
+
+  .class-select {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    color: #333;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .class-select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+  }
+
+  .class-select option {
+    padding: 0.5rem;
+  }
+</style>
