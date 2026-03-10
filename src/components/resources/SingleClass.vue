@@ -4,15 +4,14 @@
       <option v-for="option in classOptions" :key="option" :value="option">{{ option }}</option>
     </select>
   </div>
-  <div v-if="currSelection !== 'Tables'">
+  <div v-if="currSelectionString !== 'Tables'">
     <ResourceEntries :entries="currSelection" />
   </div>
   <div v-else>
-    <EntryTable
-      v-for="(tableGroup, i) in props.currClass.classTableGroups"
-      :key="i"
-      :table="tableGroup"
-    />
+    <div v-for="(table, i) in currSelection" :key="i">
+        <EntryTable :table="table" />
+    </div>
+    <pre>{{ currSelection }}</pre>
   </div>
 </template>
 <script lang="ts" setup>
@@ -21,7 +20,7 @@
   import { useDataStore } from '../../stores/dataStore';
   import type { CharClass, Subclass } from '../../types';
   import ResourceEntries from './ResourceEntries.vue';
-  import EntryTable from './EntryTable.vue';
+    import EntryTable from './EntryTable.vue';
 
   const { initDebug } = useDebug();
   const dataStore = useDataStore();

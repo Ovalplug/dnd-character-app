@@ -1,5 +1,6 @@
 <template>
   <section class="entry-table">
+    <div v-if="table.title" class="table-title">{{ table.title }}</div>
     <table>
       <caption v-if="table.caption">
         {{
@@ -46,6 +47,12 @@
   .entry-table table {
     width: 100%;
     border-collapse: collapse;
+  }
+  .table-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
   }
   .entry-table th,
   .entry-table td {
