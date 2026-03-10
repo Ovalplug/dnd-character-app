@@ -168,6 +168,11 @@ export type CharClass = {
   startingEquipment: string;
   classFeatures: any[];
   subclasses: Subclass[];
+  featureList: Record<string, any[]>;
+  spellcastingAbility?: string;
+  spellcastingProgression?: string;
+  additionalSpells?: any[];
+  fluff?: any;
 };
 
 export type Subclass = {

@@ -1,12 +1,27 @@
 <template>
-  <!-- <p v-for="item in classOptions" :key="item">{{ item }}</p> -->
-  <pre>{{ currSubclasses }}</pre>
+  <div>
+    <select v-model="currSelectionString">
+      <option v-for="option in classOptions" :key="option" :value="option">{{ option }}</option>
+    </select>
+  </div>
+  <div v-if="currSelection !== 'Tables'">
+    <ResourceEntries :entries="currSelection" />
+  </div>
+  <div v-else>
+    <EntryTable
+      v-for="(tableGroup, i) in props.currClass.classTableGroups"
+      :key="i"
+      :table="tableGroup"
+    />
+  </div>
 </template>
 <script lang="ts" setup>
-  import { onMounted } from 'vue';
+  import { computed, onMounted, ref } from 'vue';
   import { useDebug } from '../../composables/useDebug';
   import { useDataStore } from '../../stores/dataStore';
   import type { CharClass, Subclass } from '../../types';
+  import ResourceEntries from './ResourceEntries.vue';
+  import EntryTable from './EntryTable.vue';
 
   const { initDebug } = useDebug();
   const dataStore = useDataStore();
@@ -16,12 +31,25 @@
     currSubclasses: Subclass[] | null;
   }>();
 
-  //   const classOptions = [
-  //     'Info',
-  //     'Base',
-  //     'Tables',
-  //     ...(props.currSubclasses && props.currSubclasses.length ? ['Subclasses'] : []),
-  //   ];
+  const currSelectionString = ref('Info');
+  //computed currSelection
+  const currSelection = computed(() => {
+    const sel = currSelectionString.value;
+    if (sel === 'Info') {
+      return props.currClass.fluff || [];
+    } else if (sel === 'Base') {
+      return props.currClass.featureList || [];
+    } else if (sel === 'Tables') {
+      return props.currClass.classTableGroups || [];
+    } else {
+      // Subclass selection
+      if (!props.currSubclasses) return [];
+      const subclass = props.currSubclasses.find(sub => sub.name === sel);
+      return subclass && subclass.subclassFeatures ? subclass.subclassFeatures : [];
+    }
+  });
+
+  const classOptions = ['Info', 'Base', 'Tables', ...getSubclassNamesForClass()];
 
   onMounted(async () => {
     await initDebug();
@@ -35,4 +63,14 @@
       }
     }
   });
+
+  function getSubclassNamesForClass() {
+    let returnArr: any[] = [];
+    if (props.currSubclasses) {
+      returnArr = props.currSubclasses.map(sub => sub.name);
+    }
+
+    //return alphabetical list of subclass names
+    return returnArr.sort((a, b) => a.localeCompare(b));
+  }
 </script>
