@@ -100,7 +100,7 @@
 
 <script setup lang="ts">
   import EntryTable from './EntryTable.vue';
-  import type { Entries } from '../types';
+  import type { Entries } from '../../types';
   defineOptions({ name: 'ResourceEntries' });
   const props = defineProps<{
     entries: Entries;

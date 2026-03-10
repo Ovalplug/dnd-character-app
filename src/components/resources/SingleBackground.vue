@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-  import type { Background, BackgroundFluff } from '../types';
+  import type { Background, BackgroundFluff } from '../../types';
   import { computed, ref } from 'vue';
   import ResourceEntries from './ResourceEntries.vue';
 

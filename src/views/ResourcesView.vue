@@ -41,6 +41,11 @@
       />
       <AllInvocations v-if="show_eInvocations" :invocations="dataStore.eInvocations" />
       <AllInvocations v-if="show_aInfusions" :invocations="dataStore.aInfusions" />
+      <AllClasses
+        v-if="show_classes"
+        :classes="dataStore.classes"
+        :subclasses="dataStore.subclasses"
+      />
     </div>
   </div>
 </template>
@@ -48,12 +53,13 @@
 <script lang="ts" setup>
   import { onMounted, ref } from 'vue';
   import { useDataStore } from '../stores/dataStore';
-  import Loading from '../components/Loading.vue';
+  import Loading from '../components/resources/Loading.vue';
   import { useDebug } from '../composables/useDebug';
-  import AllFeats from '../components/AllFeats.vue';
-  import AllRaces from '../components/AllRaces.vue';
-  import AllBackgrounds from '../components/AllBackgrounds.vue';
-  import AllInvocations from '../components/AllInvocations.vue';
+  import AllFeats from '../components/resources/AllFeats.vue';
+  import AllRaces from '../components/resources/AllRaces.vue';
+  import AllBackgrounds from '../components/resources/AllBackgrounds.vue';
+  import AllInvocations from '../components/resources/AllInvocations.vue';
+  import AllClasses from '../components/resources/AllClasses.vue';
 
   const { debug, initDebug } = useDebug();
 

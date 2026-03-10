@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { Feat } from '../types';
+  import type { Feat } from '../../types';
   import ResourceEntries from './ResourceEntries.vue';
   import Prerequisites from './Prerequisites.vue';
   import { computed } from 'vue';

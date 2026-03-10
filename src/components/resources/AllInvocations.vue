@@ -28,10 +28,10 @@
 
 <script lang="ts" setup>
   import { computed, onMounted, ref } from 'vue';
-  import { useDataStore } from '../stores/dataStore';
-  import { useDebug } from '../composables/useDebug';
-  import type { Invocations } from '../types';
-  import PopOut from './PopOut.vue';
+  import { useDataStore } from '../../stores/dataStore';
+  import { useDebug } from '../../composables/useDebug';
+  import type { Invocations } from '../../types';
+  import PopOut from '../PopOut.vue';
   import SingleInvocation from './SingleInvocation.vue';
 
   const { debug, initDebug } = useDebug();

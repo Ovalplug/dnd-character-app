@@ -153,3 +153,33 @@ export type Prerequisite = {
 };
 
 export type Prerequisites = Prerequisite[];
+
+export type CharClass = {
+  name: string;
+  source: string;
+  hd: string;
+  proficiency: string;
+  classTableGroups: Array<{
+    colLabels: string[];
+    rows: (string | number)[][];
+    title?: string;
+  }>;
+  startingProficiencies: string;
+  startingEquipment: string;
+  classFeatures: any[];
+  subclasses: Subclass[];
+};
+
+export type Subclass = {
+  name: string;
+  shortName?: string;
+  source: string;
+  className: string;
+  classSource: string;
+  page?: number;
+  spellcastingAbility?: string;
+  additionalSpells?: any[];
+  subclassFeatures?: any[];
+};
+export type Classes = CharClass[];
+export type Subclasses = Record<string, Subclass[]>;

@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
   import { ref } from 'vue';
-  import type { Race, RaceFluff } from '../types';
+  import type { Race, RaceFluff } from '../../types';
   import ResourceEntries from './ResourceEntries.vue';
 
   const props = defineProps<{

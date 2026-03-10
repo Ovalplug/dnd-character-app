@@ -7,12 +7,110 @@ function aggregate(key: string) {
   return datasets.flatMap((src: any) => src[key] ?? []);
 }
 
-function aggregateSubclasses() {
-  const raw = datasets.flatMap((src: any) => src.subclasses ?? []);
-  // Some sources provide grouped subclasses like { name: 'Artificer', subclasses: [...] }
-  return raw.flatMap((entry: any) =>
-    Array.isArray(entry.subclasses) ? entry.subclasses : [entry]
-  );
+function aggregateSubclasses(datasets: any[]) {
+  const artificerSubs: any[] = [];
+  const barbarianSubs: any[] = [];
+  const bardSubs: any[] = [];
+  const clericSubs: any[] = [];
+  const druidSubs: any[] = [];
+  const fighterSubs: any[] = [];
+  const monkSubs: any[] = [];
+  const paladinSubs: any[] = [];
+  const rangerSubs: any[] = [];
+  const rogueSubs: any[] = [];
+  const sorcererSubs: any[] = [];
+  const warlockSubs: any[] = [];
+  const wizardSubs: any[] = [];
+  datasets.forEach(data => {
+    if (data.subclasses && Array.isArray(data.subclasses) && data.subclasses.length > 0) {
+      data.subclasses.forEach((sub: any) => {
+        switch (sub.name) {
+          case 'Artificer':
+            sub.subclasses.forEach((innersub: any) => {
+              artificerSubs.push(innersub);
+            });
+            break;
+          case 'Barbarian':
+            sub.subclasses.forEach((innersub: any) => {
+              barbarianSubs.push(innersub);
+            });
+            break;
+          case 'Bard':
+            sub.subclasses.forEach((innersub: any) => {
+              bardSubs.push(innersub);
+            });
+            break;
+          case 'Cleric':
+            sub.subclasses.forEach((innersub: any) => {
+              clericSubs.push(innersub);
+            });
+            break;
+          case 'Druid':
+            sub.subclasses.forEach((innersub: any) => {
+              druidSubs.push(innersub);
+            });
+            break;
+          case 'Fighter':
+            sub.subclasses.forEach((innersub: any) => {
+              fighterSubs.push(innersub);
+            });
+            break;
+          case 'Monk':
+            sub.subclasses.forEach((innersub: any) => {
+              monkSubs.push(innersub);
+            });
+            break;
+          case 'Paladin':
+            sub.subclasses.forEach((innersub: any) => {
+              paladinSubs.push(innersub);
+            });
+            break;
+          case 'Ranger':
+            sub.subclasses.forEach((innersub: any) => {
+              rangerSubs.push(innersub);
+            });
+            break;
+          case 'Rogue':
+            sub.subclasses.forEach((innersub: any) => {
+              rogueSubs.push(innersub);
+            });
+            break;
+          case 'Sorcerer':
+            sub.subclasses.forEach((innersub: any) => {
+              sorcererSubs.push(innersub);
+            });
+            break;
+          case 'Warlock':
+            sub.subclasses.forEach((innersub: any) => {
+              warlockSubs.push(innersub);
+            });
+            break;
+          case 'Wizard':
+            sub.subclasses.forEach((innersub: any) => {
+              wizardSubs.push(innersub);
+            });
+            break;
+          default:
+            console.warn(`Unknown className '${sub.className}' in subclass '${sub.name}'`);
+        }
+      });
+    }
+  });
+  return {
+    Artificer: artificerSubs,
+    Barbarian: barbarianSubs,
+    Bard: bardSubs,
+    Cleric: clericSubs,
+    Druid: druidSubs,
+    Fighter: fighterSubs,
+    Monk: monkSubs,
+    Paladin: paladinSubs,
+    Ranger: rangerSubs,
+    Rogue: rogueSubs,
+    Sorcerer: sorcererSubs,
+    Warlock: warlockSubs,
+    Wizard: wizardSubs,
+  };
 }
 
 export const useDataStore = defineStore('data', {
@@ -26,7 +124,7 @@ export const useDataStore = defineStore('data', {
     backgroundFluff: [] as any[],
     raceFluff: [] as any[],
     classes: [] as any[],
-    subclasses: [] as any[],
+    subclasses: {} as Record<string, any[]>,
     eInvocations: [] as any[],
     aInfusions: [] as any[],
   }),
@@ -57,7 +155,7 @@ export const useDataStore = defineStore('data', {
       this.classes = aggregate('classes');
       this.eInvocations = aggregate('eInvocations');
       this.aInfusions = aggregate('aInfusions');
-      this.subclasses = aggregateSubclasses();
+      this.subclasses = aggregateSubclasses(allData);
       this.loaded = true;
     },
 

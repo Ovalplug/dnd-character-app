@@ -18,11 +18,11 @@
 
 <script lang="ts" setup>
   //   import router from '../router';
-  import type { Feat } from '../types';
-  import PopOut from './PopOut.vue';
+  import type { Feat } from '../../types';
+  import PopOut from '../PopOut.vue';
   import { computed, onMounted, ref } from 'vue';
-  import { useDebug } from '../composables/useDebug';
-  import { useDataStore } from '../stores/dataStore';
+  import { useDebug } from '../../composables/useDebug';
+  import { useDataStore } from '../../stores/dataStore';
   import SingleFeat from './SingleFeat.vue';
 
   const { debug, initDebug } = useDebug();

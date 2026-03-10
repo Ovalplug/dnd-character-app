@@ -14,7 +14,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import type { Prerequisites } from '../types';
+  import type { Prerequisites } from '../../types';
   import { computed } from 'vue';
 
   const props = defineProps<{

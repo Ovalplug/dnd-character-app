@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { EntryTable } from '../types';
+  import type { EntryTable } from '../../types';
   defineOptions({ name: 'EntryTable' });
 
   const props = defineProps<{ table: EntryTable }>();

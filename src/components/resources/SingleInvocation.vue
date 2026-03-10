@@ -29,7 +29,7 @@
 <script lang="ts" setup>
   import { computed } from 'vue';
   import ResourceEntries from './ResourceEntries.vue';
-  import type { Invocation } from '../types';
+  import type { Invocation } from '../../types';
   import Prerequisites from './Prerequisites.vue';
 
   const props = defineProps<{
