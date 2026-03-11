@@ -8,6 +8,7 @@
     <ResourceEntries :entries="currSelection" />
   </div>
   <div v-else>
+    <FeatureTable />
     <div v-for="(table, i) in currSelection" :key="i">
       <EntryTable :table="table" />
     </div>
@@ -20,6 +21,7 @@
   import type { CharClass, Subclass } from '../../types';
   import ResourceEntries from './ResourceEntries.vue';
   import EntryTable from './EntryTable.vue';
+  import FeatureTable from './FeatureTable.vue';
 
   const { initDebug } = useDebug();
   const dataStore = useDataStore();

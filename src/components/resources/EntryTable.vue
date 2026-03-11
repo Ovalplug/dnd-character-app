@@ -83,6 +83,16 @@
         .join(', ');
     }
 
+    // If cell is an object with type 'bonusSpeed' and a value property
+    if (
+      cell &&
+      typeof cell === 'object' &&
+      cell.type === 'bonusSpeed' &&
+      cell.value !== undefined
+    ) {
+      return `+${cell.value}ft`;
+    }
+
     // Fallback: try to JSON.stringify or empty string
     return typeof cell === 'object' ? JSON.stringify(cell) : '';
   }
