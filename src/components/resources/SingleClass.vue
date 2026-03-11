@@ -11,7 +11,6 @@
     <div v-for="(table, i) in currSelection" :key="i">
       <EntryTable :table="table" />
     </div>
-    <pre>{{ currSelection }}</pre>
   </div>
 </template>
 <script lang="ts" setup>

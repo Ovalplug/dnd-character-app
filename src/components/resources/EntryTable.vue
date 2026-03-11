@@ -1,23 +1,27 @@
 <template>
   <section class="entry-table">
-    <div v-if="table.title" class="table-title">{{ table.title }}</div>
+    <div v-if="processedTable.title" class="table-title">{{ processedTable.title }}</div>
     <table>
-      <caption v-if="table.caption">
+      <caption v-if="processedTable.caption">
         {{
-          table.caption
+          processedTable.caption
         }}
       </caption>
 
       <thead v-if="hasColLabels">
         <tr>
-          <th v-for="(label, ci) in table.colLabels" :key="`h-${ci}`" :class="colClass(ci)">
+          <th
+            v-for="(label, ci) in processedTable.colLabels"
+            :key="`h-${ci}`"
+            :class="colClass(ci)"
+          >
             <span v-html="label"></span>
           </th>
         </tr>
       </thead>
 
       <tbody>
-        <tr v-for="(row, ri) in table.rows" :key="`r-${ri}`">
+        <tr v-for="(row, ri) in processedTable.rows" :key="`r-${ri}`">
           <td v-for="(cell, ci) in row" :key="`c-${ri}-${ci}`" :class="colClass(ci)">
             <span v-html="renderCell(cell)"></span>
           </td>
@@ -28,6 +32,7 @@
 </template>
 
 <script setup lang="ts">
+  import { computed } from 'vue';
   import type { EntryTable } from '../../types';
   defineOptions({ name: 'EntryTable' });
 
@@ -47,6 +52,7 @@
     if (typeof cell === 'string' || typeof cell === 'number') {
       return String(cell);
     }
+
     // If cell is an object with type 'cell' and a roll property
     if (cell && typeof cell === 'object' && cell.type === 'cell' && cell.roll) {
       // Support for exact roll, range, etc. For now, just show exact
@@ -64,9 +70,38 @@
         return String(cell.roll.max);
       }
     }
+
+    // If cell is an object with type 'bonus' and a value property
+    if (cell && typeof cell === 'object' && cell.type === 'bonus' && cell.value !== undefined) {
+      return `+${cell.value}`;
+    }
+
+    // If cell is an object with type 'dice' and a toRoll array
+    if (cell && typeof cell === 'object' && cell.type === 'dice' && Array.isArray(cell.toRoll)) {
+      return cell.toRoll
+        .map((roll: { number: number; faces: number }) => `${roll.number}d${roll.faces}`)
+        .join(', ');
+    }
+
     // Fallback: try to JSON.stringify or empty string
     return typeof cell === 'object' ? JSON.stringify(cell) : '';
   }
+
+  const processedTable = computed(() => {
+    // Clone the table to avoid mutating the original data
+    const newTable = { ...table, rows: [...table.rows] };
+
+    // Ensure colLabels exists and check if there is only one column or if 'haveLevels' is true
+    if (table.colLabels && (table.colLabels.length === 1 || table.haveLevels)) {
+      // Add a "Levels" column label
+      newTable.colLabels = ['Level', ...table.colLabels];
+
+      // Add levels 1 to 20 as the first column in each row
+      newTable.rows = table.rows.map((row, index) => [String(index + 1), ...row]);
+    }
+
+    return newTable;
+  });
 </script>
 
 <style scoped>

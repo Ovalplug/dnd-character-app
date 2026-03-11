@@ -50,6 +50,7 @@ export type EntryTable = {
   colStyles?: string[];
   colLabels?: string[];
   title?: string;
+  haveLevels?: boolean;
 };
 
 export type EntrySection = {

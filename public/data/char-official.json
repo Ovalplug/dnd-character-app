@@ -12142,6 +12142,7 @@
         "proficiency": "Constitution, Inteligence",
         "classTableGroups": [
           {
+            "haveLevels": true,
             "colLabels": ["Infusions Known", "Infused Items", "Cantrips Known"],
             "rows": [
               [0, 0, 2],
@@ -12169,6 +12170,7 @@
           {
             "title": "Spell Slots per Spell Level",
             "colLabels": ["1st", "2nd", "3rd", "4th", "5th"],
+            "haveLevels": true,
             "rows": [
               [2, 0, 0, 0, 0],
               [2, 0, 0, 0, 0],
@@ -25735,6 +25737,7 @@
         "proficiency": "Strength, Constitution",
         "classTableGroups": [
           {
+            "haveLevels": true,
             "colLabels": ["Rages", "Rage Damage"],
             "rows": [
               [
@@ -26558,6 +26561,7 @@
         "proficiency": "Dexterity, Charisma",
         "classTableGroups": [
           {
+            "haveLevels": true,
             "colLabels": ["Cantrips Known", "Spells Known"],
             "rows": [
               [2, 4],
@@ -26585,6 +26589,7 @@
           {
             "title": "Spell Slots per Spell Level",
             "colLabels": ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th"],
+            "haveLevels": true,
             "rows": [
               [2, 0, 0, 0, 0, 0, 0, 0, 0],
               [3, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -27443,6 +27448,7 @@
         "proficiency": "Wisdom, Charisma",
         "classTableGroups": [
           {
+            "haveLevels": true,
             "colLabels": ["Cantrips Known"],
             "rows": [
               [3],
@@ -27470,6 +27476,7 @@
           {
             "title": "Spell Slots per Spell Level",
             "colLabels": ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th"],
+            "haveLevels": true,
             "rows": [
               [2, 0, 0, 0, 0, 0, 0, 0, 0],
               [3, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -28249,6 +28256,7 @@
         "proficiency": "Intelligence, Wisdom",
         "classTableGroups": [
           {
+            "haveLevels": true,
             "colLabels": ["Cantrips Known"],
             "rows": [
               [2],
@@ -28276,6 +28284,7 @@
           {
             "title": "Spell Slots per Spell Level",
             "colLabels": ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th"],
+            "haveLevels": true,
             "rows": [
               [2, 0, 0, 0, 0, 0, 0, 0, 0],
               [3, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -31111,6 +31120,7 @@
           {
             "title": "Spell Slots per Spell Level",
             "colLabels": ["1st", "2nd", "3rd", "4th", "5th"],
+            "haveLevels": true,
             "rows": [
               [0, 0, 0, 0, 0],
               [2, 0, 0, 0, 0],
@@ -32038,6 +32048,7 @@
           {
             "title": "Spell Slots per Spell Level",
             "colLabels": ["1st", "2nd", "3rd", "4th", "5th"],
+            "haveLevels": true,
             "rows": [
               [0, 0, 0, 0, 0],
               [2, 0, 0, 0, 0],
@@ -33859,6 +33870,7 @@
             ]
           },
           {
+            "haveLevels": true,
             "colLabels": ["Cantrips Known", "Spells Known"],
             "rows": [
               [4, 2],
@@ -33886,6 +33898,7 @@
           {
             "title": "Spell Slots per Spell Level",
             "colLabels": ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th"],
+            "haveLevels": true,
             "rows": [
               [2, 0, 0, 0, 0, 0, 0, 0, 0],
               [3, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -34776,6 +34789,7 @@
         "proficiency": "Wisdom, Charisma",
         "classTableGroups": [
           {
+            "haveLevels": true,
             "colLabels": ["Cantrips Known", "Spells Known"],
             "rows": [
               [2, 2],
@@ -35509,6 +35523,7 @@
         "proficiency": "Intelligence, Wisdom",
         "classTableGroups": [
           {
+            "haveLevels": true,
             "colLabels": ["Cantrips Known"],
             "rows": [
               [3],
@@ -35536,6 +35551,7 @@
           {
             "title": "Spell Slots per Spell Level",
             "colLabels": ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th"],
+            "haveLevels": true,
             "rows": [
               [2, 0, 0, 0, 0, 0, 0, 0, 0],
               [3, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -48903,6 +48919,7 @@
                     "source": "PHB"
                   }
                 ],
+                "haveLevels": true,
                 "colLabels": ["Cantrips Known", "Spells Known"],
                 "rows": [
                   [0, 0],
@@ -48936,6 +48953,7 @@
                   }
                 ],
                 "colLabels": ["1st", " 2nd", "3rd", "4th"],
+                "haveLevels": true,
                 "rows": [
                   [0, 0, 0, 0],
                   [0, 0, 0, 0],
@@ -50843,6 +50861,7 @@
                     "source": "PHB"
                   }
                 ],
+                "haveLevels": true,
                 "colLabels": ["Cantrips Known", "Spells Known"],
                 "rows": [
                   [0, 0],
@@ -50875,6 +50894,7 @@
                     "source": "PHB"
                   }
                 ],
+                "haveLevels": true,
                 "colLabels": ["1st", "2nd", "3rd", "4th"],
                 "rows": [
                   [0, 0, 0, 0],
