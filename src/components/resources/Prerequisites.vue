@@ -44,10 +44,12 @@
           (prereq as { type?: string }).type === 'prereqLevel' &&
           'level' in prereq
         ) {
-          if (cls.name && prereq.level) {
-            classReqs.push(`${cls.name} (Level ${prereq.level})`);
+          const level = (prereq as { level?: number }).level;
+          if (level) {
+            classReqs.push(`Level ${level}`);
             return;
           }
+          otherReqs.push('Level requirement');
         }
         if (cls.name && cls.level) {
           classReqs.push(`${cls.name} (Level ${cls.level})`);
@@ -55,6 +57,77 @@
           classReqs.push(cls.name);
         } else {
           classReqs.push('Class requirement');
+        }
+        return;
+      }
+      //Handle ability score requirements
+      if (
+        typeof prereq === 'object' &&
+        prereq !== null &&
+        'ability' in prereq &&
+        Array.isArray(prereq.ability)
+      ) {
+        const abilities = prereq.ability
+          .map((ability: Record<string, number>) => {
+            const [key, value] = Object.entries(ability)[0] || [];
+            if (key && value) {
+              return `${key.charAt(0).toUpperCase() + key.slice(1)} ${value}`;
+            }
+            return null;
+          })
+          .filter(Boolean);
+
+        if (abilities.length) {
+          otherReqs.push(abilities.join(', '));
+        } else {
+          otherReqs.push('Ability score requirement');
+        }
+        return;
+      }
+      // Handle race requirements
+      if (
+        typeof prereq === 'object' &&
+        prereq !== null &&
+        'race' in prereq &&
+        Array.isArray(prereq.race)
+      ) {
+        const races = prereq.race.map((race: { name?: string }) => race.name).filter(Boolean);
+        if (races.length) {
+          otherReqs.push(`Race: ${races.join(', ')}`);
+        } else {
+          otherReqs.push('Race requirement');
+        }
+        return;
+      }
+      // Handle pact requirements
+      if (
+        typeof prereq === 'object' &&
+        prereq !== null &&
+        'type' in prereq &&
+        (prereq as { type?: string }).type === 'prereqPact' &&
+        'entry' in prereq
+      ) {
+        const pactEntry = (prereq as { entry?: string }).entry;
+        if (pactEntry) {
+          otherReqs.push(`Pact of the ${pactEntry}`);
+        } else {
+          otherReqs.push('Pact requirement');
+        }
+        return;
+      }
+      // Handle level requirements without class
+      if (
+        typeof prereq === 'object' &&
+        prereq !== null &&
+        'type' in prereq &&
+        (prereq as { type?: string }).type === 'prereqLevel' &&
+        'level' in prereq
+      ) {
+        const level = (prereq as { level?: number }).level;
+        if (level) {
+          otherReqs.push(`Level ${level}`);
+        } else {
+          otherReqs.push('Level requirement');
         }
         return;
       }
