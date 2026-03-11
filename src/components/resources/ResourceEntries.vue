@@ -88,6 +88,11 @@
           <ResourceEntries :entries="(entry as any).entries" />
         </div>
       </div>
+      <div
+        v-else-if="(entry as any).type === 'abilityDc' && (entry as any).name && (entry as any).attributes"
+      >
+        <SaveDC :saver="entry as any" />
+      </div>
 
       <!-- catch div for unaccounted for entry types -->
       <div v-else>
@@ -100,6 +105,7 @@
 
 <script setup lang="ts">
   import EntryTable from './EntryTable.vue';
+  import SaveDC from './SaveDC.vue';
   import type { Entries } from '../../types';
   defineOptions({ name: 'ResourceEntries' });
   const props = defineProps<{
