@@ -20,6 +20,7 @@
       <button @click="showData('feats')">Feats</button>
       <button @click="showData('eInvocations')">Eldritch Invocations</button>
       <button @click="showData('aInfusions')">Artificer Infusions</button>
+      <button @click="showData('spells')">Spells</button>
       <div v-if="debug">
         <pre v-if="show_rawDatasets">{{ dataStore.rawDatasets }}</pre>
         <pre v-if="show_feats">{{ dataStore.feats }}</pre>
@@ -46,6 +47,7 @@
         :classes="dataStore.classes"
         :subclasses="dataStore.subclasses"
       />
+      <AllSpells v-if="show_spells" :spells="dataStore.spells" />
     </div>
   </div>
 </template>
@@ -60,6 +62,7 @@
   import AllBackgrounds from '../components/resources/AllBackgrounds.vue';
   import AllInvocations from '../components/resources/AllInvocations.vue';
   import AllClasses from '../components/resources/AllClasses.vue';
+  import AllSpells from '../components/resources/AllSpells.vue';
 
   const { debug, initDebug } = useDebug();
 
@@ -75,6 +78,7 @@
   const show_eInvocations = ref(false);
   const show_aInfusions = ref(false);
   const show_subclasses = ref(false);
+  const show_spells = ref(false);
 
   onMounted(async () => {
     await initDebug();
@@ -100,6 +104,7 @@
     show_eInvocations.value = false;
     show_aInfusions.value = false;
     show_subclasses.value = false;
+    show_spells.value = false;
   }
 
   function showData(dataType: string) {
@@ -143,6 +148,10 @@
       case 'subclasses':
         showNoData();
         show_subclasses.value = true;
+        break;
+      case 'spells':
+        showNoData();
+        show_spells.value = true;
         break;
       default:
         showNoData();

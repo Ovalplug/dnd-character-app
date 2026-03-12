@@ -190,3 +190,6 @@ export type Subclass = {
 };
 export type Classes = CharClass[];
 export type Subclasses = Record<string, Subclass[]>;
+
+export type Spell = any;
+export type Spells = Spell[];

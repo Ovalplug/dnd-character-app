@@ -321,6 +321,25 @@ textarea:focus {
   font-size: 0.9rem;
   color: var(--color-muted);
 }
+.p3 {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+.feat-item {
+  cursor: pointer;
+  padding: 0.5rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.feat-item:hover {
+  background-color: #f0f0f0;
+}
+
+.spell_p3 {
+  font-size: 0.65rem;
+  color: var(--color-muted);
+  margin: 0;
+}
 .card.large {
   padding: 1.6rem;
 }

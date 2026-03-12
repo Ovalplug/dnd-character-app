@@ -113,6 +113,18 @@ function aggregateSubclasses(datasets: any[]) {
   };
 }
 
+function aggregateSpells(datasets: any[]) {
+  const spells: any[] = [];
+  datasets.forEach(data => {
+    if (data.spells && Array.isArray(data.spells) && data.spells.length > 0) {
+      data.spells.forEach((spell: any) => {
+        spells.push(spell);
+      });
+    }
+  });
+  return spells;
+}
+
 export const useDataStore = defineStore('data', {
   state: () => ({
     loaded: false as boolean,
@@ -127,12 +139,13 @@ export const useDataStore = defineStore('data', {
     subclasses: {} as Record<string, any[]>,
     eInvocations: [] as any[],
     aInfusions: [] as any[],
+    spells: [] as any[],
   }),
 
   actions: {
     async init() {
       // Load heavy JSON files from public/ at runtime so they are not bundled
-      const [official, ua] = await Promise.all([
+      const [official, ua, spells] = await Promise.all([
         fetch('/data/char-official.json').then(r => {
           if (!r.ok) throw new Error('Failed to fetch char-official.json');
           return r.json();
@@ -141,9 +154,14 @@ export const useDataStore = defineStore('data', {
           if (!r.ok) throw new Error('Failed to fetch char-ua.json');
           return r.json();
         }),
+        fetch('/data/spells-full.json').then(r => {
+          if (!r.ok) throw new Error('Failed to fetch spells-full.json');
+          return r.json();
+        }),
       ]);
 
-      datasets = [...official, ...ua];
+      const [officialData, uaData, spellsData] = [official, ua, spells];
+      datasets = [...officialData, ...uaData];
       allData = datasets;
 
       this.rawDatasets = datasets;
@@ -156,6 +174,7 @@ export const useDataStore = defineStore('data', {
       this.eInvocations = aggregate('eInvocations');
       this.aInfusions = aggregate('aInfusions');
       this.subclasses = aggregateSubclasses(allData);
+      this.spells = aggregateSpells(spellsData);
       this.loaded = true;
     },
 
