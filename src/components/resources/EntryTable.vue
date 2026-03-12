@@ -1,33 +1,35 @@
 <template>
   <section class="entry-table">
     <div v-if="processedTable.title" class="table-title">{{ processedTable.title }}</div>
-    <table>
-      <caption v-if="processedTable.caption">
-        {{
-          processedTable.caption
-        }}
-      </caption>
+    <div class="table-scroll">
+      <table>
+        <caption v-if="processedTable.caption">
+          {{
+            processedTable.caption
+          }}
+        </caption>
 
-      <thead v-if="hasColLabels">
-        <tr>
-          <th
-            v-for="(label, ci) in processedTable.colLabels"
-            :key="`h-${ci}`"
-            :class="colClass(ci)"
-          >
-            <span v-html="label"></span>
-          </th>
-        </tr>
-      </thead>
+        <thead v-if="hasColLabels">
+          <tr>
+            <th
+              v-for="(label, ci) in processedTable.colLabels"
+              :key="`h-${ci}`"
+              :class="colClass(ci)"
+            >
+              <span v-html="label"></span>
+            </th>
+          </tr>
+        </thead>
 
-      <tbody>
-        <tr v-for="(row, ri) in processedTable.rows" :key="`r-${ri}`">
-          <td v-for="(cell, ci) in row" :key="`c-${ri}-${ci}`" :class="colClass(ci)">
-            <span v-html="renderCell(cell)"></span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+        <tbody>
+          <tr v-for="(row, ri) in processedTable.rows" :key="`r-${ri}`">
+            <td v-for="(cell, ci) in row" :key="`c-${ri}-${ci}`" :class="colClass(ci)">
+              <span v-html="renderCell(cell)"></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 </template>
 
@@ -115,26 +117,43 @@
 </script>
 
 <style scoped>
+  .table-scroll {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
   .entry-table table {
     width: 100%;
     border-collapse: collapse;
+    font-size: 0.92rem;
   }
   .table-title {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: bold;
-    margin-bottom: 0.5rem;
-    margin-top: 0.5rem;
+    margin-bottom: 0.3rem;
+    margin-top: 0.3rem;
+  }
+  .entry-table th {
+    background: #e0e0e0;
+    color: #222;
+    font-weight: 600;
+  }
+  .entry-table tbody tr:nth-child(even) {
+    background: #f7f7f7;
   }
   .entry-table th,
   .entry-table td {
-    padding: 0.35rem 0.5rem;
+    padding: 0.18rem 0.28rem;
     border: 1px solid var(--table-border, #ddd);
     vertical-align: top;
+    font-size: 0.92rem;
+    line-height: 1.2;
   }
   .entry-table caption {
     caption-side: top;
     text-align: left;
     font-weight: 600;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3rem;
+    font-size: 0.95rem;
   }
 </style>
