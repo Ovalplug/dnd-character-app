@@ -88,9 +88,7 @@
           <ResourceEntries :entries="(entry as any).entries" />
         </div>
       </div>
-      <div
-        v-else-if="(entry as any).type === 'abilityDc' && (entry as any).name && (entry as any).attributes"
-      >
+      <div v-else-if="needSaveDc(entry) && (entry as any).name && (entry as any).attributes">
         <SaveDC :saver="entry as any" />
       </div>
 
@@ -111,6 +109,10 @@
   const props = defineProps<{
     entries: Entries;
   }>();
+
+  function needSaveDc(entry: any): boolean {
+    return (entry as any).type === 'abilityDc' || (entry as any).type === 'abilityAttackMod';
+  }
 </script>
 
 <style scoped>

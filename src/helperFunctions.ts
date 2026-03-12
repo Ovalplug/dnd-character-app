@@ -16,3 +16,11 @@ export function getPrettyAbilityName(shorthand: string): string {
       return shorthand;
   }
 }
+
+export function calculateDc(proficiency: number, modifier: number): number {
+  return 8 + proficiency + modifier;
+}
+
+export function calculateAttackModifier(proficiency: number, modifier: number): number {
+  return proficiency + modifier;
+}
