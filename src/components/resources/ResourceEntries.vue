@@ -91,6 +91,23 @@
       <div v-else-if="needSaveDc(entry) && (entry as any).name && (entry as any).attributes">
         <SaveDC :saver="entry as any" />
       </div>
+      <div v-else-if="(entry as any).type === 'options'">
+        <div class="options-block">
+          <p v-if="(entry as any).count">Choose {{ (entry as any).count }}:</p>
+          <ul>
+            <li v-for="(option, optIdx) in (entry as any).entries" :key="`option-${i}-${optIdx}`">
+              <strong v-if="option.name">{{ option.name }}</strong>
+              <span v-if="option.source">
+                (<small>{{ option.source }}</small
+                >)</span
+              >
+              <div v-if="option.entries && option.entries.length">
+                <ResourceEntries :entries="option.entries" />
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
 
       <!-- catch div for unaccounted for entry types -->
       <div v-else>
