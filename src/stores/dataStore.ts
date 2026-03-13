@@ -118,7 +118,11 @@ function aggregateSpells(datasets: any[]) {
   datasets.forEach(data => {
     if (data.spells && Array.isArray(data.spells) && data.spells.length > 0) {
       data.spells.forEach((spell: any) => {
-        spells.push(spell);
+        // Ignore spells whose source contains a number
+        const source = spell.source || spell.cource;
+        if (typeof source === 'string' && !/\d/.test(source)) {
+          spells.push(spell);
+        }
       });
     }
   });
