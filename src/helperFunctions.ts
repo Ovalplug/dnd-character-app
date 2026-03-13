@@ -1,3 +1,5 @@
+import type { SpellClass, SpellClasses, Spells, SpellSchools } from './types';
+
 export function getPrettyAbilityName(shorthand: string): string {
   switch (shorthand) {
     case 'int':
@@ -64,4 +66,32 @@ export function calculateDc(proficiency: number, modifier: number): number {
 
 export function calculateAttackModifier(proficiency: number, modifier: number): number {
   return proficiency + modifier;
+}
+
+export function getRefinedSpellsList(
+  spells: Spells,
+  schools: SpellSchools[],
+  levels: number[],
+  classes: SpellClasses,
+  orderBy: 'name' | 'level' = 'name',
+  searchVal?: string
+): Spells {
+  let refinedSpells = spells.filter(spell => {
+    const matchesSchool = schools.length === 0 || schools.includes(spell.school);
+    const matchesLevel = levels.length === 0 || levels.includes(spell.level);
+    const matchesClass =
+      classes.length === 0 ||
+      (spell.classes?.fromClassList ?? []).some((c: { name: string }) =>
+        classes.includes(c.name.toLowerCase() as SpellClass)
+      );
+    const matchesSearch = !searchVal || spell.name.toLowerCase().includes(searchVal.toLowerCase());
+    return matchesSchool && matchesLevel && matchesClass && matchesSearch;
+  });
+
+  if (orderBy === 'name') {
+    refinedSpells.sort((a, b) => a.name.localeCompare(b.name));
+  } else if (orderBy === 'level') {
+    refinedSpells.sort((a, b) => a.level - b.level);
+  }
+  return refinedSpells;
 }

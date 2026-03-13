@@ -191,5 +191,39 @@ export type Subclass = {
 export type Classes = CharClass[];
 export type Subclasses = Record<string, Subclass[]>;
 
-export type Spell = any;
+export type SpellSchools = 'a' | 'c' | 'd' | 'e' | 'v' | 'i' | 'n' | 't';
+
+export type SpellClass =
+  | 'bard'
+  | 'cleric'
+  | 'druid'
+  | 'paladin'
+  | 'ranger'
+  | 'sorcerer'
+  | 'warlock'
+  | 'wizard';
+export type SpellClasses = SpellClass[];
+export type Spell = {
+  name: string;
+  source?: string;
+  page?: number;
+  level: number;
+  school: SpellSchools;
+  time?: any[];
+  range?: Record<string, any>;
+  components?: Record<string, any>;
+  duration?: any[];
+  entries?: Entries;
+  entriesHigherLevel?: Entries;
+  conditionInflict?: string[];
+  savingThrow?: string[];
+  affectsCreatureType?: string[];
+  miscTags?: string[];
+  areaTags?: string[];
+  damageInflict?: string[];
+  spellAttack?: string[];
+  classes: Record<string, any>;
+  images?: any[];
+  [key: string]: any;
+};
 export type Spells = Spell[];

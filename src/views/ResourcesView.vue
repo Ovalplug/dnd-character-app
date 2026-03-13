@@ -60,7 +60,7 @@
   import AllClasses from '../components/resources/AllClasses.vue';
   import AllSpells from '../components/resources/AllSpells.vue';
 
-  const { debug, initDebug } = useDebug();
+  const { initDebug } = useDebug();
 
   const dataStore = useDataStore();
 
@@ -179,59 +179,59 @@
         break;
     }
   }
- </script>
+</script>
 
 <style scoped>
-.resources-header {
-  position: fixed;
-  top: 0;
-  left: 40px;
-  width: calc(100% - 40px);
-  background: #e0e0e0;
-  z-index: 49;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 24px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
+  .resources-header {
+    position: fixed;
+    top: 0;
+    left: 40px;
+    width: calc(100% - 40px);
+    background: #e0e0e0;
+    z-index: 49;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
 
-.resources-header h1 {
-  margin: 0;
-  font-size: 2rem;
-}
+  .resources-header h1 {
+    margin: 0;
+    font-size: 2rem;
+  }
 
-.dropdown-group {
-  margin-left: 24px;
-}
+  .dropdown-group {
+    margin-left: 24px;
+  }
 
-.dropdown-group select {
-  font-size: 1rem;
-  padding: 8px 12px;
-}
+  .dropdown-group select {
+    font-size: 1rem;
+    padding: 8px 12px;
+  }
 
-.content-under-header {
-  margin-top: 80px;
-}
+  .content-under-header {
+    margin-top: 80px;
+  }
 
-.button-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  max-width: 320px;
-  margin: 32px auto;
-}
+  .button-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 320px;
+    margin: 32px auto;
+  }
 
-.button-list button {
-  font-size: 1.1rem;
-  padding: 12px 18px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  background: #f7f7f7;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.button-list button:hover {
-  background: #e0e0e0;
-}
+  .button-list button {
+    font-size: 1.1rem;
+    padding: 12px 18px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: #f7f7f7;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .button-list button:hover {
+    background: #e0e0e0;
+  }
 </style>
