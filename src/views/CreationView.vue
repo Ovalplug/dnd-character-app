@@ -1,22 +1,18 @@
-
 <template>
   <div>
     <h1>D&D Character Manager</h1>
 
     <button @click="createCharacter">New Character</button>
     <input type="text" :placeholder="createRandomName()" v-model="newCharName" />
+  </div>
 
-    <div v-for="char in charStore.characters" :key="char.id">
-      <router-link :to="`/character/${char.id}`">
-        {{ char.name }} (Level {{ char.level }})
-      </router-link>
-      <img
-        :src="icons.binIcon"
-        alt="Delete"
-        @click="charStore.deleteCharacter(char.id)"
-        class="deleteCharIcon"
-      />
-    </div>
+  <div class="button-list">
+    <button @click="navigateTo('/create/quickCreate')" :disabled="true">Quick Character Creation</button>
+    <button @click="navigateTo('/create/fullCreate')" >Full Character Creation</button>
+    <button @click="navigateTo('/create/randomCreate')" :disabled="true">Random Character</button>
+    <button @click="navigateTo('/create/itemCreate')" :disabled="true">Item Creation</button>
+    <button @click="navigateTo('/create/monsterCreate')" :disabled="true">Monster Creation</button>
+    <button @click="navigateTo('/create/spellCreate')" :disabled="true">Spell Creation</button>
   </div>
 </template>
 
@@ -25,17 +21,11 @@
   import { useCharacterStore } from '../stores/characterStore';
   import { useRouter } from 'vue-router';
 
-  import binIcon from '../assets/bin-svgrepo-com.svg';
-
   import { createRandomName } from '../stores/randomNames.ts';
 
   const charStore = useCharacterStore();
   const router = useRouter();
   const newCharName = ref('');
-
-  const icons: Record<string, string> = {
-    binIcon: binIcon,
-  };
 
   async function createCharacter() {
     if (!newCharName.value.trim()) {
@@ -44,6 +34,10 @@
 
     const id = await charStore.createCharacter(newCharName.value);
     router.push(`/character/${id}`);
+  }
+
+  function navigateTo(path: string) {
+    router.push(path);
   }
 </script>
 

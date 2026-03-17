@@ -60,6 +60,8 @@ export type playerCharacter = {
   alliesAndOrganizations?: string[];
   backstory?: string;
   attunedItems?: any[];
+  createdAt: number;
+  updatedAt: number;
 };
 
 export type PlayerCharacters = playerCharacter[];
