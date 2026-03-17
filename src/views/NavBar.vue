@@ -16,10 +16,16 @@
             :aria-expanded="expanded"
             :title="expanded ? 'Collapse' : 'Expand'"
           >
-            <span v-if="!expanded" class="icon"
-              ><img :src="menuIcon" alt="" aria-hidden="true"
-            /></span>
-            <span v-else class="icon"><img :src="closeIcon" alt="" aria-hidden="true" /></span>
+            <span v-if="!expanded" class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </span>
+            <span v-else class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </span>
           </button>
 
           <h2 class="brand" v-if="expanded">dnd-character-app</h2>
@@ -71,8 +77,7 @@
   import router from '../router';
   import { useDebug } from '../composables/useDebug';
 
-  import menuIcon from '../assets/icons/menu.svg?url';
-  import closeIcon from '../assets/icons/close.svg?url';
+  import bookIcon from '../assets/icons/book.svg?url';
   import homeIcon from '../assets/icons/home.svg?url';
   import usersIcon from '../assets/icons/users.svg?url';
   import plusIcon from '../assets/icons/plus.svg?url';
@@ -94,7 +99,7 @@
     { label: 'Characters', icon: usersIcon, path: '/characters' },
     { label: 'Create', icon: plusIcon, path: '/create' },
     { label: 'Settings', icon: settingsIcon, path: '/settings' },
-    { label: 'Resources', icon: settingsIcon, path: '/resources' },
+    { label: 'Resources', icon: bookIcon, path: '/resources' },
   ];
 
   function toggle() {
@@ -169,7 +174,7 @@
   .sidebar-header {
     display: flex;
     align-items: center;
-    padding: 12px;
+    padding: 6px;
     border-bottom: 1px solid #eee;
   }
   .brand-wrap {
@@ -184,8 +189,24 @@
   .expand-btn {
     background: transparent;
     border: none;
-    padding: 6px;
+    padding: 4px;
     border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #111;
+  }
+  .expand-btn:hover,
+  .expand-btn:focus {
+    background: #f6f6f6;
+  }
+  .expand-btn .icon {
+    display: inline-flex;
+    width: 24px;
+    height: 24px;
+    align-items: center;
+    justify-content: center;
   }
   .nav-list {
     padding: 12px 8px;

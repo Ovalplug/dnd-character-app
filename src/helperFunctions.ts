@@ -77,7 +77,8 @@ export function getRefinedSpellsList(
   searchVal?: string
 ): Spells {
   let refinedSpells = spells.filter(spell => {
-    const matchesSchool = schools.length === 0 || schools.includes(spell.school.toLowerCase() as SpellSchools);
+    const matchesSchool =
+      schools.length === 0 || schools.includes(spell.school.toLowerCase() as SpellSchools);
     const matchesLevel = levels.length === 0 || levels.includes(spell.level);
     const matchesClass =
       classes.length === 0 ||
