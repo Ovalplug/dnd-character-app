@@ -1,0 +1,69 @@
+
+export const firstNames = [
+	'Arin', 'Bryn', 'Cael', 'Dara', 'Eryn', 'Faelar', 'Galen', 'Hale', 'Ilya', 'Joren',
+	'Kael', 'Lira', 'Mira', 'Nim', 'Orin', 'Perrin', 'Quill', 'Rian', 'Soren', 'Tamsin',
+	'Ulric', 'Vera', 'Wyn', 'Xan', 'Yara', 'Zane', 'Aelar', 'Bram', 'Cira', 'Dain',
+	'Elara', 'Finn', 'Gwyn', 'Hollis', 'Isen', 'Jessa', 'Kira', 'Leif', 'Mirael', 'Nessa',
+	'Oryn', 'Pyria', 'Quorin', 'Ryl', 'Sable', 'Tarin', 'Uriel', 'Varek', 'Willa', 'Zira'
+];
+
+
+export const lastNames = [
+	'Stormwind', 'Ironwood', 'Duskryn', 'Brightwood', 'Shadowalker', 'Moonwhisper', 'Dawnbringer',
+	'Stonehelm', 'Ravencrest', 'Silverleaf', 'Windrider', 'Fireforge', 'Nightbreeze', 'Oakenshield',
+	'Starfall', 'Frostbeard', 'Emberstone', 'Swiftblade', 'Duskmantle', 'Lightfoot', 'Thornheart',
+	'Goldbranch', 'Wolfbane', 'Mistwalker', 'Sunspire', 'Grimward', 'Hawthorne', 'Ironfist',
+	'Shadowend', 'Stormrider', 'Wintermere', 'Ashenford', 'Blackbriar', 'Cinderhall', 'Drevin',
+	'Eldermoor', 'Flintlock', 'Glenwood', 'Holloway', 'Ivoryhorn', 'Jadebrook', 'Keenblade',
+	'Larkspur', 'Mournvale', 'Netheridge', 'Oakvale', 'Pinecrest', 'Quickwater', 'Ridgewell', 'Stonebrook'
+];
+
+
+export const middleNames = [
+	'Aeris', 'Briar', 'Cale', 'Dusk', 'Eldrin', 'Fenn', 'Gale', 'Haze', 'Iris', 'Jade',
+	'Kestrel', 'Lyn', 'Moss', 'Nash', 'Onyx', 'Pine', 'Quinn', 'Reed', 'Shade', 'Thorn',
+	'Umber', 'Vale', 'Wren', 'Xylo', 'Yew', 'Zephyr', 'Ash', 'Bliss', 'Cove', 'Dale',
+	'Echo', 'Frost', 'Grove', 'Hawk', 'Isle', 'Jinx', 'Kite', 'Lark', 'Mirth', 'Noble',
+	'Owl', 'Pax', 'Quest', 'Rune', 'Sage', 'True', 'Vex', 'Wisp', 'Yule', 'Zen'
+];
+
+
+export const titles = [
+	'the Brave', 'the Wise', 'the Bold', 'the Cunning', 'the Just', 'the Fierce', 'the Gentle',
+	'the Swift', 'the Silent', 'the Mighty', 'the Kind', 'the Fearless', 'the Wanderer',
+	'the Seeker', 'the Stalwart', 'the Sly', 'the Loyal', 'the Merciful', 'the Unbroken',
+	'the Shadow', 'the Lightbringer', 'the Storm', 'the Flame', 'the Frost', 'the Oak',
+	'the Wolf', 'the Lion', 'the Hawk', 'the Bear', 'the Fox', 'the Serpent', 'the Phoenix',
+	'the Dragon', 'the Raven', 'the Stag', 'the Eagle', 'the Shield', 'the Blade', 'the Healer',
+	'the Hunter', 'the Bard', 'the Sage', 'the Guardian', 'the Herald', 'the Outcast', 'the Redeemed',
+	'the Valiant', 'the Watcher', 'the Wanderer', 'the Unseen', 'the Ironheart'
+];
+
+
+export const nicknames = [
+	'Red', 'Tiny', 'Lucky', 'Shadow', 'Ace', 'Smiley', 'Bones', 'Sparks', 'Whisper', 'Bear',
+	'Wolf', 'Fox', 'Hawk', 'Rook', 'Moss', 'Frosty', 'Sunny', 'Dusty', 'Patch', 'Buzz',
+	'Skip', 'Twig', 'Pebble', 'Flint', 'Ash', 'Grit', 'Pip', 'Nim', 'Jazz', 'Scout',
+	'Rags', 'Breeze', 'Dash', 'Flick', 'Mirth', 'Wisp', 'Vex', 'Bliss', 'Rune', 'Sable',
+	'Gale', 'Echo', 'Jinx', 'Kite', 'Lark', 'Mirth', 'Noble', 'Owl', 'Pax', 'Quest'
+];
+
+export function createRandomName(): string {
+    const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+    const middleName = middleNames[Math.floor(Math.random() * middleNames.length)];
+    const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+    const title = titles[Math.floor(Math.random() * titles.length)];
+    const nickname = nicknames[Math.floor(Math.random() * nicknames.length)];
+    const hasTitle = Math.random() < 0.5;
+    const hasNickname = Math.random() < 0.5;
+
+    let fullName = `${firstName} ${middleName} ${lastName}`;
+    if (hasTitle) {
+        fullName += ` ${title}`;
+    }
+    if (hasNickname) {
+        fullName += ` "${nickname}"`;
+    }
+
+    return fullName;
+};

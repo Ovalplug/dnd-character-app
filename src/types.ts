@@ -8,6 +8,62 @@ export type AppRoute = {
 
 export type Routes = AppRoute[];
 
+export type playerCharacter = {
+  name: string;
+  level: number;
+  classes: Classes;
+  race: Race;
+  background?: Background;
+  alignment?: string;
+  xp?: number;
+  inspiration?: boolean;
+  feats: Feat[];
+  languages: string[];
+  abilityScores: Ability;
+  proficiencyModifier: number;
+  inventory: any[];
+  maxHp: number;
+  currHp: number;
+  ac: number;
+  speed: number;
+  size: 'tiny' | 'small' | 'medium' | 'large' | 'huge' | 'gargantuan';
+  skillProficiencies: SkillProficiencies;
+  image?: string;
+
+  // D&D 5e essentials
+  hitDice?: string; // e.g. "1d8"
+  currentHitDice?: number;
+  deathSaves?: { successes: number; failures: number };
+  currency?: { cp: number; sp: number; ep: number; gp: number; pp: number };
+  passivePerception?: number;
+  personalityTraits?: string[];
+  ideals?: string[];
+  bonds?: string[];
+  flaws?: string[];
+  featuresAndTraits?: string[];
+  attacks?: Array<{
+    name: string;
+    attackBonus: number;
+    damage: string;
+    damageType?: string;
+    notes?: string;
+  }>;
+  spellcasting?: {
+    spellCaster: boolean;
+    spellSlots?: Record<number, { max: number; used: number }>;
+    knownSpells?: Spells;
+    preparedSpells?: Spells;
+    spellSaveDC?: number;
+    spellAttackBonus?: number;
+  };
+  notes?: string;
+  alliesAndOrganizations?: string[];
+  backstory?: string;
+  attunedItems?: any[];
+};
+
+export type PlayerCharacters = playerCharacter[];
+
 export type Feat = {
   name: string;
   description?: string;

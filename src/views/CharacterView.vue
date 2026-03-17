@@ -2,6 +2,7 @@
   <div v-if="character">
     <h2>{{ character.name }}</h2>
     <p>Level {{ character.level }}</p>
+    <pre>{{ character }}</pre>
   </div>
 
   <div v-else>Character not found.</div>
