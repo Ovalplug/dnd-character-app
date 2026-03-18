@@ -28,7 +28,7 @@
 <script setup lang="ts">
   import { useRouter } from 'vue-router';
   import { useDataStore } from '../stores/dataStore';
-  import { onMounted, ref, watch } from 'vue';
+  import { onMounted, ref } from 'vue';
   import Loading from '../components/resources/Loading.vue';
 
   const router = useRouter();
@@ -38,16 +38,11 @@
   async function loadDataStore() {
     if (!dataStore.loaded) {
       try {
-        console.log('Initializing data store...');
         await dataStore.init();
         isDataLoaded.value = true;
-        console.log('Data store loaded:', dataStore);
-      } catch (err) {
-        console.error('Failed to load data store', err);
-      }
+      } catch (err) {}
     } else {
       isDataLoaded.value = true;
-      console.log('Data store already loaded:', dataStore);
     }
   }
 
@@ -57,10 +52,6 @@
 
   onMounted(() => {
     loadDataStore();
-  });
-
-  watch(isDataLoaded, newVal => {
-    console.log('isDataLoaded changed:', newVal);
   });
 </script>
 

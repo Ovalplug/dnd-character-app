@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { v4 as uuidv4 } from 'uuid';
 import { db, type Character } from '../database/db';
-import type { playerCharacter } from '../types';
+import type { playerCharacter, Race } from '../types';
 
 export const useCharacterStore = defineStore('characters', {
   state: () => ({
@@ -92,6 +92,12 @@ export const useCharacterStore = defineStore('characters', {
     updateCharacterName(newName: string) {
       if (this.currNewCharacter) {
         this.currNewCharacter.name = newName;
+      }
+    },
+
+    updateCharacterRace(newRace: Race) {
+      if (this.currNewCharacter) {
+        this.currNewCharacter.race = newRace;
       }
     },
   },

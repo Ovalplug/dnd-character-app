@@ -32,30 +32,19 @@
   import RaceSelection from './sections/RaceSelection.vue';
   import BackgroundSelection from './sections/BackgroundSelection.vue';
   import AbilityScoreSelection from './sections/AbilityscoreSelection.vue';
-  import { ref, watch } from 'vue';
+  import { ref } from 'vue';
 
   const props = defineProps<{ dataStore: any }>();
   const store = useCharacterStore();
   store.startNewCharacterCreation();
 
-  if (!props.dataStore) {
-    console.error('dataStore prop is undefined in FullCreation');
-  } else {
-    console.log('FullCreation received dataStore:', props.dataStore);
-  }
-
   const steps = ['name', 'race', 'background', 'class', 'abilityScores', 'summary'];
   const currStep = ref(steps[0]);
 
   function handleNextStep() {
-    console.log('Next step triggered from', currStep.value);
     const currentIndex = steps.indexOf(currStep.value || '');
     if (currentIndex >= 0 && currentIndex < steps.length - 1) {
       currStep.value = steps[currentIndex + 1];
     }
   }
-
-  watch(currStep, newVal => {
-    console.log('Current step changed to:', newVal);
-  });
 </script>

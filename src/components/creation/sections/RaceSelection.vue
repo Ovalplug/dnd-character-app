@@ -40,6 +40,9 @@
   import SingleRace from '../../resources/SingleRace.vue';
   import { computed, ref } from 'vue';
   import type { Race, RaceFluff } from '../../../types';
+  import { useCharacterStore } from '../../../stores/characterStore';
+
+  const store = useCharacterStore();
 
   const props = defineProps<{ races: Race[]; raceFluff: RaceFluff[] }>();
   const emit = defineEmits<{
@@ -73,8 +76,7 @@
   }
 
   function openPopOut(race: Race) {
-    const index = sortedRaces.value.findIndex(r => r === race);
-    selectRace(index);
+    selectedFluff.value = props.raceFluff.find(fluff => fluff.name === race.name);
     showPopOut.value = true;
   }
 
@@ -83,7 +85,9 @@
   }
 
   function updateRace() {
-    //i'll add this logic later; for now just move to the next step
+    if (selectedRace.value) {
+      store.updateCharacterRace(selectedRace.value);
+    }
     emit('nextStep');
   }
 </script>
