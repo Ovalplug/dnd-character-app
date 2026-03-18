@@ -12,8 +12,8 @@ export type playerCharacter = {
   name: string;
   level: number;
   classes: Classes;
-  race: Race;
-  background?: Background;
+  race: Race | null;
+  background?: Background | null;
   alignment?: string;
   xp?: number;
   inspiration?: boolean;

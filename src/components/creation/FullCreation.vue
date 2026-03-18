@@ -1,20 +1,28 @@
 <template>
-  <!-- start with choosing a name (or a random one) -->
-  <name-selector />
+  <div>
+    <h1>Full Character Creation {{ currStep }}</h1>
+    <!-- start with choosing a name (or a random one) -->
+    <name-selector v-if="currStep === 'name'" @nextStep="handleNextStep" />
 
-  <!-- then choose a race -->
-  <race-selection />
+    <!-- then choose a race -->
+    <race-selection
+      v-if="currStep === 'race'"
+      :races="dataStore.races"
+      :raceFluff="dataStore.raceFluff"
+      @nextStep="handleNextStep"
+    />
 
-  <!-- then choose a background -->
-  <background-selection />
+    <!-- then choose a background -->
+    <background-selection v-if="currStep === 'background'" @nextStep="handleNextStep" />
 
-  <!-- then choose a class -->
-  <class-selection />
+    <!-- then choose a class -->
+    <class-selection v-if="currStep === 'class'" @nextStep="handleNextStep" />
 
-  <!-- then choose ability scores -->
-  <ability-score-selection />
+    <!-- then choose ability scores -->
+    <ability-score-selection v-if="currStep === 'abilityScores'" @nextStep="handleNextStep" />
+  </div>
 
-  <pre>{{ store.characters }}</pre>
+  <pre>{{ store.currNewCharacter }}</pre>
 </template>
 
 <script lang="ts" setup>
@@ -24,6 +32,30 @@
   import RaceSelection from './sections/RaceSelection.vue';
   import BackgroundSelection from './sections/BackgroundSelection.vue';
   import AbilityScoreSelection from './sections/AbilityscoreSelection.vue';
+  import { ref, watch } from 'vue';
 
+  const props = defineProps<{ dataStore: any }>();
   const store = useCharacterStore();
+  store.startNewCharacterCreation();
+
+  if (!props.dataStore) {
+    console.error('dataStore prop is undefined in FullCreation');
+  } else {
+    console.log('FullCreation received dataStore:', props.dataStore);
+  }
+
+  const steps = ['name', 'race', 'background', 'class', 'abilityScores', 'summary'];
+  const currStep = ref(steps[0]);
+
+  function handleNextStep() {
+    console.log('Next step triggered from', currStep.value);
+    const currentIndex = steps.indexOf(currStep.value || '');
+    if (currentIndex >= 0 && currentIndex < steps.length - 1) {
+      currStep.value = steps[currentIndex + 1];
+    }
+  }
+
+  watch(currStep, newVal => {
+    console.log('Current step changed to:', newVal);
+  });
 </script>

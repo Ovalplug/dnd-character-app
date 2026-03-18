@@ -1,20 +1,9 @@
 import Dexie from 'dexie';
 import type { Table } from 'dexie';
+import type { playerCharacter } from '../types';
 
-export interface Character {
+export interface Character extends playerCharacter {
   id: string;
-  name: string;
-  level: number;
-  class?: string;
-  race?: string;
-  background?: string;
-  abilities?: Record<string, number>;
-  inventory: any[];
-  resources: any[];
-  notes?: string;
-  portraitPath?: string;
-  createdAt: number;
-  updatedAt: number;
 }
 
 export class DndDatabase extends Dexie {
@@ -25,7 +14,7 @@ export class DndDatabase extends Dexie {
     super('DndDatabase');
 
     this.version(1).stores({
-      characters: 'id, name, level, class, race, updatedAt',
+      characters: 'id, name, level, updatedAt',
     });
 
     // Add a key/value settings store in a new DB version so existing DBs migrate safely.

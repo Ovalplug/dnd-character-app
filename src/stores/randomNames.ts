@@ -271,7 +271,7 @@ export function createRandomName(): string {
   const title = titles[Math.floor(Math.random() * titles.length)];
   const nickname = nicknames[Math.floor(Math.random() * nicknames.length)];
   const hasTitle = Math.random() < 0.5;
-  const hasNickname = Math.random() < 0.5;
+  const hasNickname = Math.random() < 0.1;
 
   let fullName = `${firstName} ${middleName} ${lastName}`;
   if (hasTitle) {

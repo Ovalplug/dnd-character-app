@@ -1,44 +1,67 @@
 <template>
   <div>
     <h1>D&D Character Manager</h1>
-
-    <button @click="createCharacter">New Character</button>
-    <input type="text" :placeholder="createRandomName()" v-model="newCharName" />
   </div>
 
-  <div class="button-list">
-    <button @click="navigateTo('/create/quickCreate')" :disabled="true">Quick Character Creation</button>
-    <button @click="navigateTo('/create/fullCreate')" >Full Character Creation</button>
-    <button @click="navigateTo('/create/randomCreate')" :disabled="true">Random Character</button>
-    <button @click="navigateTo('/create/itemCreate')" :disabled="true">Item Creation</button>
-    <button @click="navigateTo('/create/monsterCreate')" :disabled="true">Monster Creation</button>
-    <button @click="navigateTo('/create/spellCreate')" :disabled="true">Spell Creation</button>
+  <div v-if="!isDataLoaded">
+    <Loading />
+  </div>
+
+  <div v-else>
+    <div class="button-list">
+      <button @click="navigateTo('/create/quickCreate')" :disabled="true">
+        Quick Character Creation
+      </button>
+      <button @click="navigateTo('/create/fullCreate')" :disabled="!isDataLoaded">
+        Full Character Creation
+      </button>
+      <button @click="navigateTo('/create/randomCreate')" :disabled="true">Random Character</button>
+      <button @click="navigateTo('/create/itemCreate')" :disabled="true">Item Creation</button>
+      <button @click="navigateTo('/create/monsterCreate')" :disabled="true">
+        Monster Creation
+      </button>
+      <button @click="navigateTo('/create/spellCreate')" :disabled="true">Spell Creation</button>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue';
-  import { useCharacterStore } from '../stores/characterStore';
   import { useRouter } from 'vue-router';
+  import { useDataStore } from '../stores/dataStore';
+  import { onMounted, ref, watch } from 'vue';
+  import Loading from '../components/resources/Loading.vue';
 
-  import { createRandomName } from '../stores/randomNames.ts';
-
-  const charStore = useCharacterStore();
   const router = useRouter();
-  const newCharName = ref('');
+  const dataStore = useDataStore();
+  const isDataLoaded = ref(false);
 
-  async function createCharacter() {
-    if (!newCharName.value.trim()) {
-      newCharName.value = `New Character ${charStore.characters.length + 1}`;
+  async function loadDataStore() {
+    if (!dataStore.loaded) {
+      try {
+        console.log('Initializing data store...');
+        await dataStore.init();
+        isDataLoaded.value = true;
+        console.log('Data store loaded:', dataStore);
+      } catch (err) {
+        console.error('Failed to load data store', err);
+      }
+    } else {
+      isDataLoaded.value = true;
+      console.log('Data store already loaded:', dataStore);
     }
-
-    const id = await charStore.createCharacter(newCharName.value);
-    router.push(`/character/${id}`);
   }
 
   function navigateTo(path: string) {
     router.push(path);
   }
+
+  onMounted(() => {
+    loadDataStore();
+  });
+
+  watch(isDataLoaded, newVal => {
+    console.log('isDataLoaded changed:', newVal);
+  });
 </script>
 
 <style scoped>
