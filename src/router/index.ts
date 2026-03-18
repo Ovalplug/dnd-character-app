@@ -21,7 +21,12 @@ const routes: Array<RouteRecordRaw> = [
   { path: '/settings', name: 'settings', component: SettingsView },
   { path: '/resources', name: 'resources', component: ResourcesView },
   { path: '/create/quickCreate', name: 'quickCreate', component: QuickCharCreate },
-  { path: '/create/fullCreate', name: 'fullCreate', component: FullCreation, props: route => ({ dataStore: useDataStore() }) },
+  {
+    path: '/create/fullCreate',
+    name: 'fullCreate',
+    component: FullCreation,
+    props: () => ({ dataStore: useDataStore() }),
+  },
   { path: '/create/randomCreate', name: 'randomCreate', component: RandomCreation },
   { path: '/create/itemCreate', name: 'itemCreate', component: PlaceHolder },
   { path: '/create/monsterCreate', name: 'monsterCreate', component: PlaceHolder },

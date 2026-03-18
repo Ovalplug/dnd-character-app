@@ -19,9 +19,9 @@
           <td>
             <input
               type="checkbox"
-              :checked="selectedRace?.name === race.name"
-              @change="selectRace(race)"
-              :id="'race-' + race.name"
+              :checked="selectedRaceIndex === index"
+              @change="selectRace(index)"
+              :id="'race-' + index"
             />
           </td>
         </tr>
@@ -33,6 +33,7 @@
     <button class="next-btn" @click="updateRace" :disabled="!selectedRace">Next</button>
   </div>
 </template>
+
 <script lang="ts" setup>
   import PopOut from '../../PopOut.vue';
   import questionIcon from '../../../assets/icons/question.svg';
@@ -49,21 +50,31 @@
     return [...props.races].sort((a, b) => a.name.localeCompare(b.name));
   });
 
-  const selectedRace = ref<Race | null>(null);
+  const selectedRaceIndex = ref<number | null>(null);
   const selectedFluff = ref<RaceFluff | undefined>(undefined);
   const showPopOut = ref(false);
+
+  const selectedRace = computed(() => {
+    return selectedRaceIndex.value !== null ? sortedRaces.value[selectedRaceIndex.value] : null;
+  });
 
   const raceTitle = computed(() => {
     return selectedRace.value ? selectedRace.value.name : '';
   });
 
-  function selectRace(race: Race) {
-    selectedRace.value = race;
-    selectedFluff.value = props.raceFluff.find(fluff => fluff.name === race.name);
+  function selectRace(index: number) {
+    selectedRaceIndex.value = index;
+    const race = sortedRaces.value[index];
+    if (race) {
+      selectedFluff.value = props.raceFluff.find(fluff => fluff.name === race.name);
+    } else {
+      selectedFluff.value = undefined;
+    }
   }
 
   function openPopOut(race: Race) {
-    selectRace(race);
+    const index = sortedRaces.value.findIndex(r => r === race);
+    selectRace(index);
     showPopOut.value = true;
   }
 

@@ -8,8 +8,15 @@
     <div>
       <button @click="showFluff">show fluff</button>
       <button @click="showBase">show base</button>
-      <ResourceEntries v-if="show_base" :entries="props.race.entries ?? []" />
-      <ResourceEntries v-if="show_fluff" :entries="props.fluff?.entries ?? []" />
+      <RaceExtras v-if="show_base" :race="props.race" />
+      <ResourceEntries
+        v-if="show_base"
+        :entries="props.race.entries ?? ['No base entries available']"
+      />
+      <ResourceEntries
+        v-if="show_fluff"
+        :entries="props.fluff?.entries ?? ['No fluff available']"
+      />
     </div>
   </div>
 </template>
@@ -18,6 +25,7 @@
   import { ref } from 'vue';
   import type { Race, RaceFluff } from '../../types';
   import ResourceEntries from './ResourceEntries.vue';
+  import RaceExtras from './RaceExtras.vue';
 
   const props = defineProps<{
     race: Race;

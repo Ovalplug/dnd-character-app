@@ -19,6 +19,25 @@ export function getPrettyAbilityName(shorthand: string): string {
   }
 }
 
+export function getPrettySize(size: string): string {
+  switch (size.toLowerCase()) {
+    case 't':
+      return 'Tiny';
+    case 's':
+      return 'Small';
+    case 'm':
+      return 'Medium';
+    case 'l':
+      return 'Large';
+    case 'h':
+      return 'Huge';
+    case 'g':
+      return 'Gargantuan';
+    default:
+      return size;
+  }
+}
+
 export function getPrettySpellSchool(school: string): string {
   switch (school.toLowerCase()) {
     case 'a':
@@ -95,4 +114,51 @@ export function getRefinedSpellsList(
     refinedSpells.sort((a, b) => a.level - b.level);
   }
   return refinedSpells;
+}
+
+export function getPrettySpeed(speed: number | Record<string, any>): string {
+  if (typeof speed === 'number') {
+    return `${speed} ft.`;
+  } else if (typeof speed === 'object') {
+    const parts: string[] = [];
+    for (const [key, value] of Object.entries(speed)) {
+      if (key === 'walk') {
+        parts.push(`${value} ft. walking`);
+      } else if (key === 'fly') {
+        parts.push(`${value} ft. flying`);
+      } else if (key === 'swim') {
+        parts.push(`${value} ft. swimming`);
+      } else if (key === 'climb') {
+        parts.push(`${value} ft. climbing`);
+      } else {
+        parts.push(`${value} ft. ${key}`);
+      }
+    }
+    return parts.join(', ');
+  }
+  return '';
+}
+
+export function getPrettyAbilityScoreValues(scores: any[] | Record<string, any>): string {
+  if (!Array.isArray(scores)) {
+    scores = [scores];
+  }
+
+  return scores
+    .map((scoreObj: Record<string, any>) => {
+      if (scoreObj.choose) {
+        const { from, count } = scoreObj.choose;
+        return `Choose ${count} from: ${from.map(getPrettyAbilityName).join(', ')}`;
+      }
+
+      return Object.entries(scoreObj)
+        .map(([key, value]) => {
+          if (typeof value === 'number') {
+            return `${getPrettyAbilityName(key)}: ${value >= 0 ? '+' : ''}${value}`;
+          }
+          return `${getPrettyAbilityName(key)}: Invalid`; // Handle non-number values gracefully
+        })
+        .join(', ');
+    })
+    .join('; ');
 }
