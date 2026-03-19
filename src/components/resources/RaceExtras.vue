@@ -4,7 +4,6 @@
   <p v-if="props.race.ability">
     <strong>Ability Scores:</strong> {{ getPrettyAbilityScoreValues(props.race.ability) }}
   </p>
-  <pre>{{ props.race }}</pre>
 </template>
 
 <script setup lang="ts">

@@ -12,7 +12,7 @@
         <tr v-for="(race, index) in sortedRaces" :key="index">
           <td>{{ race.name }}</td>
           <td>
-            <button class="icon-btn" @click="openPopOut(race)">
+            <button class="icon-btn" @click="openPopOut(index)">
               <img :src="questionIcon" alt="info" width="20" height="20" />
             </button>
           </td>
@@ -27,8 +27,8 @@
         </tr>
       </tbody>
     </table>
-    <PopOut :title="raceTitle" v-if="showPopOut" :onClose="closePopOut">
-      <SingleRace v-if="selectedRace" :race="selectedRace" :fluff="selectedFluff" />
+    <PopOut :title="raceTitleForPopout" v-if="showPopOut" :onClose="closePopOut">
+      <SingleRace v-if="selectedPopoutRace" :race="selectedPopoutRace" :fluff="selectedFluff" />
     </PopOut>
     <button class="next-btn" @click="updateRace" :disabled="!selectedRace">Next</button>
   </div>
@@ -54,6 +54,7 @@
   });
 
   const selectedRaceIndex = ref<number | null>(null);
+  const selectedRaceForInfoIndex = ref<number | null>(null);
   const selectedFluff = ref<RaceFluff | undefined>(undefined);
   const showPopOut = ref(false);
 
@@ -61,8 +62,14 @@
     return selectedRaceIndex.value !== null ? sortedRaces.value[selectedRaceIndex.value] : null;
   });
 
-  const raceTitle = computed(() => {
-    return selectedRace.value ? selectedRace.value.name : '';
+  const selectedPopoutRace = computed(() => {
+    return selectedRaceForInfoIndex.value !== null
+      ? sortedRaces.value[selectedRaceForInfoIndex.value]
+      : null;
+  });
+
+  const raceTitleForPopout = computed(() => {
+    return selectedPopoutRace.value ? selectedPopoutRace.value.name : '';
   });
 
   function selectRace(index: number) {
@@ -75,8 +82,14 @@
     }
   }
 
-  function openPopOut(race: Race) {
-    selectedFluff.value = props.raceFluff.find(fluff => fluff.name === race.name);
+  function openPopOut(index: number) {
+    selectedRaceForInfoIndex.value = index;
+    const race = sortedRaces.value[index];
+    if (race) {
+      selectedFluff.value = props.raceFluff.find(fluff => fluff.name === race.name);
+    } else {
+      selectedFluff.value = undefined;
+    }
     showPopOut.value = true;
   }
 
