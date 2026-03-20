@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { v4 as uuidv4 } from 'uuid';
 import { db, type Character } from '../database/db';
-import type { Background, CharClass, playerCharacter, Race, Subclass } from '../types';
+import type { Background, CharClass, ClassLevels, playerCharacter, Race, Subclass } from '../types';
 
 export const useCharacterStore = defineStore('characters', {
   state: () => ({
@@ -25,6 +25,21 @@ export const useCharacterStore = defineStore('characters', {
         name: '',
         level: 1,
         classes: [],
+        classLevels: {
+          artificer: 0,
+          barbarian: 0,
+          bard: 0,
+          cleric: 0,
+          druid: 0,
+          fighter: 0,
+          monk: 0,
+          paladin: 0,
+          ranger: 0,
+          rogue: 0,
+          sorcerer: 0,
+          warlock: 0,
+          wizard: 0,
+        },
         subclasses: {},
         race: null,
         background: null,
@@ -111,6 +126,7 @@ export const useCharacterStore = defineStore('characters', {
     updateCharacterClasses(newClass: CharClass) {
       if (this.currNewCharacter) {
         this.currNewCharacter.classes.push(newClass);
+        this.currNewCharacter.classLevels[newClass.name.toLowerCase() as keyof ClassLevels]++;
       }
     },
 
@@ -124,6 +140,18 @@ export const useCharacterStore = defineStore('characters', {
         }
         this.currNewCharacter.subclasses[className].push(subclass);
       }
+    },
+
+    getCharLevel() {
+      if (!this.currNewCharacter) return 0;
+      return Object.values(this.currNewCharacter.classLevels).reduce((sum, lvl) => sum + lvl, 0);
+    },
+
+    getCharClasses() {
+      if (!this.currNewCharacter) return [];
+      return Object.entries(this.currNewCharacter.classLevels)
+        .filter(([_, lvl]) => lvl > 0)
+        .map(([className, lvl]) => ({ name: className, level: lvl }));
     },
   },
 });

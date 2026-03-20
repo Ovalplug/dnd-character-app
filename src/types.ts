@@ -8,10 +8,27 @@ export type AppRoute = {
 
 export type Routes = AppRoute[];
 
+export type ClassLevels = {
+  artificer: number;
+  barbarian: number;
+  bard: number;
+  cleric: number;
+  druid: number;
+  fighter: number;
+  monk: number;
+  paladin: number;
+  ranger: number;
+  rogue: number;
+  sorcerer: number;
+  warlock: number;
+  wizard: number;
+};
+
 export type playerCharacter = {
   name: string;
   level: number;
   classes: Classes;
+  classLevels: ClassLevels;
   subclasses?: Subclasses;
   race: Race | null;
   background?: Background | null;

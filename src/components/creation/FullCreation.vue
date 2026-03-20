@@ -28,6 +28,13 @@
       @nextStep="handleNextStep"
     />
 
+    <!-- then subclass if needed -->
+    <subclass-selection
+      v-if="currStep === 'subclass'"
+      :subclasses="dataStore.subclasses"
+      @nextStep="handleNextStep"
+    />
+
     <!-- then choose ability scores -->
     <ability-score-selection v-if="currStep === 'abilityScores'" @nextStep="handleNextStep" />
   </div>
@@ -42,13 +49,14 @@
   import RaceSelection from './sections/RaceSelection.vue';
   import BackgroundSelection from './sections/BackgroundSelection.vue';
   import AbilityScoreSelection from './sections/AbilityscoreSelection.vue';
+  import SubclassSelection from './sections/SubclassSelection.vue';
   import { ref } from 'vue';
 
   const props = defineProps<{ dataStore: any }>();
   const store = useCharacterStore();
   store.startNewCharacterCreation();
 
-  const steps = ['name', 'background', 'race', 'class', 'abilityScores', 'summary'];
+  const steps = ['name', 'background', 'race', 'class', 'subclass', 'abilityScores', 'summary'];
   const currStep = ref(steps[0]);
 
   function handleNextStep() {

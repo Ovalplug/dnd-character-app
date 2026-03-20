@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <button class="next-btn" @click="updateRace" :disabled="!selectedRace">Next</button>
     <table class="race-table">
       <thead>
         <tr>

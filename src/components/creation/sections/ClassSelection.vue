@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <button class="next-btn" @click="updateClass" :disabled="!selectedClass">Next</button>
     <table class="class-table">
       <thead>
         <tr>

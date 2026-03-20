@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <button class="next-btn" @click="updateBackground" :disabled="!selectedBackground">Next</button>
     <table class="race-table">
       <thead>
         <tr>
