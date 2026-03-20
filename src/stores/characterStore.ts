@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { v4 as uuidv4 } from 'uuid';
 import { db, type Character } from '../database/db';
-import type { playerCharacter, Race } from '../types';
+import type { Background, CharClass, playerCharacter, Race, Subclass } from '../types';
 
 export const useCharacterStore = defineStore('characters', {
   state: () => ({
@@ -25,6 +25,7 @@ export const useCharacterStore = defineStore('characters', {
         name: '',
         level: 1,
         classes: [],
+        subclasses: {},
         race: null,
         background: null,
         alignment: undefined,
@@ -98,6 +99,30 @@ export const useCharacterStore = defineStore('characters', {
     updateCharacterRace(newRace: Race) {
       if (this.currNewCharacter) {
         this.currNewCharacter.race = newRace;
+      }
+    },
+
+    updateCharacterBackground(newBackground: Background) {
+      if (this.currNewCharacter) {
+        this.currNewCharacter.background = newBackground;
+      }
+    },
+
+    updateCharacterClasses(newClass: CharClass) {
+      if (this.currNewCharacter) {
+        this.currNewCharacter.classes.push(newClass);
+      }
+    },
+
+    updateCharacterSubclasses(className: string, subclass: Subclass) {
+      if (this.currNewCharacter) {
+        if (!this.currNewCharacter.subclasses) {
+          this.currNewCharacter.subclasses = {};
+        }
+        if (!this.currNewCharacter.subclasses[className]) {
+          this.currNewCharacter.subclasses[className] = [];
+        }
+        this.currNewCharacter.subclasses[className].push(subclass);
       }
     },
   },

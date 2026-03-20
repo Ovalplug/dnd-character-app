@@ -7,6 +7,19 @@ function aggregate(key: string) {
   return datasets.flatMap((src: any) => src[key] ?? []);
 }
 
+function aggregateClasses(datasets: any[]) {
+  return datasets.flatMap((data: any) => {
+    if (data.classes && Array.isArray(data.classes)) {
+      return data.classes.map((cls: any) => {
+        // Determine subclassAtLvl
+        const subclassAtLvl = ['Cleric', 'Sorcerer', 'Warlock'].includes(cls.name) ? 1 : 3;
+        return { ...cls, subclassAtLvl };
+      });
+    }
+    return [];
+  });
+}
+
 function aggregateSubclasses(datasets: any[]) {
   const artificerSubs: any[] = [];
   const barbarianSubs: any[] = [];
@@ -174,7 +187,7 @@ export const useDataStore = defineStore('data', {
       this.backgrounds = aggregate('backgrounds');
       this.backgroundFluff = aggregate('backgroundFluff');
       this.raceFluff = aggregate('raceFluff');
-      this.classes = aggregate('classes');
+      this.classes = aggregateClasses(datasets);
       this.eInvocations = aggregate('eInvocations');
       this.aInfusions = aggregate('aInfusions');
       this.subclasses = aggregateSubclasses(allData);

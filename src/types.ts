@@ -12,6 +12,7 @@ export type playerCharacter = {
   name: string;
   level: number;
   classes: Classes;
+  subclasses?: Subclasses;
   race: Race | null;
   background?: Background | null;
   alignment?: string;
@@ -218,6 +219,7 @@ export type CharClass = {
   name: string;
   source: string;
   hd: string;
+  subclassAtLvl: number | 3;
   proficiency: string;
   classTableGroups: Array<{
     colLabels: string[];

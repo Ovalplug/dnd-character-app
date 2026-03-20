@@ -4,6 +4,14 @@
     <!-- start with choosing a name (or a random one) -->
     <name-selector v-if="currStep === 'name'" @nextStep="handleNextStep" />
 
+    <!-- then choose a background -->
+    <background-selection
+      v-if="currStep === 'background'"
+      :backgrounds="dataStore.backgrounds"
+      :background-fluffs="dataStore.backgroundFluff"
+      @nextStep="handleNextStep"
+    />
+
     <!-- then choose a race -->
     <race-selection
       v-if="currStep === 'race'"
@@ -12,11 +20,13 @@
       @nextStep="handleNextStep"
     />
 
-    <!-- then choose a background -->
-    <background-selection v-if="currStep === 'background'" @nextStep="handleNextStep" />
-
     <!-- then choose a class -->
-    <class-selection v-if="currStep === 'class'" @nextStep="handleNextStep" />
+    <class-selection
+      v-if="currStep === 'class'"
+      :classes="dataStore.classes"
+      :subclasses="dataStore.subclasses"
+      @nextStep="handleNextStep"
+    />
 
     <!-- then choose ability scores -->
     <ability-score-selection v-if="currStep === 'abilityScores'" @nextStep="handleNextStep" />
@@ -38,7 +48,7 @@
   const store = useCharacterStore();
   store.startNewCharacterCreation();
 
-  const steps = ['name', 'race', 'background', 'class', 'abilityScores', 'summary'];
+  const steps = ['name', 'background', 'race', 'class', 'abilityScores', 'summary'];
   const currStep = ref(steps[0]);
 
   function handleNextStep() {
