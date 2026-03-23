@@ -29,12 +29,12 @@
           </tr>
         </tbody>
       </table>
-    <PopOut :title="selectedPopoutSubclass?.name" v-if="showPopOut" @close="closePopOut">
-      <ResourceEntries
-        v-if="selectedPopoutSubclass"
-        :entries="selectedPopoutSubclass?.subclassFeatures || ['error...']"
-      />
-    </PopOut>
+      <PopOut :title="selectedPopoutSubclass?.name" v-if="showPopOut" @close="closePopOut">
+        <ResourceEntries
+          v-if="selectedPopoutSubclass"
+          :entries="selectedPopoutSubclass?.subclassFeatures || ['error...']"
+        />
+      </PopOut>
     </div>
     <button class="next-btn" @click="confirmSelection" :disabled="!selectedSubclass">Next</button>
   </div>
@@ -44,7 +44,7 @@
   import { computed, onMounted, ref } from 'vue';
   import type { CharClass, ClassLevels, Subclass, Subclasses } from '../../../types';
   import { useCharacterStore } from '../../../stores/characterStore';
-    import questionIcon from '../../../assets/icons/question.svg';
+  import questionIcon from '../../../assets/icons/question.svg';
   import ResourceEntries from '../../resources/ResourceEntries.vue';
   import PopOut from '../../PopOut.vue';
 
@@ -56,8 +56,8 @@
 
   const showPopOut = ref(false);
   const selectedPopoutSubclass = ref<Subclass | null>(null);
-    const selectedSubclass = ref<Subclass | null>(null);
-        const selectedSubclassIndex = ref<number | null>(null);
+  const selectedSubclass = ref<Subclass | null>(null);
+  const selectedSubclassIndex = ref<number | null>(null);
 
   const store = useCharacterStore();
 
@@ -76,21 +76,22 @@
     return sortedSubclasses.value[props.currClass.name] || [];
   });
 
-    function openPopout(index: number) {
-      selectedPopoutSubclass.value = subclassesForCurrClass.value[index] || null;
-      showPopOut.value = true;
-    }
+  function openPopout(index: number) {
+    selectedPopoutSubclass.value = subclassesForCurrClass.value[index] || null;
+    showPopOut.value = true;
+  }
 
   function closePopOut() {
     showPopOut.value = false;
     selectedPopoutSubclass.value = null;
   }
 
-    function confirmSelection() {
-      console.log('Selected subclasses:', selectedSubclass.value);
-      // Update the store with the selected subclasses
-      emit('nextStep');
+  function confirmSelection() {
+    if (selectedSubclass.value) {
+      store.updateCharacterSubclasses(props.currClass!.name, selectedSubclass.value);
     }
+    emit('nextStep');
+  }
 
   function selectSubclass(index: number) {
     selectedSubclass.value = subclassesForCurrClass.value[index] || null;
@@ -102,7 +103,7 @@
     if (
       props.currClass &&
       props.currClass.subclassAtLvl >
-      store.currNewCharacter!.classLevels[props.currClass.name.toLowerCase() as keyof ClassLevels]
+        store.currNewCharacter!.classLevels[props.currClass.name.toLowerCase() as keyof ClassLevels]
     ) {
       emit('nextStep');
     }
