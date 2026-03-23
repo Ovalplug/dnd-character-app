@@ -19,11 +19,11 @@
               </button>
             </td>
             <td>
-              <!-- <input
+              <input
                 type="checkbox"
-                :checked="selectedSubclass.value?.name === sub.name"
-                @change="selectSubclass(cls.name, sub)"
-              /> -->
+                @change="selectSubclass(index)"
+                :id="`subclass-${index}`"
+              />
             </td>
           </tr>
         </tbody>
@@ -35,7 +35,7 @@
       />
     </PopOut>
     </div>
-    <!-- <button class="next-btn" @click="confirmSelection" :disabled="!allSelected">Next</button> -->
+    <button class="next-btn" @click="confirmSelection" :disabled="!selectedSubclass">Next</button>
   </div>
 </template>
 
@@ -89,6 +89,10 @@
       // Update the store with the selected subclasses
       emit('nextStep');
     }
+
+  function selectSubclass(index: number) {
+    selectedSubclass.value = subclassesForCurrClass.value[index] || null;
+  }
 
   // Skip this step entirely if no class needs a subclass at the current level
   onMounted(() => {
