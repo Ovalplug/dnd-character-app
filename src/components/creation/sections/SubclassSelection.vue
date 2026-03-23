@@ -22,6 +22,7 @@
               <input
                 type="checkbox"
                 @change="selectSubclass(index)"
+                :checked="selectedSubclassIndex === index"
                 :id="`subclass-${index}`"
               />
             </td>
@@ -56,6 +57,7 @@
   const showPopOut = ref(false);
   const selectedPopoutSubclass = ref<Subclass | null>(null);
     const selectedSubclass = ref<Subclass | null>(null);
+        const selectedSubclassIndex = ref<number | null>(null);
 
   const store = useCharacterStore();
 
@@ -92,6 +94,7 @@
 
   function selectSubclass(index: number) {
     selectedSubclass.value = subclassesForCurrClass.value[index] || null;
+    selectedSubclassIndex.value = index;
   }
 
   // Skip this step entirely if no class needs a subclass at the current level
