@@ -32,6 +32,7 @@
     <subclass-selection
       v-if="currStep === 'subclass'"
       :subclasses="dataStore.subclasses"
+      :currClass="store.getCharFullClasses()[0] || null"
       @nextStep="handleNextStep"
     />
 

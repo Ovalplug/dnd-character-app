@@ -1,8 +1,7 @@
 <template>
   <div class="container">
-    <button class="next-btn" @click="confirmSelection" :disabled="!allSelected">Next</button>
-    <div v-for="cls in classesNeedingSubclass" :key="cls.name" class="subclass-group">
-      <h3>Choose a subclass for {{ cls.name }}</h3>
+    <!-- <button class="next-btn" @click="confirmSelection" :disabled="!allSelected">Next</button> -->
+    <div class="subclass-group">
       <table class="subclass-table">
         <thead>
           <tr>
@@ -12,99 +11,92 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(sub, index) in availableSubclasses(cls.name)" :key="index">
+          <tr v-for="(sub, index) in subclassesForCurrClass" :key="index">
             <td>{{ sub.name }}</td>
             <td>
-              <button class="icon-btn" @click="openPopout(sub)">
+              <button class="icon-btn" @click="openPopout(index)">
                 <img :src="questionIcon" alt="Info" />
               </button>
             </td>
             <td>
-              <input
+              <!-- <input
                 type="checkbox"
-                :checked="selectedSubclasses[cls.name]?.name === sub.name"
+                :checked="selectedSubclass.value?.name === sub.name"
                 @change="selectSubclass(cls.name, sub)"
-              />
+              /> -->
             </td>
           </tr>
         </tbody>
       </table>
-      <PopOut :title="selectedPopoutSubclass?.name" v-if="showPopOut" @close="closePopOut">
-        <ResourceEntries
-          v-if="selectedPopoutSubclass"
-          :entries="selectedPopoutSubclass?.subclassFeatures || ['error...']"
-        />
-      </PopOut>
+    <PopOut :title="selectedPopoutSubclass?.name" v-if="showPopOut" @close="closePopOut">
+      <ResourceEntries
+        v-if="selectedPopoutSubclass"
+        :entries="selectedPopoutSubclass?.subclassFeatures || ['error...']"
+      />
+    </PopOut>
     </div>
-    <button class="next-btn" @click="confirmSelection" :disabled="!allSelected">Next</button>
+    <!-- <button class="next-btn" @click="confirmSelection" :disabled="!allSelected">Next</button> -->
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { computed, onMounted, reactive, ref } from 'vue';
+  import { computed, onMounted, ref } from 'vue';
   import type { CharClass, ClassLevels, Subclass, Subclasses } from '../../../types';
   import { useCharacterStore } from '../../../stores/characterStore';
-  import questionIcon from '../../../assets/icons/question.svg';
+    import questionIcon from '../../../assets/icons/question.svg';
   import ResourceEntries from '../../resources/ResourceEntries.vue';
   import PopOut from '../../PopOut.vue';
 
-  const props = defineProps<{ subclasses: Subclasses }>();
+  const props = defineProps<{
+    subclasses: Subclasses;
+    currClass: CharClass | null;
+  }>();
   const emit = defineEmits<{ (e: 'nextStep'): void }>();
 
   const showPopOut = ref(false);
   const selectedPopoutSubclass = ref<Subclass | null>(null);
+    const selectedSubclass = ref<Subclass | null>(null);
 
   const store = useCharacterStore();
 
-  // Classes where the character's current level equals the class's subclassAtLvl
-  const classesNeedingSubclass = computed<CharClass[]>(() => {
-    if (!store.currNewCharacter) return [];
-    return store.currNewCharacter.classes.filter(cls => {
-      const level =
-        store.currNewCharacter!.classLevels[cls.name.toLowerCase() as keyof ClassLevels];
-      return level === cls.subclassAtLvl;
-    });
+  const sortedSubclasses = computed(() => {
+    return Object.fromEntries(
+      Object.entries(props.subclasses).map(([className, subclasses]) => [
+        className,
+        subclasses.sort((a, b) => a.name.localeCompare(b.name)),
+      ])
+    );
   });
 
-  const selectedSubclasses = reactive<Record<string, Subclass>>({});
+  const subclassesForCurrClass = computed(() => {
+    if (!props.currClass) return [];
+    //return the subclasses from sortedSubClasses that match currClass.name
+    return sortedSubclasses.value[props.currClass.name] || [];
+  });
 
-  const allSelected = computed(() =>
-    classesNeedingSubclass.value.every(cls => selectedSubclasses[cls.name] !== undefined)
-  );
-
-  function openPopout(subclass: Subclass) {
-    selectedPopoutSubclass.value = subclass;
-    showPopOut.value = true;
-  }
+    function openPopout(index: number) {
+      selectedPopoutSubclass.value = subclassesForCurrClass.value[index] || null;
+      showPopOut.value = true;
+    }
 
   function closePopOut() {
     showPopOut.value = false;
     selectedPopoutSubclass.value = null;
   }
 
-  function availableSubclasses(className: string) {
-    return props.subclasses[className] ?? [];
-  }
-
-  function selectSubclass(className: string, subclass: Subclass) {
-    selectedSubclasses[className] = subclass;
-  }
-
-  function confirmSelection() {
-    if (!allSelected.value) {
-      alert('Please select a subclass for all required classes.');
-      return;
+    function confirmSelection() {
+      console.log('Selected subclasses:', selectedSubclass.value);
+      // Update the store with the selected subclasses
+      emit('nextStep');
     }
-
-    for (const [className, subclass] of Object.entries(selectedSubclasses)) {
-      store.updateCharacterSubclasses(className, subclass);
-    }
-    emit('nextStep');
-  }
 
   // Skip this step entirely if no class needs a subclass at the current level
   onMounted(() => {
-    if (classesNeedingSubclass.value.length === 0) {
+    if (
+      props.currClass &&
+      props.currClass.subclassAtLvl >
+      store.currNewCharacter!.classLevels[props.currClass.name.toLowerCase() as keyof ClassLevels]
+    ) {
       emit('nextStep');
     }
   });
@@ -154,8 +146,16 @@
     background: none;
     border: none;
     cursor: pointer;
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
+
   .icon-btn img {
+    width: 20px; /* Set a fixed width for the icon */
+    height: 20px; /* Set a fixed height for the icon */
     vertical-align: middle;
   }
 </style>

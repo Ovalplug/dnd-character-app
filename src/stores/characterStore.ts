@@ -153,5 +153,9 @@ export const useCharacterStore = defineStore('characters', {
         .filter(([_, lvl]) => lvl > 0)
         .map(([className, lvl]) => ({ name: className, level: lvl }));
     },
+
+    getCharFullClasses(): CharClass[] {
+      return this.currNewCharacter?.classes || [];
+    },
   },
 });
