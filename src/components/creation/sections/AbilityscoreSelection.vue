@@ -10,6 +10,26 @@
         <option value="point-buy">Point Buy</option>
         <option value="roll">Roll</option>
       </select>
+      <div v-if="selectedMethod === 'roll'">
+        <label for="dice-count">Number of Dice:</label>
+        <input id="dice-count" type="number" v-model.number="diceConfig.count" min="1" />
+
+        <label for="dice-type">Dice Type:</label>
+        <select id="dice-type" v-model="diceConfig.dType">
+          <option value="d4">d4</option>
+          <option value="d6">d6</option>
+          <option value="d8">d8</option>
+          <option value="d10">d10</option>
+          <option value="d12">d12</option>
+          <option value="d20">d20</option>
+        </select>
+
+        <label for="drop-lowest">Drop Lowest:</label>
+        <input id="drop-lowest" type="checkbox" v-model="diceConfig.dropLowest" />
+
+        <label for="reroll-threshold">Reroll Values Below:</label>
+        <input id="reroll-threshold" type="number" v-model.number="diceConfig.rerollThreshold" min="1" />
+      </div>
     </div>
   </div>
   <table>
@@ -116,6 +136,13 @@
   const selectedMethod = ref('custom');
   const availableValues = ref([0, ...standardArray]);
 
+  const diceConfig = ref({
+    count: 4,
+    dType: 'd6',
+    dropLowest: true,
+    rerollThreshold: 1,
+  });
+
   function changeValue(direction: string, abilityName: string) {
     if (direction === 'up') {
       currAbilityScores.value[abilityName as keyof AbilityScoreValues] =
@@ -181,10 +208,12 @@
   }
 
   function doDiceRoll(score: string) {
-    // Roll 4d6 for the specified ability score, reroll any 1s, drop the lowest, and sum the rest
-    const rolledScore = diceRoll([{ count: 4, dType: 'd6', modifier: 0 }], true, [1]);
+    const rolledScore = diceRoll(
+      [{ count: diceConfig.value.count, dType: diceConfig.value.dType, modifier: 0 }],
+      diceConfig.value.dropLowest,
+      [diceConfig.value.rerollThreshold]
+    );
 
-    // Assign the rolled score to the specified ability score
     currAbilityScores.value[score as keyof AbilityScoreValues] = rolledScore ?? 0; // Ensure a default value of 0
   }
 </script>
