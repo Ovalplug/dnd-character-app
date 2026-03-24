@@ -28,7 +28,12 @@
         <input id="drop-lowest" type="checkbox" v-model="diceConfig.dropLowest" />
 
         <label for="reroll-threshold">Reroll Values Below:</label>
-        <input id="reroll-threshold" type="number" v-model.number="diceConfig.rerollThreshold" min="1" />
+        <input
+          id="reroll-threshold"
+          type="number"
+          v-model.number="diceConfig.rerollThreshold"
+          min="1"
+        />
       </div>
     </div>
   </div>
@@ -109,7 +114,7 @@
   import downArrow from '../../../assets/icons/down-arrow.svg';
   import rollDice from '../../../assets/icons/roll-dice.svg';
 
-  import type { AbilityScoreValues } from '../../../types';
+  import type { AbilityScoreValues, DiceTypes } from '../../../types';
 
   import {
     suggestedAbilityScores,
@@ -138,7 +143,7 @@
 
   const diceConfig = ref({
     count: 4,
-    dType: 'd6',
+    dType: 'd6' as keyof DiceTypes, // Explicitly cast to keyof DiceTypes
     dropLowest: true,
     rerollThreshold: 1,
   });
