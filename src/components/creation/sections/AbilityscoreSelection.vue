@@ -1,5 +1,4 @@
 <template>
-  <p>this is where i'll attempt to get a good ability score selection going</p>
   <div>
     <div>
       <label for="score-selection">Select Ability Score Method:</label>
@@ -37,7 +36,7 @@
       </div>
     </div>
   </div>
-  <table>
+  <table v-if="selectedMethod !== 'point-buy'">
     <thead>
       <tr>
         <th v-for="(score, index) in abilityNameArray" :key="`${score}-header-${index}`">
@@ -104,9 +103,59 @@
       </tr>
     </tbody>
   </table>
-  <pre>{{ (abilityScoreNames, standardArray) }}</pre>
+  <table v-else-if="selectedMethod === 'point-buy'">
+    <thead>
+      <tr>
+        <th v-for="(score, index) in abilityNameArray" :key="`${score}-header-pb-${index}`">
+          {{ score.toUpperCase() }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td v-for="(score, index) in abilityNameArray" :key="`${score}-up-pb-${index}`">
+          <img
+            :src="upArrow"
+            alt="Up Arrow"
+            width="20"
+            height="20"
+            @click="changePointBuy('up', score)"
+            :style="{
+              opacity: canIncrease(score) ? 1 : 0.3,
+              cursor: canIncrease(score) ? 'pointer' : 'not-allowed',
+            }"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td v-for="(score, index) in abilityNameArray" :key="`${score}-value-pb-${index}`">
+          <p>{{ currAbilityScores[score as keyof AbilityScoreValues] }}</p>
+        </td>
+      </tr>
+      <tr>
+        <td v-for="(score, index) in abilityNameArray" :key="`${score}-down-pb-${index}`">
+          <img
+            :src="downArrow"
+            alt="Down Arrow"
+            width="20"
+            height="20"
+            @click="changePointBuy('down', score)"
+            :style="{
+              opacity: canDecrease(score) ? 1 : 0.3,
+              cursor: canDecrease(score) ? 'pointer' : 'not-allowed',
+            }"
+          />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div v-if="selectedMethod === 'point-buy'" style="margin-bottom: 1rem">
+    <strong>Points Remaining: {{ pointBuyPointsLeft }}</strong>
+    <span v-if="pointBuyError" style="color: red; margin-left: 1rem">{{ pointBuyError }}</span>
+  </div>
 </template>
 <script lang="ts" setup>
+  import { ref, computed } from 'vue';
   import { useCharacterStore } from '../../../stores/characterStore';
   // import Accordian from '../../AccordianHolder.vue';
 
@@ -125,7 +174,57 @@
 
   import { diceRoll } from '../../../helperFunctions';
 
-  import { ref } from 'vue';
+  // --- Point Buy Logic ---
+  // Standard 27-point buy rules: 8-15, cost increases for higher values
+  const pointBuyCosts: Record<number, number> = {
+    8: 0,
+    9: 1,
+    10: 2,
+    11: 3,
+    12: 4,
+    13: 5,
+    14: 7,
+    15: 9,
+  };
+  const POINT_BUY_MIN = 8;
+  const POINT_BUY_MAX = 15;
+  const POINT_BUY_TOTAL = 27;
+  function getPointBuyTotal(scores: AbilityScoreValues): number {
+    return Object.values(scores).reduce((sum, val) => sum + (pointBuyCosts[val] ?? 100), 0);
+  }
+  const pointBuyError = ref('');
+  const pointBuyPointsLeft = computed(() => {
+    return POINT_BUY_TOTAL - getPointBuyTotal(currAbilityScores.value);
+  });
+  const canIncrease = (score: string): boolean => {
+    const val = currAbilityScores.value[score as keyof AbilityScoreValues];
+    if (val >= POINT_BUY_MAX) return false;
+    // Check if increasing would exceed points
+    const nextVal = val + 1;
+    const costDiff = (pointBuyCosts[nextVal] ?? 100) - (pointBuyCosts[val] ?? 100);
+    return pointBuyPointsLeft.value >= costDiff;
+  };
+  const canDecrease = (score: string): boolean => {
+    const val = currAbilityScores.value[score as keyof AbilityScoreValues];
+    return val > POINT_BUY_MIN;
+  };
+  const changePointBuy = (direction: 'up' | 'down', abilityName: string) => {
+    pointBuyError.value = '';
+    const val = currAbilityScores.value[abilityName as keyof AbilityScoreValues];
+    if (direction === 'up') {
+      if (!canIncrease(abilityName)) {
+        pointBuyError.value = 'Cannot increase further or not enough points.';
+        return;
+      }
+      currAbilityScores.value[abilityName as keyof AbilityScoreValues] = val + 1;
+    } else if (direction === 'down') {
+      if (!canDecrease(abilityName)) {
+        pointBuyError.value = 'Cannot decrease below 8.';
+        return;
+      }
+      currAbilityScores.value[abilityName as keyof AbilityScoreValues] = val - 1;
+    }
+  };
   const store = useCharacterStore();
   const emit = defineEmits<{ (e: 'nextStep'): void }>();
   const currClass = ref(store.currNewCharacter?.classes[0]?.name?.toLowerCase() || '');
