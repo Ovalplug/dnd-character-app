@@ -143,6 +143,15 @@ export type Feats = Feat[];
 
 export type Ability = Partial<Record<'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha', number>>;
 
+export type AbilityScoreValues = {
+  str: number;
+  dex: number;
+  con: number;
+  int: number;
+  wis: number;
+  cha: number;
+};
+
 export type LanguageProficiency = Record<string, boolean | number>;
 
 export type SkillProficiencies = Record<string, boolean>;

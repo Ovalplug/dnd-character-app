@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h1>Full Character Creation {{ currStep }}</h1>
+    <h1>Full Character Creation</h1>
+    <h2>Current Step: {{ currStep }}</h2>
     <!-- start with choosing a name (or a random one) -->
     <name-selector v-if="currStep === 'name'" @nextStep="handleNextStep" />
 

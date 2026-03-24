@@ -157,5 +157,11 @@ export const useCharacterStore = defineStore('characters', {
     getCharFullClasses(): CharClass[] {
       return this.currNewCharacter?.classes || [];
     },
+
+    getRaceAbilityScoreIncreases() {
+      if (!this.currNewCharacter || !this.currNewCharacter.race) return {};
+      // return this.currNewCharacter.race.abilityScoreIncreases || {};
+      return [];
+    },
   },
 });
