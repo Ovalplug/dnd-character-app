@@ -17,6 +17,7 @@ export const suggestedAbilityScores: Record<string, AbilityScoreValues> = {
 };
 
 export const standardArray: number[] = [15, 14, 13, 12, 10, 8];
+export const abilityNameArray: string[] = ['str', 'dex', 'con', 'int', 'wis', 'cha'];
 
 // map for shorthand to pretty names
 export const abilityScoreNames: Record<string, string> = {
