@@ -1,66 +1,62 @@
 <template>
   <p>this is where i'll attempt to get a good ability score selection going</p>
-  <Accordian :header="'Classes'">
-    <pre>
-    {{ store.currNewCharacter?.classes }}
-    </pre>
-  </Accordian>
-  <Accordian :header="'Background'">
-    <pre>
-    {{ store.currNewCharacter?.background }}
-    </pre>
-  </Accordian>
-  <Accordian :header="'Race'">
-    <pre>
-    {{ store.currNewCharacter?.race }}
-    </pre>
-  </Accordian>
-  <Accordian :header="'currAbilityScores'">
-    <p>Curr class: {{ currClass }}</p>
-    <!-- <p>suggested ability scores array</p>
-    <pre>{{ suggestedAbilityScores }}</pre>
-    <p>ability score names</p>
-    <pre>{{ abilityScoreNames }}</pre>
-    <p>standard array</p>
-    <pre>{{ standardArray }}</pre> -->
-    <p>current ability scores</p>
-    <pre>
-    {{ currAbilityScores }}
-    </pre>
-  </Accordian>
   <div>
-    <table>
-      <thead>
-        <tr>
-          <th v-for="(score, index) in abilityNameArray" :key="`${score}-header-${index}`">
-            {{ score.toUpperCase() }}
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td v-for="(score, index) in abilityNameArray" :key="`${score}-up-${index}`">
-            <img :src="upArrow" alt="Up Arrow" width="20" height="20" @click="changeValue('up', score)"/>
-          </td>
-        </tr>
-        <tr>
-          <td v-for="(score, index) in abilityNameArray" :key="`${score}-value-${index}`">
-            <p>{{ findAbilityScore(score as keyof AbilityScoreValues) }}</p>
-          </td>
-        </tr>
-        <tr>
-          <td v-for="(score, index) in abilityNameArray" :key="`${score}-down-${index}`">
-            <img :src="downArrow" alt="Down Arrow" width="20" height="20" @click="changeValue('down', score)"/>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div>
+      <!-- put a little dropdown here -->
+    </div>
+    <div>
+      <label for="score-selection">Select Ability Score Method:</label>
+      <select id="score-selection" v-model="selectedMethod" @change="handleMethodChange">
+        <option value="custom">Custom</option>
+        <option value="standard">Standard Array</option>
+        <option value="point-buy">Point Buy</option>
+        <option value="roll">Roll</option>
+      </select>
+    </div>
   </div>
+  <table>
+    <thead>
+      <tr>
+        <th v-for="(score, index) in abilityNameArray" :key="`${score}-header-${index}`">
+          {{ score.toUpperCase() }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-if="selectedMethod !== 'standard'">
+        <td v-for="(score, index) in abilityNameArray" :key="`${score}-up-${index}`">
+          <img
+            :src="upArrow"
+            alt="Up Arrow"
+            width="20"
+            height="20"
+            @click="changeValue('up', score)"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td v-for="(score, index) in abilityNameArray" :key="`${score}-value-${index}`">
+          <p>{{ findAbilityScore(score as keyof AbilityScoreValues) }}</p>
+        </td>
+      </tr>
+      <tr v-if="selectedMethod !== 'standard'">
+        <td v-for="(score, index) in abilityNameArray" :key="`${score}-down-${index}`">
+          <img
+            :src="downArrow"
+            alt="Down Arrow"
+            width="20"
+            height="20"
+            @click="changeValue('down', score)"
+          />
+        </td>
+      </tr>
+    </tbody>
+  </table>
   <pre>{{ (abilityScoreNames, standardArray) }}</pre>
 </template>
 <script lang="ts" setup>
   import { useCharacterStore } from '../../../stores/characterStore';
-  import Accordian from '../../AccordianHolder.vue';
+  // import Accordian from '../../AccordianHolder.vue';
 
   import upArrow from '../../../assets/icons/up-arrow.svg';
   import downArrow from '../../../assets/icons/down-arrow.svg';
@@ -71,13 +67,12 @@
     suggestedAbilityScores,
     abilityScoreNames,
     standardArray,
-    abilityNameArray
+    abilityNameArray,
   } from '../../../stores/abilityScores';
   import { ref } from 'vue';
   const store = useCharacterStore();
-
-  // const currRace = ref(store.currNewCharacter?.race?.name || '');
-  const currClass = ref((store.currNewCharacter?.classes[0]?.name)?.toLowerCase() || '');
+  const emit = defineEmits<{ (e: 'nextStep'): void }>();
+  const currClass = ref(store.currNewCharacter?.classes[0]?.name?.toLowerCase() || '');
 
   const currAbilityScores = ref<AbilityScoreValues>({
     str: suggestedAbilityScores[currClass.value]?.str || 0,
@@ -87,6 +82,7 @@
     wis: suggestedAbilityScores[currClass.value]?.wis || 0,
     cha: suggestedAbilityScores[currClass.value]?.cha || 0,
   });
+  const selectedMethod = ref('custom');
 
   function changeValue(direction: string, abilityName: string) {
     if (direction === 'up') {
@@ -100,6 +96,40 @@
 
   function findAbilityScore(abilityName: keyof AbilityScoreValues): number {
     return currAbilityScores.value[abilityName] || 0;
+  }
+
+  function handleMethodChange() {
+    console.log(`Selected method: ${selectedMethod.value}`);
+    switch (selectedMethod.value) {
+      case 'custom':
+        // Keep current scores, allow manual adjustment
+        break;
+      case 'standard':
+        // Set to standard array values
+        currAbilityScores.value = {
+          str: suggestedAbilityScores[currClass.value]?.str || 0,
+          dex: suggestedAbilityScores[currClass.value]?.dex || 0,
+          con: suggestedAbilityScores[currClass.value]?.con || 0,
+          int: suggestedAbilityScores[currClass.value]?.int || 0,
+          wis: suggestedAbilityScores[currClass.value]?.wis || 0,
+          cha: suggestedAbilityScores[currClass.value]?.cha || 0,
+        };
+        break;
+      case 'point-buy':
+        // Reset scores for point buy method
+        currAbilityScores.value = {
+          str: 8,
+          dex: 8,
+          con: 8,
+          int: 8,
+          wis: 8,
+          cha: 8,
+        };
+        break;
+      case 'roll':
+        // Implement rolling logic here (e.g., roll 4d6 and drop the lowest)
+        break;
+    }
   }
 </script>
 
