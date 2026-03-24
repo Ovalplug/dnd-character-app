@@ -2,11 +2,9 @@
   <p>this is where i'll attempt to get a good ability score selection going</p>
   <div>
     <div>
-      <!-- put a little dropdown here -->
-    </div>
-    <div>
       <label for="score-selection">Select Ability Score Method:</label>
       <select id="score-selection" v-model="selectedMethod" @change="handleMethodChange">
+        <option value="recommended">Recommended</option>
         <option value="custom">Custom</option>
         <option value="standard">Standard Array</option>
         <option value="point-buy">Point Buy</option>
@@ -23,7 +21,13 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-if="selectedMethod !== 'standard'">
+      <tr
+        v-if="
+          selectedMethod !== 'standard' &&
+          selectedMethod !== 'recommended' &&
+          selectedMethod !== 'roll'
+        "
+      >
         <td v-for="(score, index) in abilityNameArray" :key="`${score}-up-${index}`">
           <img
             :src="upArrow"
@@ -34,12 +38,35 @@
           />
         </td>
       </tr>
+      <tr v-if="selectedMethod === 'standard'">
+        <td v-for="(score, index) in abilityNameArray" :key="`${score}-dropdown-${index}`">
+          <select
+            v-model="currAbilityScores[score as keyof AbilityScoreValues]"
+            @change="handleDropdownChange()"
+          >
+            <option v-for="value in availableValues" :key="value" :value="value">
+              {{ value }}
+            </option>
+          </select>
+        </td>
+      </tr>
+      <tr v-if="selectedMethod === 'roll'">
+        <td v-for="(score, index) in abilityNameArray" :key="`${score}-roll-${index}`">
+          <img :src="rollDice" alt="Roll Dice" width="20" height="20" @click="doDiceRoll(score)" />
+        </td>
+      </tr>
       <tr>
         <td v-for="(score, index) in abilityNameArray" :key="`${score}-value-${index}`">
           <p>{{ findAbilityScore(score as keyof AbilityScoreValues) }}</p>
         </td>
       </tr>
-      <tr v-if="selectedMethod !== 'standard'">
+      <tr
+        v-if="
+          selectedMethod !== 'standard' &&
+          selectedMethod !== 'recommended' &&
+          selectedMethod !== 'roll'
+        "
+      >
         <td v-for="(score, index) in abilityNameArray" :key="`${score}-down-${index}`">
           <img
             :src="downArrow"
@@ -60,6 +87,7 @@
 
   import upArrow from '../../../assets/icons/up-arrow.svg';
   import downArrow from '../../../assets/icons/down-arrow.svg';
+  import rollDice from '../../../assets/icons/roll-dice.svg';
 
   import type { AbilityScoreValues } from '../../../types';
 
@@ -69,6 +97,9 @@
     standardArray,
     abilityNameArray,
   } from '../../../stores/abilityScores';
+
+  import { diceRoll } from '../../../helperFunctions';
+
   import { ref } from 'vue';
   const store = useCharacterStore();
   const emit = defineEmits<{ (e: 'nextStep'): void }>();
@@ -83,6 +114,7 @@
     cha: suggestedAbilityScores[currClass.value]?.cha || 0,
   });
   const selectedMethod = ref('custom');
+  const availableValues = ref([0, ...standardArray]);
 
   function changeValue(direction: string, abilityName: string) {
     if (direction === 'up') {
@@ -104,8 +136,8 @@
       case 'custom':
         // Keep current scores, allow manual adjustment
         break;
-      case 'standard':
-        // Set to standard array values
+      case 'recommended':
+        // Set to recommended ability scores
         currAbilityScores.value = {
           str: suggestedAbilityScores[currClass.value]?.str || 0,
           dex: suggestedAbilityScores[currClass.value]?.dex || 0,
@@ -113,6 +145,17 @@
           int: suggestedAbilityScores[currClass.value]?.int || 0,
           wis: suggestedAbilityScores[currClass.value]?.wis || 0,
           cha: suggestedAbilityScores[currClass.value]?.cha || 0,
+        };
+        break;
+      case 'standard':
+        // Set to 0 for all, and allow user to assign standard array values
+        currAbilityScores.value = {
+          str: 0,
+          dex: 0,
+          con: 0,
+          int: 0,
+          wis: 0,
+          cha: 0,
         };
         break;
       case 'point-buy':
@@ -130,6 +173,19 @@
         // Implement rolling logic here (e.g., roll 4d6 and drop the lowest)
         break;
     }
+  }
+
+  function handleDropdownChange() {
+    const usedValues = Object.values(currAbilityScores.value);
+    availableValues.value = [0, ...standardArray.filter(value => !usedValues.includes(value))];
+  }
+
+  function doDiceRoll(score: string) {
+    // Roll 4d6 for the specified ability score, reroll any 1s, drop the lowest, and sum the rest
+    const rolledScore = diceRoll([{ count: 4, dType: 'd6', modifier: 0 }], true, [1]);
+
+    // Assign the rolled score to the specified ability score
+    currAbilityScores.value[score as keyof AbilityScoreValues] = rolledScore ?? 0; // Ensure a default value of 0
   }
 </script>
 

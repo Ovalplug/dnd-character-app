@@ -1,4 +1,4 @@
-import type { SpellClass, SpellClasses, Spells, SpellSchools } from './types';
+import type { DiceRoll, SpellClass, SpellClasses, Spells, SpellSchools, DiceTypes } from './types';
 
 export function getPrettyAbilityName(shorthand: string): string {
   switch (shorthand) {
@@ -161,4 +161,47 @@ export function getPrettyAbilityScoreValues(scores: any[] | Record<string, any>)
         .join(', ');
     })
     .join('; ');
+}
+
+export function diceRoll(
+  rolls: DiceRoll[],
+  dropLowest: boolean = false,
+  rerollValues: number[] = []
+): number {
+  const diceValues: DiceTypes = {
+    d4: 4,
+    d6: 6,
+    d8: 8,
+    d10: 10,
+    d12: 12,
+    d20: 20,
+  };
+
+  let total = 0;
+
+  rolls.forEach(({ count, dType, modifier }) => {
+    const diceMax = diceValues[dType]; // Ensure dType is valid
+    if (!diceMax) {
+      throw new Error(`Invalid dice type: ${dType}`);
+    }
+
+    const rollResults: number[] = [];
+    for (let i = 0; i < count; i++) {
+      let roll = Math.floor(Math.random() * diceMax) + 1;
+      while (rerollValues.includes(roll)) {
+        roll = Math.floor(Math.random() * diceMax) + 1; // Reroll if value is in rerollValues
+      }
+      rollResults.push(roll);
+    }
+
+    if (dropLowest && rollResults.length > 1) {
+      rollResults.sort((a, b) => a - b); // Sort rolls to drop the lowest
+      rollResults.shift(); // Remove the lowest roll
+    }
+
+    total += rollResults.reduce((sum, roll) => sum + roll, 0); // Sum the rolls
+    total += modifier ?? 0; // Add modifier if provided
+  });
+
+  return total;
 }
