@@ -153,6 +153,9 @@
     <strong>Points Remaining: {{ pointBuyPointsLeft }}</strong>
     <span v-if="pointBuyError" style="color: red; margin-left: 1rem">{{ pointBuyError }}</span>
   </div>
+  <p>this next bit has the racial bonuses...</p>
+  <pre>{{ currRaceBonus }}</pre>
+  <pre>{{ useSetRacialBonus }}</pre>
 </template>
 <script lang="ts" setup>
   import { ref, computed } from 'vue';
@@ -163,7 +166,7 @@
   import downArrow from '../../../assets/icons/down-arrow.svg';
   import rollDice from '../../../assets/icons/roll-dice.svg';
 
-  import type { AbilityScoreValues, DiceTypes } from '../../../types';
+  import type { AbilityScoreValues, DiceTypes, Race } from '../../../types';
 
   import {
     suggestedAbilityScores,
@@ -228,6 +231,13 @@
   const store = useCharacterStore();
   const emit = defineEmits<{ (e: 'nextStep'): void }>();
   const currClass = ref(store.currNewCharacter?.classes[0]?.name?.toLowerCase() || '');
+  const currRaceBonus = ref(store.currNewCharacter?.race?.ability || []);
+  const useSetRacialBonus = computed(() => {
+    // currRaceBonus is an array, check if any entry has a 'choose' key
+    if (!Array.isArray(currRaceBonus.value)) return false;
+    // If any object in the array has a 'choose' property, return false
+    return !currRaceBonus.value.some(bonus => bonus && typeof bonus === 'object' && 'choose' in bonus);
+  });
 
   const currAbilityScores = ref<AbilityScoreValues>({
     str: suggestedAbilityScores[currClass.value]?.str || 0,

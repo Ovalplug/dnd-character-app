@@ -40,8 +40,11 @@
     <!-- then choose ability scores -->
     <ability-score-selection v-if="currStep === 'abilityScores'" @nextStep="handleNextStep" />
   </div>
-
-  <pre>{{ store.currNewCharacter }}</pre>
+  <br />
+  <br />
+  <accordian-holder :header="'character json'">
+    <pre>{{ store.currNewCharacter }}</pre>
+  </accordian-holder>
 </template>
 
 <script lang="ts" setup>
@@ -53,6 +56,7 @@
   import AbilityScoreSelection from './sections/AbilityscoreSelection.vue';
   import SubclassSelection from './sections/SubclassSelection.vue';
   import { ref } from 'vue';
+  import AccordianHolder from '../AccordianHolder.vue';
 
   const props = defineProps<{ dataStore: any }>();
   const store = useCharacterStore();
