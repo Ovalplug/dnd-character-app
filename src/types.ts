@@ -156,7 +156,16 @@ export type Entries = Entry[];
 
 export type Feats = Feat[];
 
-export type Ability = Partial<Record<'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha', number>>;
+export type FixedAbilityBonus = Partial<
+  Record<'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha', number>
+>;
+export type ChooseAbilityBonus = {
+  choose: {
+    from: string[];
+    count: number;
+  };
+};
+export type Ability = FixedAbilityBonus | ChooseAbilityBonus;
 
 export type AbilityScoreValues = {
   str: number;

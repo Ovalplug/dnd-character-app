@@ -84,6 +84,26 @@
           <p>{{ findAbilityScore(score as keyof AbilityScoreValues) }}</p>
         </td>
       </tr>
+      <!-- Racial Bonus Row -->
+      <tr>
+        <td v-for="(score, index) in abilityNameArray" :key="`${score}-racial-${index}`">
+          <template v-if="useSetRacialBonus">
+            <span>+{{ getRacialBonus(score as keyof AbilityScoreValues) }}</span>
+          </template>
+          <template v-else>
+            <select v-model="chosenRacialBonuses[score as keyof AbilityScoreValues]">
+              <option :value="0">+0</option>
+              <option v-for="n in getChooseCountForScore(score)" :key="n" :value="1">+1</option>
+            </select>
+          </template>
+        </td>
+      </tr>
+      <!-- Total with Racial Bonus Row -->
+      <tr>
+        <td v-for="(score, index) in abilityNameArray" :key="`${score}-total-${index}`">
+          <strong>{{ getTotalWithRacialBonus(score as keyof AbilityScoreValues) }}</strong>
+        </td>
+      </tr>
       <tr
         v-if="
           selectedMethod !== 'standard' &&
@@ -132,6 +152,26 @@
           <p>{{ currAbilityScores[score as keyof AbilityScoreValues] }}</p>
         </td>
       </tr>
+      <!-- Racial Bonus Row -->
+      <tr>
+        <td v-for="(score, index) in abilityNameArray" :key="`${score}-racial-pb-${index}`">
+          <template v-if="useSetRacialBonus">
+            <span>+{{ getRacialBonus(score as keyof AbilityScoreValues) }}</span>
+          </template>
+          <template v-else>
+            <select v-model="chosenRacialBonuses[score as keyof AbilityScoreValues]">
+              <option :value="0">+0</option>
+              <option v-for="n in getChooseCountForScore(score)" :key="n" :value="1">+1</option>
+            </select>
+          </template>
+        </td>
+      </tr>
+      <!-- Total with Racial Bonus Row -->
+      <tr>
+        <td v-for="(score, index) in abilityNameArray" :key="`${score}-total-pb-${index}`">
+          <strong>{{ getTotalWithRacialBonus(score as keyof AbilityScoreValues) }}</strong>
+        </td>
+      </tr>
       <tr>
         <td v-for="(score, index) in abilityNameArray" :key="`${score}-down-pb-${index}`">
           <img
@@ -166,11 +206,11 @@
   import downArrow from '../../../assets/icons/down-arrow.svg';
   import rollDice from '../../../assets/icons/roll-dice.svg';
 
-  import type { AbilityScoreValues, DiceTypes, Race } from '../../../types';
+  import type { AbilityScoreValues, DiceTypes, Ability, FixedAbilityBonus } from '../../../types';
 
   import {
     suggestedAbilityScores,
-    abilityScoreNames,
+    // abilityScoreNames,
     standardArray,
     abilityNameArray,
   } from '../../../stores/abilityScores';
@@ -231,12 +271,19 @@
   const store = useCharacterStore();
   const emit = defineEmits<{ (e: 'nextStep'): void }>();
   const currClass = ref(store.currNewCharacter?.classes[0]?.name?.toLowerCase() || '');
-  const currRaceBonus = ref(store.currNewCharacter?.race?.ability || []);
+  // currRaceBonus can be an array of objects, or a single object
+  const currRaceBonus = ref<Ability[]>(
+    Array.isArray(store.currNewCharacter?.race?.ability)
+      ? (store.currNewCharacter.race.ability as Ability[])
+      : []
+  );
   const useSetRacialBonus = computed(() => {
     // currRaceBonus is an array, check if any entry has a 'choose' key
     if (!Array.isArray(currRaceBonus.value)) return false;
     // If any object in the array has a 'choose' property, return false
-    return !currRaceBonus.value.some(bonus => bonus && typeof bonus === 'object' && 'choose' in bonus);
+    return !currRaceBonus.value.some(
+      bonus => bonus && typeof bonus === 'object' && 'choose' in bonus
+    );
   });
 
   const currAbilityScores = ref<AbilityScoreValues>({
@@ -329,6 +376,54 @@
     );
 
     currAbilityScores.value[score as keyof AbilityScoreValues] = rolledScore ?? 0; // Ensure a default value of 0
+  }
+
+  // --- Racial Bonus Logic ---
+  // For races with 'choose', allow user to assign up to N points to any ability
+  const chosenRacialBonuses = ref<AbilityScoreValues>({
+    str: 0,
+    dex: 0,
+    con: 0,
+    int: 0,
+    wis: 0,
+    cha: 0,
+  });
+
+  function isChooseBonus(obj: any): obj is { choose: { from: string[]; count: number } } {
+    return (
+      obj &&
+      typeof obj === 'object' &&
+      'choose' in obj &&
+      obj.choose &&
+      typeof obj.choose === 'object' &&
+      Array.isArray(obj.choose.from)
+    );
+  }
+
+  function getChooseCountForScore(score: string) {
+    // Returns 1 if the score is in the 'from' array, else 0
+    if (!Array.isArray(currRaceBonus.value)) return 0;
+    const chooseObj = currRaceBonus.value.find(isChooseBonus);
+    if (!chooseObj) return 0;
+    return chooseObj.choose.from.includes(score) ? 1 : 0;
+  }
+
+  function isFixedAbilityBonus(obj: any): obj is FixedAbilityBonus {
+    return obj && typeof obj === 'object' && !('choose' in obj);
+  }
+
+  function getRacialBonus(score: keyof AbilityScoreValues) {
+    if (useSetRacialBonus.value) {
+      // Find the first object that is a FixedAbilityBonus
+      const bonusObj = currRaceBonus.value.find(isFixedAbilityBonus);
+      return bonusObj && typeof bonusObj[score] === 'number' ? bonusObj[score]! : 0;
+    } else {
+      return chosenRacialBonuses.value[score] || 0;
+    }
+  }
+
+  function getTotalWithRacialBonus(score: keyof AbilityScoreValues) {
+    return (currAbilityScores.value[score] || 0) + getRacialBonus(score);
   }
 </script>
 
