@@ -67,6 +67,17 @@
       <span v-if="pointBuyError" class="error-msg">{{ pointBuyError }}</span>
     </div>
 
+    <!-- Racial Choice Banner -->
+    <div v-if="!useSetRacialBonus && chooseRacialBonusInfo" class="racial-choice-banner">
+      <span>Racial Bonus — pick <strong>{{ chooseRacialBonusInfo.choose.count }}</strong></span>
+      <span
+        class="racial-choice-pip"
+        :class="{ 'racial-choice-pip--done': chosenCount === chooseRacialBonusInfo.choose.count }"
+      >
+        {{ chosenCount }}/{{ chooseRacialBonusInfo.choose.count }}
+      </span>
+    </div>
+
     <!-- Unified vertical table: one row per ability score -->
     <table class="ability-table">
       <thead>
@@ -184,13 +195,25 @@
               >
             </template>
             <template v-else>
-              <select
-                class="styled-select score-select"
-                v-model="chosenRacialBonuses[score as keyof AbilityScoreValues]"
-              >
-                <option :value="0">+0</option>
-                <option v-for="n in getChooseCountForScore(score)" :key="n" :value="1">+1</option>
-              </select>
+              <div v-if="isInChooseFrom(score)" class="racial-counter">
+                <button
+                  class="racial-counter-btn"
+                  :disabled="chosenRacialBonuses[score as keyof AbilityScoreValues] === 0"
+                  @click="decreaseChosenBonus(score as keyof AbilityScoreValues)"
+                >−</button>
+                <span
+                  class="racial-counter-val"
+                  :class="{ 'racial-counter-val--active': chosenRacialBonuses[score as keyof AbilityScoreValues] > 0 }"
+                >
+                  +{{ chosenRacialBonuses[score as keyof AbilityScoreValues] }}
+                </span>
+                <button
+                  class="racial-counter-btn"
+                  :disabled="!canSelectBonus(score as keyof AbilityScoreValues)"
+                  @click="increaseChosenBonus(score as keyof AbilityScoreValues)"
+                >+</button>
+              </div>
+              <span v-else class="racial-na">—</span>
             </template>
           </td>
 
@@ -408,12 +431,32 @@
     );
   }
 
-  function getChooseCountForScore(score: string) {
-    // Returns 1 if the score is in the 'from' array, else 0
-    if (!Array.isArray(currRaceBonus.value)) return 0;
-    const chooseObj = currRaceBonus.value.find(isChooseBonus);
-    if (!chooseObj) return 0;
-    return chooseObj.choose.from.includes(score) ? 1 : 0;
+  const chooseRacialBonusInfo = computed(() => {
+    if (!Array.isArray(currRaceBonus.value)) return null;
+    return currRaceBonus.value.find(isChooseBonus) ?? null;
+  });
+
+  const chosenCount = computed(() =>
+    Object.values(chosenRacialBonuses.value).reduce((sum, v) => sum + v, 0)
+  );
+
+  function isInChooseFrom(score: string): boolean {
+    return chooseRacialBonusInfo.value?.choose.from.includes(score) ?? false;
+  }
+
+  function canSelectBonus(_score: keyof AbilityScoreValues): boolean {
+    if (!chooseRacialBonusInfo.value) return false;
+    return chosenCount.value < chooseRacialBonusInfo.value.choose.count;
+  }
+
+  function increaseChosenBonus(score: keyof AbilityScoreValues) {
+    if (!canSelectBonus(score)) return;
+    chosenRacialBonuses.value[score] = (chosenRacialBonuses.value[score] || 0) + 1;
+  }
+
+  function decreaseChosenBonus(score: keyof AbilityScoreValues) {
+    if ((chosenRacialBonuses.value[score] || 0) <= 0) return;
+    chosenRacialBonuses.value[score] = chosenRacialBonuses.value[score] - 1;
   }
 
   function isFixedAbilityBonus(obj: any): obj is FixedAbilityBonus {
@@ -708,6 +751,99 @@
 
   img:hover {
     transform: scale(1.25);
+  }
+
+  /* ── Racial Choice Banner ────────────────────────────────── */
+  .racial-choice-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(201, 164, 75, 0.1);
+    border: 1.5px solid rgba(201, 164, 75, 0.4);
+    border-radius: 8px;
+    padding: 0.5rem 0.85rem;
+    font-size: 0.9rem;
+    color: var(--color-text, #1f1b16);
+  }
+
+  .racial-choice-pip {
+    font-weight: 800;
+    font-size: 0.88rem;
+    color: var(--color-muted, #7a6b57);
+    background: rgba(107, 46, 46, 0.07);
+    border-radius: 99px;
+    padding: 0.2rem 0.65rem;
+    transition:
+      background 0.2s,
+      color 0.2s;
+  }
+
+  .racial-choice-pip--done {
+    background: var(--color-accent, #c9a44b);
+    color: #2a1f08;
+  }
+
+  /* ── Racial Toggle Button ────────────────────────────────── */
+  .racial-counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.15rem;
+  }
+
+  .racial-counter-btn {
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    border: 1.5px solid rgba(201, 164, 75, 0.45);
+    border-radius: 99px;
+    width: 1.4rem;
+    height: 1.4rem;
+    font-size: 0.95rem;
+    line-height: 1;
+    font-weight: 700;
+    color: var(--color-muted, #7a6b57);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition:
+      background 0.15s,
+      color 0.15s,
+      border-color 0.15s;
+    font-family: inherit;
+    flex-shrink: 0;
+  }
+
+  .racial-counter-btn:hover:not(:disabled) {
+    background: rgba(201, 164, 75, 0.15);
+    border-color: var(--color-accent, #c9a44b);
+    color: #9a7620;
+  }
+
+  .racial-counter-btn:disabled {
+    opacity: 0.25;
+    cursor: not-allowed;
+  }
+
+  .racial-counter-val {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-muted, #7a6b57);
+    min-width: 1.6rem;
+    text-align: center;
+    transition: color 0.15s;
+  }
+
+  .racial-counter-val--active {
+    color: #9a7620;
+  }
+
+  .racial-na {
+    color: var(--color-muted, #7a6b57);
+    font-size: 0.95rem;
+    opacity: 0.4;
   }
 
   /* ── Responsive ───────────────────────────────────────────── */
