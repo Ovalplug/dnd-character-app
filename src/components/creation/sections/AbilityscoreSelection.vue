@@ -226,6 +226,7 @@
         </tr>
       </tbody>
     </table>
+    <button class="next-btn" @click="finaliseAbilities()">Next</button>
   </div>
 </template>
 <script lang="ts" setup>
@@ -247,6 +248,20 @@
   } from '../../../stores/abilityScores';
 
   import { diceRoll } from '../../../helperFunctions';
+
+  function finaliseAbilities() {
+    // Save the final ability scores to the store, including racial bonuses
+    const finalScores: AbilityScoreValues = {
+      str: getTotalWithRacialBonus('str'),
+      dex: getTotalWithRacialBonus('dex'),
+      con: getTotalWithRacialBonus('con'),
+      int: getTotalWithRacialBonus('int'),
+      wis: getTotalWithRacialBonus('wis'),
+      cha: getTotalWithRacialBonus('cha'),
+    };
+    store.setNewCharAbilityScores(finalScores);
+    emit('nextStep');
+  };
 
   // --- Point Buy Logic ---
   // Standard 27-point buy rules: 8-15, cost increases for higher values

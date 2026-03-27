@@ -39,6 +39,33 @@ export type ClassLevels = {
   wizard: number;
 };
 
+export type LanguageAbility = {
+  speak: boolean;
+  read: boolean;
+  write: boolean;
+};
+
+export type Languages = {
+  common: LanguageAbility;
+  elvish: LanguageAbility;
+  dwarvish: LanguageAbility;
+  giant: LanguageAbility;
+  gnomish: LanguageAbility;
+  goblin: LanguageAbility;
+  halfling: LanguageAbility;
+  orc: LanguageAbility;
+  abyssal: LanguageAbility;
+  celestial: LanguageAbility;
+  draconic: LanguageAbility;
+  deepSpeech: LanguageAbility;
+  infernal: LanguageAbility;
+  primordial: LanguageAbility;
+  sylvan: LanguageAbility;
+  undercommon: LanguageAbility;
+  thievesCant: LanguageAbility;
+  [key: string]: LanguageAbility; // Allow for additional languages
+};
+
 export type playerCharacter = {
   name: string;
   level: number;
@@ -51,7 +78,7 @@ export type playerCharacter = {
   xp?: number;
   inspiration?: boolean;
   feats: Feat[];
-  languages: string[];
+  languages: Languages | {};
   abilityScores: Ability;
   proficiencyModifier: number;
   inventory: any[];

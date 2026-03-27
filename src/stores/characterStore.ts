@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { v4 as uuidv4 } from 'uuid';
 import { db, type Character } from '../database/db';
-import type { Background, CharClass, ClassLevels, playerCharacter, Race, Subclass } from '../types';
+import type { AbilityScoreValues, Background, CharClass, ClassLevels, Languages, playerCharacter, Race, Subclass } from '../types';
 
 export const useCharacterStore = defineStore('characters', {
   state: () => ({
@@ -47,7 +47,25 @@ export const useCharacterStore = defineStore('characters', {
         xp: undefined,
         inspiration: undefined,
         feats: [],
-        languages: [],
+        languages: {
+          common: { speak: false, read: false, write: false },
+          elvish: { speak: false, read: false, write: false },
+          dwarvish: { speak: false, read: false, write: false },
+          giant: { speak: false, read: false, write: false },
+          gnomish: { speak: false, read: false, write: false },
+          goblin: { speak: false, read: false, write: false },
+          halfling: { speak: false, read: false, write: false },
+          orc: { speak: false, read: false, write: false },
+          abyssal: { speak: false, read: false, write: false },
+          celestial: { speak: false, read: false, write: false },
+          draconic: { speak: false, read: false, write: false },
+          deepSpeech: { speak: false, read: false, write: false },
+          infernal: { speak: false, read: false, write: false },
+          primordial: { speak: false, read: false, write: false },
+          sylvan: { speak: false, read: false, write: false },
+          undercommon: { speak: false, read: false, write: false },
+          thievesCant: { speak: false, read: false, write: false },
+        },
         abilityScores: {},
         proficiencyModifier: 2,
         inventory: [],
@@ -162,6 +180,31 @@ export const useCharacterStore = defineStore('characters', {
       if (!this.currNewCharacter || !this.currNewCharacter.race) return {};
       // return this.currNewCharacter.race.abilityScoreIncreases || {};
       return [];
+    },
+
+    setNewCharAbilityScores(abilityScores: AbilityScoreValues) {
+      if (this.currNewCharacter) {
+        this.currNewCharacter.abilityScores = abilityScores;
+      }
+    },
+
+    getCharLanguages() {
+      if (!this.currNewCharacter) return {};
+      return this.currNewCharacter.languages || {};
+    },
+
+    updateCharacterLanguages(languages: Languages) {
+      if (this.currNewCharacter) {
+        this.currNewCharacter.languages = languages;
+      }
+    },
+
+    getCharRace() {
+      return this.currNewCharacter?.race || null;
+    },
+
+    getCharBackground() {
+      return this.currNewCharacter?.background || null;
     },
   },
 });

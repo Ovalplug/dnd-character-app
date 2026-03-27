@@ -1,4 +1,4 @@
-import type { DiceRoll, SpellClass, SpellClasses, Spells, SpellSchools, DiceTypes } from './types';
+import type { DiceRoll, SpellClass, SpellClasses, Spells, SpellSchools, DiceTypes, Race, Background } from './types';
 
 export function getPrettyAbilityName(shorthand: string): string {
   switch (shorthand) {
@@ -204,4 +204,23 @@ export function diceRoll(
   });
 
   return total;
+}
+
+export function getLanguagesFromRace(race: Race | null): string[] {
+  if (!race) return [];
+  if (!race.languageProficiencies) return [];
+  return JSON.parse(JSON.stringify(race.languageProficiencies));
+}
+
+export function getLanguagesFromBackground(background: Background | null): string[] {
+  if (!background) return [];
+  const prof = background.languageProficiencies;
+  if (!prof) return [];
+  return JSON.parse(JSON.stringify(prof));
+}
+
+export function getAllLanguages(race: Race | null, background: Background | null): string[] {
+  const raceLanguages = getLanguagesFromRace(race);
+  const backgroundLanguages = getLanguagesFromBackground(background);
+  return [...new Set([...raceLanguages, ...backgroundLanguages])];
 }

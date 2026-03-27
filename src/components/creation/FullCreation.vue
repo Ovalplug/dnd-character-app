@@ -39,6 +39,10 @@
 
     <!-- then choose ability scores -->
     <ability-score-selection v-if="currStep === 'abilityScores'" @nextStep="handleNextStep" />
+
+    <!-- Then languages, proficiencies, and other details -->
+     <language-selection v-if="currStep === 'language'"  @nextStep="handleNextStep" />
+     <proficiency-selection v-if="currStep === 'proficiency'" @nextStep="handleNextStep" />
   </div>
   <br />
   <br />
@@ -57,12 +61,14 @@
   import SubclassSelection from './sections/SubclassSelection.vue';
   import { ref } from 'vue';
   import AccordianHolder from '../AccordianHolder.vue';
+import LanguageSelection from './sections/LanguageSelection.vue';
+import ProficiencySelection from './sections/ProficiencySelection.vue';
 
   const props = defineProps<{ dataStore: any }>();
   const store = useCharacterStore();
   store.startNewCharacterCreation();
 
-  const steps = ['name', 'background', 'race', 'class', 'subclass', 'abilityScores', 'summary'];
+  const steps = ['name', 'background', 'race', 'class', 'subclass', 'abilityScores', 'language', 'proficiency', 'summary'];
   const currStep = ref(steps[0]);
 
   function handleNextStep() {
