@@ -1,4 +1,4 @@
-import type { DiceRoll, SpellClass, SpellClasses, Spells, SpellSchools, DiceTypes, Race, Background } from './types';
+import type { DiceRoll, SpellClass, SpellClasses, Spells, SpellSchools, DiceTypes, Race, Background, Languages } from './types';
 
 export function getPrettyAbilityName(shorthand: string): string {
   switch (shorthand) {
@@ -223,4 +223,42 @@ export function getAllLanguages(race: Race | null, background: Background | null
   const raceLanguages = getLanguagesFromRace(race);
   const backgroundLanguages = getLanguagesFromBackground(background);
   return [...new Set([...raceLanguages, ...backgroundLanguages])];
+}
+
+export function setStartedLanguages(languages: string[], isRogue: boolean): Languages {
+  const languageAbilities: Languages = {
+    common: { speak: false, read: false, write: false },
+    elvish: { speak: false, read: false, write: false },
+    dwarvish: { speak: false, read: false, write: false },
+    giant: { speak: false, read: false, write: false },
+    gnomish: { speak: false, read: false, write: false },
+    goblin: { speak: false, read: false, write: false },
+    halfling: { speak: false, read: false, write: false },
+    orc: { speak: false, read: false, write: false },
+    abyssal: { speak: false, read: false, write: false },
+    celestial: { speak: false, read: false, write: false },
+    draconic: { speak: false, read: false, write: false },
+    deepSpeech: { speak: false, read: false, write: false },
+    infernal: { speak: false, read: false, write: false },
+    primordial: { speak: false, read: false, write: false },
+    sylvan: { speak: false, read: false, write: false },
+    undercommon: { speak: false, read: false, write: false },
+    thievesCant: { speak: false, read: false, write: false },
+  };
+
+  languages.forEach(lang => {
+    if (languageAbilities[lang]) {
+      languageAbilities[lang].speak = true;
+      languageAbilities[lang].read = true;
+      languageAbilities[lang].write = true;
+    }
+  });
+
+  if (isRogue) {
+    languageAbilities.thievesCant.speak = true;
+    languageAbilities.thievesCant.read = true;
+    languageAbilities.thievesCant.write = true;
+  }
+
+  return languageAbilities;
 }

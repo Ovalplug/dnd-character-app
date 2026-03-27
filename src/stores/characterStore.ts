@@ -176,6 +176,11 @@ export const useCharacterStore = defineStore('characters', {
       return this.currNewCharacter?.classes || [];
     },
 
+    isRogue() {
+      if (!this.currNewCharacter) return false;
+      return this.currNewCharacter.classes.some(c => c.name.toLowerCase() === 'rogue');
+    },
+
     getRaceAbilityScoreIncreases() {
       if (!this.currNewCharacter || !this.currNewCharacter.race) return {};
       // return this.currNewCharacter.race.abilityScoreIncreases || {};
