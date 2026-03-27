@@ -1,201 +1,209 @@
 <template>
-  <div>
-    <div>
-      <label for="score-selection">Select Ability Score Method:</label>
-      <select id="score-selection" v-model="selectedMethod" @change="handleMethodChange">
+  <div class="ability-score-selection">
+    <!-- Method Selector Card -->
+    <div class="method-card">
+      <label class="method-label" for="score-selection">Ability Score Method</label>
+      <select
+        id="score-selection"
+        class="styled-select method-select"
+        v-model="selectedMethod"
+        @change="handleMethodChange"
+      >
         <option value="recommended">Recommended</option>
         <option value="custom">Custom</option>
         <option value="standard">Standard Array</option>
         <option value="point-buy">Point Buy</option>
         <option value="roll">Roll</option>
       </select>
-      <div v-if="selectedMethod === 'roll'">
-        <label for="dice-count">Number of Dice:</label>
-        <input id="dice-count" type="number" v-model.number="diceConfig.count" min="1" />
 
-        <label for="dice-type">Dice Type:</label>
-        <select id="dice-type" v-model="diceConfig.dType">
-          <option value="d4">d4</option>
-          <option value="d6">d6</option>
-          <option value="d8">d8</option>
-          <option value="d10">d10</option>
-          <option value="d12">d12</option>
-          <option value="d20">d20</option>
-        </select>
-
-        <label for="drop-lowest">Drop Lowest:</label>
-        <input id="drop-lowest" type="checkbox" v-model="diceConfig.dropLowest" />
-
-        <label for="reroll-threshold">Reroll Values Below:</label>
-        <input
-          id="reroll-threshold"
-          type="number"
-          v-model.number="diceConfig.rerollThreshold"
-          min="1"
-        />
+      <!-- Dice Config -->
+      <div v-if="selectedMethod === 'roll'" class="dice-config">
+        <div class="dice-field">
+          <label for="dice-count">Number of Dice</label>
+          <input
+            id="dice-count"
+            class="styled-input"
+            type="number"
+            v-model.number="diceConfig.count"
+            min="1"
+          />
+        </div>
+        <div class="dice-field">
+          <label for="dice-type">Dice Type</label>
+          <select id="dice-type" class="styled-select" v-model="diceConfig.dType">
+            <option value="d4">d4</option>
+            <option value="d6">d6</option>
+            <option value="d8">d8</option>
+            <option value="d10">d10</option>
+            <option value="d12">d12</option>
+            <option value="d20">d20</option>
+          </select>
+        </div>
+        <div class="dice-field dice-field--check">
+          <input
+            id="drop-lowest"
+            type="checkbox"
+            class="styled-checkbox"
+            v-model="diceConfig.dropLowest"
+          />
+          <label for="drop-lowest">Drop Lowest</label>
+        </div>
+        <div class="dice-field">
+          <label for="reroll-threshold">Reroll Below</label>
+          <input
+            id="reroll-threshold"
+            class="styled-input"
+            type="number"
+            v-model.number="diceConfig.rerollThreshold"
+            min="1"
+          />
+        </div>
       </div>
     </div>
+
+    <!-- Point Buy: Points Remaining -->
+    <div v-if="selectedMethod === 'point-buy'" class="points-remaining">
+      Points Remaining: <strong>{{ pointBuyPointsLeft }}</strong>
+      <span v-if="pointBuyError" class="error-msg">{{ pointBuyError }}</span>
+    </div>
+
+    <!-- Unified vertical table: one row per ability score -->
+    <table class="ability-table">
+      <thead>
+        <tr>
+          <th class="col-ability">Ability</th>
+          <th
+            v-if="selectedMethod === 'custom' || selectedMethod === 'point-buy'"
+            class="col-ctrl"
+          ></th>
+          <th class="col-score">
+            {{
+              selectedMethod === 'standard'
+                ? 'Assign'
+                : selectedMethod === 'roll'
+                ? 'Score'
+                : 'Score'
+            }}
+          </th>
+          <th
+            v-if="selectedMethod === 'custom' || selectedMethod === 'point-buy'"
+            class="col-ctrl"
+          ></th>
+          <th class="col-racial">Racial</th>
+          <th class="col-total">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="(score, index) in abilityNameArray"
+          :key="score"
+          :class="index % 2 === 1 ? 'row-alt' : ''"
+        >
+          <!-- Ability Name -->
+          <td class="ability-name">{{ score.toUpperCase() }}</td>
+
+          <!-- Up Arrow (custom / point-buy) -->
+          <td v-if="selectedMethod === 'custom' || selectedMethod === 'point-buy'" class="col-ctrl">
+            <img
+              :src="upArrow"
+              alt="Up"
+              width="20"
+              height="20"
+              @click="
+                selectedMethod === 'point-buy'
+                  ? changePointBuy('up', score)
+                  : changeValue('up', score)
+              "
+              :style="
+                selectedMethod === 'point-buy'
+                  ? {
+                      opacity: canIncrease(score) ? 1 : 0.3,
+                      cursor: canIncrease(score) ? 'pointer' : 'not-allowed',
+                    }
+                  : {}
+              "
+            />
+          </td>
+
+          <!-- Score Cell -->
+          <td class="col-score">
+            <template v-if="selectedMethod === 'standard'">
+              <select
+                class="styled-select score-select"
+                v-model="currAbilityScores[score as keyof AbilityScoreValues]"
+                @change="handleDropdownChange()"
+              >
+                <option v-for="value in availableValues" :key="value" :value="value">
+                  {{ value }}
+                </option>
+              </select>
+            </template>
+            <template v-else-if="selectedMethod === 'roll'">
+              <div class="roll-cell">
+                <img :src="rollDice" alt="Roll" width="22" height="22" @click="doDiceRoll(score)" />
+                <span class="score-value">{{
+                  findAbilityScore(score as keyof AbilityScoreValues)
+                }}</span>
+              </div>
+            </template>
+            <template v-else>
+              <span class="score-value">{{
+                findAbilityScore(score as keyof AbilityScoreValues)
+              }}</span>
+            </template>
+          </td>
+
+          <!-- Down Arrow (custom / point-buy) -->
+          <td v-if="selectedMethod === 'custom' || selectedMethod === 'point-buy'" class="col-ctrl">
+            <img
+              :src="downArrow"
+              alt="Down"
+              width="20"
+              height="20"
+              @click="
+                selectedMethod === 'point-buy'
+                  ? changePointBuy('down', score)
+                  : changeValue('down', score)
+              "
+              :style="
+                selectedMethod === 'point-buy'
+                  ? {
+                      opacity: canDecrease(score) ? 1 : 0.3,
+                      cursor: canDecrease(score) ? 'pointer' : 'not-allowed',
+                    }
+                  : {}
+              "
+            />
+          </td>
+
+          <!-- Racial Bonus -->
+          <td class="col-racial">
+            <template v-if="useSetRacialBonus">
+              <span class="racial-badge"
+                >+{{ getRacialBonus(score as keyof AbilityScoreValues) }}</span
+              >
+            </template>
+            <template v-else>
+              <select
+                class="styled-select score-select"
+                v-model="chosenRacialBonuses[score as keyof AbilityScoreValues]"
+              >
+                <option :value="0">+0</option>
+                <option v-for="n in getChooseCountForScore(score)" :key="n" :value="1">+1</option>
+              </select>
+            </template>
+          </td>
+
+          <!-- Total -->
+          <td class="col-total">
+            <span class="total-value">{{
+              getTotalWithRacialBonus(score as keyof AbilityScoreValues)
+            }}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-  <table v-if="selectedMethod !== 'point-buy'">
-    <thead>
-      <tr>
-        <th v-for="(score, index) in abilityNameArray" :key="`${score}-header-${index}`">
-          {{ score.toUpperCase() }}
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        v-if="
-          selectedMethod !== 'standard' &&
-          selectedMethod !== 'recommended' &&
-          selectedMethod !== 'roll'
-        "
-      >
-        <td v-for="(score, index) in abilityNameArray" :key="`${score}-up-${index}`">
-          <img
-            :src="upArrow"
-            alt="Up Arrow"
-            width="20"
-            height="20"
-            @click="changeValue('up', score)"
-          />
-        </td>
-      </tr>
-      <tr v-if="selectedMethod === 'standard'">
-        <td v-for="(score, index) in abilityNameArray" :key="`${score}-dropdown-${index}`">
-          <select
-            v-model="currAbilityScores[score as keyof AbilityScoreValues]"
-            @change="handleDropdownChange()"
-          >
-            <option v-for="value in availableValues" :key="value" :value="value">
-              {{ value }}
-            </option>
-          </select>
-        </td>
-      </tr>
-      <tr v-if="selectedMethod === 'roll'">
-        <td v-for="(score, index) in abilityNameArray" :key="`${score}-roll-${index}`">
-          <img :src="rollDice" alt="Roll Dice" width="20" height="20" @click="doDiceRoll(score)" />
-        </td>
-      </tr>
-      <tr>
-        <td v-for="(score, index) in abilityNameArray" :key="`${score}-value-${index}`">
-          <p>{{ findAbilityScore(score as keyof AbilityScoreValues) }}</p>
-        </td>
-      </tr>
-      <!-- Racial Bonus Row -->
-      <tr>
-        <td v-for="(score, index) in abilityNameArray" :key="`${score}-racial-${index}`">
-          <template v-if="useSetRacialBonus">
-            <span>+{{ getRacialBonus(score as keyof AbilityScoreValues) }}</span>
-          </template>
-          <template v-else>
-            <select v-model="chosenRacialBonuses[score as keyof AbilityScoreValues]">
-              <option :value="0">+0</option>
-              <option v-for="n in getChooseCountForScore(score)" :key="n" :value="1">+1</option>
-            </select>
-          </template>
-        </td>
-      </tr>
-      <!-- Total with Racial Bonus Row -->
-      <tr>
-        <td v-for="(score, index) in abilityNameArray" :key="`${score}-total-${index}`">
-          <strong>{{ getTotalWithRacialBonus(score as keyof AbilityScoreValues) }}</strong>
-        </td>
-      </tr>
-      <tr
-        v-if="
-          selectedMethod !== 'standard' &&
-          selectedMethod !== 'recommended' &&
-          selectedMethod !== 'roll'
-        "
-      >
-        <td v-for="(score, index) in abilityNameArray" :key="`${score}-down-${index}`">
-          <img
-            :src="downArrow"
-            alt="Down Arrow"
-            width="20"
-            height="20"
-            @click="changeValue('down', score)"
-          />
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <table v-else-if="selectedMethod === 'point-buy'">
-    <thead>
-      <tr>
-        <th v-for="(score, index) in abilityNameArray" :key="`${score}-header-pb-${index}`">
-          {{ score.toUpperCase() }}
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td v-for="(score, index) in abilityNameArray" :key="`${score}-up-pb-${index}`">
-          <img
-            :src="upArrow"
-            alt="Up Arrow"
-            width="20"
-            height="20"
-            @click="changePointBuy('up', score)"
-            :style="{
-              opacity: canIncrease(score) ? 1 : 0.3,
-              cursor: canIncrease(score) ? 'pointer' : 'not-allowed',
-            }"
-          />
-        </td>
-      </tr>
-      <tr>
-        <td v-for="(score, index) in abilityNameArray" :key="`${score}-value-pb-${index}`">
-          <p>{{ currAbilityScores[score as keyof AbilityScoreValues] }}</p>
-        </td>
-      </tr>
-      <!-- Racial Bonus Row -->
-      <tr>
-        <td v-for="(score, index) in abilityNameArray" :key="`${score}-racial-pb-${index}`">
-          <template v-if="useSetRacialBonus">
-            <span>+{{ getRacialBonus(score as keyof AbilityScoreValues) }}</span>
-          </template>
-          <template v-else>
-            <select v-model="chosenRacialBonuses[score as keyof AbilityScoreValues]">
-              <option :value="0">+0</option>
-              <option v-for="n in getChooseCountForScore(score)" :key="n" :value="1">+1</option>
-            </select>
-          </template>
-        </td>
-      </tr>
-      <!-- Total with Racial Bonus Row -->
-      <tr>
-        <td v-for="(score, index) in abilityNameArray" :key="`${score}-total-pb-${index}`">
-          <strong>{{ getTotalWithRacialBonus(score as keyof AbilityScoreValues) }}</strong>
-        </td>
-      </tr>
-      <tr>
-        <td v-for="(score, index) in abilityNameArray" :key="`${score}-down-pb-${index}`">
-          <img
-            :src="downArrow"
-            alt="Down Arrow"
-            width="20"
-            height="20"
-            @click="changePointBuy('down', score)"
-            :style="{
-              opacity: canDecrease(score) ? 1 : 0.3,
-              cursor: canDecrease(score) ? 'pointer' : 'not-allowed',
-            }"
-          />
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <div v-if="selectedMethod === 'point-buy'" style="margin-bottom: 1rem">
-    <strong>Points Remaining: {{ pointBuyPointsLeft }}</strong>
-    <span v-if="pointBuyError" style="color: red; margin-left: 1rem">{{ pointBuyError }}</span>
-  </div>
-  <p>this next bit has the racial bonuses...</p>
-  <pre>{{ currRaceBonus }}</pre>
-  <pre>{{ useSetRacialBonus }}</pre>
 </template>
 <script lang="ts" setup>
   import { ref, computed } from 'vue';
@@ -428,36 +436,328 @@
 </script>
 
 <style scoped>
-  table {
+  /* ── Root ─────────────────────────────────────────────────── */
+  .ability-score-selection {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  /* ── Method Selector Card ─────────────────────────────────── */
+  .method-card {
+    background: var(--color-surface, #efe6d0);
+    border: 1px solid rgba(107, 46, 46, 0.2);
+    border-radius: var(--radius, 12px);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .method-label {
+    font-weight: 700;
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-primary, #6b2e2e);
+  }
+
+  /* ── Styled Select ────────────────────────────────────────── */
+  .styled-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: var(--color-bg, #f4ecd8);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b2e2e' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.6rem center;
+    background-size: 12px;
+    border: 1.5px solid rgba(107, 46, 46, 0.35);
+    border-radius: 8px;
+    padding: 0.5rem 2rem 0.5rem 0.65rem;
+    font-size: 0.95rem;
+    color: var(--color-text, #1f1b16);
+    cursor: pointer;
+    width: 100%;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  .styled-select:focus {
+    outline: none;
+    border-color: var(--color-primary, #6b2e2e);
+    box-shadow: 0 0 0 3px rgba(107, 46, 46, 0.15);
+  }
+
+  .method-select {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  /* Compact select inside table cells */
+  .score-select {
+    padding: 0.25rem 1.5rem 0.25rem 0.4rem;
+    font-size: 0.82rem;
+    border-radius: 6px;
+    min-width: 3.2rem;
+    background-position: right 0.3rem center;
+    background-size: 10px;
+  }
+
+  /* ── Styled Number Input ──────────────────────────────────── */
+  .styled-input {
+    background-color: var(--color-bg, #f4ecd8);
+    border: 1.5px solid rgba(107, 46, 46, 0.35);
+    border-radius: 8px;
+    padding: 0.5rem 0.6rem;
+    font-size: 0.95rem;
+    color: var(--color-text, #1f1b16);
+    width: 100%;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  .styled-input:focus {
+    outline: none;
+    border-color: var(--color-primary, #6b2e2e);
+    box-shadow: 0 0 0 3px rgba(107, 46, 46, 0.15);
+  }
+
+  .styled-checkbox {
+    width: 1.1rem;
+    height: 1.1rem;
+    accent-color: var(--color-primary, #6b2e2e);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  /* ── Dice Config Grid ─────────────────────────────────────── */
+  .dice-config {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.65rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(107, 46, 46, 0.15);
+  }
+
+  .dice-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .dice-field label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-muted, #7a6b57);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .dice-field--check {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    padding-top: 1.2rem; /* align with other fields */
+  }
+
+  .dice-field--check label {
+    text-transform: none;
+    font-size: 0.88rem;
+    letter-spacing: 0;
+  }
+
+  /* ── Table ────────────────────────────────────────────────── */
+  .ability-table {
     width: 100%;
     border-collapse: collapse;
+    background: var(--color-surface, #efe6d0);
+    border-radius: var(--radius, 12px);
+    overflow: hidden;
+    box-shadow: var(--color-card-shadow, 0 6px 18px rgba(31, 27, 22, 0.06));
+    table-layout: fixed;
+  }
+
+  .ability-table thead th {
+    background-color: var(--color-primary, #6b2e2e);
+    color: #f4ecd8;
+    padding: 0.6rem 0.4rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     text-align: center;
-    margin: 1rem 0;
   }
 
-  th {
-    background-color: #f4f4f4;
-    padding: 0.5rem;
-    border: 1px solid #ddd;
+  .ability-table tbody td {
+    padding: 0.55rem 0.35rem;
+    border-bottom: 1px solid rgba(107, 46, 46, 0.08);
+    text-align: center;
+    vertical-align: middle;
   }
 
-  td {
-    padding: 0.5rem;
-    border: 1px solid #ddd;
+  .ability-table tbody tr:last-child td {
+    border-bottom: none;
   }
 
+  /* Alternating row tint */
+  .row-alt td {
+    background-color: rgba(107, 46, 46, 0.03);
+  }
+
+  /* ── Column Widths ─────────────────────────────────────────── */
+  .col-ability {
+    width: 3.8rem;
+  }
+
+  .col-ctrl {
+    width: 2.2rem;
+  }
+
+  .col-racial {
+    width: 5rem;
+  }
+
+  .col-total {
+    width: 3.5rem;
+  }
+
+  /* ── Ability Name Cell ─────────────────────────────────────── */
+  .ability-name {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-primary, #6b2e2e);
+    text-align: left;
+    padding-left: 0.6rem !important;
+    white-space: nowrap;
+  }
+
+  /* ── Score Value ────────────────────────────────────────────── */
+  .score-value {
+    display: inline-block;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-text, #1f1b16);
+    min-width: 1.5rem;
+  }
+
+  /* ── Roll Cell ─────────────────────────────────────────────── */
+  .roll-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+  }
+
+  /* ── Racial Bonus ──────────────────────────────────────────── */
+  .racial-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-accent, #c9a44b);
+    color: #2a1f08;
+    font-size: 0.88rem;
+    font-weight: 800;
+    border-radius: 99px;
+    padding: 0.15rem 0.55rem;
+    min-width: 2.2rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+    letter-spacing: 0.02em;
+  }
+
+  /* ── Total Value ────────────────────────────────────────────── */
+  .total-value {
+    display: inline-block;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--color-primary, #6b2e2e);
+    min-width: 1.5rem;
+  }
+
+  /* ── Points Remaining ─────────────────────────────────────── */
+  .points-remaining {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    background: var(--color-surface, #efe6d0);
+    border: 1.5px solid var(--color-accent, #c9a44b);
+    border-radius: 8px;
+    padding: 0.55rem 0.85rem;
+    font-size: 0.9rem;
+    color: var(--color-text, #1f1b16);
+  }
+
+  .points-remaining strong {
+    font-size: 1.1rem;
+    color: #9a7620;
+  }
+
+  .error-msg {
+    color: var(--color-danger, #b73b3b);
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+
+  /* ── Arrow / Dice Images ──────────────────────────────────── */
   img {
     cursor: pointer;
-    transition: transform 0.2s ease;
+    display: block;
+    margin: 0 auto;
+    transition: transform 0.15s ease, opacity 0.15s ease;
   }
 
   img:hover {
-    transform: scale(1.2);
+    transform: scale(1.25);
   }
 
-  p {
-    margin: 0.5rem 0;
-    font-size: 1rem;
-    font-weight: bold;
+  /* ── Responsive ───────────────────────────────────────────── */
+  @media (max-width: 480px) {
+    .ability-table thead th {
+      padding: 0.45rem 0.2rem;
+      font-size: 0.68rem;
+    }
+
+    .ability-table tbody td {
+      padding: 0.4rem 0.2rem;
+    }
+
+    .ability-name {
+      font-size: 0.65rem;
+      padding-left: 0.35rem !important;
+    }
+
+    .score-value {
+      font-size: 1rem;
+    }
+
+    .total-value {
+      font-size: 1rem;
+    }
+
+    .racial-badge {
+      font-size: 0.75rem;
+      padding: 0.1rem 0.38rem;
+      min-width: 1.8rem;
+    }
+
+    .score-select {
+      font-size: 0.75rem;
+    }
+
+    .col-ctrl {
+      width: 1.8rem;
+    }
+
+    .col-racial {
+      width: 4rem;
+    }
+
+    .col-total {
+      width: 2.8rem;
+    }
+
+    .col-ability {
+      width: 3rem;
+    }
   }
 </style>
