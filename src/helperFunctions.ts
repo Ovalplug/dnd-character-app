@@ -1,4 +1,4 @@
-import type { DiceRoll, SpellClass, SpellClasses, Spells, SpellSchools, DiceTypes, Race, Background, Languages } from './types';
+import type { DiceRoll, SpellClass, SpellClasses, Spells, SpellSchools, DiceTypes, Race, Background, Languages, CharClass, PlayerSkills } from './types';
 
 export function getPrettyAbilityName(shorthand: string): string {
   switch (shorthand) {
@@ -261,4 +261,59 @@ export function setStartedLanguages(languages: string[], isRogue: boolean): Lang
   }
 
   return languageAbilities;
+}
+
+export function setStartingSkillProficiencies(charClass: CharClass | null, race: Race | null, background: Background | null): PlayerSkills {
+  let skills: PlayerSkills = {
+    acrobatics: { proficient: false, expertise: false },
+    animalHandling: { proficient: false, expertise: false },
+    arcana: { proficient: false, expertise: false },
+    athletics: { proficient: false, expertise: false },
+    deception: { proficient: false, expertise: false },
+    history: { proficient: false, expertise: false },
+    insight: { proficient: false, expertise: false },
+    intimidation: { proficient: false, expertise: false },
+    investigation: { proficient: false, expertise: false },
+    medicine: { proficient: false, expertise: false },
+    nature: { proficient: false, expertise: false },
+    perception: { proficient: false, expertise: false },
+    performance: { proficient: false, expertise: false },
+    persuasion: { proficient: false, expertise: false },
+    religion: { proficient: false, expertise: false },
+    sleightOfHand: { proficient: false, expertise: false },
+    stealth: { proficient: false, expertise: false },
+    survival: { proficient: false, expertise: false },
+  };
+
+  function applyProficiencies(source: any) {
+    if (!source) return;
+    let profs = source.skillProficiencies || source.startingProficiencies;
+    if (!profs) return;
+    if (Array.isArray(profs)) {
+      profs.forEach((item: any) => {
+        if (typeof item === 'string') {
+          const key = item.charAt(0).toLowerCase() + item.slice(1).replace(/\s/g, '');
+          if (skills[key as keyof PlayerSkills]) skills[key as keyof PlayerSkills].proficient = true;
+        } else if (typeof item === 'object') {
+          Object.entries(item).forEach(([key, val]) => {
+            if (val === true && skills[key as keyof PlayerSkills]) {
+              skills[key as keyof PlayerSkills].proficient = true;
+            }
+          });
+        }
+      });
+    } else if (typeof profs === 'object') {
+      Object.entries(profs).forEach(([key, val]) => {
+        if (val === true && skills[key as keyof PlayerSkills]) {
+          skills[key as keyof PlayerSkills].proficient = true;
+        }
+      });
+    }
+  }
+
+  applyProficiencies(charClass);
+  applyProficiencies(race);
+  applyProficiencies(background);
+
+  return skills;
 }

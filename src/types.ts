@@ -66,6 +66,32 @@ export type Languages = {
   [key: string]: LanguageAbility; // Allow for additional languages
 };
 
+export type Proficiency = {
+  proficient: boolean;
+  expertise: boolean;
+}
+
+export type PlayerSkills = {
+  acrobatics: Proficiency;
+  animalHandling: Proficiency;
+  arcana: Proficiency;
+  athletics: Proficiency;
+  deception: Proficiency;
+  history: Proficiency;
+  insight: Proficiency;
+  intimidation: Proficiency;
+  investigation: Proficiency;
+  medicine: Proficiency;
+  nature: Proficiency;
+  perception: Proficiency;
+  performance: Proficiency;
+  persuasion: Proficiency;
+  religion: Proficiency;
+  sleightOfHand: Proficiency;
+  stealth: Proficiency;
+  survival: Proficiency;
+};
+
 export type playerCharacter = {
   name: string;
   level: number;
@@ -87,7 +113,7 @@ export type playerCharacter = {
   ac: number;
   speed: number;
   size: 'tiny' | 'small' | 'medium' | 'large' | 'huge' | 'gargantuan';
-  skillProficiencies: SkillProficiencies;
+  skillProficiencies: PlayerSkills;
   image?: string;
 
   // D&D 5e essentials
