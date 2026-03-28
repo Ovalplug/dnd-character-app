@@ -245,6 +245,13 @@ export type Image = {
   title?: string;
 };
 
+export type Subrace = {
+  name: string;
+  page?: number;
+  ability?: Ability[] | Ability;
+  entries?: Entries;
+};
+
 export type Race = {
   name: string;
   source?: string;
@@ -257,6 +264,7 @@ export type Race = {
   skillProficiencies?: SkillProficiencies[];
   entries?: Entries;
   images?: Image[];
+  subraces?: Subrace[];
 };
 
 export type Races = Race[];

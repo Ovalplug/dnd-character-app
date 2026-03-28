@@ -8,11 +8,21 @@
     <div>
       <button @click="showFluff">show fluff</button>
       <button @click="showBase">show base</button>
-      <RaceExtras v-if="show_base" :race="props.race" />
-      <ResourceEntries
-        v-if="show_base"
-        :entries="props.race.entries ?? ['No base entries available']"
-      />
+      <template v-if="show_base">
+        <RaceExtras :race="props.race" />
+        <ResourceEntries :entries="props.race.entries ?? ['No base entries available']" />
+        <template v-if="props.race.subraces && props.race.subraces.length">
+          <h3>Subraces</h3>
+          <div v-for="(subrace, i) in props.race.subraces" :key="i" class="subrace">
+            <h4>{{ subrace.name }}</h4>
+            <p v-if="subrace.ability">
+              <strong>Ability Scores:</strong>
+              {{ getPrettyAbilityScoreValues(subrace.ability) }}
+            </p>
+            <ResourceEntries v-if="subrace.entries" :entries="subrace.entries" />
+          </div>
+        </template>
+      </template>
       <ResourceEntries
         v-if="show_fluff"
         :entries="props.fluff?.entries ?? ['No fluff available']"
@@ -26,6 +36,7 @@
   import type { Race, RaceFluff } from '../../types';
   import ResourceEntries from './ResourceEntries.vue';
   import RaceExtras from './RaceExtras.vue';
+  import { getPrettyAbilityScoreValues } from '../../helperFunctions';
 
   const props = defineProps<{
     race: Race;
