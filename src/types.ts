@@ -99,6 +99,7 @@ export type playerCharacter = {
   classLevels: ClassLevels;
   subclasses?: Subclasses;
   race: Race | null;
+  subrace?: Subrace | null;
   background?: Background | null;
   alignment?: string;
   xp?: number;

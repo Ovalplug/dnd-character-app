@@ -10,6 +10,7 @@ import type {
   playerCharacter,
   Race,
   Subclass,
+  Subrace,
 } from '../types';
 
 export const useCharacterStore = defineStore('characters', {
@@ -51,6 +52,7 @@ export const useCharacterStore = defineStore('characters', {
         },
         subclasses: {},
         race: null,
+        subrace: null,
         background: null,
         alignment: undefined,
         xp: undefined,
@@ -160,6 +162,13 @@ export const useCharacterStore = defineStore('characters', {
     updateCharacterRace(newRace: Race) {
       if (this.currNewCharacter) {
         this.currNewCharacter.race = newRace;
+        this.currNewCharacter.subrace = null;
+      }
+    },
+
+    updateCharacterSubrace(subrace: Subrace | null) {
+      if (this.currNewCharacter) {
+        this.currNewCharacter.subrace = subrace;
       }
     },
 
