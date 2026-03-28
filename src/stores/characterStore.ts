@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { db, type Character } from '../database/db';
 import type {
   AbilityScoreValues,
+  AllProficiencies,
   Background,
   CharClass,
   ClassLevels,
@@ -247,6 +248,18 @@ export const useCharacterStore = defineStore('characters', {
 
     getCharBackground() {
       return this.currNewCharacter?.background || null;
+    },
+
+    getCharFeats() {
+      return this.currNewCharacter?.feats || [];
+    },
+
+    updateAllProficiencies(proficiencies: AllProficiencies) {
+      if (this.currNewCharacter) {
+        this.currNewCharacter.allProficiencies = proficiencies;
+        // Also sync skillProficiencies for backwards compat
+        this.currNewCharacter.skillProficiencies = proficiencies.skills;
+      }
     },
   },
 });

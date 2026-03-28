@@ -92,6 +92,24 @@ export type PlayerSkills = {
   survival: Proficiency;
 };
 
+export type SavingThrow = 'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha';
+
+export type AllProficiencies = {
+  // Skills: fixed + how many more can be freely chosen
+  skills: PlayerSkills;
+  skillChoices: number; // number of additional free skill picks
+  skillChoicePool: (keyof PlayerSkills)[]; // pool to pick from (empty = any)
+  // Expertise: number of expertise picks the player still has to assign
+  expertiseChoices: number;
+  // Saving throws
+  savingThrows: Partial<Record<SavingThrow, boolean>>;
+  // Weapons / Armor / Tools: fixed grants + a count of free choices
+  armorProficiencies: string[];
+  weaponProficiencies: string[];
+  toolProficiencies: string[];
+  toolChoices: number; // number of additional tool choices
+};
+
 export type playerCharacter = {
   name: string;
   level: number;
@@ -115,6 +133,7 @@ export type playerCharacter = {
   speed: number;
   size: 'tiny' | 'small' | 'medium' | 'large' | 'huge' | 'gargantuan';
   skillProficiencies: PlayerSkills;
+  allProficiencies?: AllProficiencies;
   image?: string;
 
   // D&D 5e essentials

@@ -10,6 +10,9 @@ import type {
   Languages,
   CharClass,
   PlayerSkills,
+  Feat,
+  AllProficiencies,
+  SavingThrow,
 } from './types';
 
 export function getPrettyAbilityName(shorthand: string): string {
@@ -273,6 +276,300 @@ export function setStartedLanguages(languages: string[], isRogue: boolean): Lang
   }
 
   return languageAbilities;
+}
+
+// ---------------------------------------------------------------------------
+// Skill name normalisation helpers
+// ---------------------------------------------------------------------------
+
+const SKILL_NAME_MAP: Record<string, keyof PlayerSkills> = {
+  acrobatics: 'acrobatics',
+  'animal handling': 'animalHandling',
+  animalhandling: 'animalHandling',
+  arcana: 'arcana',
+  athletics: 'athletics',
+  deception: 'deception',
+  history: 'history',
+  insight: 'insight',
+  intimidation: 'intimidation',
+  investigation: 'investigation',
+  medicine: 'medicine',
+  nature: 'nature',
+  perception: 'perception',
+  performance: 'performance',
+  persuasion: 'persuasion',
+  religion: 'religion',
+  'sleight of hand': 'sleightOfHand',
+  sleightofhand: 'sleightOfHand',
+  stealth: 'stealth',
+  survival: 'survival',
+};
+
+const SAVING_THROW_MAP: Record<string, SavingThrow> = {
+  strength: 'str',
+  dexterity: 'dex',
+  constitution: 'con',
+  intelligence: 'int',
+  wisdom: 'wis',
+  charisma: 'cha',
+  str: 'str',
+  dex: 'dex',
+  con: 'con',
+  int: 'int',
+  wis: 'wis',
+  cha: 'cha',
+};
+
+function normaliseSkillKey(raw: string): keyof PlayerSkills | null {
+  const key = raw.trim().toLowerCase();
+  return SKILL_NAME_MAP[key] ?? null;
+}
+
+function emptySkills(): PlayerSkills {
+  return {
+    acrobatics: { proficient: false, expertise: false },
+    animalHandling: { proficient: false, expertise: false },
+    arcana: { proficient: false, expertise: false },
+    athletics: { proficient: false, expertise: false },
+    deception: { proficient: false, expertise: false },
+    history: { proficient: false, expertise: false },
+    insight: { proficient: false, expertise: false },
+    intimidation: { proficient: false, expertise: false },
+    investigation: { proficient: false, expertise: false },
+    medicine: { proficient: false, expertise: false },
+    nature: { proficient: false, expertise: false },
+    perception: { proficient: false, expertise: false },
+    performance: { proficient: false, expertise: false },
+    persuasion: { proficient: false, expertise: false },
+    religion: { proficient: false, expertise: false },
+    sleightOfHand: { proficient: false, expertise: false },
+    stealth: { proficient: false, expertise: false },
+    survival: { proficient: false, expertise: false },
+  };
+}
+
+/**
+ * Parse the plain-text startingProficiencies string used by class data.
+ * Returns structured sections keyed by section name (lower-cased).
+ * e.g. { armor: 'light armor, medium armor', weapons: 'simple weapons', ... }
+ */
+function parseClassProficiencyText(text: string): Record<string, string> {
+  const result: Record<string, string> = {};
+  const sections = text.split('\n');
+  for (const section of sections) {
+    const colonIdx = section.indexOf(':');
+    if (colonIdx === -1) continue;
+    const key = section.slice(0, colonIdx).trim().toLowerCase();
+    const value = section.slice(colonIdx + 1).trim();
+    result[key] = value;
+  }
+  return result;
+}
+
+/**
+ * Parse a Skills section string like:
+ *   "Choose four from Acrobatics, Athletics, Deception, ..."
+ *   "Perception, Stealth"
+ * Returns { fixed: string[], choiceCount: number, pool: string[] }
+ */
+function parseSkillsSection(raw: string): {
+  fixed: (keyof PlayerSkills)[];
+  choiceCount: number;
+  pool: (keyof PlayerSkills)[];
+} {
+  const fixed: (keyof PlayerSkills)[] = [];
+  let choiceCount = 0;
+  const pool: (keyof PlayerSkills)[] = [];
+
+  // Handle "Choose N from X, Y, Z" or "Choose N skills"
+  const chooseMatch = raw.match(/choose\s+(\w+)(?:\s+from\s+(.+))?/i);
+  if (chooseMatch) {
+    const numWord = (chooseMatch[1] ?? '').toLowerCase();
+    const numMap: Record<string, number> = {
+      one: 1, two: 2, three: 3, four: 4, five: 5, six: 6,
+      '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6,
+    };
+    choiceCount = numMap[numWord] ?? parseInt(numWord) ?? 0;
+    if (chooseMatch[2]) {
+      for (const part of chooseMatch[2].split(',')) {
+        const normalised = normaliseSkillKey(part.replace(/\band\b/i, '').trim());
+        if (normalised) pool.push(normalised);
+      }
+    }
+  } else {
+    // Fixed list of skills
+    for (const part of raw.split(',')) {
+      const normalised = normaliseSkillKey(part.replace(/\band\b/i, '').trim());
+      if (normalised) fixed.push(normalised);
+    }
+  }
+
+  return { fixed, choiceCount, pool };
+}
+
+/**
+ * Compute the full set of proficiencies for the currently-being-built character
+ * from all sources: classes, race, background, and feats.
+ */
+export function computeAllProficiencies(
+  classes: CharClass[],
+  race: Race | null,
+  background: Background | null,
+  _feats: Feat[]
+): AllProficiencies {
+  const skills = emptySkills();
+  let skillChoices = 0;
+  const skillChoicePoolSets: (keyof PlayerSkills)[][] = [];
+  let expertiseChoices = 0;
+  const savingThrows: Partial<Record<SavingThrow, boolean>> = {};
+  const armorProficiencies: string[] = [];
+  const weaponProficiencies: string[] = [];
+  const toolProficiencies: string[] = [];
+  let toolChoices = 0;
+
+  // ---- helpers ----
+  function grantSkill(key: keyof PlayerSkills) {
+    skills[key].proficient = true;
+  }
+
+  function addArmor(val: string) {
+    const v = val.trim().toLowerCase();
+    if (v && v !== 'none' && !armorProficiencies.includes(v)) armorProficiencies.push(v);
+  }
+  function addWeapon(val: string) {
+    const v = val.trim().toLowerCase();
+    if (v && v !== 'none' && !weaponProficiencies.includes(v)) weaponProficiencies.push(v);
+  }
+  function addTool(val: string) {
+    const v = val.trim().toLowerCase();
+    if (v && v !== 'none' && !toolProficiencies.includes(v)) toolProficiencies.push(v);
+  }
+
+  // ---- process each class ----
+  for (const cls of classes) {
+    if (!cls.startingProficiencies) continue;
+    const sections = parseClassProficiencyText(cls.startingProficiencies);
+
+    // Saving throws
+    if (sections['saving throws']) {
+      for (const part of sections['saving throws'].split(',')) {
+        const st = SAVING_THROW_MAP[part.trim().toLowerCase()];
+        if (st) savingThrows[st] = true;
+      }
+    }
+
+    // Armor
+    if (sections['armor']) {
+      for (const part of sections['armor'].split(',')) addArmor(part);
+    }
+
+    // Weapons
+    if (sections['weapons']) {
+      for (const part of sections['weapons'].split(',')) addWeapon(part);
+    }
+
+    // Tools — handle "one type of artisan's tools of your choice" style
+    if (sections['tools']) {
+      const toolSection = sections['tools'];
+      // Count free choices phrased as "one type of ... of your choice"
+      const choiceMatches = toolSection.match(/one type of [^,]+ of your choice/gi);
+      if (choiceMatches) toolChoices += choiceMatches.length;
+      // Extract fixed tools (everything that isn't a choice phrase)
+      const withoutChoices = toolSection.replace(/,?\s*one type of [^,]+ of your choice/gi, '');
+      for (const part of withoutChoices.split(',')) addTool(part);
+    }
+
+    // Skills
+    if (sections['skills']) {
+      const { fixed, choiceCount, pool } = parseSkillsSection(sections['skills']);
+      for (const sk of fixed) grantSkill(sk);
+      skillChoices += choiceCount;
+      if (pool.length > 0) skillChoicePoolSets.push(pool);
+    }
+  }
+
+  // ---- process race structured skillProficiencies ----
+  if (race?.skillProficiencies) {
+    for (const obj of race.skillProficiencies) {
+      for (const [key, val] of Object.entries(obj)) {
+        if (key === 'any' && typeof val === 'number') {
+          skillChoices += val;
+        } else if (val === true) {
+          const sk = normaliseSkillKey(key);
+          if (sk) grantSkill(sk);
+        }
+      }
+    }
+  }
+
+  // ---- process background ----
+  if (background) {
+    // Skills
+    const bgSkills = background.skillProficiencies;
+    if (Array.isArray(bgSkills)) {
+      for (const obj of bgSkills) {
+        if (typeof obj === 'string') {
+          const sk = normaliseSkillKey(obj);
+          if (sk) grantSkill(sk);
+        } else if (typeof obj === 'object') {
+          for (const [key, val] of Object.entries(obj as Record<string, any>)) {
+            if (key === 'any' && typeof val === 'number') skillChoices += val;
+            else if (val === true) {
+              const sk = normaliseSkillKey(key);
+              if (sk) grantSkill(sk);
+            }
+          }
+        }
+      }
+    } else if (typeof bgSkills === 'object' && bgSkills !== null) {
+      for (const [key, val] of Object.entries(bgSkills as Record<string, any>)) {
+        if (key === 'any' && typeof val === 'number') skillChoices += val;
+        else if (val === true) {
+          const sk = normaliseSkillKey(key);
+          if (sk) grantSkill(sk);
+        }
+      }
+    }
+
+    // Tools
+    const bgTools = background.toolProficiencies;
+    if (Array.isArray(bgTools)) {
+      for (const obj of bgTools) {
+        if (typeof obj === 'string') addTool(obj);
+        else if (typeof obj === 'object') {
+          for (const [key, val] of Object.entries(obj as Record<string, any>)) {
+            if (key === 'any' && typeof val === 'number') toolChoices += val;
+            else if (val === true) addTool(key);
+          }
+        }
+      }
+    }
+  }
+
+  // ---- Merge skill choice pools ----
+  // If there are multiple pools, use the intersection so only valid choices are shown.
+  // If no pool was specified, any skill can be chosen (represented as empty array).
+  let skillChoicePool: (keyof PlayerSkills)[] = [];
+  if (skillChoicePoolSets.length === 1) {
+    skillChoicePool = skillChoicePoolSets[0] ?? [];
+  } else if (skillChoicePoolSets.length > 1) {
+    // Union of all pools (generous interpretation for multi-class)
+    const union = new Set<keyof PlayerSkills>();
+    for (const pool of skillChoicePoolSets) pool.forEach(s => union.add(s));
+    skillChoicePool = Array.from(union);
+  }
+
+  return {
+    skills,
+    skillChoices,
+    skillChoicePool,
+    expertiseChoices,
+    savingThrows,
+    armorProficiencies,
+    weaponProficiencies,
+    toolProficiencies,
+    toolChoices,
+  };
 }
 
 export function setStartingSkillProficiencies(
