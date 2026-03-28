@@ -69,7 +69,7 @@ export type Languages = {
 export type Proficiency = {
   proficient: boolean;
   expertise: boolean;
-}
+};
 
 export type PlayerSkills = {
   acrobatics: Proficiency;

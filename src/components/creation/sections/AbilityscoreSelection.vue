@@ -69,7 +69,9 @@
 
     <!-- Racial Choice Banner -->
     <div v-if="!useSetRacialBonus && chooseRacialBonusInfo" class="racial-choice-banner">
-      <span>Racial Bonus — pick <strong>{{ chooseRacialBonusInfo.choose.count }}</strong></span>
+      <span
+        >Racial Bonus — pick <strong>{{ chooseRacialBonusInfo.choose.count }}</strong></span
+      >
       <span
         class="racial-choice-pip"
         :class="{ 'racial-choice-pip--done': chosenCount === chooseRacialBonusInfo.choose.count }"
@@ -200,7 +202,9 @@
                   class="racial-counter-btn"
                   :disabled="chosenRacialBonuses[score as keyof AbilityScoreValues] === 0"
                   @click="decreaseChosenBonus(score as keyof AbilityScoreValues)"
-                >−</button>
+                >
+                  −
+                </button>
                 <span
                   class="racial-counter-val"
                   :class="{ 'racial-counter-val--active': chosenRacialBonuses[score as keyof AbilityScoreValues] > 0 }"
@@ -211,7 +215,9 @@
                   class="racial-counter-btn"
                   :disabled="!canSelectBonus(score as keyof AbilityScoreValues)"
                   @click="increaseChosenBonus(score as keyof AbilityScoreValues)"
-                >+</button>
+                >
+                  +
+                </button>
               </div>
               <span v-else class="racial-na">—</span>
             </template>
@@ -261,7 +267,7 @@
     };
     store.setNewCharAbilityScores(finalScores);
     emit('nextStep');
-  };
+  }
 
   // --- Point Buy Logic ---
   // Standard 27-point buy rules: 8-15, cost increases for higher values
@@ -788,9 +794,7 @@
     background: rgba(107, 46, 46, 0.07);
     border-radius: 99px;
     padding: 0.2rem 0.65rem;
-    transition:
-      background 0.2s,
-      color 0.2s;
+    transition: background 0.2s, color 0.2s;
   }
 
   .racial-choice-pip--done {
@@ -823,10 +827,7 @@
     align-items: center;
     justify-content: center;
     padding: 0;
-    transition:
-      background 0.15s,
-      color 0.15s,
-      border-color 0.15s;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
     font-family: inherit;
     flex-shrink: 0;
   }

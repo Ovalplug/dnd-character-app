@@ -1,7 +1,16 @@
 import { defineStore } from 'pinia';
 import { v4 as uuidv4 } from 'uuid';
 import { db, type Character } from '../database/db';
-import type { AbilityScoreValues, Background, CharClass, ClassLevels, Languages, playerCharacter, Race, Subclass } from '../types';
+import type {
+  AbilityScoreValues,
+  Background,
+  CharClass,
+  ClassLevels,
+  Languages,
+  playerCharacter,
+  Race,
+  Subclass,
+} from '../types';
 
 export const useCharacterStore = defineStore('characters', {
   state: () => ({

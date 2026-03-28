@@ -1,4 +1,16 @@
-import type { DiceRoll, SpellClass, SpellClasses, Spells, SpellSchools, DiceTypes, Race, Background, Languages, CharClass, PlayerSkills } from './types';
+import type {
+  DiceRoll,
+  SpellClass,
+  SpellClasses,
+  Spells,
+  SpellSchools,
+  DiceTypes,
+  Race,
+  Background,
+  Languages,
+  CharClass,
+  PlayerSkills,
+} from './types';
 
 export function getPrettyAbilityName(shorthand: string): string {
   switch (shorthand) {
@@ -263,7 +275,11 @@ export function setStartedLanguages(languages: string[], isRogue: boolean): Lang
   return languageAbilities;
 }
 
-export function setStartingSkillProficiencies(charClass: CharClass | null, race: Race | null, background: Background | null): PlayerSkills {
+export function setStartingSkillProficiencies(
+  charClass: CharClass | null,
+  race: Race | null,
+  background: Background | null
+): { skills: PlayerSkills; additionalChoices: { basic: number; expert: number } } {
   let skills: PlayerSkills = {
     acrobatics: { proficient: false, expertise: false },
     animalHandling: { proficient: false, expertise: false },
@@ -285,6 +301,9 @@ export function setStartingSkillProficiencies(charClass: CharClass | null, race:
     survival: { proficient: false, expertise: false },
   };
 
+  let basic = 0;
+  let expert = 0;
+
   function applyProficiencies(source: any) {
     if (!source) return;
     let profs = source.skillProficiencies || source.startingProficiencies;
@@ -293,10 +312,13 @@ export function setStartingSkillProficiencies(charClass: CharClass | null, race:
       profs.forEach((item: any) => {
         if (typeof item === 'string') {
           const key = item.charAt(0).toLowerCase() + item.slice(1).replace(/\s/g, '');
-          if (skills[key as keyof PlayerSkills]) skills[key as keyof PlayerSkills].proficient = true;
+          if (skills[key as keyof PlayerSkills])
+            skills[key as keyof PlayerSkills].proficient = true;
         } else if (typeof item === 'object') {
           Object.entries(item).forEach(([key, val]) => {
-            if (val === true && skills[key as keyof PlayerSkills]) {
+            if (key === 'any' && typeof val === 'number') basic += val;
+            else if (key === 'expertise' && typeof val === 'number') expert += val;
+            else if (val === true && skills[key as keyof PlayerSkills]) {
               skills[key as keyof PlayerSkills].proficient = true;
             }
           });
@@ -304,7 +326,9 @@ export function setStartingSkillProficiencies(charClass: CharClass | null, race:
       });
     } else if (typeof profs === 'object') {
       Object.entries(profs).forEach(([key, val]) => {
-        if (val === true && skills[key as keyof PlayerSkills]) {
+        if (key === 'any' && typeof val === 'number') basic += val;
+        else if (key === 'expertise' && typeof val === 'number') expert += val;
+        else if (val === true && skills[key as keyof PlayerSkills]) {
           skills[key as keyof PlayerSkills].proficient = true;
         }
       });
@@ -315,5 +339,5 @@ export function setStartingSkillProficiencies(charClass: CharClass | null, race:
   applyProficiencies(race);
   applyProficiencies(background);
 
-  return skills;
+  return { skills, additionalChoices: { basic, expert } };
 }
