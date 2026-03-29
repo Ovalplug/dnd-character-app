@@ -1,7 +1,10 @@
 <template>
   <div class="container">
     <button class="next-btn" @click="updateRace" :disabled="!canProceed">Next</button>
-    <table v-if="!selectedRace || !selectedRace.subraces || !selectedRace.subraces.length" class="race-table">
+    <table
+      v-if="!selectedRace || !selectedRace.subraces || !selectedRace.subraces.length"
+      class="race-table"
+    >
       <thead>
         <tr>
           <th>Race Name</th>
@@ -29,7 +32,10 @@
       </tbody>
     </table>
 
-    <div v-if="selectedRace && selectedRace.subraces && selectedRace.subraces.length" class="subrace-section">
+    <div
+      v-if="selectedRace && selectedRace.subraces && selectedRace.subraces.length"
+      class="subrace-section"
+    >
       <h3>{{ selectedRace.name }} — Choose a Subrace</h3>
       <button class="back-btn" @click="clearRace">← Back</button>
       <table class="race-table">
@@ -153,7 +159,9 @@
         selectedRace.value.subraces.length > 0 &&
         selectedSubraceIndex.value !== null
       ) {
-        store.updateCharacterSubrace(selectedRace.value.subraces[selectedSubraceIndex.value] ?? null);
+        store.updateCharacterSubrace(
+          selectedRace.value.subraces[selectedSubraceIndex.value] ?? null
+        );
       }
     }
     emit('nextStep');

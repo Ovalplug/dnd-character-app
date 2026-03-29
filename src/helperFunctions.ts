@@ -14,6 +14,7 @@ import type {
   AllProficiencies,
   SavingThrow,
 } from './types';
+import { SKILL_NAME_MAP, SAVING_THROW_MAP } from './constants';
 
 export function getPrettyAbilityName(shorthand: string): string {
   switch (shorthand) {
@@ -282,44 +283,6 @@ export function setStartedLanguages(languages: string[], isRogue: boolean): Lang
 // Skill name normalisation helpers
 // ---------------------------------------------------------------------------
 
-const SKILL_NAME_MAP: Record<string, keyof PlayerSkills> = {
-  acrobatics: 'acrobatics',
-  'animal handling': 'animalHandling',
-  animalhandling: 'animalHandling',
-  arcana: 'arcana',
-  athletics: 'athletics',
-  deception: 'deception',
-  history: 'history',
-  insight: 'insight',
-  intimidation: 'intimidation',
-  investigation: 'investigation',
-  medicine: 'medicine',
-  nature: 'nature',
-  perception: 'perception',
-  performance: 'performance',
-  persuasion: 'persuasion',
-  religion: 'religion',
-  'sleight of hand': 'sleightOfHand',
-  sleightofhand: 'sleightOfHand',
-  stealth: 'stealth',
-  survival: 'survival',
-};
-
-const SAVING_THROW_MAP: Record<string, SavingThrow> = {
-  strength: 'str',
-  dexterity: 'dex',
-  constitution: 'con',
-  intelligence: 'int',
-  wisdom: 'wis',
-  charisma: 'cha',
-  str: 'str',
-  dex: 'dex',
-  con: 'con',
-  int: 'int',
-  wis: 'wis',
-  cha: 'cha',
-};
-
 function normaliseSkillKey(raw: string): keyof PlayerSkills | null {
   const key = raw.trim().toLowerCase();
   return SKILL_NAME_MAP[key] ?? null;
@@ -386,8 +349,18 @@ function parseSkillsSection(raw: string): {
   if (chooseMatch) {
     const numWord = (chooseMatch[1] ?? '').toLowerCase();
     const numMap: Record<string, number> = {
-      one: 1, two: 2, three: 3, four: 4, five: 5, six: 6,
-      '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6,
+      one: 1,
+      two: 2,
+      three: 3,
+      four: 4,
+      five: 5,
+      six: 6,
+      '1': 1,
+      '2': 2,
+      '3': 3,
+      '4': 4,
+      '5': 5,
+      '6': 6,
     };
     choiceCount = numMap[numWord] ?? parseInt(numWord) ?? 0;
     if (chooseMatch[2]) {
