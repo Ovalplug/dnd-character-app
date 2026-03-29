@@ -134,12 +134,16 @@ export const useCharacterStore = defineStore('characters', {
      */
     async finalizeCharacterCreation() {
       if (!this.currNewCharacter) return;
-      const newChar: Character = {
-        ...this.currNewCharacter,
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
-        id: uuidv4(),
-      };
+      // Deep-clone via JSON round-trip to strip Vue reactive Proxy wrappers,
+      // which cannot be serialized by IndexedDB's structured clone algorithm.
+      const newChar: Character = JSON.parse(
+        JSON.stringify({
+          ...this.currNewCharacter,
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+          id: uuidv4(),
+        })
+      );
       await db.characters.add(newChar);
       this.characters.push(newChar);
       this.currNewCharacter = null;
@@ -148,7 +152,7 @@ export const useCharacterStore = defineStore('characters', {
 
     async updateCharacter(character: Character) {
       character.updatedAt = Date.now();
-      await db.characters.put(character);
+      await db.characters.put(JSON.parse(JSON.stringify(character)));
     },
 
     async deleteCharacter(id: string) {
