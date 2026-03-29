@@ -43,6 +43,7 @@
     <!-- Then languages, proficiencies, and other details -->
     <language-selection v-if="currStep === 'language'" @nextStep="handleNextStep" />
     <proficiency-selection v-if="currStep === 'proficiency'" @nextStep="handleNextStep" />
+    <summary-section v-if="currStep === 'summary'" @finishCreation="finishCreation" />
   </div>
   <br />
   <br />
@@ -63,6 +64,8 @@
   import AccordianHolder from '../AccordianHolder.vue';
   import LanguageSelection from './sections/LanguageSelection.vue';
   import ProficiencySelection from './sections/ProficiencySelection.vue';
+import SummarySection from './sections/SummarySection.vue';
+import router from '../../router';
 
   const props = defineProps<{ dataStore: any }>();
   const store = useCharacterStore();
@@ -86,5 +89,14 @@
     if (currentIndex >= 0 && currentIndex < steps.length - 1) {
       currStep.value = steps[currentIndex + 1];
     }
+  }
+
+  function finishCreation() {
+    // For now, just log the character and reset the creation process
+    console.log('Final Character:', store.currNewCharacter);
+    alert('Character creation complete! Check the console for details.');
+    
+    // router back to home
+    router.push('/');
   }
 </script>

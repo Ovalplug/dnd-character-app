@@ -136,6 +136,8 @@ export const useCharacterStore = defineStore('characters', {
       if (!this.currNewCharacter) return;
       const newChar: Character = {
         ...this.currNewCharacter,
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
         id: uuidv4(),
       };
       await db.characters.add(newChar);
