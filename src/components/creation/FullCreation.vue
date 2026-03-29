@@ -64,8 +64,8 @@
   import AccordianHolder from '../AccordianHolder.vue';
   import LanguageSelection from './sections/LanguageSelection.vue';
   import ProficiencySelection from './sections/ProficiencySelection.vue';
-import SummarySection from './sections/SummarySection.vue';
-import router from '../../router';
+  import SummarySection from './sections/SummarySection.vue';
+  import router from '../../router';
 
   const props = defineProps<{ dataStore: any }>();
   const store = useCharacterStore();
@@ -95,7 +95,7 @@ import router from '../../router';
     // For now, just log the character and reset the creation process
     console.log('Final Character:', store.currNewCharacter);
     alert('Character creation complete! Check the console for details.');
-    
+
     // router back to home
     router.push('/');
   }
