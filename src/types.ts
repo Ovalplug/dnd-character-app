@@ -124,7 +124,7 @@ export type playerCharacter = {
   inspiration?: boolean;
   feats: Feat[];
   languages: Languages | {};
-  abilityScores: Ability;
+  abilityScores: AbilityScoreValues;
   proficiencyModifier: number;
   inventory: any[];
   maxHp: number;

@@ -25,6 +25,5 @@
     margin-left: 12%;
     flex: 1 1 0;
     min-height: 0;
-    overflow: hidden;
   }
 </style>

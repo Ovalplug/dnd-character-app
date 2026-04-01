@@ -82,7 +82,7 @@
           </label>
         </slot>
         <br />
-        <slot name="footer">V 0.1</slot>
+        <slot name="footer">V {{ APP_VERSION }}</slot>
       </footer>
     </aside>
 
@@ -91,6 +91,7 @@
 </template>
 
 <script setup lang="ts">
+  import { APP_VERSION } from '../constants';
   import { ref, watchEffect, onMounted } from 'vue';
   import router from '../router';
   import { useDebug } from '../composables/useDebug';

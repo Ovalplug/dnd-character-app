@@ -1,11 +1,11 @@
 <template>
   <div class="character-wrapper">
     <div class="character-content">
-        <CharOverview v-if="showOverview" :character="character" />
-        <CharCombat v-if="showCombat" :character="character" />
-        <CharInventory v-if="showInventory" :character="character" />
-        <CharNotes v-if="showNotes" :character="character" />
-        <CharAbilities v-if="showAbilities" :character="character" />
+      <CharOverview v-if="showOverview" :character="character" />
+      <CharCombat v-if="showCombat" :character="character" />
+      <CharInventory v-if="showInventory" :character="character" />
+      <CharNotes v-if="showNotes" :character="character" />
+      <CharAbilities v-if="showAbilities" :character="character" />
     </div>
     <div class="bar-content">
       <CharacterBar @selectSection="toggleSection" />
@@ -16,12 +16,12 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import CharacterBar from './CharacterBar.vue';
-//   import AccordianHolder from '../AccordianHolder.vue';
-import CharAbilities from './views/CharAbilities.vue';
-import CharCombat from './views/CharCombat.vue';
-import CharInventory from './views/CharInventory.vue';
-import CharNotes from './views/CharNotes.vue';
-import CharOverview from './views/CharOverview.vue';
+  //   import AccordianHolder from '../AccordianHolder.vue';
+  import CharAbilities from './views/CharAbilities.vue';
+  import CharCombat from './views/CharCombat.vue';
+  import CharInventory from './views/CharInventory.vue';
+  import CharNotes from './views/CharNotes.vue';
+  import CharOverview from './views/CharOverview.vue';
 
   import type { playerCharacter } from '../../types';
 
@@ -60,7 +60,6 @@ import CharOverview from './views/CharOverview.vue';
     flex: 1 1 0;
     overflow-y: auto;
     overflow-x: hidden;
-    background-color: lightgray;
   }
 
   .bar-content {
