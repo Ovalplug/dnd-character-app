@@ -65,6 +65,21 @@
       </tbody>
     </table>
   </div>
+  <div>
+    <img :src="artificerGear" alt="Class Icon" class="icon" />
+    <img :src="barbAxe" alt="Class Icon" class="icon" />
+    <img :src="bardLute" alt="Class Icon" class="icon" />
+    <img :src="clericCross" alt="Class Icon" class="icon" />
+    <img :src="druidLeaf" alt="Class Icon" class="icon" />
+    <img :src="fighterSword" alt="Class Icon" class="icon" />
+    <img :src="monkFist" alt="Class Icon" class="icon" />
+    <img :src="rangerBow" alt="Class Icon" class="icon" />
+    <img :src="rogueKnife" alt="Class Icon" class="icon" />
+    <img :src="sorcererMagic" alt="Class Icon" class="icon" />
+    <img :src="warlockEye" alt="Class Icon" class="icon" />
+    <img :src="wizardSpellbook" alt="Class Icon" class="icon" />
+    <img :src="paladinShield" alt="Class Icon" class="icon" />
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -73,6 +88,21 @@
   import heartImg from '../../../assets/icons/heart.svg';
   import shieldImg from '../../../assets/icons/shield.svg';
   import profStar from '../../../assets/icons/profStar.svg';
+
+  // class icons
+  import artificerGear from '../../../assets/icons/artificerGear.svg';
+  import barbAxe from '../../../assets/icons/barbAxe.svg';
+  import bardLute from '../../../assets/icons/bardLute.svg';
+  import clericCross from '../../../assets/icons/clericCross.svg';
+  import druidLeaf from '../../../assets/icons/druidLeaf.svg';
+  import fighterSword from '../../../assets/icons/sword.svg';
+  import monkFist from '../../../assets/icons/monkFist.svg';
+  import rangerBow from '../../../assets/icons/rangerBow.svg';
+  import rogueKnife from '../../../assets/icons/rogueKnife.svg';
+  import sorcererMagic from '../../../assets/icons/sorcererMagic.svg';
+  import warlockEye from '../../../assets/icons/warlockEye.svg';
+  import wizardSpellbook from '../../../assets/icons/wizardSpellbook.svg';
+  const paladinShield = shieldImg;
 
   function formatModifier(ability: string) {
     const modifier = calculateAbilityScoreModifier(
