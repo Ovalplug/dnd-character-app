@@ -13,7 +13,11 @@ import type {
   Subclass,
   Subrace,
 } from '../types';
-import { calculateAbilityScoreModifier, calculatePassivePerception, calculateProficiencyBonus } from '../helperFunctions';
+import {
+  calculateAbilityScoreModifier,
+  calculatePassivePerception,
+  calculateProficiencyBonus,
+} from '../helperFunctions';
 
 export const useCharacterStore = defineStore('characters', {
   state: () => ({
@@ -160,7 +164,10 @@ export const useCharacterStore = defineStore('characters', {
 
     async updateCharacter(character: Character) {
       character.updatedAt = Date.now();
-      await db.characters.put(JSON.parse(JSON.stringify(character)));
+      const serialized: Character = JSON.parse(JSON.stringify(character));
+      await db.characters.put(serialized);
+      const idx = this.characters.findIndex(c => c.id === character.id);
+      if (idx !== -1) this.characters[idx] = serialized;
     },
 
     async deleteCharacter(id: string) {
@@ -296,18 +303,26 @@ export const useCharacterStore = defineStore('characters', {
       // Recalculate proficiency bonus based on level
       const level = Object.values(character.classLevels).reduce((sum, lvl) => sum + lvl, 0);
       const proficiencyModifier = calculateProficiencyBonus(level);
+      const wisMod = Math.floor((character.abilityScores.wis - 10) / 2);
       const passivePerception = calculatePassivePerception(
-        character.abilityScores.wis,
+        wisMod,
         proficiencyModifier,
         character.skillProficiencies.perception.proficient,
         character.skillProficiencies.perception.expertise
       );
       const maxHp = character.maxHp !== 0 ? character.maxHp : this.getStartingHp(character);
+      const ac = 10 + calculateAbilityScoreModifier(
+        character.abilityScores.dex,
+        character.proficiencyModifier,
+        character.allProficiencies?.savingThrows?.['dex'] ?? false,
+        character.allProficiencies?.savingThrows?.['dex'] ?? false
+      );
       character.level = level;
       character.proficiencyModifier = proficiencyModifier;
       character.passivePerception = passivePerception;
       character.maxHp = maxHp;
       character.currHp = maxHp;
+      character.ac = ac;
 
       // After updating derived fields, save the character to the database
       await this.updateCharacter(character);

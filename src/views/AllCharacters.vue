@@ -102,7 +102,9 @@
     word-break: break-word;
   }
   .characterTable th:nth-child(2),
-  .characterTable td:nth-child(2) {
+  .characterTable td:nth-child(2),
+  .characterTable th:nth-child(3),
+  .characterTable td:nth-child(3) {
     width: 48px;
     text-align: center;
   }
