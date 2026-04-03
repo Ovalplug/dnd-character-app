@@ -611,3 +611,30 @@ export function setStartingSkillProficiencies(
 
   return { skills, additionalChoices: { basic, expert } };
 }
+
+export function calculateProficiencyBonus(level: number): number {
+  if (level >= 17) return 6;
+  if (level >= 13) return 5;
+  if (level >= 9) return 4;
+  if (level >= 5) return 3;
+  return 2;
+}
+
+export function calculatePassivePerception(
+  wisMod: number,
+  proficiencyBonus: number,
+  isProficient: boolean,
+  isExpert: boolean
+): number {
+  return 10 + wisMod + (isProficient ? proficiencyBonus : 0) + (isExpert ? proficiencyBonus : 0);
+}
+
+export function calculateAbilityScoreModifier(
+  score: number,
+  proficiencyBonus: number,
+  isProficient: boolean,
+  isExpert: boolean
+): number {
+  const baseMod = Math.floor((score - 10) / 2);
+  return baseMod + (isProficient ? proficiencyBonus : 0) + (isExpert ? proficiencyBonus : 0);
+}

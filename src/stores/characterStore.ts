@@ -9,10 +9,12 @@ import type {
   ClassLevels,
   Languages,
   playerCharacter,
+  PlayerCharacters,
   Race,
   Subclass,
   Subrace,
 } from '../types';
+import { calculatePassivePerception, calculateProficiencyBonus } from '../helperFunctions';
 
 export const useCharacterStore = defineStore('characters', {
   state: () => ({
@@ -273,6 +275,34 @@ export const useCharacterStore = defineStore('characters', {
         // Also sync skillProficiencies for backwards compat
         this.currNewCharacter.skillProficiencies = proficiencies.skills;
       }
+    },
+
+    getStartingHp(character: playerCharacter): number {
+      // Implement logic to calculate starting HP based on character's class and constitution modifier
+      return 0; // Placeholder
+    },
+
+    touchUpCharacter(character: playerCharacter) {
+      // this function can be used at any time to recalculate and update any derived fields on the character, such as proficiency bonus or passive perception, based on their current state. This is useful to ensure all fields are up-to-date before saving or displaying the character.
+      if (!character) return;
+
+      // Recalculate proficiency bonus based on level
+      const level = Object.values(character.classLevels).reduce((sum, lvl) => sum + lvl, 0);
+      const proficiencyModifier = calculateProficiencyBonus(level);
+      const passivePerception = calculatePassivePerception(
+        character.abilityScores.wis,
+        proficiencyModifier,
+        character.skillProficiencies.perception.proficient,
+        character.skillProficiencies.perception.expertise
+      );
+      const maxHp = character.maxHp !== 0 ? character.maxHp : this.getStartingHp(character);
+      character.level = level;
+      character.proficiencyModifier = proficiencyModifier;
+      character.passivePerception = passivePerception;
+      character.maxHp = maxHp;
+
+      // After updating derived fields, save the character to the database
+      this.updateCharacter(character);
     },
   },
 });
