@@ -2,9 +2,7 @@ import Dexie from 'dexie';
 import type { Table } from 'dexie';
 import type { playerCharacter } from '../types';
 
-export interface Character extends playerCharacter {
-  id: string;
-}
+export type Character = playerCharacter;
 
 export class DndDatabase extends Dexie {
   characters!: Table<Character>;

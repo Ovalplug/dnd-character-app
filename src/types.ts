@@ -111,6 +111,7 @@ export type AllProficiencies = {
 };
 
 export type playerCharacter = {
+  id?: string;
   name: string;
   level: number;
   classes: Classes;

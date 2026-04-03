@@ -14,7 +14,7 @@ import type {
   Subclass,
   Subrace,
 } from '../types';
-import { calculatePassivePerception, calculateProficiencyBonus } from '../helperFunctions';
+import { calculateAbilityScoreModifier, calculatePassivePerception, calculateProficiencyBonus } from '../helperFunctions';
 
 export const useCharacterStore = defineStore('characters', {
   state: () => ({
@@ -278,11 +278,18 @@ export const useCharacterStore = defineStore('characters', {
     },
 
     getStartingHp(character: playerCharacter): number {
-      // Implement logic to calculate starting HP based on character's class and constitution modifier
-      return 0; // Placeholder
+      const hd = character.classes[0]?.hd;
+      const hdValue = hd ? parseInt(hd.substring(1)) : 8; // Default to d8 if no class or hd found
+      const conMod = calculateAbilityScoreModifier(
+        character.abilityScores.con,
+        character.proficiencyModifier,
+        character.allProficiencies?.savingThrows?.['con'] ?? false,
+        character.allProficiencies?.savingThrows?.['con'] ?? false
+      );
+      return hdValue + conMod;
     },
 
-    touchUpCharacter(character: playerCharacter) {
+    touchUpCharacter(character: Character) {
       // this function can be used at any time to recalculate and update any derived fields on the character, such as proficiency bonus or passive perception, based on their current state. This is useful to ensure all fields are up-to-date before saving or displaying the character.
       if (!character) return;
 
@@ -300,6 +307,7 @@ export const useCharacterStore = defineStore('characters', {
       character.proficiencyModifier = proficiencyModifier;
       character.passivePerception = passivePerception;
       character.maxHp = maxHp;
+      character.currHp = maxHp;
 
       // After updating derived fields, save the character to the database
       this.updateCharacter(character);

@@ -29,7 +29,7 @@
             <img
               :src="icons.reloadIcon"
               alt="Reload"
-              @click="charStore.reloadCharacter(char.id)"
+              @click="charStore.touchUpCharacter(char.id)"
               class="reloadCharIcon"
             />
           </td>
