@@ -9,7 +9,6 @@ import type {
   ClassLevels,
   Languages,
   playerCharacter,
-  PlayerCharacters,
   Race,
   Subclass,
   Subrace,
@@ -35,6 +34,7 @@ export const useCharacterStore = defineStore('characters', {
      */
     startNewCharacterCreation() {
       this.currNewCharacter = {
+        id: uuidv4(),
         name: '',
         level: 1,
         classes: [],
@@ -150,7 +150,6 @@ export const useCharacterStore = defineStore('characters', {
           ...this.currNewCharacter,
           createdAt: Date.now(),
           updatedAt: Date.now(),
-          id: uuidv4(),
         })
       );
       await db.characters.add(newChar);
@@ -289,8 +288,9 @@ export const useCharacterStore = defineStore('characters', {
       return hdValue + conMod;
     },
 
-    touchUpCharacter(character: Character) {
+    async touchUpCharacter(id: string) {
       // this function can be used at any time to recalculate and update any derived fields on the character, such as proficiency bonus or passive perception, based on their current state. This is useful to ensure all fields are up-to-date before saving or displaying the character.
+      const character = await db.characters.get(id);
       if (!character) return;
 
       // Recalculate proficiency bonus based on level
@@ -310,7 +310,7 @@ export const useCharacterStore = defineStore('characters', {
       character.currHp = maxHp;
 
       // After updating derived fields, save the character to the database
-      this.updateCharacter(character);
+      await this.updateCharacter(character);
     },
   },
 });

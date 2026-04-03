@@ -107,7 +107,8 @@
     text-align: center;
   }
 
-  .deleteCharIcon {
+  .deleteCharIcon,
+  .reloadCharIcon {
     width: 16px;
     height: 16px;
     cursor: pointer;
