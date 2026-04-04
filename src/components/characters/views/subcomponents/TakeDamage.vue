@@ -120,6 +120,7 @@
     border-radius: 10px;
     padding: 0.3rem 0.4rem;
     /* hide browser spinners */
+    appearance: textfield;
     -moz-appearance: textfield;
   }
   .value-input::-webkit-outer-spin-button,
