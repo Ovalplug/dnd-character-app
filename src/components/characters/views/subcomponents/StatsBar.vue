@@ -123,7 +123,10 @@
     popupSubclasses.value = null;
   }
 
-  function openClassPopup(cls: { name: string }) {
+  async function openClassPopup(cls: { name: string }) {
+    if (!dataStore.loaded) {
+      await dataStore.init();
+    }
     const className = cls.name.charAt(0).toUpperCase() + cls.name.slice(1);
     popupClass.value =
       dataStore.classes.find(c => c.name.toLowerCase() === cls.name.toLowerCase()) ?? null;
