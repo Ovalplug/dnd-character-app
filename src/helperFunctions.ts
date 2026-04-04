@@ -362,7 +362,7 @@ function parseSkillsSection(raw: string): {
       '5': 5,
       '6': 6,
     };
-    choiceCount = numMap[numWord] ?? parseInt(numWord) ?? 0;
+    choiceCount = numMap[numWord] ?? (parseInt(numWord) || 0);
     if (chooseMatch[2]) {
       for (const part of chooseMatch[2].split(',')) {
         const normalised = normaliseSkillKey(part.replace(/\band\b/i, '').trim());

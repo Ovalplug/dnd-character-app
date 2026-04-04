@@ -3,16 +3,25 @@
     <p class="charName" ref="nameEl">{{ props.character.name }}</p>
   </div>
   <div class="stats-bar">
-    <div class="icon-container">
+    <div class="icon-container" @click="openPopup('damage')">
       <img :src="heartImg" alt="Health Icon" class="icon" />
-      <div class="hp-overlay">
+      <div class="hp-overlay" :class="{ 'hp-overlay--muted': props.character.tempHp > 0 }">
         <span>{{ props.character.currHp }}</span>
         <span>{{ props.character.maxHp }}</span>
+      </div>
+      <div v-if="props.character.tempHp > 0" class="temp-hp-badge">
+        <img :src="shieldImg" alt="Temp HP" class="temp-hp-shield" />
+        <span class="temp-hp-value">{{ props.character.tempHp }}</span>
       </div>
     </div>
     <div class="class-icons">
       <div v-for="cls in activeClasses" :key="cls.name" class="class-icon-wrapper">
-        <img :src="cls.icon" :alt="cls.name" class="class-icon" :style="{ width: classIconSize + 'px', height: classIconSize + 'px' }" />
+        <img
+          :src="cls.icon"
+          :alt="cls.name"
+          class="class-icon"
+          :style="{ width: classIconSize + 'px', height: classIconSize + 'px' }"
+        />
         <span class="class-level">{{ cls.level }}</span>
       </div>
     </div>
@@ -26,27 +35,57 @@
       <thead>
         <tr>
           <th>
-            <img v-if="props.character.allProficiencies?.savingThrows?.str" :src="profStar" alt="Proficient" class="prof-star" />
+            <img
+              v-if="props.character.allProficiencies?.savingThrows?.str"
+              :src="profStar"
+              alt="Proficient"
+              class="prof-star"
+            />
             <p>STR</p>
           </th>
           <th>
-            <img v-if="props.character.allProficiencies?.savingThrows?.dex" :src="profStar" alt="Proficient" class="prof-star" />
+            <img
+              v-if="props.character.allProficiencies?.savingThrows?.dex"
+              :src="profStar"
+              alt="Proficient"
+              class="prof-star"
+            />
             <p>DEX</p>
           </th>
           <th>
-            <img v-if="props.character.allProficiencies?.savingThrows?.con" :src="profStar" alt="Proficient" class="prof-star" />
+            <img
+              v-if="props.character.allProficiencies?.savingThrows?.con"
+              :src="profStar"
+              alt="Proficient"
+              class="prof-star"
+            />
             <p>CON</p>
           </th>
           <th>
-            <img v-if="props.character.allProficiencies?.savingThrows?.int" :src="profStar" alt="Proficient" class="prof-star" />
+            <img
+              v-if="props.character.allProficiencies?.savingThrows?.int"
+              :src="profStar"
+              alt="Proficient"
+              class="prof-star"
+            />
             <p>INT</p>
           </th>
           <th>
-            <img v-if="props.character.allProficiencies?.savingThrows?.wis" :src="profStar" alt="Proficient" class="prof-star" />
+            <img
+              v-if="props.character.allProficiencies?.savingThrows?.wis"
+              :src="profStar"
+              alt="Proficient"
+              class="prof-star"
+            />
             <p>WIS</p>
           </th>
           <th>
-            <img v-if="props.character.allProficiencies?.savingThrows?.cha" :src="profStar" alt="Proficient" class="prof-star" />
+            <img
+              v-if="props.character.allProficiencies?.savingThrows?.cha"
+              :src="profStar"
+              alt="Proficient"
+              class="prof-star"
+            />
             <p>CHA</p>
           </th>
         </tr>
@@ -71,10 +110,23 @@
       </tbody>
     </table>
   </div>
-
+  <div>
+    <PopOut
+      v-if="popupOpen"
+      :title="'Damage ' + props.character.name"
+      :mini="true"
+      @close="closePopup"
+    >
+      <TakeDamage v-if="popupType === 'damage'" :character="props.character" @close="closePopup" />
+    </PopOut>
+  </div>
 </template>
 
 <script lang="ts" setup>
+  // components
+  import PopOut from '../../PopOut.vue';
+  import TakeDamage from './subcomponents/TakeDamage.vue';
+
   import { computed, ref, onMounted, watch, nextTick } from 'vue';
   import type { playerCharacter } from '../../../types';
   import { calculateAbilityScoreModifier } from '../../../helperFunctions';
@@ -117,6 +169,18 @@
   }>();
 
   const nameEl = ref<HTMLElement | null>(null);
+  const popupOpen = ref(false);
+  const popupType = ref('');
+  const popupAllowedTypes = ['damage'];
+  function openPopup(type: string) {
+    if (!popupAllowedTypes.includes(type)) return;
+    popupOpen.value = true;
+    popupType.value = type;
+  }
+  function closePopup() {
+    popupOpen.value = false;
+    popupType.value = '';
+  }
 
   function fitName() {
     const el = nameEl.value;
@@ -128,7 +192,10 @@
   }
 
   onMounted(() => nextTick(fitName));
-  watch(() => props.character.name, () => nextTick(fitName));
+  watch(
+    () => props.character.name,
+    () => nextTick(fitName)
+  );
 
   const activeClasses = computed(() => {
     if (!props.character.classLevels) return [];
@@ -190,6 +257,36 @@
     font-weight: bold;
     font-size: 0.85rem;
     pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+  .hp-overlay--muted {
+    opacity: 0.4;
+  }
+
+  .temp-hp-badge {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  .temp-hp-shield {
+    width: 28px;
+    height: 28px;
+    filter: invert(18%) sepia(95%) saturate(6000%) hue-rotate(355deg) brightness(85%) contrast(110%);
+  }
+
+  .temp-hp-value {
+    position: absolute;
+    font-weight: 700;
+    font-size: 0.6rem;
+    color: red;
+    line-height: 1;
   }
 
   .ac-overlay {

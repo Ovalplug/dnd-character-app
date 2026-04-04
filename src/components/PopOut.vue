@@ -1,6 +1,11 @@
 <template>
   <div class="popout">
-    <div class="popout-panel" role="dialog" :aria-label="title || 'PopOut'">
+    <div
+      class="popout-panel"
+      :class="{ 'popout-panel--mini': isMini }"
+      role="dialog"
+      :aria-label="title || 'PopOut'"
+    >
       <header class="popout-header">
         <h2 class="popout-title">{{ title }}</h2>
         <button class="popout-close" @click="handleClose" aria-label="Close">
@@ -21,12 +26,15 @@
 
   const props = defineProps<{
     title?: string;
+    mini?: boolean;
     onClose?: () => void;
   }>();
 
   const emit = defineEmits<{
     (e: 'close'): void;
   }>();
+
+  const isMini = props.mini ?? false;
 
   function lockScroll() {
     const body = document.body;
@@ -127,9 +135,16 @@
     flex: 1;
   }
 
+  .popout-panel--mini {
+    width: auto;
+    height: auto;
+    max-width: min(90vw, 600px);
+    max-height: 90vh;
+  }
+
   /* For mobile/tablet screens, fill the parent container */
   @media (max-width: 1024px) {
-    .popout-panel {
+    .popout-panel:not(.popout-panel--mini) {
       width: 100%;
       height: 100%;
       border-radius: 0;

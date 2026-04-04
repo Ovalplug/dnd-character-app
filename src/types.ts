@@ -130,6 +130,7 @@ export type playerCharacter = {
   inventory: any[];
   maxHp: number;
   currHp: number;
+  tempHp: number;
   ac: number;
   speed: number;
   size: 'tiny' | 'small' | 'medium' | 'large' | 'huge' | 'gargantuan';

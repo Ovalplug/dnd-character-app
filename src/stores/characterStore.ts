@@ -96,6 +96,7 @@ export const useCharacterStore = defineStore('characters', {
         inventory: [],
         maxHp: 0,
         currHp: 0,
+        tempHp: 0,
         ac: 0,
         speed: 0,
         size: 'medium',
@@ -289,10 +290,35 @@ export const useCharacterStore = defineStore('characters', {
       const conMod = calculateAbilityScoreModifier(
         character.abilityScores.con,
         character.proficiencyModifier,
-        character.allProficiencies?.savingThrows?.['con'] ?? false,
-        character.allProficiencies?.savingThrows?.['con'] ?? false
+        false,
+        false
       );
       return hdValue + conMod;
+    },
+
+    //this can be positive or negative damage (eg healing)
+    // it should never go above max hp or below 0
+    async applyDamage(id: string, damage: number) {
+      const character = await db.characters.get(id);
+      if (!character) return;
+      if (damage < 0) {
+        // Healing: ignore tempHp, restore currHp without exceeding maxHp
+        character.currHp = Math.min(character.currHp - damage, character.maxHp);
+      } else {
+        // Damage: drain tempHp first, then spill into currHp
+        const tempHpDamage = Math.min(character.tempHp, damage);
+        character.tempHp -= tempHpDamage;
+        const remainingDamage = damage - tempHpDamage;
+        character.currHp = Math.max(character.currHp - remainingDamage, 0);
+      }
+      await this.updateCharacter(character);
+    },
+
+    async applyTempHp(id: string, tempHp: number) {
+      const character = await db.characters.get(id);
+      if (!character) return;
+      character.tempHp = tempHp;
+      await this.updateCharacter(character);
     },
 
     async touchUpCharacter(id: string) {
@@ -311,18 +337,22 @@ export const useCharacterStore = defineStore('characters', {
         character.skillProficiencies.perception.expertise
       );
       const maxHp = character.maxHp !== 0 ? character.maxHp : this.getStartingHp(character);
-      const ac = 10 + calculateAbilityScoreModifier(
-        character.abilityScores.dex,
-        character.proficiencyModifier,
-        character.allProficiencies?.savingThrows?.['dex'] ?? false,
-        character.allProficiencies?.savingThrows?.['dex'] ?? false
-      );
+      const ac =
+        10 +
+        calculateAbilityScoreModifier(
+          character.abilityScores.dex,
+          character.proficiencyModifier,
+          false,
+          false
+        );
+      const tempHp = character.tempHp || 0;
       character.level = level;
       character.proficiencyModifier = proficiencyModifier;
       character.passivePerception = passivePerception;
       character.maxHp = maxHp;
       character.currHp = maxHp;
       character.ac = ac;
+      character.tempHp = tempHp;
 
       // After updating derived fields, save the character to the database
       await this.updateCharacter(character);
