@@ -1,6 +1,10 @@
 <template>
   <div class="name-wrapper">
     <p class="charName" ref="nameEl">{{ props.character.name }}</p>
+    <p>
+      {{ props.character.subrace ? props.character.subrace.name : '' }}
+      {{ props.character.race?.name }}
+    </p>
   </div>
   <div class="stats-bar">
     <div class="icon-container" @click="openPopup('damage')">
@@ -15,17 +19,22 @@
       </div>
     </div>
     <div class="class-icons">
-      <div v-for="cls in activeClasses" :key="cls.name" class="class-icon-wrapper">
+      <div
+        v-for="cls in activeClasses"
+        :key="cls.name"
+        class="class-icon-wrapper"
+        @click="openClassPopup(cls)"
+      >
         <img
           :src="cls.icon"
           :alt="cls.name"
           class="class-icon"
           :style="{ width: classIconSize + 'px', height: classIconSize + 'px' }"
         />
-        <span class="class-level">{{ cls.level }}</span>
+        <span class="class-level">{{ cls.name }}:{{ cls.level }}</span>
       </div>
     </div>
-    <div class="icon-container">
+    <div class="icon-container" @click="openPopup('ac')">
       <img :src="shieldImg" alt="Armor Icon" class="icon" />
       <span class="ac-overlay">{{ props.character.ac }}</span>
     </div>
@@ -111,13 +120,14 @@
     </table>
   </div>
   <div>
-    <PopOut
-      v-if="popupOpen"
-      :title="'Damage ' + props.character.name"
-      :mini="true"
-      @close="closePopup"
-    >
+    <PopOut v-if="popupOpen" :title="popupTitle" :mini="true" @close="closePopup">
       <TakeDamage v-if="popupType === 'damage'" :character="props.character" @close="closePopup" />
+      <SingleClass
+        v-if="popupType === 'class' && popupClass"
+        :currClass="popupClass"
+        :currSubclasses="popupSubclasses"
+      />
+      <UpdateAc v-if="popupType === 'ac'" :character="props.character" @close="closePopup" />
     </PopOut>
   </div>
 </template>
@@ -126,10 +136,15 @@
   // components
   import PopOut from '../../PopOut.vue';
   import TakeDamage from './subcomponents/TakeDamage.vue';
+  import SingleClass from '../../resources/SingleClass.vue';
+  import UpdateAc from './subcomponents/UpdateAc.vue';
 
   import { computed, ref, onMounted, watch, nextTick } from 'vue';
-  import type { playerCharacter } from '../../../types';
+  import type { CharClass, Subclass, playerCharacter } from '../../../types';
   import { calculateAbilityScoreModifier } from '../../../helperFunctions';
+  import { useDataStore } from '../../../stores/dataStore';
+
+  const dataStore = useDataStore();
   import heartImg from '../../../assets/icons/heart.svg';
   import shieldImg from '../../../assets/icons/shield.svg';
   import profStar from '../../../assets/icons/profStar.svg';
@@ -168,10 +183,23 @@
     character: playerCharacter;
   }>();
 
+  const popupTitle = computed(() => {
+    if (popupType.value === 'class' && popupClass.value) {
+      return popupClass.value.name;
+    } else if (popupType.value === 'ac') {
+      return 'Update AC';
+    } else if (popupType.value === 'damage') {
+      return `Damage ${props.character.name}`;
+    }
+    return '';
+  });
+
   const nameEl = ref<HTMLElement | null>(null);
   const popupOpen = ref(false);
   const popupType = ref('');
-  const popupAllowedTypes = ['damage'];
+  const popupClass = ref<CharClass | null>(null);
+  const popupSubclasses = ref<Subclass[] | null>(null);
+  const popupAllowedTypes = ['damage', 'class', 'ac'];
   function openPopup(type: string) {
     if (!popupAllowedTypes.includes(type)) return;
     popupOpen.value = true;
@@ -180,6 +208,16 @@
   function closePopup() {
     popupOpen.value = false;
     popupType.value = '';
+    popupClass.value = null;
+    popupSubclasses.value = null;
+  }
+
+  function openClassPopup(cls: { name: string }) {
+    const className = cls.name.charAt(0).toUpperCase() + cls.name.slice(1);
+    popupClass.value =
+      dataStore.classes.find(c => c.name.toLowerCase() === cls.name.toLowerCase()) ?? null;
+    popupSubclasses.value = dataStore.subclasses[className] ?? null;
+    openPopup('class');
   }
 
   function fitName() {

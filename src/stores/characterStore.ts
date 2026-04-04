@@ -314,6 +314,17 @@ export const useCharacterStore = defineStore('characters', {
       await this.updateCharacter(character);
     },
 
+    async updateAc(id: string, newAc: number) {
+      //eventually this will have functionality to take in items and calculate from that
+      //but for now it'll just be to manually set based on input
+
+      //TODO: add functionality to update ac based on equipped items, similar to how hp is calculated from class and con mod
+      const character = await db.characters.get(id);
+      if (!character) return;
+      character.ac = newAc;
+      await this.updateCharacter(character);
+    },
+
     async applyTempHp(id: string, tempHp: number) {
       const character = await db.characters.get(id);
       if (!character) return;
