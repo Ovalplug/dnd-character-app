@@ -1,57 +1,73 @@
 <template>
-  <table class="skills-bonus">
-    <thead>
-      <tr>
-        <th class="col-prof" title="Proficiency"></th>
-        <th class="col-name">Skill</th>
-        <th class="col-ability">Ability</th>
-        <th class="col-mod">Modifier</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        v-for="row in skillRows"
-        :key="row.key"
-        :class="{ 'row--proficient': row.proficient, 'row--expertise': row.expertise }"
-      >
-        <td class="col-prof">
-          <img
-            v-if="row.expertise"
-            :src="doubleTick"
-            class="prof-icon"
-            alt="Expertise"
-            title="Expertise"
-          />
-          <img
-            v-else-if="row.proficient"
-            :src="singleTick"
-            class="prof-icon"
-            alt="Proficient"
-            title="Proficient"
-          />
-          <span v-else class="prof-dot" aria-hidden="true"></span>
-        </td>
-        <td class="col-name">{{ row.name }}</td>
-        <td class="col-ability">{{ row.ability }}</td>
-        <td class="col-mod" :class="row.modifier >= 0 ? 'mod--pos' : 'mod--neg'">
-          {{ row.modifier >= 0 ? '+' : '' }}{{ row.modifier }}
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="skills-bonus-wrapper">
+    <div class="skills-bonus-header">
+      <span class="skills-bonus-title">Skills</span>
+      <button class="edit-btn" @click="popupOpen = true" aria-label="Edit skill proficiencies">
+        Edit
+      </button>
+    </div>
+    <table class="skills-bonus">
+      <thead>
+        <tr>
+          <th class="col-prof" title="Proficiency"></th>
+          <th class="col-name">Skill</th>
+          <th class="col-ability">Ability</th>
+          <th class="col-mod">Modifier</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="row in skillRows"
+          :key="row.key"
+          :class="{ 'row--proficient': row.proficient, 'row--expertise': row.expertise }"
+        >
+          <td class="col-prof">
+            <img
+              v-if="row.expertise"
+              :src="doubleTick"
+              class="prof-icon"
+              alt="Expertise"
+              title="Expertise"
+            />
+            <img
+              v-else-if="row.proficient"
+              :src="singleTick"
+              class="prof-icon"
+              alt="Proficient"
+              title="Proficient"
+            />
+            <span v-else class="prof-dot" aria-hidden="true"></span>
+          </td>
+          <td class="col-name">{{ row.name }}</td>
+          <td class="col-ability">{{ row.ability }}</td>
+          <td class="col-mod" :class="row.modifier >= 0 ? 'mod--pos' : 'mod--neg'">
+            {{ row.modifier >= 0 ? '+' : '' }}{{ row.modifier }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <PopOut v-if="popupOpen" title="Edit Skill Proficiencies" @close="popupOpen = false">
+      <UpdateSkillProficiencies :character="props.character" @close="popupOpen = false" />
+    </PopOut>
+  </div>
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue';
+  import { computed, ref } from 'vue';
   import type { playerCharacter, PlayerSkills } from '../../../../types';
   import { SKILL_PRETTY, SKILL_ABILITY } from '../../../../constants';
   import { abilityMod } from '../../../../helperFunctions';
   import singleTick from '../../../../assets/icons/singleTick.svg';
   import doubleTick from '../../../../assets/icons/doubleTick.svg';
+  import PopOut from '../../../PopOut.vue';
+  import UpdateSkillProficiencies from './UpdateSkillProficiencies.vue';
 
   const props = defineProps<{
     character: playerCharacter;
   }>();
+
+  const popupOpen = ref(false);
 
   const skillRows = computed(() => {
     const pb = props.character.proficiencyModifier;
@@ -74,6 +90,44 @@
 </script>
 
 <style scoped>
+  .skills-bonus-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .skills-bonus-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .skills-bonus-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-muted);
+  }
+
+  .edit-btn {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background: transparent;
+    color: var(--color-muted);
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+  }
+
+  .edit-btn:hover {
+    background: var(--color-primary);
+    color: #fff;
+    border-color: var(--color-primary);
+  }
+
   .skills-bonus {
     width: 100%;
     border-collapse: collapse;

@@ -12,6 +12,7 @@ import type {
   HitDice,
   Languages,
   playerCharacter,
+  PlayerSkills,
   Race,
   Subclass,
   Subrace,
@@ -353,6 +354,13 @@ export const useCharacterStore = defineStore('characters', {
       const character = await db.characters.get(id);
       if (!character) return;
       character.speed = newSpeed;
+      await this.updateCharacter(character);
+    },
+
+    async updateSkillProficiencies(id: string, newProficiencies: PlayerSkills) {
+      const character = await db.characters.get(id);
+      if (!character) return;
+      character.skillProficiencies = newProficiencies;
       await this.updateCharacter(character);
     },
 
