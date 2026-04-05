@@ -1,6 +1,7 @@
 <template>
   <NameBadge :character="props.character" />
   <StatsBar :character="props.character" />
+  <OtherInfo :character="props.character" />
   <AbilityTable :character="props.character" />
 </template>
 
@@ -9,6 +10,7 @@
   import StatsBar from './subcomponents/StatsBar.vue';
   import AbilityTable from './subcomponents/AbilityTable.vue';
   import type { playerCharacter } from '../../../types';
+  import OtherInfo from './subcomponents/OtherInfo.vue';
 
   const props = defineProps<{
     character: playerCharacter;

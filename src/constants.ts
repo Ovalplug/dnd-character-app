@@ -1,6 +1,6 @@
 import type { PlayerSkills, SavingThrow } from './types';
 
-export const APP_VERSION = '2.3.3';
+export const APP_VERSION = '2.3.5';
 
 export const SKILL_NAME_MAP: Record<string, keyof PlayerSkills> = {
   acrobatics: 'acrobatics',

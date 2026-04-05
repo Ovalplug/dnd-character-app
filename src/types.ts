@@ -139,11 +139,13 @@ export type playerCharacter = {
   image?: string;
 
   // D&D 5e essentials
-  hitDice?: string; // e.g. "1d8"
-  currentHitDice?: number;
+  hitDice: HitDice[];
   deathSaves?: { successes: number; failures: number };
   currency?: { cp: number; sp: number; ep: number; gp: number; pp: number };
   passivePerception?: number;
+  initiativeBonus: number;
+  // Optional additional fields for more detailed character sheets
+  personality?: string;
   personalityTraits?: string[];
   ideals?: string[];
   bonds?: string[];
@@ -170,6 +172,12 @@ export type playerCharacter = {
   attunedItems?: any[];
   createdAt: number;
   updatedAt: number;
+};
+
+export type HitDice = {
+  total: number;
+  current: number;
+  dieType: keyof DiceTypes;
 };
 
 export type PlayerCharacters = playerCharacter[];
@@ -272,6 +280,10 @@ export type Subrace = {
   page?: number;
   ability?: Ability[] | Ability;
   entries?: Entries;
+  speed?: number;
+  traitTags?: string[];
+  languageProficiencies?: LanguageProficiency[];
+  skillProficiencies?: SkillProficiencies[];
 };
 
 export type Race = {

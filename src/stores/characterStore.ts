@@ -7,6 +7,8 @@ import type {
   Background,
   CharClass,
   ClassLevels,
+  DiceTypes,
+  HitDice,
   Languages,
   playerCharacter,
   Race,
@@ -121,11 +123,11 @@ export const useCharacterStore = defineStore('characters', {
           survival: { proficient: false, expertise: false },
         },
         image: undefined,
-        hitDice: undefined,
-        currentHitDice: undefined,
+        hitDice: [],
         deathSaves: undefined,
         currency: undefined,
         passivePerception: undefined,
+        initiativeBonus: 0,
         personalityTraits: [],
         ideals: [],
         bonds: [],
@@ -332,6 +334,13 @@ export const useCharacterStore = defineStore('characters', {
       await this.updateCharacter(character);
     },
 
+    async toggleInspiration(id: string) {
+      const character = await db.characters.get(id);
+      if (!character) return;
+      character.inspiration = !character.inspiration;
+      await this.updateCharacter(character);
+    },
+
     async touchUpCharacter(id: string) {
       // this function can be used at any time to recalculate and update any derived fields on the character, such as proficiency bonus or passive perception, based on their current state. This is useful to ensure all fields are up-to-date before saving or displaying the character.
       const character = await db.characters.get(id);
@@ -357,6 +366,24 @@ export const useCharacterStore = defineStore('characters', {
           false
         );
       const tempHp = character.tempHp || 0;
+      const hitDice: HitDice[] = [];
+      character.classes.forEach(charClass => {
+        if (charClass.hd) {
+          const dieType = charClass.hd.substring(1) as keyof DiceTypes;
+          const classLevel =
+            character.classLevels[charClass.name.toLowerCase() as keyof ClassLevels];
+          const current = classLevel; // Assuming all hit dice are available at the start of the day
+          hitDice.push({ total: classLevel, current: current, dieType: dieType });
+        }
+      });
+      let speed = character.race?.speed || 30;
+      if (character.subrace) {
+        speed = character.subrace.speed || speed;
+      }
+      const initiativeBonus =
+        character.initiativeBonus > 0
+          ? character.initiativeBonus
+          : calculateAbilityScoreModifier(character.abilityScores.dex, 0, false, false);
       character.level = level;
       character.proficiencyModifier = proficiencyModifier;
       character.passivePerception = passivePerception;
@@ -364,7 +391,9 @@ export const useCharacterStore = defineStore('characters', {
       character.currHp = maxHp;
       character.ac = ac;
       character.tempHp = tempHp;
-
+      character.hitDice = hitDice;
+      character.speed = speed;
+      character.initiativeBonus = initiativeBonus;
       // After updating derived fields, save the character to the database
       await this.updateCharacter(character);
     },

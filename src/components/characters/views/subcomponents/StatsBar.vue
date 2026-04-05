@@ -10,6 +10,11 @@
         <img :src="shieldImg" alt="Temp HP" class="temp-hp-shield" />
         <span class="temp-hp-value">{{ props.character.tempHp }}</span>
       </div>
+      <div class="hit-dice-display">
+        {{
+          props.character.hitDice.map(hd => `${hd.current}/${hd.total}d${hd.dieType}`).join(', ')
+        }}
+      </div>
     </div>
     <div class="class-icons">
       <div
@@ -248,5 +253,16 @@
     font-weight: 600;
     color: var(--color-muted);
     line-height: 1;
+  }
+
+  .hit-dice-display {
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-size: 0.8rem;
+    color: var(--color-muted);
+    pointer-events: none;
   }
 </style>

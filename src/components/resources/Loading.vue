@@ -6,6 +6,7 @@
     message: { type: String, default: 'Preparing your adventure...' },
     size: { type: Number, default: 72 },
     variant: { type: String as PropType<'subtle' | 'bold'>, default: 'subtle' },
+    /* @vite-ignore */
     gif: { type: String, default: new URL('../assets/loadingDice.gif', import.meta.url).href },
   });
 
