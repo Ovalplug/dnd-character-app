@@ -132,7 +132,7 @@ export type playerCharacter = {
   currHp: number;
   tempHp: number;
   ac: number;
-  speed: number;
+  speed: CharSpeed;
   size: 'tiny' | 'small' | 'medium' | 'large' | 'huge' | 'gargantuan';
   skillProficiencies: PlayerSkills;
   allProficiencies?: AllProficiencies;
@@ -172,6 +172,14 @@ export type playerCharacter = {
   attunedItems?: any[];
   createdAt: number;
   updatedAt: number;
+};
+
+export type CharSpeed = {
+  base: number;
+  fly?: number;
+  swim?: number;
+  climb?: number;
+  burrow?: number;
 };
 
 export type HitDice = {

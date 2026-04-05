@@ -612,6 +612,10 @@ export function setStartingSkillProficiencies(
   return { skills, additionalChoices: { basic, expert } };
 }
 
+export function abilityMod(score: number): number {
+  return Math.floor((score - 10) / 2);
+}
+
 export function calculateProficiencyBonus(level: number): number {
   if (level >= 17) return 6;
   if (level >= 13) return 5;

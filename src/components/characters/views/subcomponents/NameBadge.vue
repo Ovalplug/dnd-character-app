@@ -3,7 +3,7 @@
     <p class="charName" ref="nameEl">{{ props.character.name }}</p>
     <p>
       {{ props.character.subrace ? props.character.subrace.name : '' }}
-      {{ props.character.race?.name }}
+      {{ props.character.race?.name }} - {{ props.character.background?.name }}
     </p>
   </div>
 </template>

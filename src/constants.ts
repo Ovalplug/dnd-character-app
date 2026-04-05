@@ -1,4 +1,4 @@
-import type { PlayerSkills, SavingThrow } from './types';
+import type { PlayerSkills, SavingThrow, AbilityScoreValues } from './types';
 
 export const APP_VERSION = '2.3.5';
 
@@ -47,6 +47,27 @@ export const SAVE_PRETTY: Record<SavingThrow, string> = {
   int: 'Intelligence',
   wis: 'Wisdom',
   cha: 'Charisma',
+};
+
+export const SKILL_ABILITY: Record<keyof PlayerSkills, keyof AbilityScoreValues> = {
+  acrobatics: 'dex',
+  animalHandling: 'wis',
+  arcana: 'int',
+  athletics: 'str',
+  deception: 'cha',
+  history: 'int',
+  insight: 'wis',
+  intimidation: 'cha',
+  investigation: 'int',
+  medicine: 'wis',
+  nature: 'int',
+  perception: 'wis',
+  performance: 'cha',
+  persuasion: 'cha',
+  religion: 'int',
+  sleightOfHand: 'dex',
+  stealth: 'dex',
+  survival: 'wis',
 };
 
 export const SKILL_PRETTY: Record<keyof PlayerSkills, string> = {

@@ -6,6 +6,7 @@ import type {
   AllProficiencies,
   Background,
   CharClass,
+  CharSpeed,
   ClassLevels,
   DiceTypes,
   HitDice,
@@ -100,7 +101,7 @@ export const useCharacterStore = defineStore('characters', {
         currHp: 0,
         tempHp: 0,
         ac: 0,
-        speed: 0,
+        speed: { base: 30 },
         size: 'medium',
         skillProficiencies: {
           acrobatics: { proficient: false, expertise: false },
@@ -341,6 +342,20 @@ export const useCharacterStore = defineStore('characters', {
       await this.updateCharacter(character);
     },
 
+    async updateDeathSaves(id: string, successes: number, failures: number) {
+      const character = await db.characters.get(id);
+      if (!character) return;
+      character.deathSaves = { successes, failures };
+      await this.updateCharacter(character);
+    },
+
+    async updateSpeed(id: string, newSpeed: CharSpeed) {
+      const character = await db.characters.get(id);
+      if (!character) return;
+      character.speed = newSpeed;
+      await this.updateCharacter(character);
+    },
+
     async touchUpCharacter(id: string) {
       // this function can be used at any time to recalculate and update any derived fields on the character, such as proficiency bonus or passive perception, based on their current state. This is useful to ensure all fields are up-to-date before saving or displaying the character.
       const character = await db.characters.get(id);
@@ -376,9 +391,9 @@ export const useCharacterStore = defineStore('characters', {
           hitDice.push({ total: classLevel, current: current, dieType: dieType });
         }
       });
-      let speed = character.race?.speed || 30;
-      if (character.subrace) {
-        speed = character.subrace.speed || speed;
+      let speed: CharSpeed = { base: character.race?.speed || 30 };
+      if (character.subrace?.speed !== undefined) {
+        speed = { ...speed, base: character.subrace.speed };
       }
       const initiativeBonus =
         character.initiativeBonus > 0
