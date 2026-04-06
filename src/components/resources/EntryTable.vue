@@ -121,6 +121,7 @@
     width: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    margin-bottom: 1rem;
   }
   .entry-table table {
     width: 100%;

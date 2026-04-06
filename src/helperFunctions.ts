@@ -9,6 +9,8 @@ import type {
   Background,
   Languages,
   CharClass,
+  ClassFeature,
+  ClassFeatures,
   PlayerSkills,
   Feat,
   AllProficiencies,
@@ -610,6 +612,12 @@ export function setStartingSkillProficiencies(
   applyProficiencies(background);
 
   return { skills, additionalChoices: { basic, expert } };
+}
+
+export function getFeaturesForLevel(classFeatures: ClassFeatures, level: number): ClassFeature[] {
+  const index = level - 1;
+  if (index < 0 || index >= classFeatures.length) return [];
+  return classFeatures[index] ?? [];
 }
 
 export function abilityMod(score: number): number {

@@ -8,7 +8,7 @@
     <ResourceEntries :entries="currSelection" />
   </div>
   <div v-else>
-    <FeatureTable />
+    <FeatureTable :classFeatures="props.currClass.classFeatures" />
     <div v-for="(table, i) in currSelection" :key="i">
       <EntryTable :table="table" />
     </div>

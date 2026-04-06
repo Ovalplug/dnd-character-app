@@ -381,7 +381,7 @@ export type CharClass = {
   }>;
   startingProficiencies: string;
   startingEquipment: string;
-  classFeatures: any[];
+  classFeatures: ClassFeatures;
   subclasses: Subclass[];
   featureList: Record<string, any[]>;
   spellcastingAbility?: string;
@@ -389,6 +389,18 @@ export type CharClass = {
   additionalSpells?: any[];
   fluff?: any;
 };
+
+export type ClassFeature = {
+  name: string;
+  entries?: Entries;
+  gainSubclassFeature?: boolean;
+};
+
+/**
+ * Outer array is indexed by level (index 0 = level 1).
+ * Each inner array contains the features gained at that level.
+ */
+export type ClassFeatures = ClassFeature[][];
 
 export type Subclass = {
   name: string;
@@ -399,7 +411,7 @@ export type Subclass = {
   page?: number;
   spellcastingAbility?: string;
   additionalSpells?: any[];
-  subclassFeatures?: any[];
+  subclassFeatures?: ClassFeatures;
 };
 export type Classes = CharClass[];
 export type Subclasses = Record<string, Subclass[]>;
