@@ -97,9 +97,7 @@
       props.character.allProficiencies?.savingThrows?.[
         ability as keyof typeof props.character.allProficiencies.savingThrows
       ] ?? false,
-      props.character.allProficiencies?.savingThrows?.[
-        ability as keyof typeof props.character.allProficiencies.savingThrows
-      ] ?? false
+      false
     );
     return modifier >= 0 ? `+${modifier}` : `${modifier}`;
   }
