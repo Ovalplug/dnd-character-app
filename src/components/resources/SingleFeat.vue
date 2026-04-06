@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>
+    <p class="source-line">
       Source: {{ props.feat.source }} <span class="p2">(page {{ props.feat.page }})</span>
     </p>
     <Prerequisites v-if="props.feat.prerequisite" :prerequisites="prerequisitesData" />
@@ -30,4 +30,10 @@
   });
 </script>
 
-<style scoped></style>
+<style scoped>
+  .source-line {
+    margin: 0 0 0.75rem 0;
+    font-size: 0.9rem;
+    color: var(--color-muted);
+  }
+</style>

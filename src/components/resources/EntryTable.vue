@@ -125,29 +125,30 @@
   .entry-table table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.92rem;
+    font-size: 0.88rem;
   }
   .table-title {
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: bold;
     margin-bottom: 0.3rem;
     margin-top: 0.3rem;
+    color: var(--color-text);
   }
   .entry-table th {
-    background: #e0e0e0;
-    color: #222;
+    background: var(--color-surface);
+    color: var(--color-text);
     font-weight: 600;
   }
   .entry-table tbody tr:nth-child(even) {
-    background: #f7f7f7;
+    background: rgba(107, 46, 46, 0.04);
   }
   .entry-table th,
   .entry-table td {
-    padding: 0.18rem 0.28rem;
-    border: 1px solid var(--table-border, #ddd);
+    padding: 0.25rem 0.4rem;
+    border: 1px solid rgba(107, 46, 46, 0.15);
     vertical-align: top;
-    font-size: 0.92rem;
-    line-height: 1.2;
+    font-size: 0.88rem;
+    line-height: 1.3;
   }
   .entry-table caption {
     caption-side: top;
@@ -155,5 +156,6 @@
     font-weight: 600;
     margin-bottom: 0.3rem;
     font-size: 0.95rem;
+    color: var(--color-text);
   }
 </style>

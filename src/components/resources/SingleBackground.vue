@@ -4,9 +4,12 @@
       {{ props.background.name }}<span class="p2"> ({{ props.background.source }})</span>
     </h2>
 
+    <div class="tab-row">
+      <button :class="['tab-btn', { 'tab-btn--active': show_fluff }]" @click="showFluff">Lore</button>
+      <button :class="['tab-btn', { 'tab-btn--active': show_base }]" @click="showBase">Rules</button>
+    </div>
+
     <div class="background-entries">
-      <button @click="showFluff">Fluff</button>
-      <button @click="showBase">Base</button>
       <ResourceEntries :entries="entries" />
       <div v-if="entries.length === 0">
         <pre>{{ JSON.stringify(props.background, null, 2) }}</pre>
@@ -54,7 +57,33 @@
 
 <style scoped>
   .single-background h2 {
-    margin: 0 0 0.5rem 0;
+    margin: 0 0 0.75rem 0;
+  }
+
+  .tab-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    min-height: 44px;
+    border: 1px solid rgba(107, 46, 46, 0.25);
+    border-radius: 8px;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.14s, border-color 0.14s, color 0.14s;
+  }
+
+  .tab-btn--active {
+    background: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
   }
 
   .background-entries .entry {
@@ -63,8 +92,9 @@
 
   pre {
     white-space: pre-wrap;
-    background: #f8f8f8;
+    background: var(--color-surface);
     padding: 0.5rem;
-    border-radius: 4px;
+    border-radius: 6px;
+    font-size: 0.8rem;
   }
 </style>

@@ -53,7 +53,7 @@
   }
   .invocation-meta {
     margin: 0 0 0.75rem 0;
-    color: #666;
+    color: var(--color-muted);
     font-size: 0.9rem;
   }
 </style>

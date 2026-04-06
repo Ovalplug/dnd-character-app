@@ -66,10 +66,15 @@
 </script>
 
 <style scoped>
+  .single-spell p {
+    margin: 0.2rem 0;
+  }
+
   .inset {
-    border-left: 3px solid var(--v-theme-border, #ccc);
-    margin: 0.5rem 0;
-    padding: 0.5rem 1rem;
-    background: rgba(0, 0, 0, 0.02);
+    border-left: 3px solid var(--color-accent);
+    margin: 0.75rem 0;
+    padding: 0.5rem 0.75rem;
+    background: rgba(107, 46, 46, 0.04);
+    border-radius: 0 6px 6px 0;
   }
 </style>

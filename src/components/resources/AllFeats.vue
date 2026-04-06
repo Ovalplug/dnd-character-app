@@ -1,6 +1,14 @@
 <template>
-  <ul>
-    <div v-for="feat in feats" :key="feat.name" @click="selectFeat(feat)" class="feat-item">
+  <ul class="resource-list">
+    <div
+      v-for="feat in feats"
+      :key="feat.name"
+      @click="selectFeat(feat)"
+      class="feat-item"
+      tabindex="0"
+      @keydown.enter="selectFeat(feat)"
+      role="button"
+    >
       <p>
         {{ feat.name }}<span class="p2"> ({{ feat.source }})</span>
       </p>
@@ -59,13 +67,31 @@
 </script>
 
 <style scoped>
-  .feat-item {
-    cursor: pointer;
-    padding: 0.5rem;
-    border-bottom: 1px solid #ccc;
+  .resource-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
   }
 
-  .feat-item:hover {
-    background-color: #f0f0f0;
+  .feat-item {
+    cursor: pointer;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(107, 46, 46, 0.12);
+    min-height: 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: background 0.14s;
+  }
+
+  .feat-item:hover,
+  .feat-item:focus-visible {
+    background: var(--color-surface);
+    outline: none;
+  }
+
+  .feat-item p {
+    margin: 0;
+    font-size: 0.95rem;
   }
 </style>

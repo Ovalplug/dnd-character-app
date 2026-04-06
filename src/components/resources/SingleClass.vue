@@ -79,23 +79,27 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 1rem 0;
+    margin: 0.75rem 0;
+    padding: 0 0.5rem;
   }
 
   .class-select {
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #f9f9f9;
-    color: #333;
+    padding: 0.6rem 1rem;
+    font-size: 0.95rem;
+    border: 1px solid rgba(107, 46, 46, 0.25);
+    border-radius: 8px;
+    background: var(--color-bg);
+    color: var(--color-text);
     outline: none;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    min-height: 44px;
+    max-width: 100%;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
   }
 
   .class-select:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(107, 46, 46, 0.15);
   }
 
   .class-select option {

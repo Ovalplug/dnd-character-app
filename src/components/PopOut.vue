@@ -96,7 +96,7 @@
     padding: 16px;
   }
   .popout-panel {
-    background: var(--ion-background-color, #fff);
+    background: var(--color-bg);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     display: flex;
     flex-direction: column;
@@ -112,7 +112,8 @@
     align-items: center;
     justify-content: space-between;
     padding: 12px 16px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    border-bottom: 1px solid rgba(107, 46, 46, 0.12);
+    background: var(--color-surface);
   }
   .popout-title {
     margin: 0;

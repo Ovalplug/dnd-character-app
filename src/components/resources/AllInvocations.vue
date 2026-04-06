@@ -3,12 +3,15 @@
     <pre>{{ props.invocations }}</pre>
   </div>
   <div>
-    <ul>
+    <ul class="resource-list">
       <div
         v-for="invocation in orderedInvocations"
         :key="invocation.name"
         class="invocation-item"
         @click="selectInvocation(invocation)"
+        tabindex="0"
+        @keydown.enter="selectInvocation(invocation)"
+        role="button"
       >
         <p>
           {{ invocation.name }}<span class="p2"> ({{ invocation.source }})</span>
@@ -74,13 +77,31 @@
 </script>
 
 <style scoped>
-  .invocation-item {
-    cursor: pointer;
-    padding: 0.5rem;
-    border-bottom: 1px solid #ccc;
+  .resource-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
   }
 
-  .invocation-item:hover {
-    background-color: #f0f0f0;
+  .invocation-item {
+    cursor: pointer;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(107, 46, 46, 0.12);
+    min-height: 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: background 0.14s;
+  }
+
+  .invocation-item:hover,
+  .invocation-item:focus-visible {
+    background: var(--color-surface);
+    outline: none;
+  }
+
+  .invocation-item p {
+    margin: 0;
+    font-size: 0.95rem;
   }
 </style>

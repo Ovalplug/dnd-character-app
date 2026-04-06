@@ -1,6 +1,14 @@
 <template>
-  <ul>
-    <div v-for="race in races" :key="race.name" @click="selectRace(race)" class="race-item">
+  <ul class="resource-list">
+    <div
+      v-for="race in races"
+      :key="race.name"
+      @click="selectRace(race)"
+      class="race-item"
+      tabindex="0"
+      @keydown.enter="selectRace(race)"
+      role="button"
+    >
       <p>
         {{ race.name }}<span class="p2"> ({{ race.source }})</span>
       </p>
@@ -61,13 +69,31 @@
 </script>
 
 <style scoped>
-  .race-item {
-    cursor: pointer;
-    padding: 0.5rem;
-    border-bottom: 1px solid #ccc;
+  .resource-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
   }
 
-  .race-item:hover {
-    background-color: #f0f0f0;
+  .race-item {
+    cursor: pointer;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(107, 46, 46, 0.12);
+    min-height: 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: background 0.14s;
+  }
+
+  .race-item:hover,
+  .race-item:focus-visible {
+    background: var(--color-surface);
+    outline: none;
+  }
+
+  .race-item p {
+    margin: 0;
+    font-size: 0.95rem;
   }
 </style>

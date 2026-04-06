@@ -3,12 +3,15 @@
     <!-- <pre>{{ classes }}</pre> -->
     <pre>{{ subclasses }}</pre>
   </div>
-  <ul>
+  <ul class="resource-list">
     <div
       v-for="charClass in classes"
       :key="charClass.name"
       @click="selectClass(charClass)"
       class="class-item"
+      tabindex="0"
+      @keydown.enter="selectClass(charClass)"
+      role="button"
     >
       <p>
         {{ charClass.name }}<span class="p2"> ({{ charClass.source }})</span>
@@ -67,13 +70,31 @@
 </script>
 
 <style scoped>
-  .class-item {
-    cursor: pointer;
-    padding: 0.5rem;
-    border-bottom: 1px solid #ccc;
+  .resource-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
   }
 
-  .class-item:hover {
-    background-color: #f0f0f0;
+  .class-item {
+    cursor: pointer;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(107, 46, 46, 0.12);
+    min-height: 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: background 0.14s;
+  }
+
+  .class-item:hover,
+  .class-item:focus-visible {
+    background: var(--color-surface);
+    outline: none;
+  }
+
+  .class-item p {
+    margin: 0;
+    font-size: 0.95rem;
   }
 </style>

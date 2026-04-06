@@ -187,30 +187,43 @@
     top: 0;
     left: 40px;
     width: calc(100% - 40px);
-    background: #e0e0e0;
+    background: var(--color-surface);
+    border-bottom: 1px solid rgba(107, 46, 46, 0.12);
     z-index: 49;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 24px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 12px 16px;
+    box-shadow: 0 2px 8px rgba(31, 27, 22, 0.08);
   }
 
   .resources-header h1 {
     margin: 0;
-    font-size: 2rem;
+    font-size: clamp(1.2rem, 4vw, 1.6rem);
   }
 
   .dropdown-group {
-    margin-left: 24px;
+    margin-left: 12px;
   }
 
   .dropdown-group select {
-    font-size: 1rem;
+    font-size: 0.95rem;
     padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(107, 46, 46, 0.25);
+    background: var(--color-bg);
+    color: var(--color-text);
+    min-height: 44px;
+    cursor: pointer;
+  }
+
+  .dropdown-group select:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(107, 46, 46, 0.15);
+    border-color: var(--color-primary);
   }
 
   .content-under-header {
-    margin-top: 80px;
+    margin-top: 72px;
   }
 </style>

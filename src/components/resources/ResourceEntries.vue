@@ -134,16 +134,16 @@
 
 <style scoped>
   .quote-block {
-    border-left: 4px solid var(--v-theme-primary, #1976d2);
+    border-left: 4px solid var(--color-accent);
     margin: 1rem 0;
     padding: 0.5rem 1rem;
-    background: rgba(25, 118, 210, 0.05);
+    background: rgba(201, 164, 75, 0.07);
     font-style: italic;
   }
   .quote-attribution {
     margin-top: 0.5rem;
     font-size: 0.95em;
-    color: var(--v-theme-secondary, #555);
+    color: var(--color-muted);
     font-style: normal;
     text-align: right;
   }
@@ -153,16 +153,17 @@
   .feature-label {
     display: inline-block;
     margin-left: 0.5rem;
-    color: var(--v-theme-primary, #1976d2);
+    color: var(--color-primary);
     font-size: 0.85em;
     font-weight: 500;
     vertical-align: middle;
   }
   .inset {
-    border-left: 3px solid var(--v-theme-border, #ccc);
+    border-left: 3px solid var(--color-accent);
     margin: 0.5rem 0;
-    padding: 0.5rem 1rem;
-    background: rgba(0, 0, 0, 0.02);
+    padding: 0.5rem 0.75rem;
+    background: rgba(107, 46, 46, 0.04);
+    border-radius: 0 6px 6px 0;
   }
 
   .inset h4 {
