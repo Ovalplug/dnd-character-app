@@ -1,6 +1,6 @@
 import type { PlayerSkills, SavingThrow, AbilityScoreValues } from './types';
 
-export const APP_VERSION = '2.4.1';
+export const APP_VERSION = '2.4.0';
 
 // Replace with your actual GitHub raw URL:
 // https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/version.json
