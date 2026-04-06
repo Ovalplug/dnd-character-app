@@ -30,10 +30,7 @@
         </tbody>
       </table>
       <PopOut :title="selectedPopoutSubclass?.name" v-if="showPopOut" @close="closePopOut">
-        <ResourceEntries
-          v-if="selectedPopoutSubclass"
-          :entries="selectedPopoutSubclass?.subclassFeatures || ['error...']"
-        />
+        <ResourceEntries v-if="selectedPopoutSubclass" :entries="subclassFeatureEntries" />
       </PopOut>
     </div>
     <button class="next-btn" @click="confirmSelection" :disabled="!selectedSubclass">Next</button>
@@ -42,7 +39,7 @@
 
 <script lang="ts" setup>
   import { computed, onMounted, ref } from 'vue';
-  import type { CharClass, ClassLevels, Subclass, Subclasses } from '../../../types';
+  import type { CharClass, ClassLevels, Entries, Subclass, Subclasses } from '../../../types';
   import { useCharacterStore } from '../../../stores/characterStore';
   import questionIcon from '../../../assets/icons/question.svg';
   import ResourceEntries from '../../resources/ResourceEntries.vue';
@@ -60,6 +57,11 @@
   const selectedSubclassIndex = ref<number | null>(null);
 
   const store = useCharacterStore();
+
+  const subclassFeatureEntries = computed<Entries>(() => {
+    if (!selectedPopoutSubclass.value?.subclassFeatures) return [];
+    return selectedPopoutSubclass.value.subclassFeatures.flat() as unknown as Entries;
+  });
 
   const sortedSubclasses = computed(() => {
     return Object.fromEntries(

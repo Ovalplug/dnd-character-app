@@ -2,6 +2,11 @@ import type { PlayerSkills, SavingThrow, AbilityScoreValues } from './types';
 
 export const APP_VERSION = '2.4.1';
 
+// Replace with your actual GitHub raw URL:
+// https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/version.json
+export const UPDATE_MANIFEST_URL =
+  'https://raw.githubusercontent.com/Ovalplug/dnd-character-app/main/version.json';
+
 export const SKILL_NAME_MAP: Record<string, keyof PlayerSkills> = {
   acrobatics: 'acrobatics',
   'animal handling': 'animalHandling',

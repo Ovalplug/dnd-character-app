@@ -17,7 +17,13 @@
         <tr v-for="(level, index) in 20" :key="index">
           <td>{{ level }}</td>
           <td>+{{ Math.floor((level - 1) / 4) + 2 }}</td>
-          <td>{{ getFeaturesForLevel(props.classFeatures, level).map(f => f.name).join(', ') || '—' }}</td>
+          <td>
+            {{
+              getFeaturesForLevel(props.classFeatures, level)
+                .map(f => f.name)
+                .join(', ') || '—'
+            }}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -25,12 +31,12 @@
 </template>
 
 <script lang="ts" setup>
-import type { ClassFeatures } from '../../types';
-import { getFeaturesForLevel } from '../../helperFunctions';
+  import type { ClassFeatures } from '../../types';
+  import { getFeaturesForLevel } from '../../helperFunctions';
 
-const props = defineProps<{
-  classFeatures: ClassFeatures;
-}>();
+  const props = defineProps<{
+    classFeatures: ClassFeatures;
+  }>();
 </script>
 
 <style scoped>

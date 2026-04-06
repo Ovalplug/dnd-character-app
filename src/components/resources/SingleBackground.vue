@@ -5,8 +5,12 @@
     </h2>
 
     <div class="tab-row">
-      <button :class="['tab-btn', { 'tab-btn--active': show_fluff }]" @click="showFluff">Lore</button>
-      <button :class="['tab-btn', { 'tab-btn--active': show_base }]" @click="showBase">Rules</button>
+      <button :class="['tab-btn', { 'tab-btn--active': show_fluff }]" @click="showFluff">
+        Lore
+      </button>
+      <button :class="['tab-btn', { 'tab-btn--active': show_base }]" @click="showBase">
+        Rules
+      </button>
     </div>
 
     <div class="background-entries">
