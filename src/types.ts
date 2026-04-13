@@ -283,12 +283,14 @@ export type Image = {
   title?: string;
 };
 
+export type RaceSpeed = number | { walk?: number; fly?: number; swim?: number; climb?: number; burrow?: number };
+
 export type Subrace = {
   name: string;
   page?: number;
   ability?: Ability[] | Ability;
   entries?: Entries;
-  speed?: number;
+  speed?: RaceSpeed;
   traitTags?: string[];
   languageProficiencies?: LanguageProficiency[];
   skillProficiencies?: SkillProficiencies[];
@@ -299,7 +301,7 @@ export type Race = {
   source?: string;
   page?: number;
   size?: string;
-  speed?: number;
+  speed?: RaceSpeed;
   ability?: Ability[] | Ability;
   traitTags?: string[];
   languageProficiencies?: LanguageProficiency[];
