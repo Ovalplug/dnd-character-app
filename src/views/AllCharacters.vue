@@ -36,11 +36,7 @@
     </table>
   </div>
 
-  <PopOut
-    v-if="selectedChar"
-    :title="selectedChar.name"
-    @close="closePopout"
-  >
+  <PopOut v-if="selectedChar" :title="selectedChar.name" @close="closePopout">
     <div class="char-popout-actions">
       <p>Classes: {{ selectedChar.classes.map(c => c.name).join(', ') }}</p>
       <p>Level: {{ selectedChar.level }}</p>
@@ -57,10 +53,18 @@
         Delete
       </button>
       <div v-if="confirmingDelete" class="delete-confirm">
-        <p>Are you sure you want to delete <strong>{{ selectedChar!.name }}</strong>?</p>
+        <p>
+          Are you sure you want to delete <strong>{{ selectedChar!.name }}</strong
+          >?
+        </p>
         <p class="p2">Once deleted, this action cannot be undone.</p>
         <div class="delete-confirm-actions">
-          <button class="popout-action-btn popout-action-btn--danger" @click="deleteCharacter(selectedChar!.id)">Yes, delete</button>
+          <button
+            class="popout-action-btn popout-action-btn--danger"
+            @click="deleteCharacter(selectedChar!.id)"
+          >
+            Yes, delete
+          </button>
           <button class="popout-action-btn" @click="confirmingDelete = false">Cancel</button>
         </div>
       </div>

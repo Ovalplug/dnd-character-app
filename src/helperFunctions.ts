@@ -15,6 +15,10 @@ import type {
   Feat,
   AllProficiencies,
   SavingThrow,
+  Subclass,
+  SpellcastingProfile,
+  SpellcastingType,
+  SpellSource,
 } from './types';
 import { SKILL_NAME_MAP, SAVING_THROW_MAP } from './constants';
 
@@ -286,7 +290,10 @@ export function setStartedLanguages(languages: string[], isRogue: boolean): Lang
 // ---------------------------------------------------------------------------
 
 function normaliseSkillKey(raw: string): keyof PlayerSkills | null {
-  const key = raw.trim().toLowerCase().replace(/[.,;]+$/, '');
+  const key = raw
+    .trim()
+    .toLowerCase()
+    .replace(/[.,;]+$/, '');
   return SKILL_NAME_MAP[key] ?? null;
 }
 
@@ -649,4 +656,338 @@ export function calculateAbilityScoreModifier(
 ): number {
   const baseMod = Math.floor((score - 10) / 2);
   return baseMod + (isProficient ? proficiencyBonus : 0) + (isExpert ? proficiencyBonus : 0);
+}
+
+// ---------------------------------------------------------------------------
+// Spellcasting computation
+// ---------------------------------------------------------------------------
+
+/**
+ * Full-caster spell slot table indexed by [classLevel - 1][slotLevel - 1].
+ * Covers levels 1-20 for 9 slot levels.
+ */
+const FULL_CASTER_SLOTS: number[][] = [
+  [2, 0, 0, 0, 0, 0, 0, 0, 0],
+  [3, 0, 0, 0, 0, 0, 0, 0, 0],
+  [4, 2, 0, 0, 0, 0, 0, 0, 0],
+  [4, 3, 0, 0, 0, 0, 0, 0, 0],
+  [4, 3, 2, 0, 0, 0, 0, 0, 0],
+  [4, 3, 3, 0, 0, 0, 0, 0, 0],
+  [4, 3, 3, 1, 0, 0, 0, 0, 0],
+  [4, 3, 3, 2, 0, 0, 0, 0, 0],
+  [4, 3, 3, 3, 1, 0, 0, 0, 0],
+  [4, 3, 3, 3, 2, 0, 0, 0, 0],
+  [4, 3, 3, 3, 2, 1, 0, 0, 0],
+  [4, 3, 3, 3, 2, 1, 0, 0, 0],
+  [4, 3, 3, 3, 2, 1, 1, 0, 0],
+  [4, 3, 3, 3, 2, 1, 1, 0, 0],
+  [4, 3, 3, 3, 2, 1, 1, 1, 0],
+  [4, 3, 3, 3, 2, 1, 1, 1, 0],
+  [4, 3, 3, 3, 2, 1, 1, 1, 1],
+  [4, 3, 3, 3, 3, 1, 1, 1, 1],
+  [4, 3, 3, 3, 3, 2, 1, 1, 1],
+  [4, 3, 3, 3, 3, 2, 2, 1, 1],
+];
+
+/** Half-caster slot table (Paladin, Ranger). Effective level = floor(charLevel / 2). */
+const HALF_CASTER_SLOTS: number[][] = [
+  [0, 0, 0, 0, 0, 0, 0, 0, 0], // char level 1 - no slots yet
+  [2, 0, 0, 0, 0, 0, 0, 0, 0], // char level 2
+  [3, 0, 0, 0, 0, 0, 0, 0, 0],
+  [3, 0, 0, 0, 0, 0, 0, 0, 0],
+  [4, 2, 0, 0, 0, 0, 0, 0, 0],
+  [4, 2, 0, 0, 0, 0, 0, 0, 0],
+  [4, 3, 0, 0, 0, 0, 0, 0, 0],
+  [4, 3, 0, 0, 0, 0, 0, 0, 0],
+  [4, 3, 2, 0, 0, 0, 0, 0, 0],
+  [4, 3, 2, 0, 0, 0, 0, 0, 0],
+  [4, 3, 3, 0, 0, 0, 0, 0, 0],
+  [4, 3, 3, 0, 0, 0, 0, 0, 0],
+  [4, 3, 3, 1, 0, 0, 0, 0, 0],
+  [4, 3, 3, 1, 0, 0, 0, 0, 0],
+  [4, 3, 3, 2, 0, 0, 0, 0, 0],
+  [4, 3, 3, 2, 0, 0, 0, 0, 0],
+  [4, 3, 3, 3, 1, 0, 0, 0, 0],
+  [4, 3, 3, 3, 1, 0, 0, 0, 0],
+  [4, 3, 3, 3, 2, 0, 0, 0, 0],
+  [4, 3, 3, 3, 2, 0, 0, 0, 0],
+];
+
+/**
+ * 1/3-caster slot table (Arcane Trickster, Eldritch Knight).
+ * Effective level = floor(charLevel / 3); starts at char level 3.
+ */
+const THIRD_CASTER_SLOTS: number[][] = [
+  [0, 0, 0, 0, 0, 0, 0, 0, 0], // 1
+  [0, 0, 0, 0, 0, 0, 0, 0, 0], // 2
+  [2, 0, 0, 0, 0, 0, 0, 0, 0], // 3
+  [3, 0, 0, 0, 0, 0, 0, 0, 0], // 4
+  [3, 0, 0, 0, 0, 0, 0, 0, 0], // 5
+  [3, 0, 0, 0, 0, 0, 0, 0, 0], // 6
+  [4, 2, 0, 0, 0, 0, 0, 0, 0], // 7
+  [4, 2, 0, 0, 0, 0, 0, 0, 0], // 8
+  [4, 2, 0, 0, 0, 0, 0, 0, 0], // 9
+  [4, 3, 0, 0, 0, 0, 0, 0, 0], // 10
+  [4, 3, 0, 0, 0, 0, 0, 0, 0], // 11
+  [4, 3, 0, 0, 0, 0, 0, 0, 0], // 12
+  [4, 3, 2, 0, 0, 0, 0, 0, 0], // 13
+  [4, 3, 2, 0, 0, 0, 0, 0, 0], // 14
+  [4, 3, 2, 0, 0, 0, 0, 0, 0], // 15
+  [4, 3, 3, 0, 0, 0, 0, 0, 0], // 16
+  [4, 3, 3, 0, 0, 0, 0, 0, 0], // 17
+  [4, 3, 3, 0, 0, 0, 0, 0, 0], // 18
+  [4, 3, 3, 1, 0, 0, 0, 0, 0], // 19
+  [4, 3, 3, 1, 0, 0, 0, 0, 0], // 20
+];
+
+/**
+ * Warlock pact magic: [slotCount, slotLevel (1-indexed)] indexed by [charLevel - 1].
+ */
+const PACT_MAGIC_TABLE: [number, number][] = [
+  [1, 1],
+  [2, 1],
+  [2, 2],
+  [2, 2],
+  [2, 3],
+  [2, 3],
+  [2, 4],
+  [2, 4],
+  [2, 5],
+  [2, 5],
+  [3, 5],
+  [3, 5],
+  [3, 5],
+  [3, 5],
+  [3, 5],
+  [3, 5],
+  [4, 5],
+  [4, 5],
+  [4, 5],
+  [4, 5],
+];
+
+function slotsFromRow(row: number[]): Record<number, { max: number; used: number }> {
+  const slots: Record<number, { max: number; used: number }> = {};
+  row.forEach((count, idx) => {
+    if (count > 0) slots[idx + 1] = { max: count, used: 0 };
+  });
+  return slots;
+}
+
+function stripSpellTag(raw: string): string {
+  // Spell names may have tags like "#c" (cantrip), "#level" etc. Strip them.
+  return (raw.split('#')[0] ?? raw).trim();
+}
+
+/**
+ * Given an `innate` or `known` block from additionalSpells, extract all spells
+ * as flat entries with their required character level.
+ */
+function parseAdditionalSpells(
+  additionalSpells: any[],
+  mode: 'innate' | 'known' | 'prepared' | 'expanded',
+  characterLevel: number
+): Array<{ name: string; level: number; ability: string }> {
+  const results: Array<{ name: string; level: number; ability: string }> = [];
+  if (!Array.isArray(additionalSpells)) return results;
+
+  for (const block of additionalSpells) {
+    const ability: string =
+      typeof block.ability === 'string'
+        ? block.ability
+        : Array.isArray(block.ability?.choose)
+        ? block.ability.choose[0]
+        : 'cha';
+
+    const data = block[mode];
+    if (!data || typeof data !== 'object') continue;
+
+    for (const [reqLvlStr, spellList] of Object.entries(data)) {
+      const reqLvl = parseInt(reqLvlStr, 10);
+      if (isNaN(reqLvl) || reqLvl > characterLevel) continue;
+      if (Array.isArray(spellList)) {
+        for (const rawName of spellList as string[]) {
+          results.push({ name: stripSpellTag(rawName), level: reqLvl, ability });
+        }
+      }
+    }
+  }
+  return results;
+}
+
+/**
+ * Compute the full spellcasting profile for a character under construction,
+ * based on their classes, active subclass, race, and background.
+ *
+ * Rules:
+ * - If the class has a "Spell Slots per Spell Level" table group → full caster
+ * - Warlock has "Spell Slots" + "Slot Level" columns → pact magic caster
+ * - Paladin/Ranger are half-casters (detected by name; no standard marker in data)
+ * - A subclass with `spellcastingAbility` and `casterProgression` grants 1/3-caster
+ * - Race/background `additionalSpells` grant innate spells only (canLearnSpells = false
+ *   unless a class also grants spellcasting)
+ */
+export function computeSpellcasting(
+  classes: CharClass[],
+  activeSubclasses: Subclass[],
+  race: Race | null,
+  background: Background | null,
+  characterLevel: number
+): SpellcastingProfile {
+  const sources: SpellSource[] = [];
+  const innateSpells: SpellcastingProfile['innateSpells'] = [];
+  const expandedSpellNames: string[] = [];
+
+  let castingType: SpellcastingType = 'none';
+  let spellcastingAbility: string | null = null;
+  let canLearnSpells = false;
+  let pactSlotLevel: number | undefined = undefined;
+
+  // ---- Detect class-based spellcasting ----
+  for (const cls of classes) {
+    const tableGroups: any[] = (cls as any).classTableGroups ?? [];
+
+    const hasFullSlotTable = tableGroups.some(
+      (g: any) => g.title === 'Spell Slots per Spell Level'
+    );
+    const hasPactSlots = tableGroups.some(
+      (g: any) =>
+        Array.isArray(g.colLabels) &&
+        g.colLabels.includes('Spell Slots') &&
+        g.colLabels.includes('Slot Level')
+    );
+    const isHalfCaster =
+      cls.name === 'Paladin' || cls.name === 'Ranger' || cls.name === 'Artificer';
+
+    if (hasFullSlotTable && !isHalfCaster) {
+      if (castingType === 'none') castingType = 'full';
+      canLearnSpells = true;
+      if (!sources.includes('class')) sources.push('class');
+      if (!spellcastingAbility && cls.spellcastingAbility) {
+        spellcastingAbility = cls.spellcastingAbility;
+      }
+    } else if (isHalfCaster && hasFullSlotTable) {
+      if (castingType === 'none') castingType = 'half';
+      canLearnSpells = true;
+      if (!sources.includes('class')) sources.push('class');
+      if (!spellcastingAbility && cls.spellcastingAbility) {
+        spellcastingAbility = cls.spellcastingAbility;
+      }
+    } else if (hasPactSlots) {
+      if (castingType === 'none') castingType = 'pact';
+      canLearnSpells = true;
+      if (!sources.includes('class')) sources.push('class');
+      if (!spellcastingAbility && cls.spellcastingAbility) {
+        spellcastingAbility = cls.spellcastingAbility;
+      }
+    }
+  }
+
+  // ---- Detect subclass-based spellcasting (e.g. Arcane Trickster, Eldritch Knight) ----
+  for (const sub of activeSubclasses) {
+    if (sub.spellcastingAbility) {
+      const progression: string = (sub as any).casterProgression ?? '';
+      if (castingType === 'none') {
+        castingType = progression === '1/3' ? 'third' : 'full';
+        canLearnSpells = true;
+        spellcastingAbility = sub.spellcastingAbility;
+        if (!sources.includes('subclass')) sources.push('subclass');
+      }
+    }
+    // Subclass expanded/prepared spells
+    if (Array.isArray(sub.additionalSpells)) {
+      const prepared = parseAdditionalSpells(sub.additionalSpells, 'prepared', characterLevel);
+      for (const s of prepared) {
+        if (!expandedSpellNames.includes(s.name)) expandedSpellNames.push(s.name);
+      }
+    }
+  }
+
+  // ---- Race innate spells ----
+  const raceAdditional: any[] = (race as any)?.additionalSpells ?? [];
+  if (raceAdditional.length > 0) {
+    const innate = parseAdditionalSpells(raceAdditional, 'innate', characterLevel);
+    const known = parseAdditionalSpells(raceAdditional, 'known', characterLevel);
+    const prepared = parseAdditionalSpells(raceAdditional, 'prepared', characterLevel);
+    for (const s of [...innate, ...known, ...prepared]) {
+      innateSpells.push({ name: s.name, level: s.level, ability: s.ability });
+    }
+    if (innate.length > 0 || known.length > 0 || prepared.length > 0) {
+      if (!sources.includes('race')) sources.push('race');
+      if (castingType === 'none') castingType = 'innate';
+    }
+
+    // Expanded spell lists from race
+    const expanded = parseAdditionalSpells(raceAdditional, 'expanded', characterLevel);
+    for (const s of expanded) {
+      if (!expandedSpellNames.includes(s.name)) expandedSpellNames.push(s.name);
+    }
+  }
+
+  // Subraces may also grant spells
+  const subraceAdditional: any[] =
+    (race as any)?.subraces?.flatMap((sr: any) => sr.additionalSpells ?? []) ?? [];
+  if (subraceAdditional.length > 0) {
+    const innate = parseAdditionalSpells(subraceAdditional, 'innate', characterLevel);
+    const known = parseAdditionalSpells(subraceAdditional, 'known', characterLevel);
+    for (const s of [...innate, ...known]) {
+      innateSpells.push({ name: s.name, level: s.level, ability: s.ability });
+    }
+    if ((innate.length > 0 || known.length > 0) && !sources.includes('race')) {
+      sources.push('race');
+      if (castingType === 'none') castingType = 'innate';
+    }
+  }
+
+  // ---- Background spells ----
+  const bgAdditional: any[] = (background as any)?.additionalSpells ?? [];
+  if (bgAdditional.length > 0) {
+    const innate = parseAdditionalSpells(bgAdditional, 'innate', characterLevel);
+    const known = parseAdditionalSpells(bgAdditional, 'known', characterLevel);
+    const prepared = parseAdditionalSpells(bgAdditional, 'prepared', characterLevel);
+    const expanded = parseAdditionalSpells(bgAdditional, 'expanded', characterLevel);
+    for (const s of [...innate, ...known, ...prepared]) {
+      innateSpells.push({ name: s.name, level: s.level, ability: s.ability });
+    }
+    for (const s of expanded) {
+      if (!expandedSpellNames.includes(s.name)) expandedSpellNames.push(s.name);
+    }
+    if (innate.length > 0 || known.length > 0 || prepared.length > 0 || expanded.length > 0) {
+      if (!sources.includes('background')) sources.push('background');
+      if (castingType === 'none') castingType = 'innate';
+    }
+  }
+
+  // ---- Build spell slots ----
+  const idx = Math.max(0, Math.min(characterLevel - 1, 19));
+  let spellSlots: Record<number, { max: number; used: number }> = {};
+
+  if (castingType === 'full') {
+    spellSlots = slotsFromRow(FULL_CASTER_SLOTS[idx]!);
+  } else if (castingType === 'half') {
+    spellSlots = slotsFromRow(HALF_CASTER_SLOTS[idx]!);
+  } else if (castingType === 'third') {
+    spellSlots = slotsFromRow(THIRD_CASTER_SLOTS[idx]!);
+  } else if (castingType === 'pact') {
+    const [count, slotLvl] = PACT_MAGIC_TABLE[idx]!;
+    if (count > 0) {
+      spellSlots[slotLvl] = { max: count, used: 0 };
+      pactSlotLevel = slotLvl;
+    }
+  }
+  // innate-only casters get no spell slots
+
+  const isSpellcaster = castingType !== 'none';
+
+  return {
+    isSpellcaster,
+    canLearnSpells,
+    castingType,
+    spellcastingAbility,
+    spellSlots,
+    innateSpells,
+    expandedSpellNames,
+    sources,
+    pactSlotLevel,
+  };
 }

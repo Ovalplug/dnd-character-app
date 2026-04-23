@@ -43,6 +43,7 @@
     <!-- Then languages, proficiencies, and other details -->
     <language-selection v-if="currStep === 'language'" @nextStep="handleNextStep" />
     <proficiency-selection v-if="currStep === 'proficiency'" @nextStep="handleNextStep" />
+    <spells-selection v-if="currStep === 'spells'" @nextStep="handleNextStep" />
     <summary-section v-if="currStep === 'summary'" @finishCreation="finishCreation" />
   </div>
   <br />
@@ -65,6 +66,7 @@
   import LanguageSelection from './sections/LanguageSelection.vue';
   import ProficiencySelection from './sections/ProficiencySelection.vue';
   import SummarySection from './sections/SummarySection.vue';
+  import SpellsSelection from './sections/SpellsSelection.vue';
   import router from '../../router';
 
   const props = defineProps<{ dataStore: any }>();
@@ -80,6 +82,7 @@
     'abilityScores',
     'language',
     'proficiency',
+    'spells',
     'summary',
   ];
   const currStep = ref(steps[0]);

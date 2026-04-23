@@ -158,7 +158,7 @@ export type playerCharacter = {
     damageType?: string;
     notes?: string;
   }>;
-  spellcasting?: {
+  spellcasting: {
     spellCaster: boolean;
     spellSlots?: Record<number, { max: number; used: number }>;
     knownSpells?: Spells;
@@ -456,3 +456,38 @@ export type Spell = {
   [key: string]: any;
 };
 export type Spells = Spell[];
+
+/**
+ * Describes the full computed spellcasting profile for a character during creation.
+ * Sources can be: 'class', 'subclass', 'race', or 'background'.
+ */
+export type SpellSource = 'class' | 'subclass' | 'race' | 'background';
+
+export type SpellcastingType =
+  | 'full' // Full casters: Bard, Cleric, Druid, Sorcerer, Wizard
+  | 'half' // Half casters: Paladin, Ranger
+  | 'third' // 1/3 casters via subclass: Arcane Trickster, Eldritch Knight
+  | 'pact' // Warlock pact magic
+  | 'innate' // Race/background-granted spells, no progression
+  | 'none';
+
+export type SpellcastingProfile = {
+  /** Whether the character is a spellcaster in any form */
+  isSpellcaster: boolean;
+  /** Whether they can learn / prepare spells freely (class-based progression) */
+  canLearnSpells: boolean;
+  /** The main spellcasting type driving slot progression */
+  castingType: SpellcastingType;
+  /** The ability score used for spellcasting (null if innate-only) */
+  spellcastingAbility: string | null;
+  /** Spell slots at current character level, keyed 1-9 */
+  spellSlots: Record<number, { max: number; used: number }>;
+  /** Spells granted by race/background that are always available (innate) */
+  innateSpells: Array<{ name: string; level: number; ability: string; usesPerDay?: number }>;
+  /** Spells added to the spell list from race/background (expanded list) */
+  expandedSpellNames: string[];
+  /** The source(s) granting spellcasting */
+  sources: SpellSource[];
+  /** For warlock: pact magic slot level */
+  pactSlotLevel?: number;
+};

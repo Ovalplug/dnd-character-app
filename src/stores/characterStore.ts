@@ -16,11 +16,13 @@ import type {
   Race,
   Subclass,
   Subrace,
+  SpellcastingProfile,
 } from '../types';
 import {
   calculateAbilityScoreModifier,
   calculatePassivePerception,
   calculateProficiencyBonus,
+  computeSpellcasting,
 } from '../helperFunctions';
 
 export const useCharacterStore = defineStore('characters', {
@@ -136,7 +138,14 @@ export const useCharacterStore = defineStore('characters', {
         flaws: [],
         featuresAndTraits: [],
         attacks: [],
-        spellcasting: undefined,
+        spellcasting: {
+          spellCaster: false,
+          spellSlots: undefined,
+          knownSpells: undefined,
+          preparedSpells: undefined,
+          spellSaveDC: 0,
+          spellAttackBonus: 0,
+        },
         notes: undefined,
         alliesAndOrganizations: [],
         backstory: undefined,
@@ -286,6 +295,63 @@ export const useCharacterStore = defineStore('characters', {
         // Also sync skillProficiencies for backwards compat
         this.currNewCharacter.skillProficiencies = proficiencies.skills;
       }
+    },
+
+    /**
+     * Compute the spellcasting profile for the current new character and apply
+     * it to currNewCharacter.spellcasting.  Call this when entering SpellsSelection.
+     */
+    computeAndApplySpellcasting(): SpellcastingProfile | null {
+      if (!this.currNewCharacter) return null;
+
+      const char = this.currNewCharacter;
+      const level = Object.values(char.classLevels).reduce((sum, lvl) => sum + lvl, 0);
+
+      // Gather active subclasses
+      const activeSubclasses: Subclass[] = char.subclasses
+        ? Object.values(char.subclasses).flat()
+        : [];
+
+      const profile = computeSpellcasting(
+        char.classes,
+        activeSubclasses,
+        char.race,
+        char.background ?? null,
+        level
+      );
+
+      // Apply computed profile back onto the character
+      char.spellcasting = {
+        spellCaster: profile.isSpellcaster,
+        spellSlots: Object.keys(profile.spellSlots).length > 0 ? profile.spellSlots : undefined,
+        knownSpells: char.spellcasting.knownSpells,
+        preparedSpells: char.spellcasting.preparedSpells,
+        spellSaveDC: char.spellcasting.spellSaveDC,
+        spellAttackBonus: char.spellcasting.spellAttackBonus,
+      };
+
+      return profile;
+    },
+
+    /**
+     * Get the spellcasting profile for the current new character without mutating state.
+     */
+    getSpellcastingProfile(): SpellcastingProfile | null {
+      if (!this.currNewCharacter) return null;
+
+      const char = this.currNewCharacter;
+      const level = Object.values(char.classLevels).reduce((sum, lvl) => sum + lvl, 0);
+      const activeSubclasses: Subclass[] = char.subclasses
+        ? Object.values(char.subclasses).flat()
+        : [];
+
+      return computeSpellcasting(
+        char.classes,
+        activeSubclasses,
+        char.race,
+        char.background ?? null,
+        level
+      );
     },
 
     getStartingHp(character: playerCharacter): number {
