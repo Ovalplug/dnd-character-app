@@ -52,10 +52,18 @@
         <img :src="icons.reloadIcon" alt="Reload" />
         Reload
       </button>
-      <button class="popout-action-btn popout-action-btn--danger" @click="deleteCharacter(selectedChar!.id)">
+      <button class="popout-action-btn popout-action-btn--danger" @click="confirmingDelete = true">
         <img :src="icons.binIcon" alt="Delete" />
         Delete
       </button>
+      <div v-if="confirmingDelete" class="delete-confirm">
+        <p>Are you sure you want to delete <strong>{{ selectedChar!.name }}</strong>?</p>
+        <p class="p2">Once deleted, this action cannot be undone.</p>
+        <div class="delete-confirm-actions">
+          <button class="popout-action-btn popout-action-btn--danger" @click="deleteCharacter(selectedChar!.id)">Yes, delete</button>
+          <button class="popout-action-btn" @click="confirmingDelete = false">Cancel</button>
+        </div>
+      </div>
     </div>
   </PopOut>
 </template>
@@ -80,13 +88,16 @@
   };
 
   const selectedChar = ref<Character | null>(null);
+  const confirmingDelete = ref(false);
 
   function openPopout(char: Character) {
     selectedChar.value = char;
+    confirmingDelete.value = false;
   }
 
   function closePopout() {
     selectedChar.value = null;
+    confirmingDelete.value = false;
   }
 
   async function deleteCharacter(id: string) {
@@ -234,5 +245,22 @@
 
   .popout-action-btn--danger:hover {
     background: rgba(180, 60, 60, 0.08);
+  }
+
+  .delete-confirm {
+    border: 1px solid rgba(180, 60, 60, 0.3);
+    border-radius: var(--radius);
+    padding: 0.75rem;
+    background: rgba(180, 60, 60, 0.05);
+  }
+
+  .delete-confirm p {
+    margin: 0 0 0.6rem;
+    font-size: 0.9rem;
+  }
+
+  .delete-confirm-actions {
+    display: flex;
+    gap: 0.5rem;
   }
 </style>
