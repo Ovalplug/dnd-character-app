@@ -31,22 +31,6 @@
               class="reloadCharIcon"
             />
           </td>
-          <!-- <td>
-            <img
-              :src="icons.binIcon"
-              alt="Delete"
-              @click="charStore.deleteCharacter(char.id)"
-              class="deleteCharIcon"
-            />
-          </td>
-          <td>
-            <img
-              :src="icons.reloadIcon"
-              alt="Reload"
-              @click="charStore.touchUpCharacter(char.id)"
-              class="reloadCharIcon"
-            />
-          </td> -->
         </tr>
       </tbody>
     </table>
@@ -58,6 +42,12 @@
     @close="closePopout"
   >
     <div class="char-popout-actions">
+      <p>Classes: {{ selectedChar.classes.map(c => c.name).join(', ') }}</p>
+      <p>Level: {{ selectedChar.level }}</p>
+      <p>Race: {{ selectedChar.race?.name }}</p>
+      <p>Background: {{ selectedChar.background?.name }}</p>
+      <p>Last Updated: {{ new Date(selectedChar.updatedAt).toLocaleString() }}</p>
+      <p>Created: {{ new Date(selectedChar.createdAt).toLocaleString() }}</p>
       <button class="popout-action-btn" @click="charStore.touchUpCharacter(selectedChar!.id)">
         <img :src="icons.reloadIcon" alt="Reload" />
         Reload
