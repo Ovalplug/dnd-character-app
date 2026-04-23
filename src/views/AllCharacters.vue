@@ -1,11 +1,16 @@
 <template>
   <div>
     <h1>Look at all your pretty characters!</h1>
+    <accordian-holder header="charStore.characters">
+      <pre>{{ charStore.characters }}</pre>
+    </accordian-holder>
 
     <table class="characterTable">
       <thead>
         <tr>
           <th>Name</th>
+          <th>Class</th>
+          <th>Lvl</th>
           <th></th>
           <th></th>
         </tr>
@@ -17,6 +22,8 @@
               {{ char.name }}
             </router-link>
           </td>
+          <td>{{ char.classes[0]?.name }}</td>
+          <td>{{ char.level }}</td>
           <td>
             <img
               :src="icons.binIcon"
@@ -46,6 +53,7 @@
 
   import binIcon from '../assets/bin-svgrepo-com.svg';
   import reloadIcon from '../assets/icons/reload.svg';
+import AccordianHolder from '../components/AccordianHolder.vue';
 
   const charStore = useCharacterStore();
 
@@ -94,31 +102,64 @@
     background: rgba(201, 164, 75, 0.08);
   }
 
-  /* column widths */
+  /* Name column — takes remaining space */
   .characterTable th:nth-child(1),
   .characterTable td:nth-child(1) {
     width: auto;
     white-space: normal;
     word-break: break-word;
   }
+
+  /* Class column */
   .characterTable th:nth-child(2),
-  .characterTable td:nth-child(2),
+  .characterTable td:nth-child(2) {
+    width: 90px;
+  }
+
+  /* Level column */
   .characterTable th:nth-child(3),
   .characterTable td:nth-child(3) {
-    width: 48px;
+    width: 44px;
     text-align: center;
+  }
+
+  /* Icon columns */
+  .characterTable th:nth-child(4),
+  .characterTable td:nth-child(4),
+  .characterTable th:nth-child(5),
+  .characterTable td:nth-child(5) {
+    width: 32px;
+    text-align: center;
+    padding: 0.4rem 0.2rem;
+  }
+
+  /* Smaller text on mobile */
+  @media (max-width: 479px) {
+    .characterTable th,
+    .characterTable td {
+      font-size: 0.78rem;
+      padding: 0.5rem 0.4rem;
+    }
+
+    .characterTable th:nth-child(2),
+    .characterTable td:nth-child(2) {
+      width: 70px;
+    }
   }
 
   .deleteCharIcon,
   .reloadCharIcon {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     cursor: pointer;
     opacity: 0.6;
     transition: opacity 0.15s ease;
+    display: block;
+    margin: 0 auto;
   }
 
-  .deleteCharIcon:hover {
+  .deleteCharIcon:hover,
+  .reloadCharIcon:hover {
     opacity: 1;
   }
 </style>
