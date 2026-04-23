@@ -286,7 +286,7 @@ export function setStartedLanguages(languages: string[], isRogue: boolean): Lang
 // ---------------------------------------------------------------------------
 
 function normaliseSkillKey(raw: string): keyof PlayerSkills | null {
-  const key = raw.trim().toLowerCase();
+  const key = raw.trim().toLowerCase().replace(/[.,;]+$/, '');
   return SKILL_NAME_MAP[key] ?? null;
 }
 
