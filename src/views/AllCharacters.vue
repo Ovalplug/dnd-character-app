@@ -12,7 +12,6 @@
           <th>Class</th>
           <th>Lvl</th>
           <th></th>
-          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -25,6 +24,14 @@
           <td>{{ char.classes[0]?.name }}</td>
           <td>{{ char.level }}</td>
           <td>
+            <img
+              :src="icons.editIcon"
+              alt="Edit"
+              @click="openPopout(char)"
+              class="reloadCharIcon"
+            />
+          </td>
+          <!-- <td>
             <img
               :src="icons.binIcon"
               alt="Delete"
@@ -39,28 +46,63 @@
               @click="charStore.touchUpCharacter(char.id)"
               class="reloadCharIcon"
             />
-          </td>
+          </td> -->
         </tr>
       </tbody>
     </table>
   </div>
+
+  <PopOut
+    v-if="selectedChar"
+    :title="selectedChar.name"
+    @close="closePopout"
+  >
+    <div class="char-popout-actions">
+      <button class="popout-action-btn" @click="charStore.touchUpCharacter(selectedChar!.id)">
+        <img :src="icons.reloadIcon" alt="Reload" />
+        Reload
+      </button>
+      <button class="popout-action-btn popout-action-btn--danger" @click="deleteCharacter(selectedChar!.id)">
+        <img :src="icons.binIcon" alt="Delete" />
+        Delete
+      </button>
+    </div>
+  </PopOut>
 </template>
 
 <script setup lang="ts">
-  //   import { ref } from 'vue';
+  import { ref } from 'vue';
   import { useCharacterStore } from '../stores/characterStore';
-  //   import { useRouter } from 'vue-router';
+  import type { Character } from '../database/db';
 
   import binIcon from '../assets/bin-svgrepo-com.svg';
   import reloadIcon from '../assets/icons/reload.svg';
-import AccordianHolder from '../components/AccordianHolder.vue';
+  import editIcon from '../assets/icons/editIcon.svg';
+  import AccordianHolder from '../components/AccordianHolder.vue';
+  import PopOut from '../components/PopOut.vue';
 
   const charStore = useCharacterStore();
 
   const icons: Record<string, string> = {
     binIcon: binIcon,
     reloadIcon: reloadIcon,
+    editIcon: editIcon,
   };
+
+  const selectedChar = ref<Character | null>(null);
+
+  function openPopout(char: Character) {
+    selectedChar.value = char;
+  }
+
+  function closePopout() {
+    selectedChar.value = null;
+  }
+
+  async function deleteCharacter(id: string) {
+    await charStore.deleteCharacter(id);
+    closePopout();
+  }
 </script>
 
 <style scoped>
@@ -161,5 +203,46 @@ import AccordianHolder from '../components/AccordianHolder.vue';
   .deleteCharIcon:hover,
   .reloadCharIcon:hover {
     opacity: 1;
+  }
+
+  .char-popout-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+  }
+
+  .popout-action-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    border: 1px solid rgba(31, 27, 22, 0.15);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    width: 100%;
+  }
+
+  .popout-action-btn img {
+    width: 18px;
+    height: 18px;
+    opacity: 0.7;
+  }
+
+  .popout-action-btn:hover {
+    background: rgba(201, 164, 75, 0.12);
+  }
+
+  .popout-action-btn--danger {
+    border-color: rgba(180, 60, 60, 0.25);
+    color: #b43c3c;
+  }
+
+  .popout-action-btn--danger:hover {
+    background: rgba(180, 60, 60, 0.08);
   }
 </style>
