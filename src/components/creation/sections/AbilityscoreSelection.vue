@@ -371,7 +371,6 @@
   }
 
   function handleMethodChange() {
-    console.log(`Selected method: ${selectedMethod.value}`);
     switch (selectedMethod.value) {
       case 'custom':
         // Keep current scores, allow manual adjustment

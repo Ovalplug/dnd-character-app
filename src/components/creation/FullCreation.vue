@@ -93,7 +93,6 @@
 
   function finishCreation() {
     // For now, just log the character and reset the creation process
-    console.log('Final Character:', store.currNewCharacter);
     alert('Character creation complete! Check the console for details.');
 
     // router back to home

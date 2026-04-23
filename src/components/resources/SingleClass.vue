@@ -18,7 +18,9 @@
       </template>
       <div class="class-info-equip" v-if="equipmentLines.length">
         <div class="class-info-label">Starting Equipment</div>
-        <div v-for="line in equipmentLines" :key="line" class="class-info-equip-line">{{ line }}</div>
+        <div v-for="line in equipmentLines" :key="line" class="class-info-equip-line">
+          {{ line }}
+        </div>
       </div>
     </div>
     <ResourceEntries :entries="currSelection" />
@@ -54,7 +56,9 @@
 
   const proficiencyLines = computed(() => {
     if (!props.currClass.startingProficiencies) return [];
-    return props.currClass.startingProficiencies.split('\n').filter(l => l.trim() && l.includes(':'));
+    return props.currClass.startingProficiencies
+      .split('\n')
+      .filter(l => l.trim() && l.includes(':'));
   });
 
   const equipmentLines = computed(() => {

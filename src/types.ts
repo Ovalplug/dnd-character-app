@@ -283,7 +283,9 @@ export type Image = {
   title?: string;
 };
 
-export type RaceSpeed = number | { walk?: number; fly?: number; swim?: number; climb?: number; burrow?: number };
+export type RaceSpeed =
+  | number
+  | { walk?: number; fly?: number; swim?: number; climb?: number; burrow?: number };
 
 export type Subrace = {
   name: string;

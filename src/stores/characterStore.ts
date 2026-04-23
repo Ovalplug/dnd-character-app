@@ -399,9 +399,12 @@ export const useCharacterStore = defineStore('characters', {
           hitDice.push({ total: classLevel, current: current, dieType: dieType });
         }
       });
-      console.log('race speed: ', character.race?.speed);
-      console.log('subrace speed: ', character.subrace?.speed);
-      const resolveSpeed = (rawSpeed: number | { walk?: number; fly?: number; swim?: number; climb?: number; burrow?: number } | undefined): Partial<CharSpeed> => {
+      const resolveSpeed = (
+        rawSpeed:
+          | number
+          | { walk?: number; fly?: number; swim?: number; climb?: number; burrow?: number }
+          | undefined
+      ): Partial<CharSpeed> => {
         if (rawSpeed === undefined) return {};
         if (typeof rawSpeed === 'number') return { base: rawSpeed };
         return {

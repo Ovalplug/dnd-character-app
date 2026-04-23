@@ -38,8 +38,6 @@ export async function checkForUpdate(): Promise<void> {
     if (isNewer(manifest.version, APP_VERSION)) {
       latestVersion.value = manifest.version;
       downloadUrl.value = manifest.downloadUrl;
-      console.log(`Update available: ${manifest.version}`);
-      console.log(`Download at: ${manifest.downloadUrl}`);
       updateAvailable.value = true;
     }
   } catch {
