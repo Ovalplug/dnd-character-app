@@ -44,7 +44,20 @@
       <p>Background: {{ selectedChar.background?.name }}</p>
       <p>Last Updated: {{ new Date(selectedChar.updatedAt).toLocaleString() }}</p>
       <p>Created: {{ new Date(selectedChar.createdAt).toLocaleString() }}</p>
-      <button class="popout-action-btn" @click="charStore.touchUpCharacter(selectedChar!.id)">
+      <div class="rename-row">
+        <!-- <input class="rename-input" :placeholder="selectedChar.name" v-model="newName" /> -->
+        <input class="rename-input" placeholder="Rename?" v-model="newName" />
+        <button
+          class="popout-action-btn rename-btn"
+          @click="charStore.editCharacterName(selectedChar!.id, newName).then(softRefresh)"
+        >
+          Save
+        </button>
+      </div>
+      <button
+        class="popout-action-btn"
+        @click="charStore.touchUpCharacter(selectedChar!.id).then(softRefresh)"
+      >
         <img :src="icons.reloadIcon" alt="Reload" />
         Reload
       </button>
@@ -83,6 +96,8 @@
   import AccordianHolder from '../components/AccordianHolder.vue';
   import PopOut from '../components/PopOut.vue';
 
+  const newName = ref('');
+
   const charStore = useCharacterStore();
 
   const icons: Record<string, string> = {
@@ -102,11 +117,19 @@
   function closePopout() {
     selectedChar.value = null;
     confirmingDelete.value = false;
+    newName.value = '';
   }
 
   async function deleteCharacter(id: string) {
     await charStore.deleteCharacter(id);
     closePopout();
+  }
+
+  async function softRefresh() {
+    await charStore.loadCharacters();
+    if (selectedChar.value) {
+      selectedChar.value = charStore.characters.find(c => c.id === selectedChar.value!.id) ?? null;
+    }
   }
 </script>
 
@@ -266,5 +289,33 @@
   .delete-confirm-actions {
     display: flex;
     gap: 0.5rem;
+  }
+
+  .rename-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .rename-input {
+    flex: 1;
+    padding: 0.55rem 0.75rem;
+    border-radius: var(--radius);
+    border: 1px solid rgba(31, 27, 22, 0.15);
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-size: 0.9rem;
+  }
+
+  .rename-input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(201, 164, 75, 0.15);
+  }
+
+  .rename-btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+    width: auto;
   }
 </style>

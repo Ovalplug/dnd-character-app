@@ -17,6 +17,7 @@ import type {
   Subclass,
   Subrace,
   SpellcastingProfile,
+  PlayerCharacters,
 } from '../types';
 import {
   calculateAbilityScoreModifier,
@@ -193,6 +194,14 @@ export const useCharacterStore = defineStore('characters', {
       if (this.currNewCharacter) {
         this.currNewCharacter.name = newName;
       }
+    },
+
+    async editCharacterName(id: string, newName: string) {
+      if (!id || !newName) return;
+      const character = await db.characters.get(id);
+      if (!character) return;
+      character.name = newName;
+      await this.updateCharacter(character);
     },
 
     updateCharacterRace(newRace: Race) {
