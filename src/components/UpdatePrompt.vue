@@ -30,7 +30,7 @@
     if (Capacitor.isNativePlatform()) {
       window.open(url, '_system');
     } else {
-      window.open(url, '_blank', 'noopener,noreferrer');
+      window.location.reload();
     }
   }
 
