@@ -20,8 +20,8 @@ import type {
   SpellcastingProfile,
   SpellcastingType,
   SpellSource,
-  SpellCasting,
-  Classes,
+  SpellcastingInfo,
+  SpellcastingCastingMode,
   playerCharacter,
 } from './types';
 import { SKILL_NAME_MAP, SAVING_THROW_MAP } from './constants';
@@ -996,21 +996,206 @@ export function computeSpellcasting(
   };
 }
 
+export function computeCharSpellcasting(char: playerCharacter): SpellcastingInfo {
+  const level = Math.max(
+    1,
+    Object.values(char.classLevels).reduce((s, v) => s + v, 0)
+  );
 
-export function computeCharSpellcasting(char: playerCharacter): SpellCasting {
-  const spellcasting: SpellCasting = {
-      spellCaster: "None",
-        spellSlots: undefined,
-        knownSpells: undefined,
-        preparedSpells: undefined,
-        spellSaveDC: undefined,
-        spellAttackBonus: 0,
+  let castingMode: SpellcastingCastingMode = 'none';
+  let spellcastingAbility: string | null = null;
+  let cantripsKnown = 0;
+  let spellsKnownCount = 0;
+  const spellSlots: Record<number, { max: number; used: number }> = {};
+  const innateSpells: SpellcastingInfo['innateSpells'] = [];
+  const expandedSpellNames: string[] = [];
+
+  // Recursively find the first abilityDc entry and return its ability
+  function findAbilityFromEntries(entries: any[]): string | null {
+    if (!Array.isArray(entries)) return null;
+    for (const e of entries) {
+      if (e?.type === 'abilityDc') return (e.attributes as string[])?.[0] ?? null;
+      const found = findAbilityFromEntries(e?.entries ?? []);
+      if (found) return found;
+    }
+    return null;
+  }
+
+  for (const cls of char.classes) {
+    const clsKey = cls.name.toLowerCase() as keyof ClassLevels;
+    const clsLevel = char.classLevels[clsKey] ?? 0;
+    if (clsLevel <= 0) continue;
+
+    const clsIdx = Math.min(clsLevel - 1, 19);
+    const tableGroups = cls.classTableGroups ?? [];
+
+    // Extract spellcasting ability by scanning all feature entries for abilityDc
+    if (!spellcastingAbility) {
+      for (const levelFeatures of cls.classFeatures) {
+        const ability = findAbilityFromEntries(levelFeatures.flatMap(f => f.entries ?? []));
+        if (ability) {
+          spellcastingAbility = ability;
+          break;
+        }
+      }
+    }
+
+    const cantripGroup = tableGroups.find(g => g.colLabels.includes('Cantrips Known'));
+    const spellsKnownGroup = tableGroups.find(g => g.colLabels.includes('Spells Known'));
+    const slotGroup = tableGroups.find(g => g.title === 'Spell Slots per Spell Level');
+    const pactGroup = tableGroups.find(
+      g => g.colLabels.includes('Spell Slots') && g.colLabels.includes('Slot Level')
+    );
+
+    // Cantrips known
+    if (cantripGroup) {
+      const colIdx = cantripGroup.colLabels.indexOf('Cantrips Known');
+      const row = cantripGroup.rows[clsIdx];
+      cantripsKnown += (row?.[colIdx] as number) ?? 0;
+    }
+
+    // Spell slots from full/half caster table
+    if (slotGroup) {
+      const row = slotGroup.rows[clsIdx] as number[];
+      row?.forEach((count, i) => {
+        if (count > 0) {
+          const lvl = i + 1;
+          if (spellSlots[lvl]) {
+            spellSlots[lvl]!.max += count;
+          } else {
+            spellSlots[lvl] = { max: count, used: 0 };
+          }
+        }
+      });
+    }
+
+    // Pact magic slots (Warlock)
+    if (pactGroup) {
+      const slotCountIdx = pactGroup.colLabels.indexOf('Spell Slots');
+      const slotLvlIdx = pactGroup.colLabels.indexOf('Slot Level');
+      const row = pactGroup.rows[clsIdx];
+      const count = (row?.[slotCountIdx] as number) ?? 0;
+      const slotLvl = (row?.[slotLvlIdx] as number) ?? 0;
+      if (count > 0 && slotLvl > 0) {
+        spellSlots[slotLvl] = { max: count, used: 0 };
+      }
+    }
+
+    // Determine casting mode (first class wins for simple characters)
+    if (castingMode === 'none') {
+      const isSpellbookCaster = cls.name === 'Wizard' || cls.name === 'Artificer';
+      const hasCastingData = !!(slotGroup || pactGroup || cantripGroup || spellsKnownGroup);
+
+      if (hasCastingData) {
+        if (isSpellbookCaster) {
+          castingMode = 'spellbook';
+          // 6 spells at level 1, +2 per level thereafter
+          spellsKnownCount = 6 + 2 * (clsLevel - 1);
+        } else if (spellsKnownGroup) {
+          castingMode = 'known';
+          const colIdx = spellsKnownGroup.colLabels.indexOf('Spells Known');
+          const row = spellsKnownGroup.rows[clsIdx];
+          spellsKnownCount = (row?.[colIdx] as number) ?? 0;
+        } else {
+          castingMode = 'prepared';
+        }
+      }
+    }
+  }
+
+  // Calculate maximum prepared spells based on ability modifier + (class) level
+  let maxPrepared = 0;
+  if ((castingMode === 'prepared' || castingMode === 'spellbook') && spellcastingAbility) {
+    const cls = char.classes[0];
+    const clsKey = cls?.name?.toLowerCase() as keyof ClassLevels;
+    const clsLevel = char.classLevels[clsKey] ?? 1;
+    const abilityScore =
+      char.abilityScores[spellcastingAbility as keyof typeof char.abilityScores] ?? 10;
+    const abilityMod = Math.floor((abilityScore - 10) / 2);
+    const clsName = cls?.name?.toLowerCase() ?? '';
+
+    if (clsName === 'paladin' || clsName === 'artificer') {
+      maxPrepared = Math.max(1, abilityMod + Math.floor(clsLevel / 2));
+    } else {
+      maxPrepared = Math.max(1, abilityMod + clsLevel);
+    }
+  }
+
+  // Process innate / granted spells from race and background
+  function parseInnate(additionalSpells: any[]): {
+    innate: SpellcastingInfo['innateSpells'];
+    expanded: string[];
+  } {
+    const innate: SpellcastingInfo['innateSpells'] = [];
+    const expanded: string[] = [];
+    for (const block of additionalSpells) {
+      const ability: string =
+        typeof block.ability === 'string'
+          ? block.ability
+          : Array.isArray(block.ability?.choose)
+          ? (block.ability.choose[0] as string)
+          : 'cha';
+
+      for (const mode of ['innate', 'known', 'prepared'] as const) {
+        const data = block[mode];
+        if (!data || typeof data !== 'object') continue;
+        for (const [reqLvlStr, spellList] of Object.entries(data)) {
+          const reqLvl = parseInt(reqLvlStr, 10);
+          if (isNaN(reqLvl) || reqLvl > level) continue;
+          if (Array.isArray(spellList)) {
+            for (const rawName of spellList as string[]) {
+              const name = (rawName.split('#')[0] ?? rawName).trim();
+              innate.push({ name, level: reqLvl, ability });
+            }
+          }
+        }
+      }
+      const expandedData = block['expanded'];
+      if (expandedData && typeof expandedData === 'object') {
+        for (const [reqLvlStr, spellList] of Object.entries(expandedData)) {
+          const reqLvl = parseInt(reqLvlStr, 10);
+          if (isNaN(reqLvl) || reqLvl > level) continue;
+          if (Array.isArray(spellList)) {
+            for (const rawName of spellList as string[]) {
+              const name = (rawName.split('#')[0] ?? rawName).trim();
+              if (!expanded.includes(name)) expanded.push(name);
+            }
+          }
+        }
+      }
+    }
+    return { innate, expanded };
+  }
+
+  const raceAdditional: any[] = (char.race as any)?.additionalSpells ?? [];
+  if (raceAdditional.length > 0) {
+    const { innate, expanded } = parseInnate(raceAdditional);
+    innateSpells.push(...innate);
+    expanded.forEach(n => {
+      if (!expandedSpellNames.includes(n)) expandedSpellNames.push(n);
+    });
+    if (innate.length > 0 && castingMode === 'none') castingMode = 'innate';
+  }
+
+  const bgAdditional: any[] = (char.background as any)?.additionalSpells ?? [];
+  if (bgAdditional.length > 0) {
+    const { innate, expanded } = parseInnate(bgAdditional);
+    innateSpells.push(...innate);
+    expanded.forEach(n => {
+      if (!expandedSpellNames.includes(n)) expandedSpellNames.push(n);
+    });
+    if (innate.length > 0 && castingMode === 'none') castingMode = 'innate';
+  }
+
+  return {
+    isSpellcaster: castingMode !== 'none',
+    castingMode,
+    spellcastingAbility,
+    cantripsKnown,
+    spellsKnownCount,
+    maxPrepared,
+    spellSlots,
+    innateSpells,
+    expandedSpellNames,
   };
-
-  const features: any[] = [];
-  char.classes.forEach(element => {
-    features.push(getFeaturesForLevel(element.classFeatures, char.classLevels[element.name.toLowerCase() as keyof ClassLevels]));
-  });
-  console.log(features);
-  return spellcasting;
 }

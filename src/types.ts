@@ -169,12 +169,13 @@ export type playerCharacter = {
 
 export type SpellCasting = {
   spellCaster: SpellCaster;
-    spellSlots?: Record<number, { max: number; used: number }>;
-    knownSpells?: Spells;
-    preparedSpells?: Spells;
-    spellSaveDC?: number;
-    spellAttackBonus?: number;
-}
+  spellSlots?: Record<number, { max: number; used: number }>;
+  cantrips?: Spells;
+  knownSpells?: Spells;
+  preparedSpells?: Spells;
+  spellSaveDC?: number;
+  spellAttackBonus?: number;
+};
 
 export type SpellCaster = 'None' | 'Full Caster' | 'Half Caster' | 'Partial Caster';
 
@@ -494,4 +495,38 @@ export type SpellcastingProfile = {
   sources: SpellSource[];
   /** For warlock: pact magic slot level */
   pactSlotLevel?: number;
+};
+
+/**
+ * How a class interacts with spells at character creation / level-up.
+ */
+export type SpellcastingCastingMode =
+  | 'known' // Fixed number of spells known (Bard, Sorcerer, Warlock, Ranger)
+  | 'prepared' // Prepare from full class spell list each day (Cleric, Druid, Paladin)
+  | 'spellbook' // Learn spells into book first, then prepare from book (Wizard, Artificer)
+  | 'innate' // Only race/background granted spells — no class casting
+  | 'none';
+
+/**
+ * Computed spellcasting information for the current character — derived from
+ * class table data and ability scores.  Not stored on the character; regenerated
+ * on demand via computeCharSpellcasting().
+ */
+export type SpellcastingInfo = {
+  isSpellcaster: boolean;
+  castingMode: SpellcastingCastingMode;
+  /** Ability score used for spellcasting (short form: 'int', 'wis', 'cha', …) */
+  spellcastingAbility: string | null;
+  /** How many cantrips the character may choose */
+  cantripsKnown: number;
+  /** How many leveled spells to learn ('known' / 'spellbook' modes); 0 for prepared-casters */
+  spellsKnownCount: number;
+  /** How many spells may be prepared ('prepared' / 'spellbook' modes) */
+  maxPrepared: number;
+  /** Spell slots available at this level */
+  spellSlots: Record<number, { max: number; used: number }>;
+  /** Spells automatically granted by race / background */
+  innateSpells: Array<{ name: string; level: number; ability: string }>;
+  /** Extra spells added to the class spell list (e.g. Strixhaven background) */
+  expandedSpellNames: string[];
 };

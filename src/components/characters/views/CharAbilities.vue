@@ -4,8 +4,8 @@
 </template>
 
 <script setup lang="ts">
-  import type { playerCharacter, ClassLevels } from '../../../types';
-  import { getFeaturesForLevel, computeCharSpellcasting } from '../../../helperFunctions';
+  import type { playerCharacter } from '../../../types';
+  import { computeCharSpellcasting } from '../../../helperFunctions';
 
   const props = defineProps<{
     character: playerCharacter;
@@ -25,5 +25,6 @@
 
   function computeSpellcasting() {
     const spellcasting = computeCharSpellcasting(props.character);
+    console.log(spellcasting);
   }
 </script>
