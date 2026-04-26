@@ -11,6 +11,7 @@ import type {
   CharClass,
   ClassFeature,
   ClassFeatures,
+  ClassLevels,
   PlayerSkills,
   Feat,
   AllProficiencies,
@@ -19,6 +20,9 @@ import type {
   SpellcastingProfile,
   SpellcastingType,
   SpellSource,
+  SpellCasting,
+  Classes,
+  playerCharacter,
 } from './types';
 import { SKILL_NAME_MAP, SAVING_THROW_MAP } from './constants';
 
@@ -990,4 +994,23 @@ export function computeSpellcasting(
     sources,
     pactSlotLevel,
   };
+}
+
+
+export function computeCharSpellcasting(char: playerCharacter): SpellCasting {
+  const spellcasting: SpellCasting = {
+      spellCaster: "None",
+        spellSlots: undefined,
+        knownSpells: undefined,
+        preparedSpells: undefined,
+        spellSaveDC: undefined,
+        spellAttackBonus: 0,
+  };
+
+  const features: any[] = [];
+  char.classes.forEach(element => {
+    features.push(getFeaturesForLevel(element.classFeatures, char.classLevels[element.name.toLowerCase() as keyof ClassLevels]));
+  });
+  console.log(features);
+  return spellcasting;
 }

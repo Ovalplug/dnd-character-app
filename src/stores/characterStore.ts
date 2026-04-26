@@ -17,7 +17,6 @@ import type {
   Subclass,
   Subrace,
   SpellcastingProfile,
-  PlayerCharacters,
 } from '../types';
 import {
   calculateAbilityScoreModifier,
@@ -140,7 +139,7 @@ export const useCharacterStore = defineStore('characters', {
         featuresAndTraits: [],
         attacks: [],
         spellcasting: {
-          spellCaster: false,
+          spellCaster: 'None',
           spellSlots: undefined,
           knownSpells: undefined,
           preparedSpells: undefined,
@@ -331,7 +330,7 @@ export const useCharacterStore = defineStore('characters', {
 
       // Apply computed profile back onto the character
       char.spellcasting = {
-        spellCaster: profile.isSpellcaster,
+        spellCaster: profile.isSpellcaster ? 'Full Caster' : 'None',
         spellSlots: Object.keys(profile.spellSlots).length > 0 ? profile.spellSlots : undefined,
         knownSpells: char.spellcasting.knownSpells,
         preparedSpells: char.spellcasting.preparedSpells,

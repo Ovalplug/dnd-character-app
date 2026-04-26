@@ -158,14 +158,7 @@ export type playerCharacter = {
     damageType?: string;
     notes?: string;
   }>;
-  spellcasting: {
-    spellCaster: boolean;
-    spellSlots?: Record<number, { max: number; used: number }>;
-    knownSpells?: Spells;
-    preparedSpells?: Spells;
-    spellSaveDC?: number;
-    spellAttackBonus?: number;
-  };
+  spellcasting: SpellCasting;
   notes?: string;
   alliesAndOrganizations?: string[];
   backstory?: string;
@@ -173,6 +166,17 @@ export type playerCharacter = {
   createdAt: number;
   updatedAt: number;
 };
+
+export type SpellCasting = {
+  spellCaster: SpellCaster;
+    spellSlots?: Record<number, { max: number; used: number }>;
+    knownSpells?: Spells;
+    preparedSpells?: Spells;
+    spellSaveDC?: number;
+    spellAttackBonus?: number;
+}
+
+export type SpellCaster = 'None' | 'Full Caster' | 'Half Caster' | 'Partial Caster';
 
 export type CharSpeed = {
   base: number;
