@@ -13,10 +13,10 @@
       <div class="profile-summary">
         <p>
           <strong>Casting style:</strong> {{ castingModeLabel }}
-          <span v-if="info.spellcastingAbility">
-            &nbsp;| <strong>Ability:</strong> {{ prettyAbility(info.spellcastingAbility) }}
-          </span>
         </p>
+        <p v-if="info.spellcastingAbility">
+            <strong>Casting Ability:</strong> {{ prettyAbility(info.spellcastingAbility) }}
+          </p>
         <div v-if="Object.keys(info.spellSlots).length > 0" class="spell-slots">
           <strong>Spell slots at level {{ characterLevel }}:</strong>
           <span v-for="(slot, lvl) in info.spellSlots" :key="lvl" class="slot-badge">

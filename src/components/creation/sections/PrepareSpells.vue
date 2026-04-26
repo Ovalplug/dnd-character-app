@@ -66,6 +66,7 @@
             <th>Spell</th>
             <th>Level</th>
             <th>School</th>
+            <th></th>
             <th>
               <span v-if="limit > 0">{{ modelValue.length }} / {{ limit }} prepared</span>
               <span v-else>Prepare</span>
@@ -78,20 +79,18 @@
             :key="spell.name"
             :class="{ prepared: isPrepared(spell.name) }"
           >
-            <td>
-              <div class="spell-name-cell">
-                <span class="spell-name-text">{{ spell.name }}</span>
-                <button class="info-btn" @click.stop="selectSpell(spell)" aria-label="View spell details">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10.125 8.875C10.125 7.83947 10.9645 7 12 7C13.0355 7 13.875 7.83947 13.875 8.875C13.875 9.56245 13.505 10.1635 12.9534 10.4899C12.478 10.7711 12 11.1977 12 11.75V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                    <circle cx="12" cy="16" r="1" fill="currentColor"/>
-                    <path d="M22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C21.5093 4.43821 21.8356 5.80655 21.9449 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                  </svg>
-                </button>
-              </div>
-            </td>
+            <td>{{ spell.name }}</td>
             <td>{{ spell.level === 0 ? 'Cantrip' : ordinal(spell.level) }}</td>
-            <td>{{ getPrettySpellSchool(spell.school) }}</td>
+            <td class="school-cell">{{ getPrettySpellSchool(spell.school) }}</td>
+            <td class="info-cell">
+              <button class="info-btn" @click.stop="selectSpell(spell)" aria-label="View spell details">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10.125 8.875C10.125 7.83947 10.9645 7 12 7C13.0355 7 13.875 7.83947 13.875 8.875C13.875 9.56245 13.505 10.1635 12.9534 10.4899C12.478 10.7711 12 11.1977 12 11.75V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <circle cx="12" cy="16" r="1" fill="currentColor"/>
+                  <path d="M22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C21.5093 4.43821 21.8356 5.80655 21.9449 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </button>
+            </td>
             <td>
               <input
                 type="checkbox"
@@ -368,55 +367,65 @@
   .spell-scroll {
     max-height: 360px;
     overflow-y: auto;
+    overflow-x: auto;
   }
 
   .spells-table {
     width: 100%;
+    min-width: 360px;
     border-collapse: collapse;
     font-size: 0.9rem;
+    table-layout: fixed;
   }
 
   .spells-table th,
   .spells-table td {
-    border: 1px solid var(--color-border, #ccc);
-    padding: 0.35rem 0.6rem;
+    border: 1px solid var(--color-muted);
+    padding: 0.35rem 0.5rem;
     text-align: left;
+    vertical-align: middle;
   }
 
+  /* Level, School, ?, Checkbox — fixed widths; name gets the rest */
+  .spells-table th:nth-child(2),
+  .spells-table td:nth-child(2) { width: 60px; }
+
+  .spells-table th:nth-child(3),
+  .spells-table td:nth-child(3) { width: 88px; }
+
+  .spells-table th:nth-child(4),
+  .spells-table td:nth-child(4) { width: 32px; padding: 0; text-align: center; }
+
+  .spells-table th:nth-child(5),
+  .spells-table td:nth-child(5) { width: 60px; text-align: center; }
+
   .spells-table tr.prepared {
-    background: #e6f9f0;
+    background: rgba(201, 164, 75, 0.15);
+  }
+
+  .spells-table td:nth-child(1),
+  .spells-table td:nth-child(2),
+  .school-cell {
+    font-size: 0.72rem;
+    color: var(--color-muted);
   }
 
   .cap-hint {
     font-size: 0.8rem;
-    color: var(--color-text-muted, #888);
+    color: var(--color-muted);
     text-align: center;
   }
 
-  .spell-name-cell {
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-    min-width: 0;
-  }
-
-  .spell-name-text {
-    flex: 1;
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
   .info-btn {
-    flex-shrink: 0;
     background: none;
     border: none;
-    padding: 0;
+    padding: 0.2rem;
     cursor: pointer;
     color: var(--color-muted);
     display: flex;
     align-items: center;
+    justify-content: center;
+    width: 100%;
     line-height: 1;
   }
 
