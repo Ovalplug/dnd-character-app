@@ -48,15 +48,29 @@
       <div class="filter-footer">
         <div class="sort-group">
           <span class="filter-label">Sort</span>
-          <button class="chip" :class="{ 'chip--on': orderBy === 'name' }" @click="orderBy = 'name'">Name</button>
-          <button class="chip" :class="{ 'chip--on': orderBy === 'level' }" @click="orderBy = 'level'">Level</button>
+          <button
+            class="chip"
+            :class="{ 'chip--on': orderBy === 'name' }"
+            @click="orderBy = 'name'"
+          >
+            Name
+          </button>
+          <button
+            class="chip"
+            :class="{ 'chip--on': orderBy === 'level' }"
+            @click="orderBy = 'level'"
+          >
+            Level
+          </button>
         </div>
         <button v-if="hasActiveFilters" class="clear-btn" @click="clearFilters">Clear all</button>
       </div>
     </div>
 
     <!-- Result count -->
-    <p class="result-count">{{ filteredSpells.length }} spell{{ filteredSpells.length !== 1 ? 's' : '' }}</p>
+    <p class="result-count">
+      {{ filteredSpells.length }} spell{{ filteredSpells.length !== 1 ? 's' : '' }}
+    </p>
 
     <!-- Spell list -->
     <div class="spell-scroll">
@@ -83,11 +97,31 @@
             <td>{{ spell.level === 0 ? 'Cantrip' : ordinal(spell.level) }}</td>
             <td class="school-cell">{{ getPrettySpellSchool(spell.school) }}</td>
             <td class="info-cell">
-              <button class="info-btn" @click.stop="selectSpell(spell)" aria-label="View spell details">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M10.125 8.875C10.125 7.83947 10.9645 7 12 7C13.0355 7 13.875 7.83947 13.875 8.875C13.875 9.56245 13.505 10.1635 12.9534 10.4899C12.478 10.7711 12 11.1977 12 11.75V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                  <circle cx="12" cy="16" r="1" fill="currentColor"/>
-                  <path d="M22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C21.5093 4.43821 21.8356 5.80655 21.9449 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <button
+                class="info-btn"
+                @click.stop="selectSpell(spell)"
+                aria-label="View spell details"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M10.125 8.875C10.125 7.83947 10.9645 7 12 7C13.0355 7 13.875 7.83947 13.875 8.875C13.875 9.56245 13.505 10.1635 12.9534 10.4899C12.478 10.7711 12 11.1977 12 11.75V13"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  />
+                  <circle cx="12" cy="16" r="1" fill="currentColor" />
+                  <path
+                    d="M22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C21.5093 4.43821 21.8356 5.80655 21.9449 8"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  />
                 </svg>
               </button>
             </td>
@@ -158,8 +192,12 @@
     return Array.from(lvls).sort((a, b) => a - b);
   });
 
-  const activeFilterCount = computed(() => selectedLevels.value.length + selectedSchools.value.length);
-  const hasActiveFilters = computed(() => activeFilterCount.value > 0 || searchVal.value.length > 0);
+  const activeFilterCount = computed(
+    () => selectedLevels.value.length + selectedSchools.value.length
+  );
+  const hasActiveFilters = computed(
+    () => activeFilterCount.value > 0 || searchVal.value.length > 0
+  );
 
   const filteredSpells = computed<Spell[]>(() =>
     getRefinedSpellsList(
@@ -388,16 +426,27 @@
 
   /* Level, School, ?, Checkbox — fixed widths; name gets the rest */
   .spells-table th:nth-child(2),
-  .spells-table td:nth-child(2) { width: 60px; }
+  .spells-table td:nth-child(2) {
+    width: 60px;
+  }
 
   .spells-table th:nth-child(3),
-  .spells-table td:nth-child(3) { width: 88px; }
+  .spells-table td:nth-child(3) {
+    width: 88px;
+  }
 
   .spells-table th:nth-child(4),
-  .spells-table td:nth-child(4) { width: 32px; padding: 0; text-align: center; }
+  .spells-table td:nth-child(4) {
+    width: 32px;
+    padding: 0;
+    text-align: center;
+  }
 
   .spells-table th:nth-child(5),
-  .spells-table td:nth-child(5) { width: 60px; text-align: center; }
+  .spells-table td:nth-child(5) {
+    width: 60px;
+    text-align: center;
+  }
 
   .spells-table tr.prepared {
     background: rgba(201, 164, 75, 0.15);
