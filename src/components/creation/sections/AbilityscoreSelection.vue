@@ -219,6 +219,11 @@
                   +
                 </button>
               </div>
+              <span
+                v-else-if="getFixedRacialBonus(score as keyof AbilityScoreValues) > 0"
+                class="racial-badge"
+                >+{{ getFixedRacialBonus(score as keyof AbilityScoreValues) }}</span
+              >
               <span v-else class="racial-na">—</span>
             </template>
           </td>
@@ -244,7 +249,7 @@
   import downArrow from '../../../assets/icons/down-arrow.svg';
   import rollDice from '../../../assets/icons/roll-dice.svg';
 
-  import type { AbilityScoreValues, DiceTypes, Ability, FixedAbilityBonus } from '../../../types';
+  import type { AbilityScoreValues, DiceTypes, Ability } from '../../../types';
 
   import {
     suggestedAbilityScores,
@@ -479,18 +484,19 @@
     chosenRacialBonuses.value[score] = chosenRacialBonuses.value[score] - 1;
   }
 
-  function isFixedAbilityBonus(obj: any): obj is FixedAbilityBonus {
-    return obj && typeof obj === 'object' && !('choose' in obj);
+  function getFixedRacialBonus(score: keyof AbilityScoreValues): number {
+    let total = 0;
+    for (const bonus of currRaceBonus.value) {
+      if (bonus && typeof bonus === 'object' && score in bonus) {
+        const val = (bonus as any)[score];
+        if (typeof val === 'number') total += val;
+      }
+    }
+    return total;
   }
 
   function getRacialBonus(score: keyof AbilityScoreValues) {
-    if (useSetRacialBonus.value) {
-      // Find the first object that is a FixedAbilityBonus
-      const bonusObj = currRaceBonus.value.find(isFixedAbilityBonus);
-      return bonusObj && typeof bonusObj[score] === 'number' ? bonusObj[score]! : 0;
-    } else {
-      return chosenRacialBonuses.value[score] || 0;
-    }
+    return getFixedRacialBonus(score) + (chosenRacialBonuses.value[score] || 0);
   }
 
   function getTotalWithRacialBonus(score: keyof AbilityScoreValues) {
