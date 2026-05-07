@@ -161,24 +161,26 @@ export const useDataStore = defineStore('data', {
 
   actions: {
     async init() {
-      // Load heavy JSON files from public/ at runtime so they are not bundled
-      const [official, ua, spells] = await Promise.all([
-        fetch('/data/char-official.json').then(r => {
-          if (!r.ok) throw new Error('Failed to fetch char-official.json');
-          return r.json();
-        }),
-        fetch('/data/char-ua.json').then(r => {
-          if (!r.ok) throw new Error('Failed to fetch char-ua.json');
-          return r.json();
-        }),
-        fetch('/data/spells-full.json').then(r => {
-          if (!r.ok) throw new Error('Failed to fetch spells-full.json');
-          return r.json();
-        }),
-      ]);
+      // Load the manifest to discover all editions and their files dynamically
+      const manifest: Record<string, string[]> = await fetch('/data/manifest.json').then(r => {
+        if (!r.ok) throw new Error('Failed to fetch data/manifest.json');
+        return r.json();
+      });
 
-      const [officialData, uaData, spellsData] = [official, ua, spells];
-      datasets = [...officialData, ...uaData];
+      // Fetch every file listed across all editions in parallel
+      const fetchTasks = Object.entries(manifest).flatMap(([edition, files]) =>
+        files.map(file =>
+          fetch(`/data/${edition}/${file}`).then(r => {
+            if (!r.ok) throw new Error(`Failed to fetch ${edition}/${file}`);
+            return r.json() as Promise<any[]>;
+          })
+        )
+      );
+
+      const results = await Promise.all(fetchTasks);
+
+      // All source files share the same shape (array of source objects), so merge them all
+      datasets = results.flat();
       allData = datasets;
 
       this.rawDatasets = datasets;
@@ -191,7 +193,7 @@ export const useDataStore = defineStore('data', {
       this.eInvocations = aggregate('eInvocations');
       this.aInfusions = aggregate('aInfusions');
       this.subclasses = aggregateSubclasses(allData);
-      this.spells = aggregateSpells(spellsData);
+      this.spells = aggregateSpells(datasets);
       this.loaded = true;
     },
 
