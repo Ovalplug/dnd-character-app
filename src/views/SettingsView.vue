@@ -18,23 +18,37 @@
         </div>
 
         <ul class="source-list">
-          <li
-            v-for="source in dataStore.allSources"
-            :key="source.acronym"
-            class="source-item"
-            :class="{ disabled: !isEnabled(source.acronym) }"
-          >
-            <label class="source-label">
-              <input
-                type="checkbox"
-                class="source-checkbox"
-                :checked="isEnabled(source.acronym)"
-                @change="dataStore.toggleSource(source.acronym)"
-              />
-              <span class="source-name">{{ source.name }}</span>
-              <span class="source-acronym">{{ source.acronym }}</span>
-            </label>
-          </li>
+          <template v-for="(sources, edition) in sourcesByEdition" :key="edition">
+            <li class="edition-header">
+              <label class="edition-label">
+                <input
+                  type="checkbox"
+                  class="source-checkbox"
+                  :checked="isEditionEnabled(String(edition))"
+                  :indeterminate="isEditionIndeterminate(String(edition))"
+                  @change="dataStore.toggleEdition(String(edition))"
+                />
+                <span class="edition-badge">{{ edition }}</span>
+              </label>
+            </li>
+            <li
+              v-for="source in sources"
+              :key="source.acronym"
+              class="source-item"
+              :class="{ disabled: !isEnabled(source.acronym) }"
+            >
+              <label class="source-label">
+                <input
+                  type="checkbox"
+                  class="source-checkbox"
+                  :checked="isEnabled(source.acronym)"
+                  @change="dataStore.toggleSource(source.acronym)"
+                />
+                <span class="source-name">{{ source.name }}</span>
+                <span class="source-acronym">{{ source.acronym }}</span>
+              </label>
+            </li>
+          </template>
         </ul>
       </div>
     </section>
@@ -42,7 +56,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { onMounted } from 'vue';
+  import { computed, onMounted } from 'vue';
   import { useDataStore } from '../stores/dataStore';
 
   const dataStore = useDataStore();
@@ -56,6 +70,25 @@
   function isEnabled(acronym: string): boolean {
     return dataStore.enabledSources[acronym] !== false;
   }
+
+  function isEditionEnabled(edition: string): boolean {
+    const sources = dataStore.allSources.filter(s => s.edition === edition);
+    return sources.length > 0 && sources.every(s => dataStore.enabledSources[s.acronym] !== false);
+  }
+
+  function isEditionIndeterminate(edition: string): boolean {
+    const sources = dataStore.allSources.filter(s => s.edition === edition);
+    const enabledCount = sources.filter(s => dataStore.enabledSources[s.acronym] !== false).length;
+    return enabledCount > 0 && enabledCount < sources.length;
+  }
+
+  const sourcesByEdition = computed(() => {
+    const groups: Record<string, Array<{ name: string; acronym: string; edition: string }>> = {};
+    for (const source of dataStore.allSources) {
+      (groups[source.edition] ??= []).push(source);
+    }
+    return groups;
+  });
 </script>
 
 <style scoped>
@@ -123,6 +156,30 @@
     display: flex;
     flex-direction: column;
     gap: 0.15rem;
+  }
+
+  .edition-header {
+    padding: 0.6rem 0.5rem 0.25rem;
+    margin-top: 0.25rem;
+  }
+
+  .edition-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .edition-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #fff;
+    background: var(--color-primary);
+    border-radius: 4px;
+    padding: 0.15rem 0.5rem;
   }
 
   .source-item {

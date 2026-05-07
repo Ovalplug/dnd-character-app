@@ -163,11 +163,11 @@ export const useDataStore = defineStore('data', {
   }),
 
   getters: {
-    allSources(state): Array<{ name: string; acronym: string }> {
+    allSources(state): Array<{ name: string; acronym: string; edition: string }> {
       const seen = new Set<string>();
       return state.rawDatasets
         .filter((d: any) => d.acronym && !seen.has(d.acronym) && !!seen.add(d.acronym))
-        .map((d: any) => ({ name: d.name, acronym: d.acronym }))
+        .map((d: any) => ({ name: d.name, acronym: d.acronym, edition: d._edition ?? 'unknown' }))
         .sort((a, b) => a.name.localeCompare(b.name));
     },
     filteredFeats(state): any[] {
@@ -208,12 +208,14 @@ export const useDataStore = defineStore('data', {
         return r.json();
       });
 
-      // Fetch every file listed across all editions in parallel
+      // Fetch every file listed across all editions in parallel, tagging each dataset with its edition
       const fetchTasks = Object.entries(manifest).flatMap(([edition, files]) =>
         files.map(file =>
           fetch(`/data/${edition}/${file}`).then(r => {
             if (!r.ok) throw new Error(`Failed to fetch ${edition}/${file}`);
-            return r.json() as Promise<any[]>;
+            return r.json().then((data: any[]) =>
+              data.map((d: any) => ({ ...d, _edition: edition }))
+            );
           })
         )
       );
@@ -260,6 +262,15 @@ export const useDataStore = defineStore('data', {
     disableAllSources() {
       for (const src of this.allSources) {
         this.enabledSources[src.acronym] = false;
+      }
+      setSetting('enabledSources', { ...this.enabledSources });
+    },
+
+    toggleEdition(edition: string) {
+      const sources = this.allSources.filter(s => s.edition === edition);
+      const allOn = sources.every(s => this.enabledSources[s.acronym] !== false);
+      for (const src of sources) {
+        this.enabledSources[src.acronym] = !allOn;
       }
       setSetting('enabledSources', { ...this.enabledSources });
     },
