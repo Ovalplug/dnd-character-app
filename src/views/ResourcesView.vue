@@ -29,21 +29,25 @@
         <button @click="showData('aInfusions')">Artificer Infusions</button>
         <button @click="showData('spells')">Spells</button>
       </div>
-      <AllFeats v-if="show_feats" :feats="dataStore.feats" />
-      <AllRaces v-if="show_races" :races="dataStore.races" :raceFluff="dataStore.raceFluff" />
+      <AllFeats v-if="show_feats" :feats="dataStore.filteredFeats" />
+      <AllRaces
+        v-if="show_races"
+        :races="dataStore.filteredRaces"
+        :raceFluff="dataStore.raceFluff"
+      />
       <AllBackgrounds
         v-if="show_backgrounds"
-        :backgrounds="dataStore.backgrounds"
+        :backgrounds="dataStore.filteredBackgrounds"
         :background-fluffs="dataStore.backgroundFluff"
       />
-      <AllInvocations v-if="show_eInvocations" :invocations="dataStore.eInvocations" />
-      <AllInvocations v-if="show_aInfusions" :invocations="dataStore.aInfusions" />
+      <AllInvocations v-if="show_eInvocations" :invocations="dataStore.filteredEInvocations" />
+      <AllInvocations v-if="show_aInfusions" :invocations="dataStore.filteredAInfusions" />
       <AllClasses
         v-if="show_classes"
-        :classes="dataStore.classes"
-        :subclasses="dataStore.subclasses"
+        :classes="dataStore.filteredClasses"
+        :subclasses="dataStore.filteredSubclasses"
       />
-      <AllSpells v-if="show_spells" :spells="dataStore.spells" />
+      <AllSpells v-if="show_spells" :spells="dataStore.filteredSpells" />
     </div>
   </div>
 </template>

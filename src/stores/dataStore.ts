@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { getSetting, setSetting } from '../database/db';
 
 let datasets: any[] = [];
 export let allData: any[] = [];
@@ -157,7 +158,47 @@ export const useDataStore = defineStore('data', {
     eInvocations: [] as any[],
     aInfusions: [] as any[],
     spells: [] as any[],
+    // Record<acronym, boolean>; absence or true = enabled, false = disabled
+    enabledSources: {} as Record<string, boolean>,
   }),
+
+  getters: {
+    allSources(state): Array<{ name: string; acronym: string }> {
+      const seen = new Set<string>();
+      return state.rawDatasets
+        .filter((d: any) => d.acronym && !seen.has(d.acronym) && !!seen.add(d.acronym))
+        .map((d: any) => ({ name: d.name, acronym: d.acronym }))
+        .sort((a, b) => a.name.localeCompare(b.name));
+    },
+    filteredFeats(state): any[] {
+      return state.feats.filter((f: any) => state.enabledSources[f.source] !== false);
+    },
+    filteredRaces(state): any[] {
+      return state.races.filter((r: any) => state.enabledSources[r.source] !== false);
+    },
+    filteredBackgrounds(state): any[] {
+      return state.backgrounds.filter((b: any) => state.enabledSources[b.source] !== false);
+    },
+    filteredClasses(state): any[] {
+      return state.classes.filter((c: any) => state.enabledSources[c.source] !== false);
+    },
+    filteredSubclasses(state): Record<string, any[]> {
+      const result: Record<string, any[]> = {};
+      for (const [cls, subs] of Object.entries(state.subclasses)) {
+        result[cls] = (subs as any[]).filter((s: any) => state.enabledSources[s.source] !== false);
+      }
+      return result;
+    },
+    filteredEInvocations(state): any[] {
+      return state.eInvocations.filter((i: any) => state.enabledSources[i.source] !== false);
+    },
+    filteredAInfusions(state): any[] {
+      return state.aInfusions.filter((i: any) => state.enabledSources[i.source] !== false);
+    },
+    filteredSpells(state): any[] {
+      return state.spells.filter((s: any) => state.enabledSources[s.source] !== false);
+    },
+  },
 
   actions: {
     async init() {
@@ -194,7 +235,33 @@ export const useDataStore = defineStore('data', {
       this.aInfusions = aggregate('aInfusions');
       this.subclasses = aggregateSubclasses(allData);
       this.spells = aggregateSpells(datasets);
+      await this.loadSourceSettings();
       this.loaded = true;
+    },
+
+    async loadSourceSettings() {
+      const saved = await getSetting<Record<string, boolean>>('enabledSources');
+      if (saved) this.enabledSources = saved;
+    },
+
+    toggleSource(acronym: string) {
+      const current = this.enabledSources[acronym] !== false;
+      this.enabledSources[acronym] = !current;
+      setSetting('enabledSources', { ...this.enabledSources });
+    },
+
+    enableAllSources() {
+      for (const key of Object.keys(this.enabledSources)) {
+        this.enabledSources[key] = true;
+      }
+      setSetting('enabledSources', { ...this.enabledSources });
+    },
+
+    disableAllSources() {
+      for (const src of this.allSources) {
+        this.enabledSources[src.acronym] = false;
+      }
+      setSetting('enabledSources', { ...this.enabledSources });
     },
 
     reload() {
