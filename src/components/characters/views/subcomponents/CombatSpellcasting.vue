@@ -37,7 +37,12 @@
     <div v-if="cantrips.length" class="spell-group">
       <h4 class="spell-group-label">Cantrips</h4>
       <div class="spell-list">
-        <div v-for="spell in cantrips" :key="spell.name" class="spell-row spell-row--cantrip">
+        <div
+          v-for="spell in cantrips"
+          :key="spell.name"
+          class="spell-row spell-row--cantrip spell-row--clickable"
+          @click="selectedSpell = spell"
+        >
           <span class="spell-name">{{ spell.name }}</span>
           <span class="spell-school">{{ getPrettySpellSchool(spell.school) }}</span>
         </div>
@@ -48,7 +53,12 @@
     <div v-if="nonCantripSpells.length" class="spell-group">
       <h4 class="spell-group-label">{{ spellGroupLabel }}</h4>
       <div class="spell-list">
-        <div v-for="spell in nonCantripSpells" :key="spell.name" class="spell-row">
+        <div
+          v-for="spell in nonCantripSpells"
+          :key="spell.name"
+          class="spell-row spell-row--clickable"
+          @click="selectedSpell = spell"
+        >
           <span class="spell-level-badge">{{ spell.level }}</span>
           <span class="spell-name">{{ spell.name }}</span>
           <span class="spell-school">{{ getPrettySpellSchool(spell.school) }}</span>
@@ -60,17 +70,27 @@
     <div v-if="spellInfo.innateSpells.length" class="spell-group">
       <h4 class="spell-group-label">Innate</h4>
       <div class="spell-list">
-        <div v-for="s in spellInfo.innateSpells" :key="s.name" class="spell-row">
+        <div
+          v-for="s in spellInfo.innateSpells"
+          :key="s.name"
+          class="spell-row spell-row--clickable"
+          @click="openInnateSpell(s.name)"
+        >
           <span class="spell-name">{{ s.name }}</span>
           <span class="spell-school">{{ getPrettyAbilityName(s.ability) }}</span>
         </div>
       </div>
     </div>
   </section>
+
+  <!-- Spell detail popout -->
+  <PopOut v-if="selectedSpell" :title="selectedSpell.name" mini @close="selectedSpell = null">
+    <SingleSpell :spell="selectedSpell" />
+  </PopOut>
 </template>
 
 <script setup lang="ts">
-  import { computed } from 'vue';
+  import { computed, ref } from 'vue';
   import type { playerCharacter, Spell } from '../../../../types';
   import {
     computeCharSpellcasting,
@@ -80,12 +100,25 @@
     getPrettyAbilityName,
   } from '../../../../helperFunctions';
   import { useCharacterStore } from '../../../../stores/characterStore';
+  import { useDataStore } from '../../../../stores/dataStore';
+  import PopOut from '../../../PopOut.vue';
+  import SingleSpell from '../../../resources/SingleSpell.vue';
 
   const props = defineProps<{
     character: playerCharacter;
   }>();
 
   const charStore = useCharacterStore();
+  const dataStore = useDataStore();
+
+  const selectedSpell = ref<Spell | null>(null);
+
+  function openInnateSpell(name: string): void {
+    const found = (dataStore.filteredSpells as Spell[]).find(
+      s => s.name.toLowerCase() === name.toLowerCase()
+    );
+    if (found) selectedSpell.value = found;
+  }
 
   const spellInfo = computed(() => computeCharSpellcasting(props.character));
 
@@ -321,6 +354,18 @@
 
   .spell-row:last-child {
     border-bottom: none;
+  }
+
+  .spell-row--clickable {
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.12s;
+  }
+
+  .spell-row--clickable:hover {
+    background: rgba(201, 164, 75, 0.08);
+    padding-left: 0.25rem;
+    margin-left: -0.25rem;
   }
 
   .spell-level-badge {
