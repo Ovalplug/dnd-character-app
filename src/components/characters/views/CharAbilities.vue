@@ -13,64 +13,26 @@
       <div class="feature-list">
         <template v-for="lvl in classLevel(cls)" :key="lvl">
           <!-- Class features at this level -->
-          <template
+          <FeatureCard
             v-for="feat in classOnlyFeatures(cls.classFeatures, lvl)"
             :key="`${cls.name}-${lvl}-${feat.name}`"
+            :name="feat.name"
+            :tag="`Lvl ${lvl}`"
           >
-            <div
-              class="feature-card"
-              :class="{ 'feature-card--open': isOpen(`${cls.name}-${lvl}-${feat.name}`) }"
-            >
-              <button class="feature-toggle" @click="toggle(`${cls.name}-${lvl}-${feat.name}`)">
-                <span class="feat-name">{{ feat.name }}</span>
-                <span class="feat-badges">
-                  <span class="level-tag">Lvl {{ lvl }}</span>
-                  <span
-                    class="chevron"
-                    :class="{ 'chevron--open': isOpen(`${cls.name}-${lvl}-${feat.name}`) }"
-                    >▼</span
-                  >
-                </span>
-              </button>
-              <div v-if="isOpen(`${cls.name}-${lvl}-${feat.name}`)" class="feature-body">
-                <ResourceEntries v-if="feat.entries?.length" :entries="feat.entries" />
-                <p v-else class="muted no-desc">No description available.</p>
-              </div>
-            </div>
-          </template>
+            <ResourceEntries v-if="feat.entries?.length" :entries="feat.entries" />
+          </FeatureCard>
 
           <!-- Subclass features at this level -->
           <template v-if="getActiveSubclass(cls) && lvl >= cls.subclassAtLvl">
-            <template
+            <FeatureCard
               v-for="sFeat in subclassFeaturesAtLevel(getActiveSubclass(cls)!, lvl)"
               :key="`${cls.name}-sub-${lvl}-${sFeat.name}`"
+              :name="sFeat.name"
+              :tag="`Lvl ${lvl} · ${getActiveSubclass(cls)?.name}`"
+              variant="subclass"
             >
-              <div
-                class="feature-card feature-card--subclass"
-                :class="{ 'feature-card--open': isOpen(`${cls.name}-sub-${lvl}-${sFeat.name}`) }"
-              >
-                <button
-                  class="feature-toggle"
-                  @click="toggle(`${cls.name}-sub-${lvl}-${sFeat.name}`)"
-                >
-                  <span class="feat-name">{{ sFeat.name }}</span>
-                  <span class="feat-badges">
-                    <span class="level-tag level-tag--subclass">
-                      Lvl {{ lvl }} · {{ getActiveSubclass(cls)?.name }}
-                    </span>
-                    <span
-                      class="chevron"
-                      :class="{ 'chevron--open': isOpen(`${cls.name}-sub-${lvl}-${sFeat.name}`) }"
-                      >▼</span
-                    >
-                  </span>
-                </button>
-                <div v-if="isOpen(`${cls.name}-sub-${lvl}-${sFeat.name}`)" class="feature-body">
-                  <ResourceEntries v-if="sFeat.entries?.length" :entries="sFeat.entries" />
-                  <p v-else class="muted no-desc">No description available.</p>
-                </div>
-              </div>
-            </template>
+              <ResourceEntries v-if="sFeat.entries?.length" :entries="sFeat.entries" />
+            </FeatureCard>
           </template>
         </template>
       </div>
@@ -87,59 +49,39 @@
       </div>
 
       <div class="feature-list">
-        <template v-for="(entry, i) in namedRaceEntries" :key="`race-${i}`">
-          <div
-            class="feature-card feature-card--race"
-            :class="{ 'feature-card--open': isOpen(`race-${i}`) }"
-          >
-            <button class="feature-toggle" @click="toggle(`race-${i}`)">
-              <span class="feat-name">{{ (entry as any).name }}</span>
-              <span class="feat-badges">
-                <span class="level-tag level-tag--race">Trait</span>
-                <span class="chevron" :class="{ 'chevron--open': isOpen(`race-${i}`) }">▼</span>
-              </span>
-            </button>
-            <div v-if="isOpen(`race-${i}`)" class="feature-body">
-              <ResourceEntries
-                v-if="(entry as any).entries?.length"
-                :entries="(entry as any).entries"
-              />
-              <p v-else-if="typeof (entry as any).entry === 'string'" class="muted">
-                {{ (entry as any).entry }}
-              </p>
-              <p v-else class="muted no-desc">No description available.</p>
-            </div>
-          </div>
-        </template>
+        <FeatureCard
+          v-for="(entry, i) in namedRaceEntries"
+          :key="`race-${i}`"
+          :name="(entry as any).name"
+          tag="Trait"
+          variant="race"
+        >
+          <ResourceEntries
+            v-if="(entry as any).entries?.length"
+            :entries="(entry as any).entries"
+          />
+          <p v-else-if="typeof (entry as any).entry === 'string'" class="muted">
+            {{ (entry as any).entry }}
+          </p>
+        </FeatureCard>
 
         <!-- Subrace traits -->
         <template v-if="character.subrace?.entries">
-          <template v-for="(entry, i) in namedSubraceEntries" :key="`subrace-${i}`">
-            <div
-              class="feature-card feature-card--subclass"
-              :class="{ 'feature-card--open': isOpen(`subrace-${i}`) }"
-            >
-              <button class="feature-toggle" @click="toggle(`subrace-${i}`)">
-                <span class="feat-name">{{ (entry as any).name }}</span>
-                <span class="feat-badges">
-                  <span class="level-tag level-tag--subclass">Subrace</span>
-                  <span class="chevron" :class="{ 'chevron--open': isOpen(`subrace-${i}`) }"
-                    >▼</span
-                  >
-                </span>
-              </button>
-              <div v-if="isOpen(`subrace-${i}`)" class="feature-body">
-                <ResourceEntries
-                  v-if="(entry as any).entries?.length"
-                  :entries="(entry as any).entries"
-                />
-                <p v-else-if="typeof (entry as any).entry === 'string'">
-                  {{ (entry as any).entry }}
-                </p>
-                <p v-else class="muted no-desc">No description available.</p>
-              </div>
-            </div>
-          </template>
+          <FeatureCard
+            v-for="(entry, i) in namedSubraceEntries"
+            :key="`subrace-${i}`"
+            :name="(entry as any).name"
+            tag="Subrace"
+            variant="subclass"
+          >
+            <ResourceEntries
+              v-if="(entry as any).entries?.length"
+              :entries="(entry as any).entries"
+            />
+            <p v-else-if="typeof (entry as any).entry === 'string'">
+              {{ (entry as any).entry }}
+            </p>
+          </FeatureCard>
         </template>
       </div>
     </section>
@@ -152,27 +94,16 @@
       </div>
 
       <div class="feature-list">
-        <div
+        <FeatureCard
           v-for="(feat, i) in character.feats"
           :key="`feat-${i}`"
-          class="feature-card feature-card--feat"
-          :class="{ 'feature-card--open': isOpen(`feat-${i}`) }"
+          :name="feat.name"
+          tag="Feat"
+          variant="feat"
         >
-          <button class="feature-toggle" @click="toggle(`feat-${i}`)">
-            <span class="feat-name">{{ feat.name }}</span>
-            <span class="feat-badges">
-              <span class="level-tag level-tag--feat">Feat</span>
-              <span class="chevron" :class="{ 'chevron--open': isOpen(`feat-${i}`) }">▼</span>
-            </span>
-          </button>
-          <div v-if="isOpen(`feat-${i}`)" class="feature-body">
-            <p v-if="feat.description" class="feat-desc">{{ feat.description }}</p>
-            <ResourceEntries v-if="feat.entries?.length" :entries="feat.entries" />
-            <p v-if="!feat.description && !feat.entries?.length" class="muted no-desc">
-              No description available.
-            </p>
-          </div>
-        </div>
+          <p v-if="feat.description" class="feat-desc">{{ feat.description }}</p>
+          <ResourceEntries v-if="feat.entries?.length" :entries="feat.entries" />
+        </FeatureCard>
       </div>
     </section>
 
@@ -180,7 +111,9 @@
     <section v-if="spellInfo.isSpellcaster" class="ability-section">
       <div class="section-header">
         <h2 class="section-title">Spellcasting</h2>
-        <span class="section-badge section-badge--spell">{{ prettyCastingMode }}</span>
+        <span class="section-badge section-badge--spell">{{
+          getPrettyCastingMode(spellInfo.castingMode)
+        }}</span>
       </div>
 
       <div class="spell-info-grid">
@@ -252,7 +185,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, computed } from 'vue';
+  import { computed } from 'vue';
   import type {
     playerCharacter,
     CharClass,
@@ -266,29 +199,14 @@
     getFeaturesForLevel,
     getPrettyAbilityName,
     getPrettySpellLevel,
+    getPrettyCastingMode,
   } from '../../../helperFunctions';
   import ResourceEntries from '../../resources/ResourceEntries.vue';
+  import FeatureCard from './subcomponents/FeatureCard.vue';
 
   const props = defineProps<{
     character: playerCharacter;
   }>();
-
-  // ── Collapse state ────────────────────────────────────────────────────────
-  const openKeys = ref<Set<string>>(new Set());
-
-  function isOpen(key: string): boolean {
-    return openKeys.value.has(key);
-  }
-
-  function toggle(key: string): void {
-    if (openKeys.value.has(key)) {
-      openKeys.value.delete(key);
-    } else {
-      openKeys.value.add(key);
-    }
-    // Trigger reactivity on the Set
-    openKeys.value = new Set(openKeys.value);
-  }
 
   // ── Class helpers ─────────────────────────────────────────────────────────
   function classLevel(cls: CharClass): number {
@@ -334,21 +252,6 @@
 
   // ── Spellcasting ──────────────────────────────────────────────────────────
   const spellInfo = computed(() => computeCharSpellcasting(props.character));
-
-  const prettyCastingMode = computed(() => {
-    switch (spellInfo.value.castingMode) {
-      case 'known':
-        return 'Known Spells';
-      case 'prepared':
-        return 'Prepared';
-      case 'spellbook':
-        return 'Spellbook';
-      case 'innate':
-        return 'Innate';
-      default:
-        return '';
-    }
-  });
 </script>
 
 <style scoped>
@@ -422,138 +325,6 @@
   .feature-list {
     display: flex;
     flex-direction: column;
-  }
-
-  /* ── Feature card ── */
-  .feature-card {
-    border-bottom: 1px solid rgba(31, 27, 22, 0.06);
-  }
-
-  .feature-card:last-child {
-    border-bottom: none;
-  }
-
-  .feature-card--subclass .feature-toggle {
-    border-left: 3px solid var(--color-accent);
-  }
-
-  .feature-card--race .feature-toggle {
-    border-left: 3px solid #7aab4b;
-  }
-
-  .feature-card--feat .feature-toggle {
-    border-left: 3px solid #6b7aab;
-  }
-
-  /* ── Toggle button ── */
-  .feature-toggle {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.5rem;
-    padding: 0.6rem 1rem;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    text-align: left;
-    color: var(--color-text);
-    transition: background 0.15s;
-  }
-
-  .feature-toggle:hover {
-    background: rgba(201, 164, 75, 0.06);
-  }
-
-  .feature-card--open > .feature-toggle {
-    background: rgba(201, 164, 75, 0.08);
-  }
-
-  .feat-name {
-    font-size: 0.9rem;
-    font-weight: 600;
-    flex: 1;
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .feat-badges {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    flex-shrink: 0;
-  }
-
-  /* ── Level tags ── */
-  .level-tag {
-    font-size: 0.65rem;
-    font-weight: 700;
-    padding: 0.1rem 0.4rem;
-    border-radius: 12px;
-    background: rgba(107, 46, 46, 0.1);
-    color: var(--color-primary);
-    white-space: nowrap;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-  }
-
-  .level-tag--subclass {
-    background: rgba(201, 164, 75, 0.18);
-    color: #7a5d1a;
-  }
-
-  .level-tag--race {
-    background: rgba(74, 107, 46, 0.12);
-    color: #4a6b2e;
-  }
-
-  .level-tag--feat {
-    background: rgba(46, 74, 107, 0.12);
-    color: #2e4a6b;
-  }
-
-  /* ── Chevron ── */
-  .chevron {
-    font-size: 0.6rem;
-    color: var(--color-muted);
-    transition: transform 0.2s;
-    display: inline-block;
-  }
-
-  .chevron--open {
-    transform: rotate(180deg);
-  }
-
-  /* ── Feature body ── */
-  .feature-body {
-    padding: 0.75rem 1rem 1rem;
-    border-top: 1px solid rgba(31, 27, 22, 0.06);
-    background: rgba(255, 255, 255, 0.4);
-    font-size: 0.88rem;
-    line-height: 1.6;
-  }
-
-  .feature-body :deep(p) {
-    margin: 0.35rem 0;
-    font-size: 0.88rem;
-    color: var(--color-text);
-  }
-
-  .feature-body :deep(ul) {
-    padding-left: 1.25rem;
-    margin: 0.35rem 0;
-  }
-
-  .feature-body :deep(strong) {
-    color: var(--color-primary);
-  }
-
-  .no-desc {
-    font-style: italic;
-    opacity: 0.7;
-    margin: 0 !important;
   }
 
   /* ── Spellcasting ── */

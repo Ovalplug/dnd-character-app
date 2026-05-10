@@ -996,6 +996,21 @@ export function computeSpellcasting(
   };
 }
 
+export function getPrettyCastingMode(mode: SpellcastingCastingMode): string {
+  switch (mode) {
+    case 'known':
+      return 'Known Spells';
+    case 'prepared':
+      return 'Prepared';
+    case 'spellbook':
+      return 'Spellbook';
+    case 'innate':
+      return 'Innate';
+    default:
+      return '';
+  }
+}
+
 export function computeCharSpellcasting(char: playerCharacter): SpellcastingInfo {
   const level = Math.max(
     1,

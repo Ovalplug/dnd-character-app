@@ -390,6 +390,28 @@ export const useCharacterStore = defineStore('characters', {
       await this.updateCharacter(character);
     },
 
+    async toggleSpellSlot(id: string, level: number, n: number, max: number) {
+      const character = await db.characters.get(id);
+      if (!character) return;
+      const slots = { ...(character.spellcasting?.spellSlots ?? {}) };
+      const currentUsed = slots[level]?.used ?? 0;
+      const newUsed = n <= currentUsed ? n - 1 : n;
+      slots[level] = { max, used: Math.max(0, Math.min(max, newUsed)) };
+      character.spellcasting = { ...character.spellcasting, spellSlots: slots };
+      await this.updateCharacter(character);
+    },
+
+    async resetSpellSlots(id: string, maxSlots: Record<number, number>) {
+      const character = await db.characters.get(id);
+      if (!character) return;
+      const resetSlots: Record<number, { max: number; used: number }> = {};
+      for (const [lvlStr, max] of Object.entries(maxSlots)) {
+        resetSlots[Number(lvlStr)] = { max, used: 0 };
+      }
+      character.spellcasting = { ...character.spellcasting, spellSlots: resetSlots };
+      await this.updateCharacter(character);
+    },
+
     async touchUpCharacter(id: string) {
       // this function can be used at any time to recalculate and update any derived fields on the character, such as proficiency bonus or passive perception, based on their current state. This is useful to ensure all fields are up-to-date before saving or displaying the character.
       const character = await db.characters.get(id);

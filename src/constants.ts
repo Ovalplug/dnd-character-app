@@ -1,5 +1,38 @@
 import type { PlayerSkills, SavingThrow, AbilityScoreValues } from './types';
 
+export type ActionType = 'Action' | 'Reaction' | 'Special' | 'Bonus Action';
+
+export type CombatAction = {
+  name: string;
+  type: ActionType;
+};
+
+export const SAVE_ABBRS: { key: SavingThrow; abbr: string }[] = [
+  { key: 'str', abbr: 'STR' },
+  { key: 'dex', abbr: 'DEX' },
+  { key: 'con', abbr: 'CON' },
+  { key: 'int', abbr: 'INT' },
+  { key: 'wis', abbr: 'WIS' },
+  { key: 'cha', abbr: 'CHA' },
+];
+
+export const BASIC_ACTIONS: CombatAction[] = [
+  { name: 'Attack', type: 'Action' },
+  { name: 'Cast a Spell', type: 'Action' },
+  { name: 'Dash', type: 'Action' },
+  { name: 'Disengage', type: 'Action' },
+  { name: 'Dodge', type: 'Action' },
+  { name: 'Help', type: 'Action' },
+  { name: 'Hide', type: 'Action' },
+  { name: 'Ready', type: 'Action' },
+  { name: 'Search', type: 'Action' },
+  { name: 'Use Object', type: 'Action' },
+  { name: 'Grapple', type: 'Special' },
+  { name: 'Shove', type: 'Special' },
+  { name: 'Opportunity Attack', type: 'Reaction' },
+  { name: 'Cast a Spell', type: 'Reaction' },
+];
+
 export const APP_VERSION = '2.6.5';
 
 // Replace with your actual GitHub raw URL:
