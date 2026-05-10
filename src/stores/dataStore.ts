@@ -213,9 +213,9 @@ export const useDataStore = defineStore('data', {
         files.map(file =>
           fetch(`/data/${edition}/${file}`).then(r => {
             if (!r.ok) throw new Error(`Failed to fetch ${edition}/${file}`);
-            return r.json().then((data: any[]) =>
-              data.map((d: any) => ({ ...d, _edition: edition }))
-            );
+            return r
+              .json()
+              .then((data: any[]) => data.map((d: any) => ({ ...d, _edition: edition })));
           })
         )
       );
