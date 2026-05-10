@@ -1,3 +1,5 @@
+export const APP_VERSION = '2.7.0';
+
 import type { PlayerSkills, SavingThrow, AbilityScoreValues } from './types';
 
 export type ActionType = 'Action' | 'Reaction' | 'Special' | 'Bonus Action';
@@ -33,7 +35,6 @@ export const BASIC_ACTIONS: CombatAction[] = [
   { name: 'Cast a Spell', type: 'Reaction' },
 ];
 
-export const APP_VERSION = '2.6.5';
 
 // Replace with your actual GitHub raw URL:
 // https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/version.json
