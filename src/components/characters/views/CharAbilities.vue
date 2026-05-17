@@ -1,4 +1,5 @@
 <template>
+  <NameBadge :character="props.character" />
   <div class="char-abilities">
     <!-- ===== CLASS FEATURES ===== -->
     <section v-for="cls in character.classes" :key="cls.name" class="ability-section">
@@ -203,6 +204,7 @@
   } from '../../../helperFunctions';
   import ResourceEntries from '../../resources/ResourceEntries.vue';
   import FeatureCard from './subcomponents/FeatureCard.vue';
+import NameBadge from './subcomponents/NameBadge.vue';
 
   const props = defineProps<{
     character: playerCharacter;

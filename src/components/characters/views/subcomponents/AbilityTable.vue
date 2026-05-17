@@ -68,14 +68,6 @@
           <td>{{ props.character.abilityScores.wis }}</td>
           <td>{{ props.character.abilityScores.cha }}</td>
         </tr>
-        <tr>
-          <td>{{ formatModifier('str') }}</td>
-          <td>{{ formatModifier('dex') }}</td>
-          <td>{{ formatModifier('con') }}</td>
-          <td>{{ formatModifier('int') }}</td>
-          <td>{{ formatModifier('wis') }}</td>
-          <td>{{ formatModifier('cha') }}</td>
-        </tr>
       </tbody>
     </table>
   </div>
@@ -83,24 +75,11 @@
 
 <script lang="ts" setup>
   import type { playerCharacter } from '../../../../types';
-  import { calculateAbilityScoreModifier } from '../../../../helperFunctions';
   import profStar from '../../../../assets/icons/profStar.svg';
 
   const props = defineProps<{
     character: playerCharacter;
   }>();
-
-  function formatModifier(ability: string) {
-    const modifier = calculateAbilityScoreModifier(
-      props.character.abilityScores[ability as keyof typeof props.character.abilityScores],
-      props.character.proficiencyModifier,
-      props.character.allProficiencies?.savingThrows?.[
-        ability as keyof typeof props.character.allProficiencies.savingThrows
-      ] ?? false,
-      false
-    );
-    return modifier >= 0 ? `+${modifier}` : `${modifier}`;
-  }
 </script>
 
 <style scoped>

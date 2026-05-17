@@ -3,6 +3,7 @@
   <StatsBar :character="props.character" />
   <OtherInfo :character="props.character" />
   <AbilityTable :character="props.character" />
+  <SavingThrows :character="props.character" />
   <br />
   <SkillsBonus :character="props.character" />
   <br />
@@ -15,6 +16,7 @@
   import type { playerCharacter } from '../../../types';
   import OtherInfo from './subcomponents/OtherInfo.vue';
   import SkillsBonus from './subcomponents/SkillsBonus.vue';
+  import SavingThrows from './subcomponents/SavingThrows.vue';
 
   const props = defineProps<{
     character: playerCharacter;

@@ -36,7 +36,6 @@ export const BASIC_ACTIONS: CombatAction[] = [
   { name: 'Cast a Spell', type: 'Reaction' },
 ];
 
-
 // Replace with your actual GitHub raw URL:
 // https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/version.json
 export const UPDATE_MANIFEST_URL =

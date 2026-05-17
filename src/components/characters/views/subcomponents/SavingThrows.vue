@@ -59,15 +59,14 @@
   .saves-row {
     display: flex;
     gap: 0.35rem;
-    flex-wrap: wrap;
   }
 
   .save-pill {
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex: 1;
-    min-width: 48px;
+    flex: 1 1 0;
+    min-width: 0;
     padding: 0.35rem 0.4rem;
     background: rgba(31, 27, 22, 0.04);
     border: 1px solid rgba(31, 27, 22, 0.08);
