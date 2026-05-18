@@ -9,6 +9,7 @@ import type {
   CharSpeed,
   ClassLevels,
   DiceTypes,
+  Feat,
   HitDice,
   Languages,
   playerCharacter,
@@ -201,6 +202,68 @@ export const useCharacterStore = defineStore('characters', {
       const character = await db.characters.get(id);
       if (!character) return;
       character.name = newName;
+      await this.updateCharacter(character);
+    },
+
+    async updateCharacterLanguagesById(id: string, languages: Languages) {
+      const character = await db.characters.get(id);
+      if (!character) return;
+      character.languages = languages;
+      await this.updateCharacter(character);
+    },
+
+    async addCharacterFeat(id: string, feat: Feat) {
+      const character = await db.characters.get(id);
+      if (!character) return;
+      const hasFeat = character.feats.some(
+        existing => existing.name === feat.name && existing.source === feat.source
+      );
+      if (hasFeat) return;
+      character.feats = [...character.feats, feat];
+      await this.updateCharacter(character);
+    },
+
+    async removeCharacterFeat(id: string, featName: string, featSource?: string) {
+      const character = await db.characters.get(id);
+      if (!character) return;
+      character.feats = character.feats.filter(
+        feat =>
+          !(feat.name === featName && (featSource === undefined || feat.source === featSource))
+      );
+      await this.updateCharacter(character);
+    },
+
+    async takeShortRest(id: string, healing = 0) {
+      const character = await db.characters.get(id);
+      if (!character) return;
+      const recoveredHp = Number.isFinite(healing) ? Math.max(0, Math.floor(healing)) : 0;
+      if (recoveredHp > 0) {
+        character.currHp = Math.min(character.currHp + recoveredHp, character.maxHp);
+      }
+      if (character.currHp > 0) {
+        character.deathSaves = undefined;
+      }
+      await this.updateCharacter(character);
+    },
+
+    async takeLongRest(id: string) {
+      const character = await db.characters.get(id);
+      if (!character) return;
+
+      const computedSpellcasting = computeCharSpellcasting(character);
+      const resetSlots: Record<number, { max: number; used: number }> = {};
+      for (const [lvlStr, slot] of Object.entries(computedSpellcasting.spellSlots)) {
+        resetSlots[Number(lvlStr)] = { max: slot.max, used: 0 };
+      }
+
+      character.currHp = character.maxHp;
+      character.tempHp = 0;
+      character.deathSaves = undefined;
+      character.spellcasting = {
+        ...character.spellcasting,
+        spellSlots: resetSlots,
+      };
+
       await this.updateCharacter(character);
     },
 

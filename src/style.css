@@ -147,8 +147,21 @@ a:hover {
   background: transparent;
   border: 1px dashed rgba(255, 255, 255, 0.06);
 }
+.btn-danger {
+  background: rgba(183, 59, 59, 0.12);
+  color: var(--color-danger);
+  border: 1px solid rgba(183, 59, 59, 0.2);
+}
 .btn:hover {
   transform: translateY(-1px);
+}
+
+.form-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 /* Form controls */

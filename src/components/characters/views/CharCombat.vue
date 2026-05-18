@@ -35,7 +35,7 @@
   import AttacksTable from './subcomponents/AttacksTable.vue';
   import ActionsReference from './subcomponents/ActionsReference.vue';
   import CombatSpellcasting from './subcomponents/CombatSpellcasting.vue';
-import NameBadge from './subcomponents/NameBadge.vue';
+  import NameBadge from './subcomponents/NameBadge.vue';
 
   const props = defineProps<{
     character: playerCharacter;

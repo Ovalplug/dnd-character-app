@@ -36,7 +36,13 @@
 </template>
 
 <script setup lang="ts">
-  import type { playerCharacter, CharClass, ClassFeatures, ClassFeature, Subclass } from '../../../../types';
+  import type {
+    playerCharacter,
+    CharClass,
+    ClassFeatures,
+    ClassFeature,
+    Subclass,
+  } from '../../../../types';
   import { getFeaturesForLevel } from '../../../../helperFunctions';
   import ResourceEntries from '../../../resources/ResourceEntries.vue';
   import FeatureCard from './FeatureCard.vue';

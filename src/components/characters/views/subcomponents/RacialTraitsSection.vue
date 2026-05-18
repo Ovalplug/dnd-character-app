@@ -16,10 +16,7 @@
         tag="Trait"
         variant="race"
       >
-        <ResourceEntries
-          v-if="(entry as any).entries?.length"
-          :entries="(entry as any).entries"
-        />
+        <ResourceEntries v-if="(entry as any).entries?.length" :entries="(entry as any).entries" />
         <p v-else-if="typeof (entry as any).entry === 'string'" class="muted">
           {{ (entry as any).entry }}
         </p>

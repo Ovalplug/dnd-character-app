@@ -195,6 +195,8 @@ export type HitDice = {
 
 export type PlayerCharacters = playerCharacter[];
 
+export type CharacterEditPanel = 'menu' | 'name' | 'rest' | 'feats' | 'languages';
+
 export type Feat = {
   name: string;
   description?: string;
