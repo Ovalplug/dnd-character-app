@@ -23,8 +23,11 @@ import type {
   SpellcastingInfo,
   SpellcastingCastingMode,
   playerCharacter,
+  Items,
 } from './types';
 import { SKILL_NAME_MAP, SAVING_THROW_MAP } from './constants';
+
+export type ItemFilterTag = 'attunement' | 'wondrous' | 'tattoo' | 'vehicle';
 
 export function getPrettyAbilityName(shorthand: string): string {
   switch (shorthand) {
@@ -140,6 +143,122 @@ export function getRefinedSpellsList(
     refinedSpells.sort((a, b) => a.level - b.level);
   }
   return refinedSpells;
+}
+
+export function getRefinedItemsList(
+  items: Items,
+  rarities: string[],
+  types: string[],
+  tags: ItemFilterTag[],
+  orderBy: 'name' | 'rarity' = 'name',
+  searchVal?: string
+): Items {
+  const normalizedSearch = searchVal?.trim().toLowerCase();
+
+  const refinedItems = items.filter(item => {
+    const itemRarity = item.rarity?.toLowerCase() ?? '';
+    const itemType = item.type?.toLowerCase() ?? '';
+    const matchesRarity = rarities.length === 0 || rarities.includes(itemRarity);
+    const matchesType = types.length === 0 || types.includes(itemType);
+    const matchesTags =
+      tags.length === 0 ||
+      tags.every(tag => {
+        switch (tag) {
+          case 'attunement':
+            return item.reqAttune !== undefined && item.reqAttune !== false;
+          case 'wondrous':
+            return item.wondrous === true;
+          case 'tattoo':
+            return item.tattoo === true;
+          case 'vehicle':
+            return (
+              item.crew !== undefined ||
+              item.vehAc !== undefined ||
+              item.vehHp !== undefined ||
+              item.vehSpeed !== undefined ||
+              item.capCargo !== undefined
+            );
+          default:
+            return true;
+        }
+      });
+    const matchesSearch =
+      !normalizedSearch ||
+      item.name.toLowerCase().includes(normalizedSearch) ||
+      item.source.toLowerCase().includes(normalizedSearch) ||
+      item.displayName?.toLowerCase().includes(normalizedSearch);
+
+    return matchesRarity && matchesType && matchesTags && matchesSearch;
+  });
+
+  if (orderBy === 'name') {
+    refinedItems.sort((a, b) => a.name.localeCompare(b.name));
+  } else {
+    refinedItems.sort((a, b) => {
+      const rarityCompare = (a.rarity ?? '').localeCompare(b.rarity ?? '');
+      if (rarityCompare !== 0) return rarityCompare;
+      return a.name.localeCompare(b.name);
+    });
+  }
+
+  return refinedItems;
+}
+
+export function getPrettyItemType(type?: string): string {
+  switch (type?.toUpperCase()) {
+    case '$':
+      return 'Treasure';
+    case 'A':
+      return 'Ammunition';
+    case 'AF':
+      return 'Ammunition (Firearm)';
+    case 'AT':
+      return 'Artisan Tool';
+    case 'EM':
+      return 'Eldritch Machine';
+    case 'EXP':
+      return 'Explosive';
+    case 'G':
+      return 'Adventuring Gear';
+    case 'GV':
+      return 'Generic Variant';
+    case 'HA':
+      return 'Heavy Armor';
+    case 'LA':
+      return 'Light Armor';
+    case 'M':
+      return 'Melee Weapon';
+    case 'MA':
+      return 'Medium Armor';
+    case 'MNT':
+      return 'Mount';
+    case 'P':
+      return 'Potion';
+    case 'R':
+      return 'Ranged Weapon';
+    case 'RD':
+      return 'Rod';
+    case 'RG':
+      return 'Ring';
+    case 'S':
+      return 'Shield';
+    case 'SC':
+      return 'Scroll';
+    case 'SCF':
+      return 'Spellcasting Focus';
+    case 'SPC':
+      return 'Spelljamming Ship';
+    case 'T':
+      return 'Tool';
+    case 'TAH':
+      return 'Tack and Harness';
+    case 'VEH':
+      return 'Vehicle';
+    case 'WD':
+      return 'Wand';
+    default:
+      return type ?? 'Unknown';
+  }
 }
 
 export function getPrettySpeed(speed: number | Record<string, any>): string {

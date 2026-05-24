@@ -532,3 +532,42 @@ export type SpellcastingInfo = {
   /** Extra spells added to the class spell list (e.g. Strixhaven background) */
   expandedSpellNames: string[];
 };
+
+export type ItemOtherSource = {
+  source: string;
+  page?: number;
+} & Record<string, any>;
+
+export type Item = {
+  name: string;
+  source: string;
+  page?: number;
+  displayName?: string;
+  type?: string;
+  rarity?: string;
+  value?: number;
+  weight?: number;
+  age?: string;
+  entries?: Entries;
+  images?: Image[];
+  otherSources?: ItemOtherSource[];
+  reqAttune?: boolean | string;
+  wondrous?: boolean;
+  tattoo?: boolean;
+  hasFluff?: boolean;
+  hasFluffImages?: boolean;
+  attachedSpells?: string[];
+  bonusWeapon?: string;
+  recharge?: string;
+  charges?: number;
+  ammoType?: string;
+  crew?: number;
+  vehAc?: number;
+  vehHp?: number;
+  vehDmgThresh?: number;
+  vehSpeed?: number;
+  capCargo?: number;
+  seeAlsoVehicle?: string[];
+} & Record<string, any>;
+
+export type Items = Item[];

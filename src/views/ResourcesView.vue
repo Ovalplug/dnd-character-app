@@ -11,6 +11,7 @@
           <option value="eInvocations">Eldritch Invocations</option>
           <option value="aInfusions">Artificer Infusions</option>
           <option value="spells">Spells</option>
+          <option value="items">Items</option>
         </select>
       </div>
     </div>
@@ -28,6 +29,7 @@
         <button @click="showData('eInvocations')">Eldritch Invocations</button>
         <button @click="showData('aInfusions')">Artificer Infusions</button>
         <button @click="showData('spells')">Spells</button>
+        <button @click="showData('items')">Items</button>
       </div>
       <AllFeats v-if="show_feats" :feats="dataStore.filteredFeats" />
       <AllRaces
@@ -48,6 +50,7 @@
         :subclasses="dataStore.filteredSubclasses"
       />
       <AllSpells v-if="show_spells" :spells="dataStore.filteredSpells" />
+      <AllItems v-if="show_items" :items="dataStore.filteredItems" />
     </div>
   </div>
 </template>
@@ -63,7 +66,7 @@
   import AllInvocations from '../components/resources/AllInvocations.vue';
   import AllClasses from '../components/resources/AllClasses.vue';
   import AllSpells from '../components/resources/AllSpells.vue';
-
+  import AllItems from '../components/resources/AllItems.vue';
   const { initDebug } = useDebug();
 
   const dataStore = useDataStore();
@@ -79,7 +82,7 @@
   const show_aInfusions = ref(false);
   const show_subclasses = ref(false);
   const show_spells = ref(false);
-
+  const show_items = ref(false);
   // Track which data type is currently selected
   const selectedType = ref('');
 
@@ -95,7 +98,8 @@
       show_eInvocations.value ||
       show_aInfusions.value ||
       show_subclasses.value ||
-      show_spells.value
+      show_spells.value ||
+      show_items.value
     );
   });
 
@@ -129,6 +133,7 @@
     show_aInfusions.value = false;
     show_subclasses.value = false;
     show_spells.value = false;
+    show_items.value = false;
   }
 
   function showData(dataType: string) {
@@ -177,6 +182,10 @@
       case 'spells':
         show_spells.value = true;
         selectedType.value = 'spells';
+        break;
+      case 'items':
+        show_items.value = true;
+        selectedType.value = 'items';
         break;
       default:
         selectedType.value = '';

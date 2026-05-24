@@ -157,6 +157,7 @@ export const useDataStore = defineStore('data', {
     subclasses: {} as Record<string, any[]>,
     eInvocations: [] as any[],
     aInfusions: [] as any[],
+    items: [] as any[],
     spells: [] as any[],
     // Record<acronym, boolean>; absence or true = enabled, false = disabled
     enabledSources: {} as Record<string, boolean>,
@@ -194,6 +195,9 @@ export const useDataStore = defineStore('data', {
     },
     filteredAInfusions(state): any[] {
       return state.aInfusions.filter((i: any) => state.enabledSources[i.source] !== false);
+    },
+    filteredItems(state): any[] {
+      return state.items.filter((i: any) => state.enabledSources[i.source] !== false);
     },
     filteredSpells(state): any[] {
       return state.spells.filter((s: any) => state.enabledSources[s.source] !== false);
@@ -235,6 +239,7 @@ export const useDataStore = defineStore('data', {
       this.classes = aggregateClasses(datasets);
       this.eInvocations = aggregate('eInvocations');
       this.aInfusions = aggregate('aInfusions');
+      this.items = aggregate('items');
       this.subclasses = aggregateSubclasses(allData);
       this.spells = aggregateSpells(datasets);
       await this.loadSourceSettings();
@@ -287,6 +292,10 @@ export const useDataStore = defineStore('data', {
 
     findRace(name: string) {
       return this.races.find((r: any) => r.name === name);
+    },
+
+    findItem(name: string) {
+      return this.items.find((item: any) => item.name === name || item.displayName === name);
     },
   },
 });
