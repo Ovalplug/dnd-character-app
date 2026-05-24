@@ -8,9 +8,11 @@ import type {
   CharClass,
   CharSpeed,
   ClassLevels,
+  Currency,
   DiceTypes,
   Feat,
   HitDice,
+  Item,
   Languages,
   playerCharacter,
   PlayerSkills,
@@ -130,7 +132,7 @@ export const useCharacterStore = defineStore('characters', {
         image: undefined,
         hitDice: [],
         deathSaves: undefined,
-        currency: undefined,
+        currency: { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 },
         passivePerception: undefined,
         initiativeBonus: 0,
         personalityTraits: [],
@@ -367,6 +369,12 @@ export const useCharacterStore = defineStore('characters', {
         // Also sync skillProficiencies for backwards compat
         this.currNewCharacter.skillProficiencies = proficiencies.skills;
       }
+    },
+
+    setCreationStartingLoadout(inventory: Item[], currency: Currency) {
+      if (!this.currNewCharacter) return;
+      this.currNewCharacter.inventory = inventory;
+      this.currNewCharacter.currency = currency;
     },
 
     /**

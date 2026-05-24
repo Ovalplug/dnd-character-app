@@ -127,7 +127,7 @@ export type playerCharacter = {
   languages: Languages | {};
   abilityScores: AbilityScoreValues;
   proficiencyModifier: number;
-  inventory: any[];
+  inventory: Items;
   maxHp: number;
   currHp: number;
   tempHp: number;
@@ -141,7 +141,7 @@ export type playerCharacter = {
   // D&D 5e essentials
   hitDice: HitDice[];
   deathSaves?: { successes: number; failures: number };
-  currency?: { cp: number; sp: number; ep: number; gp: number; pp: number };
+  currency: Currency;
   passivePerception?: number;
   initiativeBonus: number;
   // Optional additional fields for more detailed character sheets
@@ -166,6 +166,8 @@ export type playerCharacter = {
   createdAt: number;
   updatedAt: number;
 };
+
+export type Currency = { cp: number; sp: number; ep: number; gp: number; pp: number };
 
 export type SpellCasting = {
   spellCaster: SpellCaster;
