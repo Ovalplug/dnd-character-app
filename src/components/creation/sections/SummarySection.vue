@@ -1,10 +1,13 @@
 <template>
   <section class="summary-section">
-    <h2>Starting equipment</h2>
-    <p class="summary-copy">
-      Choose the class and background gear you want to start with. Any coin included by those
-      choices will be added when you save the character.
-    </p>
+    <div class="summary-hero">
+      <p class="summary-kicker">Final step</p>
+      <h2>Starting equipment</h2>
+      <p class="summary-copy">
+        Choose the class and background gear you want to start with. Any coin included by those
+        choices will be added when you save the character.
+      </p>
+    </div>
 
     <div v-if="equipmentSources.length === 0" class="summary-empty">
       <p>No class or background starting equipment was found.</p>
@@ -12,8 +15,11 @@
 
     <div v-for="source in equipmentSources" :key="source.id" class="equipment-source">
       <div class="equipment-source__header">
-        <h3>{{ source.label }}</h3>
-        <p>{{ source.kind === 'class' ? 'Class equipment' : 'Background equipment' }}</p>
+        <div>
+          <h3>{{ source.label }}</h3>
+          <p>{{ source.kind === 'class' ? 'Class equipment' : 'Background equipment' }}</p>
+        </div>
+        <span class="source-badge">{{ source.kind }}</span>
       </div>
 
       <div v-if="source.goldAlternative" class="gold-option-card">
@@ -37,10 +43,50 @@
         </label>
 
         <div v-if="selectionState.useGoldAlternative[source.id]" class="gold-roll-row">
-          <span>{{ formatCopper(selectionState.rolledCopperBySource[source.id] ?? 0) }}</span>
-          <button type="button" @click="rollGoldAlternative(source.id, source.goldAlternative.formula)">
-            Reroll
-          </button>
+          <div class="gold-mode-switches">
+            <label class="toggle-row toggle-row--compact">
+              <input
+                :checked="selectionState.goldInputMode[source.id] !== 'custom'"
+                :name="`${source.id}-roll-mode`"
+                type="radio"
+                @change="selectionState.goldInputMode[source.id] = 'rolled'"
+              />
+              <span>Roll here</span>
+            </label>
+            <label class="toggle-row toggle-row--compact">
+              <input
+                :checked="selectionState.goldInputMode[source.id] === 'custom'"
+                :name="`${source.id}-roll-mode`"
+                type="radio"
+                @change="selectionState.goldInputMode[source.id] = 'custom'"
+              />
+              <span>Custom</span>
+            </label>
+          </div>
+
+          <div v-if="selectionState.goldInputMode[source.id] === 'custom'" class="gold-input-grid">
+            <label v-for="coin in CUSTOM_GOLD_COINS" :key="coin.key" class="gold-input-field">
+              <span>{{ coin.label }}</span>
+              <input
+                :value="selectionState.customGoldBySource[source.id]?.[coin.key] ?? 0"
+                inputmode="numeric"
+                min="0"
+                type="number"
+                @input="updateCustomGoldValue(source.id, coin.key, $event)"
+              />
+            </label>
+          </div>
+
+          <template v-else>
+            <span class="gold-roll-value">{{ formatCurrencyBreakdown(copperToCurrency(selectionState.rolledCopperBySource[source.id] ?? 0)) }}</span>
+            <button
+              type="button"
+              class="secondary-button"
+              @click="rollGoldAlternative(source.id, source.goldAlternative.formula)"
+            >
+              Reroll
+            </button>
+          </template>
         </div>
       </div>
 
@@ -114,8 +160,8 @@
 
     <div class="summary-preview">
       <h3>Loadout preview</h3>
-      <p><strong>Items:</strong> {{ preview.itemLabels.join(', ') || 'None' }}</p>
-      <p><strong>Money:</strong> {{ formatCurrency(preview.currency) }}</p>
+      <p class="preview-line"><strong>Items:</strong> {{ preview.itemLabels.join(', ') || 'None' }}</p>
+      <p class="preview-line"><strong>Money:</strong> {{ formatCurrencyBreakdown(preview.currency) }}</p>
     </div>
 
     <button type="button" class="save-button" @click="saveCharacter">Save Character</button>
@@ -162,6 +208,13 @@
     pp: 1000,
   };
 
+  const CUSTOM_GOLD_COINS: Array<{ key: Extract<CurrencyKey, 'pp' | 'gp' | 'sp' | 'cp'>; label: string }> = [
+    { key: 'pp', label: 'Platinum' },
+    { key: 'gp', label: 'Gold' },
+    { key: 'sp', label: 'Silver' },
+    { key: 'cp', label: 'Copper' },
+  ];
+
   const CURATED_GROUPS: Record<string, string[]> = {
     'musical instrument': [
       'Bagpipes',
@@ -187,7 +240,9 @@
     blockSelections: {} as Record<string, string>,
     entrySelections: {} as Record<string, string[]>,
     useGoldAlternative: {} as Record<string, boolean>,
+    goldInputMode: {} as Record<string, 'rolled' | 'custom'>,
     rolledCopperBySource: {} as Record<string, number>,
+    customGoldBySource: {} as Record<string, Currency>,
   });
 
   const itemIndex = computed(() => {
@@ -242,11 +297,17 @@
       if (source.goldAlternative && selectionState.useGoldAlternative[source.id] === undefined) {
         selectionState.useGoldAlternative[source.id] = false;
       }
+      if (source.goldAlternative && selectionState.goldInputMode[source.id] === undefined) {
+        selectionState.goldInputMode[source.id] = 'rolled';
+      }
       if (
         source.goldAlternative &&
         selectionState.rolledCopperBySource[source.id] === undefined
       ) {
         rollGoldAlternative(source.id, source.goldAlternative.formula);
+      }
+      if (source.goldAlternative && selectionState.customGoldBySource[source.id] === undefined) {
+        selectionState.customGoldBySource[source.id] = emptyCurrency();
       }
 
       for (const block of source.blocks) {
@@ -286,6 +347,17 @@
     const currentSelections = [...(selectionState.entrySelections[entryId] ?? [])];
     currentSelections[index] = target.value;
     selectionState.entrySelections[entryId] = currentSelections;
+  }
+
+  function updateCustomGoldValue(sourceId: string, coinKey: Extract<CurrencyKey, 'pp' | 'gp' | 'sp' | 'cp'>, event: Event) {
+    const target = event.target as HTMLInputElement;
+    const parsed = Number.parseInt(target.value, 10);
+    const current = selectionState.customGoldBySource[sourceId] ?? emptyCurrency();
+    selectionState.customGoldBySource[sourceId] = {
+      ...current,
+      [coinKey]: Number.isFinite(parsed) && parsed > 0 ? parsed : 0,
+      ep: 0,
+    };
   }
 
   function buildClassEquipmentSource(
@@ -630,7 +702,11 @@
 
     equipmentSources.value.forEach(source => {
       if (source.goldAlternative && selectionState.useGoldAlternative[source.id]) {
-        addCopperToCurrency(currency, selectionState.rolledCopperBySource[source.id] ?? 0);
+        if (selectionState.goldInputMode[source.id] === 'custom') {
+          addCurrency(currency, selectionState.customGoldBySource[source.id] ?? emptyCurrency());
+        } else {
+          addCurrency(currency, copperToCurrency(selectionState.rolledCopperBySource[source.id] ?? 0));
+        }
         return;
       }
 
@@ -704,6 +780,19 @@
     return { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 };
   }
 
+  function copperToCurrency(copper: number): Currency {
+    const currency = emptyCurrency();
+    addCopperToCurrency(currency, copper);
+    return currency;
+  }
+
+  function addCurrency(target: Currency, source: Currency) {
+    target.pp += source.pp;
+    target.gp += source.gp;
+    target.sp += source.sp;
+    target.cp += source.cp;
+  }
+
   function addCopperToCurrency(currency: Currency, copper: number) {
     let remaining = Math.max(0, Math.floor(copper));
     (['pp', 'gp', 'ep', 'sp', 'cp'] as CurrencyKey[]).forEach(key => {
@@ -714,17 +803,12 @@
     });
   }
 
-  function formatCurrency(currency: Currency): string {
-    return (['pp', 'gp', 'ep', 'sp', 'cp'] as CurrencyKey[])
-      .filter(key => currency[key] > 0)
-      .map(key => `${currency[key]} ${key}`)
-      .join(', ') || '0 gp';
+  function formatCurrencyBreakdown(currency: Currency): string {
+    return CUSTOM_GOLD_COINS.map(coin => `${currency[coin.key]} ${coin.key}`).join(', ');
   }
 
   function formatCopper(copper: number): string {
-    const currency = emptyCurrency();
-    addCopperToCurrency(currency, copper);
-    return formatCurrency(currency);
+    return formatCurrencyBreakdown(copperToCurrency(copper));
   }
 
   async function saveCharacter() {
@@ -739,30 +823,70 @@
   .summary-section {
     display: grid;
     gap: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .summary-hero {
+    display: grid;
+    gap: 0.45rem;
+    padding: 1rem;
+    border-radius: 18px;
+    background:
+      linear-gradient(135deg, rgba(201, 164, 75, 0.18), rgba(107, 46, 46, 0.08)),
+      var(--color-surface);
+    border: 1px solid rgba(107, 46, 46, 0.14);
+    box-shadow: 0 10px 24px rgba(31, 27, 22, 0.08);
+  }
+
+  .summary-kicker {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-primary);
   }
 
   .summary-copy,
   .equipment-source__header p,
   .summary-empty p {
     margin: 0;
+    color: var(--color-muted);
+    line-height: 1.5;
   }
 
   .equipment-source,
   .summary-preview {
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    border-radius: 12px;
+    border: 1px solid rgba(107, 46, 46, 0.12);
+    border-radius: 18px;
     padding: 1rem;
-    background: rgba(255, 255, 255, 0.6);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0.82));
+    box-shadow: 0 8px 22px rgba(31, 27, 22, 0.06);
   }
 
   .equipment-source__header {
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.9rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
   }
 
   .equipment-source__header h3,
   .summary-preview h3,
   .equipment-block__title {
     margin: 0;
+  }
+
+  .source-badge {
+    flex-shrink: 0;
+    padding: 0.35rem 0.6rem;
+    border-radius: 999px;
+    background: rgba(107, 46, 46, 0.08);
+    color: var(--color-primary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: capitalize;
   }
 
   .gold-option-card,
@@ -775,6 +899,13 @@
     gap: 0.75rem;
   }
 
+  .gold-option-card {
+    padding: 0.85rem;
+    border-radius: 14px;
+    background: rgba(201, 164, 75, 0.09);
+    border: 1px solid rgba(201, 164, 75, 0.2);
+  }
+
   .toggle-row,
   .choice-card {
     display: flex;
@@ -782,10 +913,30 @@
     align-items: flex-start;
   }
 
+  .toggle-row {
+    padding: 0.15rem 0;
+  }
+
+  .toggle-row--compact {
+    padding: 0;
+    align-items: center;
+  }
+
   .choice-card {
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    padding: 0.75rem;
+    border: 1px solid rgba(107, 46, 46, 0.1);
+    border-radius: 16px;
+    padding: 0.9rem;
+    background: rgba(255, 255, 255, 0.72);
+    transition:
+      border-color 0.16s ease,
+      box-shadow 0.16s ease,
+      transform 0.16s ease;
+  }
+
+  .choice-card:has(input:checked) {
+    border-color: rgba(107, 46, 46, 0.45);
+    box-shadow: 0 10px 24px rgba(107, 46, 46, 0.08);
+    transform: translateY(-1px);
   }
 
   .choice-card__body,
@@ -799,18 +950,163 @@
     font-weight: 600;
   }
 
+  .equipment-block {
+    gap: 0.65rem;
+    padding: 0.85rem;
+    border-radius: 14px;
+    background: rgba(244, 236, 216, 0.45);
+  }
+
+  .equipment-block__title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  .entry-row {
+    padding: 0.65rem 0.75rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.58);
+    border: 1px solid rgba(107, 46, 46, 0.06);
+  }
+
   .gold-roll-row {
-    display: flex;
+    display: grid;
     gap: 0.75rem;
-    align-items: center;
+    padding-top: 0.25rem;
+  }
+
+  .gold-mode-switches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .gold-roll-value {
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .gold-input-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .gold-input-field {
+    display: grid;
+    gap: 0.35rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--color-primary);
+  }
+
+  .gold-input-field input {
+    min-height: 2.7rem;
+    text-align: right;
   }
 
   .entry-selects {
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: 1fr;
+  }
+
+  .summary-empty {
+    padding: 1rem;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px dashed rgba(107, 46, 46, 0.18);
+  }
+
+  .summary-preview {
+    position: sticky;
+    bottom: 0.75rem;
+    z-index: 1;
+    background:
+      linear-gradient(180deg, rgba(255, 248, 236, 0.96), rgba(239, 230, 208, 0.98));
+    border-color: rgba(201, 164, 75, 0.24);
+  }
+
+  .preview-line {
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .summary-section input[type='radio'] {
+    width: 1.1rem;
+    min-width: 1.1rem;
+    height: 1.1rem;
+    margin: 0.1rem 0 0;
+    padding: 0;
+    border-radius: 50%;
+    accent-color: var(--color-primary);
+    box-shadow: none;
+    background: white;
+  }
+
+  .summary-section select {
+    min-height: 2.9rem;
+    border-radius: 12px;
+    background: white;
+    border: 1px solid rgba(107, 46, 46, 0.14);
+  }
+
+  .secondary-button,
+  .save-button {
+    min-height: 2.9rem;
+    border: 0;
+    border-radius: 999px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .secondary-button {
+    padding: 0.7rem 1rem;
+    background: rgba(107, 46, 46, 0.08);
+    color: var(--color-primary);
   }
 
   .save-button {
-    width: fit-content;
-    padding: 0.7rem 1.1rem;
+    width: 100%;
+    padding: 0.95rem 1.2rem;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-primary-600));
+    color: white;
+    box-shadow: 0 14px 28px rgba(107, 46, 46, 0.24);
+  }
+
+  @media (min-width: 640px) {
+    .summary-section {
+      gap: 1.15rem;
+    }
+
+    .entry-selects {
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+
+    .save-button {
+      width: fit-content;
+      min-width: 220px;
+      justify-self: end;
+    }
+
+    .gold-input-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 420px) {
+    .equipment-source,
+    .summary-preview,
+    .summary-hero {
+      padding: 0.9rem;
+      border-radius: 16px;
+    }
+
+    .choice-card,
+    .equipment-block,
+    .entry-row {
+      padding: 0.75rem;
+    }
   }
 </style>

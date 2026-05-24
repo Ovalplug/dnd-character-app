@@ -9,6 +9,7 @@ import type {
   CharSpeed,
   ClassLevels,
   Currency,
+  CurrencyWallet,
   DiceTypes,
   Feat,
   HitDice,
@@ -211,6 +212,18 @@ export const useCharacterStore = defineStore('characters', {
       const character = await db.characters.get(id);
       if (!character) return;
       character.languages = languages;
+      await this.updateCharacter(character);
+    },
+
+    async updateCharacterMoney(
+      id: string,
+      currency: Currency,
+      additionalCurrency?: CurrencyWallet[] | Currency
+    ) {
+      const character = await db.characters.get(id);
+      if (!character) return;
+      character.currency = currency;
+      character.additionalCurrency = additionalCurrency;
       await this.updateCharacter(character);
     },
 

@@ -142,6 +142,7 @@ export type playerCharacter = {
   hitDice: HitDice[];
   deathSaves?: { successes: number; failures: number };
   currency: Currency;
+  additionalCurrency?: CurrencyWallet[] | Currency; // for other wallets (such as shared party funds)
   passivePerception?: number;
   initiativeBonus: number;
   // Optional additional fields for more detailed character sheets
@@ -168,6 +169,12 @@ export type playerCharacter = {
 };
 
 export type Currency = { cp: number; sp: number; ep: number; gp: number; pp: number };
+
+export type CurrencyWallet = {
+  id: string;
+  name: string;
+  currency: Currency;
+};
 
 export type SpellCasting = {
   spellCaster: SpellCaster;
