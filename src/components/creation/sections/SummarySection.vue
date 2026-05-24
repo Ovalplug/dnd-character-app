@@ -78,7 +78,11 @@
           </div>
 
           <template v-else>
-            <span class="gold-roll-value">{{ formatCurrencyBreakdown(copperToCurrency(selectionState.rolledCopperBySource[source.id] ?? 0)) }}</span>
+            <span class="gold-roll-value">{{
+              formatCurrencyBreakdown(
+                copperToCurrency(selectionState.rolledCopperBySource[source.id] ?? 0)
+              )
+            }}</span>
             <button
               type="button"
               class="secondary-button"
@@ -160,8 +164,12 @@
 
     <div class="summary-preview">
       <h3>Loadout preview</h3>
-      <p class="preview-line"><strong>Items:</strong> {{ preview.itemLabels.join(', ') || 'None' }}</p>
-      <p class="preview-line"><strong>Money:</strong> {{ formatCurrencyBreakdown(preview.currency) }}</p>
+      <p class="preview-line">
+        <strong>Items:</strong> {{ preview.itemLabels.join(', ') || 'None' }}
+      </p>
+      <p class="preview-line">
+        <strong>Money:</strong> {{ formatCurrencyBreakdown(preview.currency) }}
+      </p>
     </div>
 
     <button type="button" class="save-button" @click="saveCharacter">Save Character</button>
@@ -208,7 +216,10 @@
     pp: 1000,
   };
 
-  const CUSTOM_GOLD_COINS: Array<{ key: Extract<CurrencyKey, 'pp' | 'gp' | 'sp' | 'cp'>; label: string }> = [
+  const CUSTOM_GOLD_COINS: Array<{
+    key: Extract<CurrencyKey, 'pp' | 'gp' | 'sp' | 'cp'>;
+    label: string;
+  }> = [
     { key: 'pp', label: 'Platinum' },
     { key: 'gp', label: 'Gold' },
     { key: 'sp', label: 'Silver' },
@@ -275,7 +286,10 @@
       }
     });
 
-    const background = currentCharacter.background as { name?: string; startingEquipment?: unknown } | null;
+    const background = currentCharacter.background as {
+      name?: string;
+      startingEquipment?: unknown;
+    } | null;
     if (background?.startingEquipment) {
       const sourceId = `background-${slugify(background.name ?? 'background')}`;
       const blocks = buildStructuredBlocks(background.startingEquipment, sourceId);
@@ -300,10 +314,7 @@
       if (source.goldAlternative && selectionState.goldInputMode[source.id] === undefined) {
         selectionState.goldInputMode[source.id] = 'rolled';
       }
-      if (
-        source.goldAlternative &&
-        selectionState.rolledCopperBySource[source.id] === undefined
-      ) {
+      if (source.goldAlternative && selectionState.rolledCopperBySource[source.id] === undefined) {
         rollGoldAlternative(source.id, source.goldAlternative.formula);
       }
       if (source.goldAlternative && selectionState.customGoldBySource[source.id] === undefined) {
@@ -349,7 +360,11 @@
     selectionState.entrySelections[entryId] = currentSelections;
   }
 
-  function updateCustomGoldValue(sourceId: string, coinKey: Extract<CurrencyKey, 'pp' | 'gp' | 'sp' | 'cp'>, event: Event) {
+  function updateCustomGoldValue(
+    sourceId: string,
+    coinKey: Extract<CurrencyKey, 'pp' | 'gp' | 'sp' | 'cp'>,
+    event: Event
+  ) {
     const target = event.target as HTMLInputElement;
     const parsed = Number.parseInt(target.value, 10);
     const current = selectionState.customGoldBySource[sourceId] ?? emptyCurrency();
@@ -419,7 +434,10 @@
         .map(key => ({
           id: `${sourceId}-choice-${index + 1}-${key}`,
           label: `${key.toUpperCase()}. ${formatEntriesLabel(record[key] as unknown[])}`,
-          entries: parseStructuredEntries(record[key] as unknown[], `${sourceId}-choice-${index + 1}-${key}`),
+          entries: parseStructuredEntries(
+            record[key] as unknown[],
+            `${sourceId}-choice-${index + 1}-${key}`
+          ),
         }));
 
       if (options.length === 0) return [];
@@ -436,7 +454,9 @@
   }
 
   function parseStructuredEntries(entries: unknown[], prefix: string): EquipmentEntry[] {
-    return entries.flatMap((entry, index) => parseStructuredEntry(entry, `${prefix}-entry-${index + 1}`));
+    return entries.flatMap((entry, index) =>
+      parseStructuredEntry(entry, `${prefix}-entry-${index + 1}`)
+    );
   }
 
   function parseStructuredEntry(entry: unknown, entryId: string): EquipmentEntry[] {
@@ -467,7 +487,11 @@
     return [];
   }
 
-  function parseTextEquipmentLine(line: string, blockId: string, className: string): EquipmentBlock {
+  function parseTextEquipmentLine(
+    line: string,
+    blockId: string,
+    className: string
+  ): EquipmentBlock {
     const options = extractLetteredOptions(line, blockId);
     if (options.length > 0) {
       return {
@@ -493,7 +517,7 @@
       return {
         id: `${blockId}-option-${optionKey}`,
         label: `${optionKey.toUpperCase()}. ${cleanLabel(match[2] ?? '')}`,
-      entries: parsePhraseIntoEntries(match[2] ?? '', `${blockId}-option-${index + 1}`),
+        entries: parsePhraseIntoEntries(match[2] ?? '', `${blockId}-option-${index + 1}`),
       };
     });
   }
@@ -520,7 +544,9 @@
       return [makeSelectEntry(entryId, 'Choose two martial weapons', 2, 'martial-weapon')];
     }
     if (lowered === 'two simple melee weapons') {
-      return [makeSelectEntry(entryId, 'Choose two simple melee weapons', 2, 'simple-melee-weapon')];
+      return [
+        makeSelectEntry(entryId, 'Choose two simple melee weapons', 2, 'simple-melee-weapon'),
+      ];
     }
     if (lowered === 'any simple weapon') {
       return [makeSelectEntry(entryId, 'Choose a simple weapon', 1, 'simple-weapon')];
@@ -536,7 +562,9 @@
     }
     if (lowered === 'any other musical instrument') {
       return [
-        makeSelectEntry(entryId, 'Choose a musical instrument', 1, 'other musical instrument', ['lute']),
+        makeSelectEntry(entryId, 'Choose a musical instrument', 1, 'other musical instrument', [
+          'lute',
+        ]),
       ];
     }
     if (lowered === 'a musical instrument' || lowered === 'an instrument') {
@@ -586,7 +614,10 @@
     };
   }
 
-  function getOptionsForGroup(groupKey: string, excludeNames: string[] = []): EquipmentOptionChoice[] {
+  function getOptionsForGroup(
+    groupKey: string,
+    excludeNames: string[] = []
+  ): EquipmentOptionChoice[] {
     const excluded = new Set(excludeNames.map(name => normalizeLookupKey(name)));
     const baseItems = (() => {
       switch (groupKey) {
@@ -619,7 +650,8 @@
       );
     }
 
-    const curatedOptions = CURATED_GROUPS[groupKey] ?? CURATED_GROUPS[groupKey.replace(/^other\s+/, '')] ?? [];
+    const curatedOptions =
+      CURATED_GROUPS[groupKey] ?? CURATED_GROUPS[groupKey.replace(/^other\s+/, '')] ?? [];
     return curatedOptions
       .filter(name => !excluded.has(normalizeLookupKey(name)))
       .map(name => ({
@@ -656,11 +688,17 @@
   }
 
   function cleanLabel(raw: string): string {
-    return raw.replace(/\(if proficient\)/gi, '').replace(/[.]+$/g, '').trim();
+    return raw
+      .replace(/\(if proficient\)/gi, '')
+      .replace(/[.]+$/g, '')
+      .trim();
   }
 
   function slugify(raw: string): string {
-    return raw.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    return raw
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
   }
 
   function formatEntriesLabel(entries: unknown[]): string {
@@ -705,7 +743,10 @@
         if (selectionState.goldInputMode[source.id] === 'custom') {
           addCurrency(currency, selectionState.customGoldBySource[source.id] ?? emptyCurrency());
         } else {
-          addCurrency(currency, copperToCurrency(selectionState.rolledCopperBySource[source.id] ?? 0));
+          addCurrency(
+            currency,
+            copperToCurrency(selectionState.rolledCopperBySource[source.id] ?? 0)
+          );
         }
         return;
       }
@@ -831,8 +872,7 @@
     gap: 0.45rem;
     padding: 1rem;
     border-radius: 18px;
-    background:
-      linear-gradient(135deg, rgba(201, 164, 75, 0.18), rgba(107, 46, 46, 0.08)),
+    background: linear-gradient(135deg, rgba(201, 164, 75, 0.18), rgba(107, 46, 46, 0.08)),
       var(--color-surface);
     border: 1px solid rgba(107, 46, 46, 0.14);
     box-shadow: 0 10px 24px rgba(31, 27, 22, 0.08);
@@ -927,10 +967,7 @@
     border-radius: 16px;
     padding: 0.9rem;
     background: rgba(255, 255, 255, 0.72);
-    transition:
-      border-color 0.16s ease,
-      box-shadow 0.16s ease,
-      transform 0.16s ease;
+    transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
   }
 
   .choice-card:has(input:checked) {
@@ -1023,8 +1060,7 @@
     position: sticky;
     bottom: 0.75rem;
     z-index: 1;
-    background:
-      linear-gradient(180deg, rgba(255, 248, 236, 0.96), rgba(239, 230, 208, 0.98));
+    background: linear-gradient(180deg, rgba(255, 248, 236, 0.96), rgba(239, 230, 208, 0.98));
     border-color: rgba(201, 164, 75, 0.24);
   }
 

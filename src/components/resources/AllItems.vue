@@ -135,16 +135,17 @@
   const showFilters = ref(false);
 
   const allRarities = computed(() =>
-    [...new Set(props.items.map(item => item.rarity).filter((rarity): rarity is string => Boolean(rarity)))].sort(
-      (a, b) => a.localeCompare(b)
-    )
+    [
+      ...new Set(
+        props.items.map(item => item.rarity).filter((rarity): rarity is string => Boolean(rarity))
+      ),
+    ].sort((a, b) => a.localeCompare(b))
   );
 
   const allTypes = computed(() =>
-    [...new Set(props.items.map(item => item.type).filter((type): type is string => Boolean(type)))].sort(
-      (a, b) => getPrettyItemType(a).localeCompare(getPrettyItemType(b))
-    )
-    .map(type => ({ value: type.toLowerCase(), label: getPrettyItemType(type) }))
+    [...new Set(props.items.map(item => item.type).filter((type): type is string => Boolean(type)))]
+      .sort((a, b) => getPrettyItemType(a).localeCompare(getPrettyItemType(b)))
+      .map(type => ({ value: type.toLowerCase(), label: getPrettyItemType(type) }))
   );
 
   const allTags: Array<{ label: string; value: ItemFilterTag }> = [

@@ -1,3 +1,9 @@
 {
-  "5e": ["char-official.json", "char-ua.json", "spells-full.json", "items-full.json", "items-ua.json"]
+  "5e": [
+    "char-official.json",
+    "char-ua.json",
+    "spells-full.json",
+    "items-full.json",
+    "items-ua.json"
+  ]
 }
