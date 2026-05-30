@@ -1,5 +1,5 @@
-export const APP_VERSION = '2.7.5';
-// character creator v2.7.5
+export const APP_VERSION = '2.8.0';
+// character creator v2.8.0
 
 import type { PlayerSkills, SavingThrow, AbilityScoreValues } from './types';
 
