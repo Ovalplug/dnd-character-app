@@ -7,9 +7,15 @@
       </div>
       <div class="money-header__meta">
         <div class="money-summary">
-          <span v-for="coin in DISPLAY_COINS" :key="coin.key" class="money-pill">
+          <button
+            v-for="coin in DISPLAY_COINS"
+            :key="coin.key"
+            class="money-pill money-pill--interactive"
+            type="button"
+            @click.stop="beginInlineEdit('main', coin.key, props.money[coin.key])"
+          >
             {{ coin.label }} {{ props.money[coin.key] }}
-          </span>
+          </button>
         </div>
         <span class="money-chevron" :class="{ 'money-chevron--open': isOpen }">⌄</span>
       </div>
@@ -33,10 +39,33 @@
             <span class="wallet-badge">Primary</span>
           </div>
           <div class="wallet-grid">
-            <div v-for="coin in DISPLAY_COINS" :key="coin.key" class="wallet-coin">
-              <span>{{ coin.label }}</span>
-              <strong>{{ props.money[coin.key] }}</strong>
-            </div>
+            <button
+              v-for="coin in DISPLAY_COINS"
+              :key="coin.key"
+              class="wallet-coin wallet-coin--interactive"
+              type="button"
+              @click="beginInlineEdit('main', coin.key, props.money[coin.key])"
+            >
+              <template v-if="isInlineEditing('main', coin.key)">
+                <span>{{ coin.label }}</span>
+                <input
+                  ref="inlineEditInput"
+                  v-model="inlineEditValue"
+                  class="wallet-coin-input"
+                  inputmode="numeric"
+                  min="0"
+                  type="number"
+                  @blur="saveInlineEdit"
+                  @click.stop
+                  @keydown.enter.prevent="saveInlineEdit"
+                  @keydown.esc.prevent="cancelInlineEdit"
+                />
+              </template>
+              <template v-else>
+                <span>{{ coin.label }}</span>
+                <strong>{{ props.money[coin.key] }}</strong>
+              </template>
+            </button>
           </div>
         </article>
 
@@ -46,10 +75,33 @@
             <span class="wallet-badge wallet-badge--sub">Extra</span>
           </div>
           <div class="wallet-grid">
-            <div v-for="coin in DISPLAY_COINS" :key="coin.key" class="wallet-coin">
-              <span>{{ coin.label }}</span>
-              <strong>{{ wallet.currency[coin.key] }}</strong>
-            </div>
+            <button
+              v-for="coin in DISPLAY_COINS"
+              :key="coin.key"
+              class="wallet-coin wallet-coin--interactive"
+              type="button"
+              @click="beginInlineEdit(wallet.id, coin.key, wallet.currency[coin.key])"
+            >
+              <template v-if="isInlineEditing(wallet.id, coin.key)">
+                <span>{{ coin.label }}</span>
+                <input
+                  ref="inlineEditInput"
+                  v-model="inlineEditValue"
+                  class="wallet-coin-input"
+                  inputmode="numeric"
+                  min="0"
+                  type="number"
+                  @blur="saveInlineEdit"
+                  @click.stop
+                  @keydown.enter.prevent="saveInlineEdit"
+                  @keydown.esc.prevent="cancelInlineEdit"
+                />
+              </template>
+              <template v-else>
+                <span>{{ coin.label }}</span>
+                <strong>{{ wallet.currency[coin.key] }}</strong>
+              </template>
+            </button>
           </div>
         </article>
 
@@ -147,7 +199,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, reactive, ref } from 'vue';
+  import { computed, nextTick, reactive, ref } from 'vue';
   import PopOut from '../../../PopOut.vue';
   import { useCharacterStore } from '../../../../stores/characterStore';
   import type { Currency, CurrencyWallet } from '../../../../types';
@@ -174,9 +226,17 @@
     additionalMoney?: CurrencyWallet[] | Currency;
   }>();
 
+  type InlineEditTarget = {
+    walletId: string;
+    coinKey: CoinKey;
+  };
+
   const store = useCharacterStore();
   const isOpen = ref(true);
   const isEditing = ref(false);
+  const inlineEditInput = ref<HTMLInputElement | null>(null);
+  const activeInlineEdit = ref<InlineEditTarget | null>(null);
+  const inlineEditValue = ref('0');
   const editState = reactive<{ main: Currency; wallets: CurrencyWallet[] }>({
     main: cloneCurrency(props.money),
     wallets: normalizeWallets(props.additionalMoney),
@@ -221,6 +281,51 @@
 
   function closeEditor() {
     isEditing.value = false;
+  }
+
+  function isInlineEditing(walletId: string, coinKey: CoinKey) {
+    return (
+      activeInlineEdit.value?.walletId === walletId && activeInlineEdit.value?.coinKey === coinKey
+    );
+  }
+
+  function beginInlineEdit(walletId: string, coinKey: CoinKey, value: number) {
+    activeInlineEdit.value = { walletId, coinKey };
+    inlineEditValue.value = String(value);
+    void nextTick(() => {
+      inlineEditInput.value?.focus();
+      inlineEditInput.value?.select();
+    });
+  }
+
+  function cancelInlineEdit() {
+    activeInlineEdit.value = null;
+  }
+
+  async function saveInlineEdit() {
+    if (!props.characterId || !activeInlineEdit.value) {
+      cancelInlineEdit();
+      return;
+    }
+
+    const parsed = Number.parseInt(inlineEditValue.value, 10);
+    const nextValue = Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
+    const nextMain = cloneCurrency(props.money);
+    const nextWallets = normalizeWallets(props.additionalMoney);
+
+    if (activeInlineEdit.value.walletId === 'main') {
+      nextMain[activeInlineEdit.value.coinKey] = nextValue;
+    } else {
+      const wallet = nextWallets.find(entry => entry.id === activeInlineEdit.value?.walletId);
+      if (!wallet) {
+        cancelInlineEdit();
+        return;
+      }
+      wallet.currency[activeInlineEdit.value.coinKey] = nextValue;
+    }
+
+    await store.updateCharacterMoney(props.characterId, nextMain, nextWallets);
+    cancelInlineEdit();
   }
 
   function updateCoinValue(target: Currency, coinKey: CoinKey, event: Event) {
@@ -341,6 +446,23 @@
     font-weight: 700;
   }
 
+  .money-pill--interactive,
+  .wallet-coin--interactive {
+    border: 0;
+    cursor: pointer;
+    text-align: left;
+    transition: transform 0.16s ease, box-shadow 0.16s ease, background-color 0.16s ease;
+  }
+
+  .money-pill--interactive:hover,
+  .money-pill--interactive:focus-visible,
+  .wallet-coin--interactive:hover,
+  .wallet-coin--interactive:focus-visible {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(107, 46, 46, 0.08);
+    outline: none;
+  }
+
   .wallet-badge--sub {
     background: rgba(201, 164, 75, 0.18);
     color: #7b5f1d;
@@ -432,6 +554,26 @@
     padding: 0.65rem 0.7rem;
     border-radius: 12px;
     background: rgba(244, 236, 216, 0.42);
+  }
+
+  .wallet-coin--interactive {
+    width: 100%;
+  }
+
+  .wallet-coin-input {
+    width: 100%;
+    min-height: 2.2rem;
+    border: 1px solid rgba(107, 46, 46, 0.16);
+    border-radius: 10px;
+    background: white;
+    padding: 0.45rem 0.6rem;
+    font: inherit;
+    color: var(--color-text);
+  }
+
+  .wallet-coin-input:focus {
+    outline: 2px solid rgba(107, 46, 46, 0.2);
+    outline-offset: 1px;
   }
 
   .wallet-coin span,

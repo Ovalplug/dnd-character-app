@@ -28,10 +28,7 @@
       <span v-else>{{ spell.range.type }}</span>
     </p>
     <p v-if="spell.components">
-      <strong>Components: </strong>
-      <span v-if="spell.components.v">V</span><span v-if="spell.components.s">S</span
-      ><span v-if="spell.components.m">M ({{ spell.components.m }})</span
-      ><span v-if="spell.components.r">R</span>
+      <strong>Components: </strong> {{ getSpellComponentsText(spell.components) }}
     </p>
     <p v-if="spell.duration">
       <strong>Duration: </strong>
@@ -63,6 +60,39 @@
 
   const props = defineProps<{ spell: Spell }>();
   const spell = props.spell;
+
+  function getSpellComponentsText(components: Record<string, any>): string {
+    const parts: string[] = [];
+
+    if (components.v) parts.push('V');
+    if (components.s) parts.push('S');
+    if (components.m) parts.push(`M (${getMaterialComponentText(components.m)})`);
+    if (components.r) parts.push('R');
+
+    return parts.join(', ');
+  }
+
+  function getMaterialComponentText(materialComponent: unknown): string {
+    if (typeof materialComponent === 'string') return materialComponent;
+
+    if (materialComponent && typeof materialComponent === 'object') {
+      const materialDetails = materialComponent as {
+        text?: string;
+        cost?: number;
+        consume?: boolean;
+      };
+
+      if (materialDetails.text) return materialDetails.text;
+
+      if (typeof materialDetails.cost === 'number') {
+        const goldCost = materialDetails.cost / 100;
+        const prettyCost = Number.isInteger(goldCost) ? `${goldCost} gp` : `${goldCost} gp value`;
+        return materialDetails.consume ? `${prettyCost}, consumed` : prettyCost;
+      }
+    }
+
+    return String(materialComponent ?? '');
+  }
 </script>
 
 <style scoped>

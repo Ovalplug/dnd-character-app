@@ -501,6 +501,139 @@ export const useCharacterStore = defineStore('characters', {
       const character = await db.characters.get(id);
       if (!character) return;
 
+      const normalizeCurrency = (currency?: Partial<Currency> | null): Currency => ({
+        pp: Math.max(0, Math.floor(currency?.pp ?? 0)),
+        gp: Math.max(0, Math.floor(currency?.gp ?? 0)),
+        ep: 0,
+        sp: Math.max(0, Math.floor(currency?.sp ?? 0)),
+        cp: Math.max(0, Math.floor(currency?.cp ?? 0)),
+      });
+
+      const normalizeAdditionalCurrency = (
+        additionalCurrency?: CurrencyWallet[] | Currency
+      ): CurrencyWallet[] | undefined => {
+        if (!additionalCurrency) return undefined;
+        if (Array.isArray(additionalCurrency)) {
+          return additionalCurrency.map((wallet, index) => ({
+            id: wallet.id || uuidv4(),
+            name: wallet.name?.trim() || `Wallet ${index + 1}`,
+            currency: normalizeCurrency(wallet.currency),
+          }));
+        }
+
+        return [
+          {
+            id: uuidv4(),
+            name: 'Additional wallet',
+            currency: normalizeCurrency(additionalCurrency),
+          },
+        ];
+      };
+
+      const slugify = (value: string): string =>
+        value
+          .trim()
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/(^-|-$)/g, '');
+
+      const extractBackgroundEquipmentText = (entries: any[] | undefined): string[] => {
+        if (!Array.isArray(entries)) return [];
+
+        const results: string[] = [];
+
+        const visit = (node: any) => {
+          if (!node) return;
+          if (Array.isArray(node)) {
+            node.forEach(visit);
+            return;
+          }
+          if (typeof node === 'string') return;
+          if (typeof node !== 'object') return;
+
+          if (node.type === 'item' && typeof node.name === 'string') {
+            if (node.name.trim().toLowerCase() === 'equipment') {
+              if (typeof node.entry === 'string') results.push(node.entry);
+              if (Array.isArray(node.entries)) {
+                node.entries.forEach((entry: any) => {
+                  if (typeof entry === 'string') results.push(entry);
+                });
+              }
+            }
+            if (node.entry) visit(node.entry);
+          }
+
+          if (Array.isArray(node.items)) visit(node.items);
+          if (Array.isArray(node.entries)) visit(node.entries);
+        };
+
+        visit(entries);
+        return results;
+      };
+
+      const parseCurrencyFromText = (text: string): Currency => {
+        const parsed = normalizeCurrency();
+        const matches = text.matchAll(/(?<!worth\s)(\d+)\s*(pp|gp|sp|cp)\b/gi);
+        for (const match of matches) {
+          const amount = Number.parseInt(match[1] ?? '0', 10);
+          const coinType = (match[2] ?? '').toLowerCase() as keyof Currency;
+          if (!Number.isFinite(amount) || amount <= 0) continue;
+          if (coinType === 'pp' || coinType === 'gp' || coinType === 'sp' || coinType === 'cp') {
+            parsed[coinType] += amount;
+          }
+        }
+        parsed.ep = 0;
+        return parsed;
+      };
+
+      const hasCurrency = (currency: Currency): boolean =>
+        currency.pp > 0 || currency.gp > 0 || currency.sp > 0 || currency.cp > 0;
+
+      const syncBackgroundCurrencyWallet = (
+        wallets: CurrencyWallet[] | undefined,
+        background: Background | null | undefined
+      ): CurrencyWallet[] | undefined => {
+        const normalizedWallets = [...(wallets ?? [])];
+        const backgroundName = background?.name?.trim();
+        if (!backgroundName) return normalizedWallets.length > 0 ? normalizedWallets : undefined;
+
+        const walletId = `background-${slugify(backgroundName)}-wallet`;
+        const equipmentTexts = extractBackgroundEquipmentText(background?.entries);
+        const parsedCurrency = equipmentTexts.reduce((sum, text) => {
+          const parsed = parseCurrencyFromText(text);
+          sum.pp += parsed.pp;
+          sum.gp += parsed.gp;
+          sum.sp += parsed.sp;
+          sum.cp += parsed.cp;
+          return sum;
+        }, normalizeCurrency());
+
+        const existingIndex = normalizedWallets.findIndex(wallet => wallet.id === walletId);
+
+        if (!hasCurrency(parsedCurrency)) {
+          if (existingIndex !== -1) normalizedWallets.splice(existingIndex, 1);
+          return normalizedWallets.length > 0 ? normalizedWallets : undefined;
+        }
+
+        const backgroundWallet: CurrencyWallet = {
+          id: walletId,
+          name: `${backgroundName} funds`,
+          currency: parsedCurrency,
+        };
+
+        if (existingIndex === -1) {
+          normalizedWallets.push(backgroundWallet);
+        } else {
+          normalizedWallets[existingIndex] = {
+            id: normalizedWallets[existingIndex]?.id || backgroundWallet.id,
+            name: backgroundWallet.name,
+            currency: backgroundWallet.currency,
+          };
+        }
+
+        return normalizedWallets;
+      };
+
       // Recalculate proficiency bonus based on level
       const level = Object.values(character.classLevels).reduce((sum, lvl) => sum + lvl, 0);
       const proficiencyModifier = calculateProficiencyBonus(level);
@@ -565,6 +698,11 @@ export const useCharacterStore = defineStore('characters', {
       character.hitDice = hitDice;
       character.speed = speed;
       character.initiativeBonus = initiativeBonus;
+      character.currency = normalizeCurrency(character.currency);
+      character.additionalCurrency = syncBackgroundCurrencyWallet(
+        normalizeAdditionalCurrency(character.additionalCurrency),
+        character.background
+      );
       // After updating derived fields, save the character to the database
       await this.updateCharacter(character);
     },
