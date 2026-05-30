@@ -204,7 +204,7 @@ export type HitDice = {
 
 export type PlayerCharacters = playerCharacter[];
 
-export type CharacterEditPanel = 'menu' | 'name' | 'rest' | 'feats' | 'languages';
+export type CharacterEditPanel = 'menu' | 'name' | 'rest' | 'feats' | 'languages' | 'items';
 
 export type Feat = {
   name: string;
@@ -552,6 +552,8 @@ export type Item = {
   source: string;
   page?: number;
   displayName?: string;
+  equipped?: boolean;
+  attuned?: boolean;
   type?: string;
   rarity?: string;
   value?: number;

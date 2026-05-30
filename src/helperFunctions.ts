@@ -23,11 +23,19 @@ import type {
   SpellcastingInfo,
   SpellcastingCastingMode,
   playerCharacter,
+  Item,
   Items,
 } from './types';
 import { SKILL_NAME_MAP, SAVING_THROW_MAP } from './constants';
 
 export type ItemFilterTag = 'attunement' | 'wondrous' | 'tattoo' | 'vehicle';
+
+export type InventoryStackRow = {
+  key: string;
+  item: Item;
+  quantity: number;
+  indexes: number[];
+};
 
 export function getPrettyAbilityName(shorthand: string): string {
   switch (shorthand) {
@@ -259,6 +267,42 @@ export function getPrettyItemType(type?: string): string {
     default:
       return type ?? 'Unknown';
   }
+}
+
+export function itemRequiresAttunement(item: Item): boolean {
+  return item.reqAttune !== undefined && item.reqAttune !== false;
+}
+
+export function stackInventoryItems(items: Items): InventoryStackRow[] {
+  const rows: InventoryStackRow[] = [];
+  const rowIndexByKey = new Map<string, number>();
+
+  items.forEach((item, index) => {
+    const key = [
+      item.name,
+      item.source ?? '',
+      item.displayName ?? '',
+      item.equipped ? 'equipped' : 'unequipped',
+      item.attuned ? 'attuned' : 'unattuned',
+    ].join('::');
+    const existingIndex = rowIndexByKey.get(key);
+
+    if (existingIndex !== undefined) {
+      rows[existingIndex]!.quantity += 1;
+      rows[existingIndex]!.indexes.push(index);
+      return;
+    }
+
+    rowIndexByKey.set(key, rows.length);
+    rows.push({
+      key,
+      item,
+      quantity: 1,
+      indexes: [index],
+    });
+  });
+
+  return rows;
 }
 
 export function getPrettySpeed(speed: number | Record<string, any>): string {

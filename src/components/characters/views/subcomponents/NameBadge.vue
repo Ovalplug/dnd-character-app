@@ -38,13 +38,11 @@
             <span class="action-card-title">Edit Languages</span>
             <span class="action-card-copy">Update speak, read, and write flags.</span>
           </button>
-          <button
-            type="button"
-            class="action-card action-card--muted card"
-            @click="showItemsPlaceholder"
-          >
+          <button type="button" class="action-card action-card--muted card" @click="openItemsPanel">
             <span class="action-card-title">Manage Items</span>
-            <span class="action-card-copy">Placeholder for inventory editing.</span>
+            <span class="action-card-copy"
+              >Add gear from the compendium or remove carried items.</span
+            >
           </button>
         </div>
 
@@ -148,6 +146,76 @@
             </div>
           </div>
         </form>
+
+        <div v-else-if="activePanel === 'items'" class="edit-form edit-form--wide">
+          <div class="action-row action-row--spread">
+            <button type="button" class="btn btn-ghost" @click="setPanel('menu')">Back</button>
+            <span class="panel-copy panel-copy--compact"
+              >{{ props.character.inventory.length }} item(s)</span
+            >
+          </div>
+
+          <div v-if="stackedInventory.length" class="selected-list">
+            <div v-for="row in stackedInventory" :key="row.key" class="selected-row">
+              <div class="selected-copy-block">
+                <div class="selected-title-row">
+                  <p class="selected-title">
+                    {{ getStackedItemDisplayName(row.item, row.quantity) }}
+                  </p>
+                  <span v-if="row.quantity > 1" class="stack-badge">x{{ row.quantity }}</span>
+                </div>
+                <p class="selected-copy">{{ getItemMeta(row.item) }}</p>
+                <div class="inline-actions inline-actions--inventory">
+                  <button
+                    type="button"
+                    class="btn btn-ghost btn-inline-toggle"
+                    :class="{ 'btn-inline-toggle--active': !!row.item.equipped }"
+                    @click="toggleEquipped(row.indexes[0] ?? -1)"
+                  >
+                    {{ row.item.equipped ? 'Equipped' : 'Equip' }}
+                  </button>
+                  <button
+                    v-if="itemRequiresAttunement(row.item)"
+                    type="button"
+                    class="btn btn-ghost btn-inline-toggle"
+                    :class="{ 'btn-inline-toggle--active': !!row.item.attuned }"
+                    @click="toggleAttuned(row.indexes[0] ?? -1)"
+                  >
+                    {{ row.item.attuned ? 'Attuned' : 'Attune' }}
+                  </button>
+                </div>
+              </div>
+              <button
+                type="button"
+                class="btn btn-danger"
+                @click="removeItem(row.indexes[0] ?? -1)"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+          <p v-else class="panel-copy">No items in this inventory yet.</p>
+
+          <label class="form-label" for="item-search">Find an item</label>
+          <input
+            id="item-search"
+            v-model="itemSearch"
+            type="search"
+            placeholder="Search items by name or source"
+          />
+
+          <p v-if="isLoadingItems" class="panel-copy">Loading items...</p>
+          <div v-else class="available-list">
+            <div v-for="item in filteredItems" :key="itemKey(item)" class="selected-row">
+              <div>
+                <p class="selected-title">{{ getItemDisplayName(item) }}</p>
+                <p class="selected-copy">{{ getItemMeta(item) }}</p>
+              </div>
+              <button type="button" class="btn btn-primary" @click="addItem(item)">Add</button>
+            </div>
+            <p v-if="!filteredItems.length" class="panel-copy">No matching items available.</p>
+          </div>
+        </div>
       </div>
     </PopOut>
   </div>
@@ -155,11 +223,17 @@
 
 <script lang="ts" setup>
   import { computed, ref, onMounted, watch, nextTick } from 'vue';
+  import {
+    getPrettyItemType,
+    itemRequiresAttunement,
+    stackInventoryItems,
+  } from '../../../../helperFunctions';
   import { useCharacterStore } from '../../../../stores/characterStore';
   import { useDataStore } from '../../../../stores/dataStore';
   import type {
     CharacterEditPanel,
     Feat,
+    Item,
     LanguageAbility,
     Languages,
     playerCharacter,
@@ -202,7 +276,9 @@
   const nameDraft = ref('');
   const shortRestHealing = ref(0);
   const featSearch = ref('');
+  const itemSearch = ref('');
   const isLoadingFeats = ref(false);
+  const isLoadingItems = ref(false);
   const actionMessage = ref('');
   const languageKeys = LANGUAGE_KEYS;
   const languageForm = ref<Languages>(buildLanguageForm(props.character.languages));
@@ -217,6 +293,8 @@
         return 'Manage Feats';
       case 'languages':
         return 'Edit Languages';
+      case 'items':
+        return 'Manage Items';
       default:
         return `${props.character.name || 'Character'} Options`;
     }
@@ -232,6 +310,22 @@
       .sort((left, right) => left.name.localeCompare(right.name))
       .slice(0, 24);
   });
+
+  const filteredItems = computed(() => {
+    const query = itemSearch.value.trim().toLowerCase();
+
+    return [...((dataStore.filteredItems || []) as Item[])]
+      .filter(item => {
+        if (!query) return true;
+        return [item.name, item.displayName, item.source]
+          .filter((value): value is string => Boolean(value))
+          .some(value => value.toLowerCase().includes(query));
+      })
+      .sort((left, right) => getItemDisplayName(left).localeCompare(getItemDisplayName(right)))
+      .slice(0, 24);
+  });
+
+  const stackedInventory = computed(() => stackInventoryItems(props.character.inventory));
 
   function fitName() {
     const el = nameEl.value;
@@ -294,6 +388,28 @@
     return `${feat.name}::${feat.source || ''}`;
   }
 
+  function itemKey(item: Item): string {
+    return `${item.name}::${item.source || ''}::${item.displayName || ''}`;
+  }
+
+  function getItemDisplayName(item: Item): string {
+    return item.displayName || item.name;
+  }
+
+  function getStackedItemDisplayName(item: Item, quantity: number): string {
+    if (quantity <= 1) return getItemDisplayName(item);
+    return `${quantity} x ${getItemDisplayName(item)}`;
+  }
+
+  function getItemMeta(item: Item): string {
+    const parts = [
+      item.source || 'Unknown source',
+      item.rarity,
+      item.type ? getPrettyItemType(item.type) : undefined,
+    ].filter((value): value is string => Boolean(value));
+    return parts.join(' • ');
+  }
+
   function openEditPopout() {
     showEditPopout.value = true;
     setPanel('menu');
@@ -304,6 +420,7 @@
     activePanel.value = 'menu';
     actionMessage.value = '';
     featSearch.value = '';
+    itemSearch.value = '';
     shortRestHealing.value = 0;
   }
 
@@ -331,8 +448,17 @@
     }
   }
 
-  function showItemsPlaceholder() {
-    actionMessage.value = 'Item management will be added here later.';
+  async function openItemsPanel() {
+    setPanel('items');
+    if (dataStore.loaded) return;
+    isLoadingItems.value = true;
+    try {
+      await dataStore.init();
+    } catch (error) {
+      actionMessage.value = 'Failed to load item data.';
+    } finally {
+      isLoadingItems.value = false;
+    }
   }
 
   async function saveName() {
@@ -366,6 +492,34 @@
   async function removeFeat(feat: Feat) {
     await charStore.removeCharacterFeat(props.character.id, feat.name, feat.source);
     actionMessage.value = `${feat.name} removed.`;
+  }
+
+  async function addItem(item: Item) {
+    await charStore.addCharacterItem(props.character.id, item);
+    actionMessage.value = `${getItemDisplayName(item)} added.`;
+  }
+
+  async function removeItem(index: number) {
+    const item = props.character.inventory[index];
+    if (!item) return;
+    await charStore.removeCharacterItemAt(props.character.id, index);
+    actionMessage.value = `${getItemDisplayName(item)} removed.`;
+  }
+
+  async function toggleEquipped(index: number) {
+    const item = props.character.inventory[index];
+    if (!item) return;
+    await charStore.toggleCharacterItemEquipped(props.character.id, index);
+    actionMessage.value = `${getItemDisplayName(item)} ${
+      item.equipped ? 'unequipped' : 'equipped'
+    }.`;
+  }
+
+  async function toggleAttuned(index: number) {
+    const item = props.character.inventory[index];
+    if (!item || !itemRequiresAttunement(item)) return;
+    await charStore.toggleCharacterItemAttuned(props.character.id, index);
+    actionMessage.value = `${getItemDisplayName(item)} ${item.attuned ? 'unattuned' : 'attuned'}.`;
   }
 
   async function saveLanguages() {
@@ -551,6 +705,42 @@
   .selected-title,
   .selected-copy {
     margin: 0;
+  }
+
+  .selected-copy-block {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .selected-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .stack-badge {
+    padding: 0.12rem 0.45rem;
+    border-radius: 999px;
+    background: rgba(107, 46, 46, 0.08);
+    border: 1px solid rgba(107, 46, 46, 0.12);
+    color: var(--color-primary);
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+
+  .inline-actions--inventory {
+    gap: 0.45rem;
+  }
+
+  .btn-inline-toggle {
+    min-width: 0;
+  }
+
+  .btn-inline-toggle--active {
+    background: rgba(201, 164, 75, 0.18);
+    border-color: rgba(201, 164, 75, 0.45);
+    color: var(--color-primary);
   }
 
   .language-table {

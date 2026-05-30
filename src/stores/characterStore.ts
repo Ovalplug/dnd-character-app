@@ -29,6 +29,15 @@ import {
   computeCharSpellcasting,
 } from '../helperFunctions';
 
+function syncAttunedItems(character: Character) {
+  character.attunedItems = (character.inventory ?? [])
+    .filter(item => item.attuned)
+    .map(item => ({
+      name: item.displayName || item.name,
+      source: item.source,
+    }));
+}
+
 export const useCharacterStore = defineStore('characters', {
   state: () => ({
     characters: [] as Character[],
@@ -224,6 +233,54 @@ export const useCharacterStore = defineStore('characters', {
       if (!character) return;
       character.currency = currency;
       character.additionalCurrency = additionalCurrency;
+      await this.updateCharacter(character);
+    },
+
+    async replaceCharacterInventory(id: string, inventory: Item[]) {
+      const character = await db.characters.get(id);
+      if (!character) return;
+      character.inventory = JSON.parse(JSON.stringify(inventory ?? []));
+      syncAttunedItems(character);
+      await this.updateCharacter(character);
+    },
+
+    async addCharacterItem(id: string, item: Item) {
+      const character = await db.characters.get(id);
+      if (!character) return;
+      const nextItem = JSON.parse(JSON.stringify(item));
+      nextItem.equipped = false;
+      nextItem.attuned = false;
+      character.inventory = [...(character.inventory ?? []), nextItem];
+      await this.updateCharacter(character);
+    },
+
+    async removeCharacterItemAt(id: string, index: number) {
+      const character = await db.characters.get(id);
+      if (!character) return;
+      if (!Number.isInteger(index) || index < 0 || index >= (character.inventory?.length ?? 0)) {
+        return;
+      }
+      character.inventory = character.inventory.filter((_, itemIndex) => itemIndex !== index);
+      syncAttunedItems(character);
+      await this.updateCharacter(character);
+    },
+
+    async toggleCharacterItemEquipped(id: string, index: number) {
+      const character = await db.characters.get(id);
+      if (!character) return;
+      const item = character.inventory?.[index];
+      if (!item) return;
+      item.equipped = !item.equipped;
+      await this.updateCharacter(character);
+    },
+
+    async toggleCharacterItemAttuned(id: string, index: number) {
+      const character = await db.characters.get(id);
+      if (!character) return;
+      const item = character.inventory?.[index];
+      if (!item || item.reqAttune === undefined || item.reqAttune === false) return;
+      item.attuned = !item.attuned;
+      syncAttunedItems(character);
       await this.updateCharacter(character);
     },
 
