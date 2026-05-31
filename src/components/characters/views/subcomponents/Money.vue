@@ -232,7 +232,7 @@
   };
 
   const store = useCharacterStore();
-  const isOpen = ref(true);
+  const isOpen = ref(false);
   const isEditing = ref(false);
   const inlineEditInput = ref<HTMLInputElement | null>(null);
   const activeInlineEdit = ref<InlineEditTarget | null>(null);

@@ -45,7 +45,12 @@
       </button>
     </div>
 
-    <PopOut v-if="selectedAttack" :title="selectedAttack.name" :mini="true" @close="closeAttackDetails">
+    <PopOut
+      v-if="selectedAttack"
+      :title="selectedAttack.name"
+      :mini="true"
+      @close="closeAttackDetails"
+    >
       <div class="attack-details">
         <p class="attack-details__intro">{{ selectedAttack.subtitle }}</p>
 
@@ -157,7 +162,11 @@
         details: [
           { label: 'Source', value: 'Base character action' },
           { label: 'Reach', value: '5 ft.' },
-          { label: 'Rules', value: 'Use Strength for the attack and damage rolls unless another feature changes it.' },
+          {
+            label: 'Rules',
+            value:
+              'Use Strength for the attack and damage rolls unless another feature changes it.',
+          },
         ],
         variant: 'unarmed',
       },
@@ -194,7 +203,8 @@
         const attackMod = getWeaponAbilityMod(character, item);
         const proficient = isProficientWithWeapon(character, item);
         const magicBonus = getWeaponMagicBonus(item);
-        const attackBonus = attackMod + (proficient ? character.proficiencyModifier : 0) + magicBonus;
+        const attackBonus =
+          attackMod + (proficient ? character.proficiencyModifier : 0) + magicBonus;
         const rangeText = typeof item.range === 'string' ? item.range : undefined;
         const ammoInfo = getAmmoInfo(character, item);
         const propertyText = getPropertyText(item);
@@ -217,7 +227,9 @@
             { label: 'Weapon type', value: getWeaponSubtitle(item) },
             { label: 'Attack ability', value: getAttackAbilityLabel(character, item) },
             { label: 'Proficient', value: proficient ? 'Yes' : 'No' },
-            ...(magicBonus !== 0 ? [{ label: 'Magic bonus', value: formatSignedNumber(magicBonus) }] : []),
+            ...(magicBonus !== 0
+              ? [{ label: 'Magic bonus', value: formatSignedNumber(magicBonus) }]
+              : []),
             ...(rangeText ? [{ label: 'Range', value: rangeText }] : []),
             ...(ammoInfo ? [{ label: 'Ammunition', value: ammoInfo }] : []),
             ...(propertyText ? [{ label: 'Properties', value: propertyText }] : []),
@@ -286,9 +298,13 @@
   }
 
   function getWeaponDamageText(item: Item, modifier: number): string {
-    const baseDamage = `${item.dmg1}${modifier === 0 ? '' : modifier > 0 ? ` + ${modifier}` : ` - ${Math.abs(modifier)}`}`;
+    const baseDamage = `${item.dmg1}${
+      modifier === 0 ? '' : modifier > 0 ? ` + ${modifier}` : ` - ${Math.abs(modifier)}`
+    }`;
     if (!item.dmg2) return baseDamage;
-    const versatileDamage = `${item.dmg2}${modifier === 0 ? '' : modifier > 0 ? ` + ${modifier}` : ` - ${Math.abs(modifier)}`}`;
+    const versatileDamage = `${item.dmg2}${
+      modifier === 0 ? '' : modifier > 0 ? ` + ${modifier}` : ` - ${Math.abs(modifier)}`
+    }`;
     return `${baseDamage} (${versatileDamage} versatile)`;
   }
 
@@ -298,7 +314,9 @@
   }
 
   function getPropertyCodes(item: Item): string[] {
-    return Array.isArray(item.property) ? item.property.filter((value): value is string => typeof value === 'string') : [];
+    return Array.isArray(item.property)
+      ? item.property.filter((value): value is string => typeof value === 'string')
+      : [];
   }
 
   function getPropertyText(item: Item): string | undefined {
@@ -311,26 +329,37 @@
 
     const ammoSlug = item.ammoType.split('|')[0] ?? item.ammoType;
     const ammoCount = (character.inventory ?? []).reduce((total, inventoryItem) => {
-      const directMatch = normalizeItemName(inventoryItem.name) === ammoSlug || normalizeItemName(inventoryItem.displayName || '') === ammoSlug;
+      const directMatch =
+        normalizeItemName(inventoryItem.name) === ammoSlug ||
+        normalizeItemName(inventoryItem.displayName || '') === ammoSlug;
       if (directMatch) return total + 1;
 
       const packedCount = Array.isArray(inventoryItem.packContents)
-        ? inventoryItem.packContents.reduce((sum: number, entry: { item?: string; quantity?: number }) => {
-            const packedSlug = typeof entry.item === 'string' ? entry.item.split('|')[0] : '';
-            if (packedSlug !== ammoSlug) return sum;
-            return sum + Math.max(0, Number(entry.quantity ?? 0));
-          }, 0)
+        ? inventoryItem.packContents.reduce(
+            (sum: number, entry: { item?: string; quantity?: number }) => {
+              const packedSlug = typeof entry.item === 'string' ? entry.item.split('|')[0] : '';
+              if (packedSlug !== ammoSlug) return sum;
+              return sum + Math.max(0, Number(entry.quantity ?? 0));
+            },
+            0
+          )
         : 0;
 
       return total + packedCount;
     }, 0);
 
     const ammoLabel = ammoSlug.replace(/-/g, ' ');
-    return ammoCount > 0 ? `Ammo ${ammoCount} ${ammoLabel}${ammoCount === 1 ? '' : 's'}` : `Ammo ${ammoLabel}`;
+    return ammoCount > 0
+      ? `Ammo ${ammoCount} ${ammoLabel}${ammoCount === 1 ? '' : 's'}`
+      : `Ammo ${ammoLabel}`;
   }
 
   function normalizeItemName(value: string): string {
-    return value.toLowerCase().replace(/[’']/g, '').replace(/\s*\(\d+\)$/g, '').trim();
+    return value
+      .toLowerCase()
+      .replace(/[’']/g, '')
+      .replace(/\s*\(\d+\)$/g, '')
+      .trim();
   }
 
   function formatSignedNumber(value: number): string {

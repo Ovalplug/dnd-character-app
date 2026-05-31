@@ -54,7 +54,9 @@
     const dexMod = Math.floor((props.character.abilityScores.dex - 10) / 2);
     const equippedItems = props.character.inventory ?? [];
     const equippedArmor = equippedItems.filter(
-      item => item.equipped && (item.armor === true || item.type === 'LA' || item.type === 'MA' || item.type === 'HA')
+      item =>
+        item.equipped &&
+        (item.armor === true || item.type === 'LA' || item.type === 'MA' || item.type === 'HA')
     );
     const equippedShields = equippedItems.filter(item => item.equipped && item.type === 'S');
 

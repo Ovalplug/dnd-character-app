@@ -61,7 +61,11 @@
       </p>
     </section>
 
-    <PopOut v-if="selectedItem" :title="selectedItem.displayName || selectedItem.name" @close="closeItemDetails">
+    <PopOut
+      v-if="selectedItem"
+      :title="selectedItem.displayName || selectedItem.name"
+      @close="closeItemDetails"
+    >
       <SingleItem :item="selectedItem" />
     </PopOut>
   </article>
