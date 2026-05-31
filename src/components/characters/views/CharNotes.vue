@@ -206,26 +206,6 @@
     () => JSON.stringify(sections.value) !== JSON.stringify(baseline.value)
   );
 
-  const statusMessage = computed(() => {
-    if (loading.value) return 'Loading notes...';
-    if (saveError.value) return saveError.value;
-    if (saving.value) {
-      return saveMode.value === 'auto' ? 'Autosaving notes...' : 'Saving notes now.';
-    }
-    if (pendingAutoSave.value && hasChanges.value) return 'Changes queued for autosave.';
-    if (hasChanges.value) return 'You have unsaved changes.';
-    if (lastSavedAt.value) return 'All notes are saved.';
-    return 'Notes are ready. Changes will autosave.';
-  });
-
-  const lastSavedLabel = computed(() => {
-    if (!lastSavedAt.value) return '';
-    return new Intl.DateTimeFormat(undefined, {
-      dateStyle: 'medium',
-      timeStyle: 'short',
-    }).format(lastSavedAt.value);
-  });
-
   function createEmptySections(): CharacterNoteSection[] {
     return noteSectionDefinitions.map(definition => ({
       id: definition.id,
