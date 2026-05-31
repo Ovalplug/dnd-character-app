@@ -1,7 +1,7 @@
 <template>
   <article class="inventory-layout character-detail-view">
     <NameBadge :character="props.character" />
-    
+
     <Money
       :character-id="props.character.id"
       :money="props.character.currency"
@@ -23,6 +23,14 @@
             <div class="inventory-name-row">
               <p class="inventory-name">{{ getStackedItemDisplayName(row.item, row.quantity) }}</p>
               <span v-if="row.quantity > 1" class="stack-badge">x{{ row.quantity }}</span>
+              <button
+                type="button"
+                class="inventory-info-button"
+                :aria-label="`View details for ${row.item.displayName || row.item.name}`"
+                @click="openItemDetails(row.item)"
+              >
+                <img :src="questionIcon" alt="" />
+              </button>
             </div>
             <p class="inventory-meta">{{ getItemMeta(row.item) }}</p>
           </div>
@@ -52,16 +60,23 @@
         No items yet. Use the edit button in the name badge to add inventory.
       </p>
     </section>
+
+    <PopOut v-if="selectedItem" :title="selectedItem.displayName || selectedItem.name" @close="closeItemDetails">
+      <SingleItem :item="selectedItem" />
+    </PopOut>
   </article>
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue';
+  import { computed, ref } from 'vue';
+  import questionIcon from '../../../assets/icons/question.svg';
   import {
     getPrettyItemType,
     itemRequiresAttunement,
     stackInventoryItems,
   } from '../../../helperFunctions';
+  import PopOut from '../../PopOut.vue';
+  import SingleItem from '../../resources/SingleItem.vue';
   import { useCharacterStore } from '../../../stores/characterStore';
   import NameBadge from './subcomponents/NameBadge.vue';
   import type { Item, playerCharacter } from '../../../types';
@@ -72,6 +87,7 @@
   }>();
 
   const charStore = useCharacterStore();
+  const selectedItem = ref<Item | null>(null);
   const stackedInventory = computed(() => stackInventoryItems(props.character.inventory));
 
   function getStackedItemDisplayName(item: Item, quantity: number): string {
@@ -96,6 +112,14 @@
 
   async function toggleAttuned(index: number) {
     await charStore.toggleCharacterItemAttuned(props.character.id, index);
+  }
+
+  function openItemDetails(item: Item) {
+    selectedItem.value = item;
+  }
+
+  function closeItemDetails() {
+    selectedItem.value = null;
   }
 </script>
 
@@ -174,6 +198,36 @@
     color: var(--color-primary);
     font-size: 0.78rem;
     font-weight: 700;
+  }
+
+  .inventory-info-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.9rem;
+    height: 1.9rem;
+    border: 1px solid rgba(107, 46, 46, 0.14);
+    border-radius: 999px;
+    background: var(--color-surface);
+    padding: 0;
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+
+  .inventory-info-button:hover,
+  .inventory-info-button:focus-visible {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(31, 27, 22, 0.08);
+  }
+
+  .inventory-info-button:focus-visible {
+    outline: 2px solid rgba(107, 46, 46, 0.25);
+    outline-offset: 2px;
+  }
+
+  .inventory-info-button img {
+    width: 1rem;
+    height: 1rem;
   }
 
   .inventory-actions {

@@ -254,6 +254,17 @@
     'holy symbol': ['Amulet', 'Emblem', 'Reliquary'],
   };
 
+  const ITEM_LOOKUP_ALIASES: Record<string, string[]> = {
+    leather: ['leather armor'],
+    arrows: ['arrows (20)'],
+    bolts: ['bolts (20)', 'crossbow bolts (20)'],
+    'crossbow bolts': ['crossbow bolts (20)', 'bolts (20)'],
+    daggers: ['dagger'],
+    handaxes: ['handaxe'],
+  };
+
+  const MANUAL_ITEM_SUFFIX = ' (proper item must be added manually)';
+
   const store = useCharacterStore();
   const dataStore = useDataStore();
   const emit = defineEmits<{ (e: 'finishCreation'): void }>();
@@ -682,13 +693,72 @@
   }
 
   function findItemByName(rawName: string): Item | null {
-    const cleanedName = normalizeLookupKey(rawName);
-    return itemIndex.value.get(cleanedName) ?? null;
+    for (const candidate of buildLookupCandidates(rawName)) {
+      const found = itemIndex.value.get(candidate);
+      if (found) return found;
+    }
+    return null;
+  }
+
+  function buildLookupCandidates(rawName: string): string[] {
+    const normalized = normalizeLookupKey(rawName);
+    const candidates = new Set<string>();
+
+    const addCandidate = (value: string | undefined) => {
+      if (!value) return;
+      const normalizedValue = normalizeLookupKey(value);
+      if (normalizedValue) candidates.add(normalizedValue);
+    };
+
+    addCandidate(normalized);
+
+    const quantityMatch = normalized.match(/^(\d+)\s+(.+)$/);
+    if (quantityMatch) {
+      const quantity = quantityMatch[1] ?? '';
+      const remainder = quantityMatch[2] ?? '';
+      addCandidate(remainder);
+      addCandidate(`${remainder} (${quantity})`);
+      singularizeLookupValue(remainder).forEach(addCandidate);
+      singularizeLookupValue(remainder).forEach(value => addCandidate(`${value} (${quantity})`));
+    }
+
+    singularizeLookupValue(normalized).forEach(addCandidate);
+    (ITEM_LOOKUP_ALIASES[normalized] ?? []).forEach(addCandidate);
+    singularizeLookupValue(normalized).forEach(value => {
+      (ITEM_LOOKUP_ALIASES[value] ?? []).forEach(addCandidate);
+    });
+
+    return [...candidates];
+  }
+
+  function singularizeLookupValue(value: string): string[] {
+    const singulars = new Set<string>();
+
+    if (value.endsWith('ies')) {
+      singulars.add(`${value.slice(0, -3)}y`);
+    }
+
+    if (value.endsWith('ves')) {
+      singulars.add(`${value.slice(0, -3)}f`);
+      singulars.add(`${value.slice(0, -3)}fe`);
+    }
+
+    if (
+      value.endsWith('s') &&
+      !value.endsWith('ss') &&
+      !value.endsWith('tools') &&
+      !value.endsWith('clothes')
+    ) {
+      singulars.add(value.slice(0, -1));
+    }
+
+    return [...singulars].filter(Boolean);
   }
 
   function normalizeLookupKey(raw: string): string {
     return raw
       .toLowerCase()
+      .replace(/[’']/g, '')
       .replace(/^[0-9]+\s+x\s+/i, '')
       .replace(/^(a|an|the)\s+/i, '')
       .replace(/\(if proficient\)/gi, '')
@@ -819,9 +889,13 @@
       };
     }
 
+    const baseLabel =
+      quantity > 1 && !new RegExp(`^${quantity}\\s`).test(label) ? `${quantity} ${label}` : label;
+    const manualLabel = `${baseLabel}${MANUAL_ITEM_SUFFIX}`;
+
     return {
-      name: quantity > 1 ? `${quantity} ${label}` : label,
-      displayName: quantity > 1 ? `${quantity} ${label}` : label,
+      name: manualLabel,
+      displayName: manualLabel,
       source: 'START',
       entries: [],
     };
