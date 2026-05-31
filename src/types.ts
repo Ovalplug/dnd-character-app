@@ -132,6 +132,7 @@ export type playerCharacter = {
   currHp: number;
   tempHp: number;
   ac: number;
+  acOverride?: number;
   speed: CharSpeed;
   size: 'tiny' | 'small' | 'medium' | 'large' | 'huge' | 'gargantuan';
   skillProficiencies: PlayerSkills;

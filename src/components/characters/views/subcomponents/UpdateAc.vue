@@ -1,5 +1,8 @@
 <template>
   <div class="update-ac">
+    <p class="update-ac__summary">
+      Calculated AC: <strong>{{ calculatedAc }}</strong>
+    </p>
     <div class="value-row">
       <button class="stepper-btn" @click="acDown" aria-label="Decrease">
         <img :src="downArrow" alt="−" class="stepper-icon" />
@@ -14,12 +17,16 @@
         <span class="action-label">🛡</span>
         <span>Update AC</span>
       </button>
+      <button class="action-btn reset-btn" type="button" @click="resetToCalculated">
+        <span class="action-label">↺</span>
+        <span>Reset AC</span>
+      </button>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { ref } from 'vue';
+  import { computed, ref, watch } from 'vue';
   import { useCharacterStore } from '../../../../stores/characterStore';
   import type { playerCharacter } from '../../../../types';
   import downArrow from '../../../../assets/icons/down-arrow.svg';
@@ -43,8 +50,45 @@
 
   const emit = defineEmits<{ (e: 'close'): void }>();
 
+  const calculatedAc = computed(() => {
+    const dexMod = Math.floor((props.character.abilityScores.dex - 10) / 2);
+    const equippedItems = props.character.inventory ?? [];
+    const equippedArmor = equippedItems.filter(
+      item => item.equipped && (item.armor === true || item.type === 'LA' || item.type === 'MA' || item.type === 'HA')
+    );
+    const equippedShields = equippedItems.filter(item => item.equipped && item.type === 'S');
+
+    const bestArmorAc = equippedArmor.reduce((bestAc, item) => {
+      const itemAc = Number(item.ac ?? 0);
+      if (itemAc <= 0) return bestAc;
+      if (item.type === 'HA') return Math.max(bestAc, itemAc);
+      if (item.type === 'MA') return Math.max(bestAc, itemAc + Math.min(dexMod, 2));
+      return Math.max(bestAc, itemAc + dexMod);
+    }, 10 + dexMod);
+
+    const shieldBonus = equippedShields.reduce((bestBonus, item) => {
+      const itemAc = Number(item.ac ?? 0);
+      return Math.max(bestBonus, itemAc > 0 ? itemAc : 0);
+    }, 0);
+
+    return bestArmorAc + shieldBonus;
+  });
+
+  watch(
+    () => props.character.ac,
+    value => {
+      newAc.value = value;
+    },
+    { immediate: true }
+  );
+
   function updateAc(newAc: number) {
     charStore.updateAc(props.character.id, newAc);
+    emit('close');
+  }
+
+  function resetToCalculated() {
+    charStore.resetAcOverride(props.character.id);
     emit('close');
   }
 </script>
@@ -56,6 +100,12 @@
     align-items: center;
     gap: 1.25rem;
     padding: 0.5rem 0.25rem;
+  }
+
+  .update-ac__summary {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--color-muted);
   }
 
   .value-row {
@@ -146,5 +196,10 @@
   .temp-btn {
     background: var(--color-accent);
     color: #1f1b16;
+  }
+
+  .reset-btn {
+    background: rgba(107, 46, 46, 0.08);
+    color: var(--color-primary);
   }
 </style>

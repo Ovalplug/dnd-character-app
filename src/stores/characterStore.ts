@@ -45,6 +45,61 @@ function syncAttunedItems(character: Character) {
     }));
 }
 
+function isArmorItem(item: Item): boolean {
+  return item.armor === true || item.type === 'LA' || item.type === 'MA' || item.type === 'HA';
+}
+
+function isShieldItem(item: Item): boolean {
+  return item.type === 'S';
+}
+
+function syncExclusiveEquippedItems(character: Character, toggledItem: Item) {
+  if (isArmorItem(toggledItem)) {
+    character.inventory?.forEach(item => {
+      if (item !== toggledItem && isArmorItem(item)) {
+        item.equipped = false;
+      }
+    });
+  }
+
+  if (isShieldItem(toggledItem)) {
+    character.inventory?.forEach(item => {
+      if (item !== toggledItem && isShieldItem(item)) {
+        item.equipped = false;
+      }
+    });
+  }
+}
+
+function computeArmorClass(character: Character): number {
+  const dexMod = calculateAbilityScoreModifier(character.abilityScores.dex, 0, false, false);
+  const equippedItems = character.inventory ?? [];
+  const equippedArmor = equippedItems.filter(item => item.equipped && isArmorItem(item));
+  const equippedShields = equippedItems.filter(item => item.equipped && isShieldItem(item));
+
+  const bestArmorAc = equippedArmor.reduce((bestAc, item) => {
+    const itemAc = Number(item.ac ?? 0);
+    if (itemAc <= 0) return bestAc;
+
+    if (item.type === 'HA') {
+      return Math.max(bestAc, itemAc);
+    }
+
+    if (item.type === 'MA') {
+      return Math.max(bestAc, itemAc + Math.min(dexMod, 2));
+    }
+
+    return Math.max(bestAc, itemAc + dexMod);
+  }, 10 + dexMod);
+
+  const shieldBonus = equippedShields.reduce((bestBonus, item) => {
+    const itemAc = Number(item.ac ?? 0);
+    return Math.max(bestBonus, itemAc > 0 ? itemAc : 0);
+  }, 0);
+
+  return bestArmorAc + shieldBonus;
+}
+
 type CharacterNotesInput = {
   sections: CharacterNoteSection[];
 };
@@ -267,6 +322,7 @@ export const useCharacterStore = defineStore('characters', {
         currHp: 0,
         tempHp: 0,
         ac: 0,
+        acOverride: undefined,
         speed: { base: 30 },
         size: 'medium',
         skillProficiencies: {
@@ -466,6 +522,7 @@ export const useCharacterStore = defineStore('characters', {
       character.inventory = JSON.parse(JSON.stringify(inventory ?? []));
       syncAttunedItems(character);
       await this.updateCharacter(character);
+      await this.touchUpCharacter(id);
     },
 
     async addCharacterItem(id: string, item: Item) {
@@ -487,6 +544,7 @@ export const useCharacterStore = defineStore('characters', {
       character.inventory = character.inventory.filter((_, itemIndex) => itemIndex !== index);
       syncAttunedItems(character);
       await this.updateCharacter(character);
+      await this.touchUpCharacter(id);
     },
 
     async toggleCharacterItemEquipped(id: string, index: number) {
@@ -495,7 +553,11 @@ export const useCharacterStore = defineStore('characters', {
       const item = character.inventory?.[index];
       if (!item) return;
       item.equipped = !item.equipped;
+      if (item.equipped) {
+        syncExclusiveEquippedItems(character, item);
+      }
       await this.updateCharacter(character);
+      await this.touchUpCharacter(id);
     },
 
     async toggleCharacterItemAttuned(id: string, index: number) {
@@ -713,14 +775,19 @@ export const useCharacterStore = defineStore('characters', {
     },
 
     async updateAc(id: string, newAc: number) {
-      //eventually this will have functionality to take in items and calculate from that
-      //but for now it'll just be to manually set based on input
-
-      //TODO: add functionality to update ac based on equipped items, similar to how hp is calculated from class and con mod
       const character = await db.characters.get(id);
       if (!character) return;
+      character.acOverride = Math.max(0, Math.floor(newAc));
       character.ac = newAc;
       await this.updateCharacter(character);
+    },
+
+    async resetAcOverride(id: string) {
+      const character = await db.characters.get(id);
+      if (!character) return;
+      character.acOverride = undefined;
+      await this.updateCharacter(character);
+      await this.touchUpCharacter(id);
     },
 
     async applyTempHp(id: string, tempHp: number) {
@@ -929,14 +996,8 @@ export const useCharacterStore = defineStore('characters', {
         character.skillProficiencies.perception.expertise
       );
       const maxHp = character.maxHp !== 0 ? character.maxHp : this.getStartingHp(character);
-      const ac =
-        10 +
-        calculateAbilityScoreModifier(
-          character.abilityScores.dex,
-          character.proficiencyModifier,
-          false,
-          false
-        );
+      const calculatedAc = computeArmorClass(character);
+      const ac = character.acOverride ?? calculatedAc;
       const tempHp = character.tempHp || 0;
       const hitDice: HitDice[] = [];
       character.classes.forEach(charClass => {
