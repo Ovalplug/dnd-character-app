@@ -4,9 +4,36 @@ import type { playerCharacter } from '../types';
 
 export type Character = playerCharacter;
 
+export type CharacterNoteSectionId =
+  | 'characterDescription'
+  | 'campaignNotes'
+  | 'backstory'
+  | 'alliesAndOrganizations';
+
+export interface CharacterNoteEntry {
+  id: string;
+  title: string;
+  content: string;
+  createdAt: number;
+  updatedAt: number;
+}
+
+export interface CharacterNoteSection {
+  id: CharacterNoteSectionId;
+  entries: CharacterNoteEntry[];
+}
+
+export interface CharacterNotesRecord {
+  characterId: string;
+  sections: CharacterNoteSection[];
+  createdAt: number;
+  updatedAt: number;
+}
+
 export class DndDatabase extends Dexie {
   characters!: Table<Character>;
   settings!: Table<Setting, string>;
+  notes!: Table<CharacterNotesRecord, string>;
 
   constructor() {
     super('DndDatabase');
@@ -18,6 +45,12 @@ export class DndDatabase extends Dexie {
     // Add a key/value settings store in a new DB version so existing DBs migrate safely.
     this.version(2).stores({
       settings: 'key',
+    });
+
+    this.version(3).stores({
+      characters: 'id, name, level, updatedAt',
+      settings: 'key',
+      notes: 'characterId, updatedAt',
     });
   }
 }

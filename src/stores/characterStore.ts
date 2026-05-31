@@ -1,6 +1,13 @@
 import { defineStore } from 'pinia';
 import { v4 as uuidv4 } from 'uuid';
-import { db, type Character } from '../database/db';
+import {
+  db,
+  type Character,
+  type CharacterNoteEntry,
+  type CharacterNoteSection,
+  type CharacterNoteSectionId,
+  type CharacterNotesRecord,
+} from '../database/db';
 import type {
   AbilityScoreValues,
   AllProficiencies,
@@ -36,6 +43,149 @@ function syncAttunedItems(character: Character) {
       name: item.displayName || item.name,
       source: item.source,
     }));
+}
+
+type CharacterNotesInput = {
+  sections: CharacterNoteSection[];
+};
+
+type LegacyCharacterNotesRecord = {
+  characterId: string;
+  campaignNotes?: string;
+  backstory?: string;
+  alliesAndOrganizations?: string[];
+  createdAt?: number;
+  updatedAt?: number;
+};
+
+const CHARACTER_NOTE_SECTION_IDS: CharacterNoteSectionId[] = [
+  'characterDescription',
+  'campaignNotes',
+  'backstory',
+  'alliesAndOrganizations',
+];
+
+function createNoteEntry(content = '', timestamp = Date.now(), title = ''): CharacterNoteEntry {
+  return {
+    id: crypto.randomUUID(),
+    title,
+    content,
+    createdAt: timestamp,
+    updatedAt: timestamp,
+  };
+}
+
+function createEmptyNoteSections(): CharacterNoteSection[] {
+  return CHARACTER_NOTE_SECTION_IDS.map(id => ({
+    id,
+    entries: [],
+  }));
+}
+
+function normalizeNoteEntries(entries: CharacterNoteEntry[]): CharacterNoteEntry[] {
+  return entries.map(entry => ({
+    id: entry.id || crypto.randomUUID(),
+    title: entry.title?.trimEnd() || '',
+    content: entry.content.trimEnd(),
+    createdAt: entry.createdAt || Date.now(),
+    updatedAt: Date.now(),
+  }));
+}
+
+function normalizeNoteSections(sections: CharacterNoteSection[]): CharacterNoteSection[] {
+  const sectionMap = new Map<CharacterNoteSectionId, CharacterNoteSection>();
+
+  sections.forEach(section => {
+    if (!CHARACTER_NOTE_SECTION_IDS.includes(section.id)) return;
+    sectionMap.set(section.id, {
+      id: section.id,
+      entries: normalizeNoteEntries(section.entries || []),
+    });
+  });
+
+  return CHARACTER_NOTE_SECTION_IDS.map(
+    id =>
+      sectionMap.get(id) ?? {
+        id,
+        entries: [],
+      }
+  );
+}
+
+function buildLegacyNoteSections(character: Character): CharacterNoteSection[] {
+  const timestamp = character.updatedAt || character.createdAt || Date.now();
+  const sections = createEmptyNoteSections();
+
+  const characterDescriptionSection = sections.find(
+    section => section.id === 'characterDescription'
+  );
+  const campaignSection = sections.find(section => section.id === 'campaignNotes');
+  const backstorySection = sections.find(section => section.id === 'backstory');
+  const alliesSection = sections.find(section => section.id === 'alliesAndOrganizations');
+
+  if (characterDescriptionSection && character.personality?.trim()) {
+    characterDescriptionSection.entries = [createNoteEntry(character.personality, timestamp)];
+  }
+
+  if (campaignSection && character.notes?.trim()) {
+    campaignSection.entries = [createNoteEntry(character.notes, timestamp)];
+  }
+
+  if (backstorySection && character.backstory?.trim()) {
+    backstorySection.entries = [createNoteEntry(character.backstory, timestamp)];
+  }
+
+  if (alliesSection) {
+    alliesSection.entries = (character.alliesAndOrganizations || [])
+      .filter(ally => ally.trim().length > 0)
+      .map(ally => createNoteEntry(ally, timestamp));
+  }
+
+  return sections;
+}
+
+function buildStoredNoteSections(
+  record: CharacterNotesRecord | LegacyCharacterNotesRecord
+): CharacterNoteSection[] {
+  if ('sections' in record && Array.isArray(record.sections)) {
+    return normalizeNoteSections(record.sections);
+  }
+
+  const legacyRecord = record as LegacyCharacterNotesRecord;
+  const timestamp = record.updatedAt || record.createdAt || Date.now();
+  return normalizeNoteSections([
+    {
+      id: 'characterDescription',
+      entries: [],
+    },
+    {
+      id: 'campaignNotes',
+      entries: legacyRecord.campaignNotes?.trim()
+        ? [createNoteEntry(legacyRecord.campaignNotes, timestamp)]
+        : [],
+    },
+    {
+      id: 'backstory',
+      entries: legacyRecord.backstory?.trim()
+        ? [createNoteEntry(legacyRecord.backstory, timestamp)]
+        : [],
+    },
+    {
+      id: 'alliesAndOrganizations',
+      entries: (legacyRecord.alliesAndOrganizations || []).map((ally: string) =>
+        createNoteEntry(ally, timestamp)
+      ),
+    },
+  ]);
+}
+
+function sectionTextList(
+  sections: CharacterNoteSection[],
+  sectionId: CharacterNoteSectionId
+): string[] {
+  const section = sections.find(currentSection => currentSection.id === sectionId);
+  if (!section) return [];
+  return section.entries.map(entry => entry.content.trim()).filter(Boolean);
 }
 
 export const useCharacterStore = defineStore('characters', {
@@ -201,7 +351,80 @@ export const useCharacterStore = defineStore('characters', {
 
     async deleteCharacter(id: string) {
       await db.characters.delete(id);
+      await db.notes.delete(id);
       this.characters = this.characters.filter(c => c.id !== id);
+    },
+
+    async getCharacterNotes(id: string): Promise<CharacterNotesRecord | null> {
+      const storedNotes = (await db.notes.get(id)) as
+        | CharacterNotesRecord
+        | LegacyCharacterNotesRecord
+        | undefined;
+      if (storedNotes) {
+        return {
+          characterId: id,
+          sections: buildStoredNoteSections(storedNotes),
+          createdAt: storedNotes.createdAt ?? Date.now(),
+          updatedAt: storedNotes.updatedAt ?? Date.now(),
+        };
+      }
+
+      const character = await db.characters.get(id);
+      if (!character) return null;
+
+      const migratedSections = buildLegacyNoteSections(character);
+      const hasLegacyNotes = migratedSections.some(section =>
+        section.entries.some(entry => entry.content.trim().length > 0)
+      );
+
+      if (!hasLegacyNotes) return null;
+
+      return {
+        characterId: id,
+        sections: migratedSections,
+        createdAt: character.createdAt,
+        updatedAt: character.updatedAt,
+      };
+    },
+
+    async saveCharacterNotes(
+      id: string,
+      notes: CharacterNotesInput
+    ): Promise<CharacterNotesRecord | null> {
+      const character = await db.characters.get(id);
+      if (!character) return null;
+
+      const existingNotes = await db.notes.get(id);
+      const normalizedSections = normalizeNoteSections(notes.sections);
+      const characterDescriptions = sectionTextList(normalizedSections, 'characterDescription');
+      const campaignNotes = sectionTextList(normalizedSections, 'campaignNotes');
+      const backstoryEntries = sectionTextList(normalizedSections, 'backstory');
+      const alliesAndOrganizations = sectionTextList(normalizedSections, 'alliesAndOrganizations');
+      const normalizedNotes: CharacterNotesRecord = {
+        characterId: id,
+        sections: normalizedSections,
+        createdAt: existingNotes?.createdAt ?? character.createdAt ?? Date.now(),
+        updatedAt: Date.now(),
+      };
+
+      const updatedCharacter: Character = JSON.parse(
+        JSON.stringify({
+          ...character,
+          personality: characterDescriptions.join('\n\n') || undefined,
+          notes: campaignNotes.join('\n\n') || undefined,
+          backstory: backstoryEntries.join('\n\n') || undefined,
+          alliesAndOrganizations,
+          updatedAt: normalizedNotes.updatedAt,
+        })
+      );
+
+      await db.characters.put(updatedCharacter);
+      await db.notes.put(normalizedNotes);
+
+      const idx = this.characters.findIndex(currCharacter => currCharacter.id === id);
+      if (idx !== -1) this.characters[idx] = updatedCharacter;
+
+      return normalizedNotes;
     },
 
     updateCharacterName(newName: string) {
