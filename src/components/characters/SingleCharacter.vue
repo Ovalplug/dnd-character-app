@@ -1,22 +1,18 @@
 <template>
   <div class="character-wrapper">
-    <div class="character-content">
-      <CharOverview v-if="showOverview" :character="character" />
-      <CharCombat v-if="showCombat" :character="character" />
-      <CharInventory v-if="showInventory" :character="character" />
-      <CharNotes v-if="showNotes" :character="character" />
-      <CharAbilities v-if="showAbilities" :character="character" />
+    <div ref="contentRef" class="character-content">
+      <component :is="activeSectionComponent" :key="activeSection" :character="character" />
     </div>
     <div class="bar-content">
-      <CharacterBar @selectSection="toggleSection" />
+      <CharacterBar :active-section="activeSection" @selectSection="toggleSection" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { ref } from 'vue';
+  import { computed, nextTick, ref, watch } from 'vue';
+  import { useRoute, useRouter } from 'vue-router';
   import CharacterBar from './CharacterBar.vue';
-  //   import AccordianHolder from '../AccordianHolder.vue';
   import CharAbilities from './views/CharAbilities.vue';
   import CharCombat from './views/CharCombat.vue';
   import CharInventory from './views/CharInventory.vue';
@@ -29,21 +25,94 @@
     character: playerCharacter;
   }>();
 
-  const showOverview = ref(true);
-  const showCombat = ref(false);
-  const showInventory = ref(false);
-  const showAbilities = ref(false);
-  const showNotes = ref(false);
+  type CharacterSection = 'overview' | 'combat' | 'inventory' | 'abilities' | 'notes';
 
-  const allSections = ['overview', 'combat', 'inventory', 'abilities', 'notes'];
+  const sectionComponents: Record<CharacterSection, unknown> = {
+    overview: CharOverview,
+    combat: CharCombat,
+    inventory: CharInventory,
+    abilities: CharAbilities,
+    notes: CharNotes,
+  };
 
-  function toggleSection(section: string) {
-    if (!allSections.includes(section)) return;
-    showOverview.value = section === 'overview';
-    showCombat.value = section === 'combat';
-    showInventory.value = section === 'inventory';
-    showAbilities.value = section === 'abilities';
-    showNotes.value = section === 'notes';
+  const route = useRoute();
+  const router = useRouter();
+  const contentRef = ref<HTMLElement | null>(null);
+  const activeSection = ref<CharacterSection>('overview');
+  const activeSectionComponent = computed(() => sectionComponents[activeSection.value]);
+
+  function resolveSection(section: unknown): CharacterSection | null {
+    return typeof section === 'string' && section in sectionComponents
+      ? (section as CharacterSection)
+      : null;
+  }
+
+  function getStorageKey(characterId: string) {
+    return `character-view-section:${characterId}`;
+  }
+
+  function readStoredSection(characterId: string): CharacterSection | null {
+    const stored = window.localStorage.getItem(getStorageKey(characterId));
+    return resolveSection(stored);
+  }
+
+  function persistSection(section: CharacterSection) {
+    window.localStorage.setItem(getStorageKey(props.character.id), section);
+  }
+
+  function syncRouteSection(section: CharacterSection) {
+    if (route.query.section === section) return;
+    router.replace({
+      query: {
+        ...route.query,
+        section,
+      },
+    });
+  }
+
+  function resolveInitialSection(): CharacterSection {
+    return (
+      resolveSection(route.query.section) ?? readStoredSection(props.character.id) ?? 'overview'
+    );
+  }
+
+  activeSection.value = resolveInitialSection();
+
+  watch(
+    () => route.query.section,
+    querySection => {
+      const resolved = resolveSection(querySection);
+      if (resolved && resolved !== activeSection.value) {
+        activeSection.value = resolved;
+      }
+    }
+  );
+
+  watch(
+    () => props.character.id,
+    characterId => {
+      const nextSection =
+        resolveSection(route.query.section) ?? readStoredSection(characterId) ?? 'overview';
+      activeSection.value = nextSection;
+    }
+  );
+
+  watch(
+    activeSection,
+    section => {
+      persistSection(section);
+      syncRouteSection(section);
+    },
+    { immediate: true }
+  );
+
+  async function toggleSection(section: string) {
+    if (!(section in sectionComponents)) return;
+    activeSection.value = section as CharacterSection;
+    await nextTick();
+    if (contentRef.value) {
+      contentRef.value.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
 </script>
 

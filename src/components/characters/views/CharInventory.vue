@@ -1,6 +1,16 @@
 <template>
-  <div class="inventory-layout">
+  <article class="inventory-layout character-detail-view">
     <NameBadge :character="props.character" />
+
+    <section class="character-detail-card character-detail-card--hero">
+      <p class="character-detail-kicker">Inventory</p>
+      <h2 class="character-detail-title">Gear and coin</h2>
+      <p class="character-detail-copy">
+        Review what the character is carrying, then toggle equipped and attuned items without
+        leaving the sheet.
+      </p>
+    </section>
+
     <Money
       :character-id="props.character.id"
       :money="props.character.currency"
@@ -51,7 +61,7 @@
         No items yet. Use the edit button in the name badge to add inventory.
       </p>
     </section>
-  </div>
+  </article>
 </template>
 
 <script lang="ts" setup>

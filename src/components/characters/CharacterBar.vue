@@ -1,20 +1,18 @@
 <template>
   <div class="bar">
-    <div class="section" :class="{ selected: overview }" @click="selectSection('overview')">
-      <img :src="scrollImage" alt="overview icon" />
-    </div>
-    <div class="section" :class="{ selected: combat }" @click="selectSection('combat')">
-      <img :src="swordImage" alt="combat icon" />
-    </div>
-    <div class="section" :class="{ selected: abilities }" @click="selectSection('abilities')">
-      <img :src="spellbookImage" alt="abilities icon" />
-    </div>
-    <div class="section" :class="{ selected: inventory }" @click="selectSection('inventory')">
-      <img :src="bagImage" alt="inventory icon" />
-    </div>
-    <div class="section" :class="{ selected: notes }" @click="selectSection('notes')">
-      <img :src="penImage" alt="notes icon" />
-    </div>
+    <button
+      v-for="section in sections"
+      :key="section.id"
+      type="button"
+      class="section"
+      :class="{ selected: activeSection === section.id }"
+      :aria-pressed="activeSection === section.id"
+      :title="section.label"
+      @click="selectSection(section.id)"
+    >
+      <img :src="section.icon" :alt="`${section.label} icon`" />
+      <span class="section-label">{{ section.label }}</span>
+    </button>
   </div>
 </template>
 
@@ -24,65 +22,25 @@
   import spellbookImage from '../../assets/icons/spell-book.svg';
   import swordImage from '../../assets/icons/sword.svg';
   import penImage from '../../assets/icons/pen.svg';
+  type CharacterSection = 'overview' | 'combat' | 'inventory' | 'abilities' | 'notes';
 
-  import { ref } from 'vue';
-
-  const emits = defineEmits<{
-    (event: 'selectSection', section: string): void;
+  defineProps<{
+    activeSection: CharacterSection;
   }>();
 
-  const overview = ref(true);
-  const combat = ref(false);
-  const inventory = ref(false);
-  const abilities = ref(false);
-  const notes = ref(false);
+  const emits = defineEmits<{
+    (event: 'selectSection', section: CharacterSection): void;
+  }>();
 
-  function selectSection(section: string) {
-    switch (section) {
-      case 'overview':
-        overview.value = true;
-        combat.value = false;
-        inventory.value = false;
-        abilities.value = false;
-        notes.value = false;
-        break;
-      case 'combat':
-        overview.value = false;
-        combat.value = true;
-        inventory.value = false;
-        abilities.value = false;
-        notes.value = false;
-        break;
-      case 'inventory':
-        overview.value = false;
-        combat.value = false;
-        inventory.value = true;
-        abilities.value = false;
-        notes.value = false;
-        break;
-      case 'abilities':
-        overview.value = false;
-        combat.value = false;
-        inventory.value = false;
-        abilities.value = true;
-        notes.value = false;
-        break;
-      case 'notes':
-        overview.value = false;
-        combat.value = false;
-        inventory.value = false;
-        abilities.value = false;
-        notes.value = true;
-        break;
+  const sections: Array<{ id: CharacterSection; label: string; icon: string }> = [
+    { id: 'overview', label: 'Overview', icon: scrollImage },
+    { id: 'combat', label: 'Combat', icon: swordImage },
+    { id: 'abilities', label: 'Abilities', icon: spellbookImage },
+    { id: 'inventory', label: 'Inventory', icon: bagImage },
+    { id: 'notes', label: 'Notes', icon: penImage },
+  ];
 
-      default:
-        overview.value = true;
-        combat.value = false;
-        inventory.value = false;
-        abilities.value = false;
-        notes.value = false;
-        break;
-    }
+  function selectSection(section: CharacterSection) {
     emits('selectSection', section);
   }
 </script>
@@ -92,16 +50,26 @@
     display: flex;
     height: 100%;
     width: 100%;
+    background: rgba(255, 255, 255, 0.72);
+    border-top: 1px solid rgba(107, 46, 46, 0.12);
   }
 
   .section {
     flex: 1;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 0.25rem;
+    padding: 0.75rem 0.35rem;
     cursor: pointer;
     opacity: 0.5;
     border-bottom: 2px solid transparent;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    background: transparent;
+    color: inherit;
     transition: opacity 0.2s;
   }
 
@@ -110,8 +78,21 @@
     height: 24px;
   }
 
+  .section-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
   .section.selected {
     opacity: 1;
     border-bottom: 2px solid currentColor;
+  }
+
+  @media (max-width: 520px) {
+    .section-label {
+      display: none;
+    }
   }
 </style>
