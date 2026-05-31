@@ -2,15 +2,6 @@
   <article class="char-abilities character-detail-view">
     <NameBadge :character="character" />
 
-    <section class="character-detail-card character-detail-card--hero">
-      <p class="character-detail-kicker">Abilities</p>
-      <h2 class="character-detail-title">Features, traits, and spellcasting</h2>
-      <p class="character-detail-copy">
-        Browse the character’s class features, racial traits, feats, languages, and spellcasting
-        sources in one place.
-      </p>
-    </section>
-
     <ClassFeaturesSection :character="character" />
     <RacialTraitsSection :character="character" />
     <FeatsSection :character="character" />

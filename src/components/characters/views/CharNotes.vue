@@ -2,15 +2,6 @@
   <article class="character-detail-view">
     <NameBadge :character="props.character" />
 
-    <section class="character-detail-card character-detail-card--hero">
-      <p class="character-detail-kicker">Notes</p>
-      <h2 class="character-detail-title">Story hooks and campaign reference</h2>
-      <p class="character-detail-copy">
-        Keep narrative details together here so the player can quickly open the right section, add
-        as many note cards as they need, and let changes save automatically.
-      </p>
-    </section>
-
     <section
       v-for="definition in noteSectionDefinitions"
       :key="definition.id"

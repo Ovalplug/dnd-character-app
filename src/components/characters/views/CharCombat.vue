@@ -2,15 +2,6 @@
   <article class="char-combat character-detail-view">
     <NameBadge :character="props.character" />
 
-    <section class="character-detail-card character-detail-card--hero">
-      <p class="character-detail-kicker">Combat</p>
-      <h2 class="character-detail-title">Battle-ready reference</h2>
-      <p class="character-detail-copy">
-        Keep the most important combat information in one place, from defenses and attacks to spells
-        and actions.
-      </p>
-    </section>
-
     <!-- ── HP / AC / Class Bar ─────────────────────────────────────── -->
     <StatsBar :character="character" />
 

@@ -2,15 +2,6 @@
   <article class="character-detail-view">
     <NameBadge :character="props.character" />
 
-    <section class="character-detail-card character-detail-card--hero">
-      <p class="character-detail-kicker">Overview</p>
-      <h2 class="character-detail-title">Core character snapshot</h2>
-      <p class="character-detail-copy">
-        Review the essentials at a glance: vital stats, ability spread, saving throws, and trained
-        skills.
-      </p>
-    </section>
-
     <div class="character-detail-grid">
       <StatsBar :character="props.character" />
       <OtherInfo :character="props.character" />
