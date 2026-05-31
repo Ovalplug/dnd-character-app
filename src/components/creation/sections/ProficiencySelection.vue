@@ -1,5 +1,18 @@
 <template>
-  <div class="container">
+  <section class="creation-panel creation-panel--compact">
+    <div class="creation-intro">
+      <p>
+        Review the fixed proficiencies from your build and complete any remaining skill or tool
+        picks.
+      </p>
+    </div>
+
+    <div class="creation-actions creation-actions--top">
+      <button type="button" class="creation-primary-button" @click="save" :disabled="!canProceed">
+        Continue
+      </button>
+    </div>
+
     <SavingThrowSection :saving-throws="proficiencies.savingThrows" />
     <ProficiencyTagList title="Armor Proficiencies" :items="proficiencies.armorProficiencies" />
     <ProficiencyTagList title="Weapon Proficiencies" :items="proficiencies.weaponProficiencies" />
@@ -14,8 +27,13 @@
       :skill-choice-pool="proficiencies.skillChoicePool"
       @update:choices="chosenSkills = $event"
     />
-    <button class="next-btn" @click="save" :disabled="!canProceed">Next</button>
-  </div>
+
+    <div class="creation-actions">
+      <button type="button" class="creation-primary-button" @click="save" :disabled="!canProceed">
+        Continue
+      </button>
+    </div>
+  </section>
 </template>
 
 <script lang="ts" setup>
@@ -69,18 +87,3 @@
     emit('nextStep');
   }
 </script>
-
-<style scoped>
-  .container {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-  .next-btn {
-    align-self: flex-end;
-    padding: 0.5rem 1.25rem;
-    font-size: 1rem;
-  }
-</style>

@@ -1,5 +1,11 @@
 <template>
-  <div class="ability-score-selection">
+  <div class="ability-score-selection creation-panel">
+    <div class="creation-actions creation-actions--top">
+      <button type="button" class="creation-primary-button" @click="finaliseAbilities()">
+        Continue
+      </button>
+    </div>
+
     <!-- Method Selector Card -->
     <div class="method-card">
       <label class="method-label" for="score-selection">Ability Score Method</label>
@@ -237,7 +243,11 @@
         </tr>
       </tbody>
     </table>
-    <button class="next-btn" @click="finaliseAbilities()">Next</button>
+    <div class="creation-actions">
+      <button type="button" class="creation-primary-button" @click="finaliseAbilities()">
+        Continue
+      </button>
+    </div>
   </div>
 </template>
 <script lang="ts" setup>
@@ -343,13 +353,14 @@
     );
   });
 
+  const existingAbilityScores = store.currNewCharacter?.abilityScores;
   const currAbilityScores = ref<AbilityScoreValues>({
-    str: suggestedAbilityScores[currClass.value]?.str || 0,
-    dex: suggestedAbilityScores[currClass.value]?.dex || 0,
-    con: suggestedAbilityScores[currClass.value]?.con || 0,
-    int: suggestedAbilityScores[currClass.value]?.int || 0,
-    wis: suggestedAbilityScores[currClass.value]?.wis || 0,
-    cha: suggestedAbilityScores[currClass.value]?.cha || 0,
+    str: existingAbilityScores?.str ?? suggestedAbilityScores[currClass.value]?.str ?? 0,
+    dex: existingAbilityScores?.dex ?? suggestedAbilityScores[currClass.value]?.dex ?? 0,
+    con: existingAbilityScores?.con ?? suggestedAbilityScores[currClass.value]?.con ?? 0,
+    int: existingAbilityScores?.int ?? suggestedAbilityScores[currClass.value]?.int ?? 0,
+    wis: existingAbilityScores?.wis ?? suggestedAbilityScores[currClass.value]?.wis ?? 0,
+    cha: existingAbilityScores?.cha ?? suggestedAbilityScores[currClass.value]?.cha ?? 0,
   });
   const selectedMethod = ref('custom');
   const availableValues = ref([0, ...standardArray]);

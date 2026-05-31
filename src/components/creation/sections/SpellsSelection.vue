@@ -1,14 +1,33 @@
 <template>
-  <div class="spells-selection">
-    <h2>Spellcasting</h2>
+  <div class="spells-selection creation-panel">
+    <div class="creation-intro">
+      <p>
+        Spell options here are derived from the class, ancestry, and subclass choices already saved
+        in the flow.
+      </p>
+    </div>
 
     <!-- Non-spellcaster -->
     <div v-if="!info || !info.isSpellcaster" class="no-spells">
+      <div class="creation-actions creation-actions--top">
+        <button type="button" class="creation-primary-button" @click="emit('nextStep')">
+          Continue
+        </button>
+      </div>
+
       <p>Your character has no spellcasting from their class, race, or background.</p>
-      <button class="next-btn" @click="emit('nextStep')">Next</button>
+      <div class="creation-actions">
+        <button type="button" class="creation-primary-button" @click="emit('nextStep')">
+          Continue
+        </button>
+      </div>
     </div>
 
     <template v-else>
+      <div class="creation-actions creation-actions--top">
+        <button type="button" class="creation-primary-button" @click="save">Continue</button>
+      </div>
+
       <!-- Summary banner -->
       <div class="profile-summary">
         <p><strong>Casting style:</strong> {{ castingModeLabel }}</p>
@@ -117,7 +136,9 @@
         />
       </div>
 
-      <button class="next-btn" @click="save">Next</button>
+      <div class="creation-actions">
+        <button type="button" class="creation-primary-button" @click="save">Continue</button>
+      </div>
     </template>
   </div>
 </template>
@@ -248,8 +269,6 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    max-width: 860px;
-    margin: 0 auto;
   }
 
   .no-spells {
@@ -313,11 +332,5 @@
     font-weight: normal;
     font-size: 0.85rem;
     color: var(--color-text-muted, #666);
-  }
-
-  .next-btn {
-    align-self: flex-end;
-    padding: 0.5rem 1.25rem;
-    font-size: 1rem;
   }
 </style>

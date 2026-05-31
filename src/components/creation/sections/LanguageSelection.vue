@@ -1,52 +1,73 @@
 <template>
-  <div class="container">
-    <div style="margin-bottom: 1em">
-      <strong>Languages granted by race/background:</strong>
-      <span v-for="lang in Array.from(granted)" :key="lang" style="margin-right: 0.5em">{{
-        lang
-      }}</span>
+  <section class="creation-panel">
+    <div class="creation-intro">
+      <p>Review the languages the build already grants, then fill any remaining picks.</p>
     </div>
-    <div style="margin-bottom: 1em">
-      <strong>Additional picks allowed:</strong>
-      <span>{{ anyStandard + (other ? 1 : 0) }}</span>
+
+    <div class="creation-actions creation-actions--top">
+      <button type="button" class="creation-primary-button" @click="finaliseLanguages()">
+        Continue
+      </button>
     </div>
-    <table class="language-table">
-      <thead>
-        <tr>
-          <th>Language</th>
-          <th>Granted</th>
-          <th>Select</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="lang in allLanguageKeys" :key="lang">
-          <td>{{ lang }}</td>
-          <td>
-            <span v-if="isGranted(lang)">✔️</span>
-          </td>
-          <td>
-            <input
-              type="checkbox"
-              :checked="selected.includes(lang)"
-              :disabled="
-                isGranted(lang) ||
-                (!selected.includes(lang) && selected.length >= maxSelectable) ||
-                !isSelectable(lang)
-              "
-              @change="toggleLanguage(lang)"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <button class="next-btn" @click="finaliseLanguages()">Next</button>
-  </div>
+
+    <div class="creation-summary">
+      <span class="creation-summary__label">Bonus picks remaining</span>
+      <span class="creation-summary__value">{{ remainingSelectable }}</span>
+    </div>
+
+    <div class="creation-stack" v-if="grantedList.length">
+      <span class="creation-summary__label">Automatically known</span>
+      <div class="creation-tag-list">
+        <span v-for="lang in grantedList" :key="lang" class="creation-tag">{{
+          formatLanguageName(lang)
+        }}</span>
+      </div>
+    </div>
+
+    <div class="creation-table-wrap">
+      <table class="creation-table">
+        <thead>
+          <tr>
+            <th>Language</th>
+            <th>Granted</th>
+            <th class="creation-table__choice">Select</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="lang in allLanguageKeys" :key="lang">
+            <td>{{ formatLanguageName(lang) }}</td>
+            <td>
+              <span v-if="isGranted(lang)">Yes</span>
+            </td>
+            <td class="creation-table__choice">
+              <input
+                type="checkbox"
+                :checked="selected.includes(lang)"
+                :disabled="
+                  isGranted(lang) ||
+                  (!selected.includes(lang) && selected.length >= maxSelectable) ||
+                  !isSelectable(lang)
+                "
+                @change="toggleLanguage(lang)"
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="creation-actions">
+      <button type="button" class="creation-primary-button" @click="finaliseLanguages()">
+        Continue
+      </button>
+    </div>
+  </section>
 </template>
 <script lang="ts" setup>
   import { useCharacterStore } from '../../../stores/characterStore';
   import type { Languages } from '../../../types';
   import { getAllLanguages } from '../../../helperFunctions';
-  import { ref } from 'vue';
+  import { computed, ref } from 'vue';
   const store = useCharacterStore();
   const emit = defineEmits<{ (e: 'nextStep'): void }>();
   const charRace = store.getCharRace();
@@ -99,8 +120,15 @@
   const { granted, anyStandard, other } = parseCurrLanguages(
     Array.isArray(currLanguagesRaw) ? currLanguagesRaw : [currLanguagesRaw]
   );
-  const selected = ref<string[]>(Array.from(granted));
+  const existingSelections = Object.entries(store.getCharLanguages() as Languages)
+    .filter(([_, ability]) => ability && (ability.speak || ability.read || ability.write))
+    .map(([lang]) => lang);
+  const selected = ref<string[]>(
+    Array.from(new Set([...Array.from(granted), ...existingSelections]))
+  );
   const maxSelectable = granted.size + anyStandard + (other ? 1 : 0);
+  const grantedList = computed(() => Array.from(granted));
+  const remainingSelectable = computed(() => Math.max(0, maxSelectable - selected.value.length));
 
   function isGranted(lang: string) {
     return granted.has(lang);
@@ -119,6 +147,13 @@
         selected.value.push(lang);
       }
     }
+  }
+  function formatLanguageName(lang: string) {
+    const labels: Record<string, string> = {
+      deepSpeech: 'Deep Speech',
+      thievesCant: "Thieves' Cant",
+    };
+    return labels[lang] || lang.charAt(0).toUpperCase() + lang.slice(1);
   }
   function buildLanguagesObj(selectedArr: string[]): Languages {
     const base: Languages = {
@@ -158,29 +193,4 @@
     store.updateCharacterLanguages(buildLanguagesObj(selected.value));
     emit('nextStep');
   }
-  // ...existing code...
 </script>
-
-<style scoped>
-  .language-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 1rem;
-  }
-  .language-table th,
-  .language-table td {
-    border: 1px solid #ccc;
-    padding: 0.5rem;
-    text-align: left;
-  }
-  .next-btn {
-    margin-top: 1rem;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-  }
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-</style>

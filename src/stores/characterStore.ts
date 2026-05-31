@@ -186,6 +186,7 @@ export const useCharacterStore = defineStore('characters', {
       );
       await db.characters.add(newChar);
       this.characters.push(newChar);
+      await this.touchUpCharacter(newChar.id);
       this.currNewCharacter = null;
       return newChar.id;
     },
@@ -360,20 +361,23 @@ export const useCharacterStore = defineStore('characters', {
 
     updateCharacterClasses(newClass: CharClass) {
       if (this.currNewCharacter) {
-        this.currNewCharacter.classes.push(newClass);
-        this.currNewCharacter.classLevels[newClass.name.toLowerCase() as keyof ClassLevels]++;
+        const resetClassLevels = Object.fromEntries(
+          Object.keys(this.currNewCharacter.classLevels).map(className => [className, 0])
+        ) as ClassLevels;
+
+        resetClassLevels[newClass.name.toLowerCase() as keyof ClassLevels] = 1;
+        this.currNewCharacter.classes = [newClass];
+        this.currNewCharacter.classLevels = resetClassLevels;
+        this.currNewCharacter.subclasses = {};
       }
     },
 
     updateCharacterSubclasses(className: string, subclass: Subclass) {
       if (this.currNewCharacter) {
-        if (!this.currNewCharacter.subclasses) {
-          this.currNewCharacter.subclasses = {};
-        }
-        if (!this.currNewCharacter.subclasses[className]) {
-          this.currNewCharacter.subclasses[className] = [];
-        }
-        this.currNewCharacter.subclasses[className].push(subclass);
+        this.currNewCharacter.subclasses = {
+          ...(this.currNewCharacter.subclasses || {}),
+          [className]: [subclass],
+        };
       }
     },
 

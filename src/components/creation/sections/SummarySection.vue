@@ -9,6 +9,12 @@
       </p>
     </div>
 
+    <div class="creation-actions creation-actions--top">
+      <button type="button" class="creation-primary-button save-button" @click="saveCharacter">
+        Save Character
+      </button>
+    </div>
+
     <div v-if="equipmentSources.length === 0" class="summary-empty">
       <p>No class or background starting equipment was found.</p>
     </div>
@@ -172,7 +178,11 @@
       </p>
     </div>
 
-    <button type="button" class="save-button" @click="saveCharacter">Save Character</button>
+    <div class="creation-actions">
+      <button type="button" class="creation-primary-button save-button" @click="saveCharacter">
+        Save Character
+      </button>
+    </div>
   </section>
 </template>
 
@@ -1088,8 +1098,7 @@
     border: 1px solid rgba(107, 46, 46, 0.14);
   }
 
-  .secondary-button,
-  .save-button {
+  .secondary-button {
     min-height: 2.9rem;
     border: 0;
     border-radius: 999px;
@@ -1105,10 +1114,6 @@
 
   .save-button {
     width: 100%;
-    padding: 0.95rem 1.2rem;
-    background: linear-gradient(90deg, var(--color-primary), var(--color-primary-600));
-    color: white;
-    box-shadow: 0 14px 28px rgba(107, 46, 46, 0.24);
   }
 
   @media (min-width: 640px) {
@@ -1123,7 +1128,6 @@
     .save-button {
       width: fit-content;
       min-width: 220px;
-      justify-self: end;
     }
 
     .gold-input-grid {

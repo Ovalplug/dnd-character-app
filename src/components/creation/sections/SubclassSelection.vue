@@ -1,45 +1,84 @@
 <template>
-  <div class="container">
-    <!-- <button class="next-btn" @click="confirmSelection" :disabled="!allSelected">Next</button> -->
-    <div class="subclass-group">
-      <table class="subclass-table">
-        <thead>
-          <tr>
-            <th>Subclass</th>
-            <th>Info</th>
-            <th>Select</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(sub, index) in subclassesForCurrClass" :key="index">
-            <td>{{ sub.name }}</td>
-            <td>
-              <button class="icon-btn" @click="openPopout(index)">
-                <img :src="questionIcon" alt="Info" />
-              </button>
-            </td>
-            <td>
-              <input
-                type="checkbox"
-                @change="selectSubclass(index)"
-                :checked="selectedSubclassIndex === index"
-                :id="`subclass-${index}`"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <section class="creation-panel">
+    <div class="creation-intro">
+      <p v-if="props.currClass">
+        Choose the subclass for {{ props.currClass.name }} if it comes online at the current level.
+      </p>
+      <p v-else>No class has been selected yet.</p>
+    </div>
+
+    <div class="creation-actions creation-actions--top">
+      <button
+        type="button"
+        class="creation-primary-button"
+        @click="confirmSelection"
+        :disabled="!selectedSubclass"
+      >
+        Continue
+      </button>
+    </div>
+
+    <div v-if="props.currClass" class="creation-summary">
+      <span class="creation-summary__label">Selected subclass</span>
+      <span class="creation-summary__value">{{ selectedSubclass?.name || 'None selected' }}</span>
+    </div>
+
+    <div v-if="subclassesForCurrClass.length" class="subclass-group">
+      <div class="creation-table-wrap">
+        <table class="creation-table">
+          <thead>
+            <tr>
+              <th>Subclass</th>
+              <th>Info</th>
+              <th class="creation-table__choice">Select</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(sub, index) in subclassesForCurrClass" :key="index">
+              <td>{{ sub.name }}</td>
+              <td>
+                <button type="button" class="creation-icon-button" @click="openPopout(index)">
+                  <img :src="questionIcon" alt="Info" />
+                </button>
+              </td>
+              <td class="creation-table__choice">
+                <input
+                  type="radio"
+                  name="selected-subclass"
+                  @change="selectSubclass(index)"
+                  :checked="selectedSubclassIndex === index"
+                  :id="`subclass-${index}`"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <PopOut :title="selectedPopoutSubclass?.name" v-if="showPopOut" @close="closePopOut">
         <ResourceEntries v-if="selectedPopoutSubclass" :entries="subclassFeatureEntries" />
       </PopOut>
     </div>
-    <button class="next-btn" @click="confirmSelection" :disabled="!selectedSubclass">Next</button>
-  </div>
+
+    <div v-else class="creation-empty-state">
+      No subclasses were found for the selected class at this step.
+    </div>
+
+    <div class="creation-actions">
+      <button
+        type="button"
+        class="creation-primary-button"
+        @click="confirmSelection"
+        :disabled="!selectedSubclass"
+      >
+        Continue
+      </button>
+    </div>
+  </section>
 </template>
 
 <script lang="ts" setup>
-  import { computed, onMounted, ref } from 'vue';
-  import type { CharClass, ClassLevels, Entries, Subclass, Subclasses } from '../../../types';
+  import { computed, ref } from 'vue';
+  import type { CharClass, Entries, Subclass, Subclasses } from '../../../types';
   import { useCharacterStore } from '../../../stores/characterStore';
   import questionIcon from '../../../assets/icons/question.svg';
   import ResourceEntries from '../../resources/ResourceEntries.vue';
@@ -78,6 +117,20 @@
     return sortedSubclasses.value[props.currClass.name] || [];
   });
 
+  const currentSubclassName = props.currClass
+    ? store.currNewCharacter?.subclasses?.[props.currClass.name]?.[0]?.name ?? null
+    : null;
+
+  if (currentSubclassName) {
+    const initialIndex = subclassesForCurrClass.value.findIndex(
+      subclass => subclass.name === currentSubclassName
+    );
+    if (initialIndex >= 0) {
+      selectedSubclassIndex.value = initialIndex;
+      selectedSubclass.value = subclassesForCurrClass.value[initialIndex] || null;
+    }
+  }
+
   function openPopout(index: number) {
     selectedPopoutSubclass.value = subclassesForCurrClass.value[index] || null;
     showPopOut.value = true;
@@ -89,9 +142,8 @@
   }
 
   function confirmSelection() {
-    if (selectedSubclass.value) {
-      store.updateCharacterSubclasses(props.currClass!.name, selectedSubclass.value);
-    }
+    if (!selectedSubclass.value || !props.currClass) return;
+    store.updateCharacterSubclasses(props.currClass.name, selectedSubclass.value);
     emit('nextStep');
   }
 
@@ -99,73 +151,12 @@
     selectedSubclass.value = subclassesForCurrClass.value[index] || null;
     selectedSubclassIndex.value = index;
   }
-
-  // Skip this step entirely if no class needs a subclass at the current level
-  onMounted(() => {
-    if (
-      props.currClass &&
-      props.currClass.subclassAtLvl >
-        store.currNewCharacter!.classLevels[props.currClass.name.toLowerCase() as keyof ClassLevels]
-    ) {
-      emit('nextStep');
-    }
-  });
 </script>
 
 <style scoped>
-  .container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
   .subclass-group {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .subclass-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  .subclass-table th,
-  .subclass-table td {
-    border: 1px solid #ccc;
-    padding: 0.4rem 0.75rem;
-    text-align: left;
-  }
-
-  .next-btn {
-    align-self: flex-end;
-    padding: 0.5rem 1rem;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  .next-btn:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-
-  .icon-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0; /* Remove default padding */
-    margin: 0; /* Remove default margin */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .icon-btn img {
-    width: 20px; /* Set a fixed width for the icon */
-    height: 20px; /* Set a fixed height for the icon */
-    vertical-align: middle;
+    gap: 0.75rem;
   }
 </style>

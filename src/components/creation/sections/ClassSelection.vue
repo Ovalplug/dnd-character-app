@@ -1,33 +1,58 @@
 <template>
-  <div class="container">
-    <button class="next-btn" @click="updateClass" :disabled="!selectedClass">Next</button>
-    <table class="class-table">
-      <thead>
-        <tr>
-          <th>Class</th>
-          <th>Info</th>
-          <th>Select</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(charClass, index) in sortedClasses" :key="index">
-          <td>{{ charClass.name }}</td>
-          <td>
-            <button class="icon-btn" @click="openPopOut(index)">
-              <img :src="questionIcon" alt="info" width="20" height="20" />
-            </button>
-          </td>
-          <td>
-            <input
-              type="checkbox"
-              :checked="selectedClassIndex === index"
-              @change="selectClass(index)"
-              :id="'class-' + index"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <section class="creation-panel">
+    <div class="creation-intro">
+      <p>
+        Class defines the character’s hit die, spell progression, and most of the choices that
+        follow.
+      </p>
+    </div>
+
+    <div class="creation-actions creation-actions--top">
+      <button
+        type="button"
+        class="creation-primary-button"
+        @click="updateClass"
+        :disabled="!selectedClass"
+      >
+        Continue
+      </button>
+    </div>
+
+    <div class="creation-summary">
+      <span class="creation-summary__label">Selected class</span>
+      <span class="creation-summary__value">{{ selectedClass?.name || 'None selected' }}</span>
+    </div>
+
+    <div class="creation-table-wrap">
+      <table class="creation-table">
+        <thead>
+          <tr>
+            <th>Class</th>
+            <th>Info</th>
+            <th class="creation-table__choice">Select</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(charClass, index) in sortedClasses" :key="index">
+            <td>{{ charClass.name }}</td>
+            <td>
+              <button type="button" class="creation-icon-button" @click="openPopOut(index)">
+                <img :src="questionIcon" alt="info" width="20" height="20" />
+              </button>
+            </td>
+            <td class="creation-table__choice">
+              <input
+                type="radio"
+                name="selected-class"
+                :checked="selectedClassIndex === index"
+                @change="selectClass(index)"
+                :id="'class-' + index"
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <PopOut :title="classTitleForPopout" v-if="showPopOut" :onClose="closePopOut">
       <p>subclass at level: {{ selectedPopoutClass?.subclassAtLvl }}</p>
       <SingleClass
@@ -36,8 +61,18 @@
         :currSubclasses="selectedPopoutSubclasses"
       />
     </PopOut>
-    <button class="next-btn" @click="updateClass" :disabled="!selectedClass">Next</button>
-  </div>
+
+    <div class="creation-actions">
+      <button
+        type="button"
+        class="creation-primary-button"
+        @click="updateClass"
+        :disabled="!selectedClass"
+      >
+        Continue
+      </button>
+    </div>
+  </section>
 </template>
 
 <script lang="ts" setup>
@@ -57,7 +92,17 @@
     return [...props.classes].sort((a, b) => a.name.localeCompare(b.name));
   });
 
-  const selectedClassIndex = ref<number | null>(null);
+  const selectedClassIndex = ref<number | null>(
+    (() => {
+      const currentClass = store.getCharFullClasses()[0];
+      if (!currentClass) return null;
+      const index = sortedClasses.value.findIndex(
+        charClass =>
+          charClass.name === currentClass.name && charClass.source === currentClass.source
+      );
+      return index >= 0 ? index : null;
+    })()
+  );
   const showPopOut = ref(false);
   const selectedPopoutClass = ref<CharClass | null>(null);
   const selectedPopoutSubclasses = computed(() => {
@@ -89,41 +134,8 @@
   }
 
   function updateClass() {
-    if (selectedClass.value) {
-      store.updateCharacterClasses(selectedClass.value);
-    }
+    if (!selectedClass.value) return;
+    store.updateCharacterClasses(selectedClass.value);
     emit('nextStep');
   }
 </script>
-
-<style scoped>
-  .class-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 1rem;
-  }
-  .class-table th,
-  .class-table td {
-    border: 1px solid #ccc;
-    padding: 0.5rem;
-    text-align: left;
-  }
-  .icon-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-  .icon-btn img {
-    vertical-align: middle;
-  }
-  .next-btn {
-    margin-top: 1rem;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-  }
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-</style>
