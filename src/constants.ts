@@ -1,5 +1,5 @@
-export const APP_VERSION = '2.8.0';
-// character creator v2.8.0
+export const APP_VERSION = '3.0.0';
+// character creator v3.0.0
 
 import type { PlayerSkills, SavingThrow, AbilityScoreValues } from './types';
 
@@ -28,7 +28,7 @@ export const BASIC_ACTIONS: CombatAction[] = [
     summary: 'Make one melee or ranged attack with a weapon or unarmed strike.',
     rules: [
       'Choose a target within your weapon or unarmed strike range.',
-      "Roll an attack using the correct modifier and compare it against the target's AC.",
+      'Roll an attack using the correct modifier and compare it against the target\'s AC.',
       'On a hit, roll damage and apply any extra effects from the weapon, class features, or spells.',
     ],
   },
@@ -38,7 +38,7 @@ export const BASIC_ACTIONS: CombatAction[] = [
     summary: 'Cast a spell whose casting time is 1 action.',
     rules: [
       'You can cast a spell on your turn if its casting time is 1 action and you have the required components.',
-      "Follow the spell's range, target, duration, and saving throw or attack rules exactly as written.",
+      'Follow the spell\'s range, target, duration, and saving throw or attack rules exactly as written.',
       'If you cast a bonus action spell on the same turn, the only other spell you can cast that turn is a cantrip with a casting time of 1 action.',
     ],
   },
@@ -115,8 +115,7 @@ export const BASIC_ACTIONS: CombatAction[] = [
   {
     name: 'Use Object',
     type: 'Action',
-    summary:
-      'Interact with an object when the interaction takes more than your free object interaction.',
+    summary: 'Interact with an object when the interaction takes more than your free object interaction.',
     rules: [
       'Many simple interactions are free once per turn, but complex interactions can require the Use Object action.',
       'Examples include activating certain items, manipulating mechanisms, or handling objects that take more time or care.',
@@ -129,7 +128,7 @@ export const BASIC_ACTIONS: CombatAction[] = [
     summary: 'Use the Attack action to try to seize a creature with a free hand.',
     rules: [
       'A grapple replaces one attack in the Attack action and requires a free hand and a target no more than one size larger than you within reach.',
-      "Make a Strength (Athletics) check contested by the target's Strength (Athletics) or Dexterity (Acrobatics).",
+      'Make a Strength (Athletics) check contested by the target\'s Strength (Athletics) or Dexterity (Acrobatics).',
       'On a success, the target is grappled and its speed becomes 0 until the grapple ends.',
     ],
   },
@@ -139,7 +138,7 @@ export const BASIC_ACTIONS: CombatAction[] = [
     summary: 'Use the Attack action to push a creature or knock it prone.',
     rules: [
       'A shove replaces one attack in the Attack action and targets a creature within reach no more than one size larger than you.',
-      "Make a Strength (Athletics) check contested by the target's Strength (Athletics) or Dexterity (Acrobatics).",
+      'Make a Strength (Athletics) check contested by the target\'s Strength (Athletics) or Dexterity (Acrobatics).',
       'On a success, you either push the target 5 feet away or knock it prone.',
     ],
   },
@@ -150,7 +149,7 @@ export const BASIC_ACTIONS: CombatAction[] = [
     rules: [
       'You can use your reaction to make one melee attack against a creature that willingly leaves your reach.',
       'The attack happens right before the creature leaves your reach.',
-      "Forced movement, teleportation, or movement taken without using the creature's movement, action, or reaction does not trigger an opportunity attack.",
+      'Forced movement, teleportation, or movement taken without using the creature\'s movement, action, or reaction does not trigger an opportunity attack.',
     ],
   },
   {
