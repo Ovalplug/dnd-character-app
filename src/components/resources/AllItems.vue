@@ -18,12 +18,12 @@
         <div class="chip-row">
           <button
             v-for="rarity in allRarities"
-            :key="rarity"
+            :key="rarity.value"
             class="chip"
-            :class="{ 'chip--on': selectedRarities.includes(rarity) }"
-            @click="toggleRarity(rarity)"
+            :class="{ 'chip--on': selectedRarities.includes(rarity.value) }"
+            @click="toggleRarity(rarity.value)"
           >
-            {{ rarity }}
+            {{ rarity.label }}
           </button>
         </div>
       </div>
@@ -86,8 +86,8 @@
 
     <ul class="item-list">
       <div
-        v-for="item in refinedItemsList"
-        :key="`${item.name}-${item.source}`"
+        v-for="(item, index) in refinedItemsList"
+        :key="getItemKey(item, index)"
         @click="selectItem(item)"
         class="item-card"
         tabindex="0"
@@ -134,18 +134,40 @@
   const orderBy = ref<'name' | 'rarity'>('name');
   const showFilters = ref(false);
 
+  function getRarityLabel(rarity: string): string {
+    return rarity
+      .split(' ')
+      .filter(Boolean)
+      .map(part => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+      .join(' ');
+  }
+
   const allRarities = computed(() =>
-    [
-      ...new Set(
-        props.items.map(item => item.rarity).filter((rarity): rarity is string => Boolean(rarity))
-      ),
-    ].sort((a, b) => a.localeCompare(b))
+    Array.from(
+      new Map(
+        props.items
+          .map(item => item.rarity?.trim())
+          .filter((rarity): rarity is string => Boolean(rarity))
+          .map(rarity => {
+            const normalized = rarity.toLowerCase();
+            return [normalized, { value: normalized, label: getRarityLabel(rarity) }] as const;
+          })
+      ).values()
+    ).sort((a, b) => a.label.localeCompare(b.label))
   );
 
   const allTypes = computed(() =>
-    [...new Set(props.items.map(item => item.type).filter((type): type is string => Boolean(type)))]
-      .sort((a, b) => getPrettyItemType(a).localeCompare(getPrettyItemType(b)))
-      .map(type => ({ value: type.toLowerCase(), label: getPrettyItemType(type) }))
+    Array.from(
+      new Map(
+        props.items
+          .map(item => item.type?.trim())
+          .filter((type): type is string => Boolean(type))
+          .map(type => {
+            const normalized = type.toLowerCase();
+            return [normalized, { value: normalized, label: getPrettyItemType(type) }] as const;
+          })
+      ).values()
+    ).sort((a, b) => a.label.localeCompare(b.label))
   );
 
   const allTags: Array<{ label: string; value: ItemFilterTag }> = [
@@ -221,6 +243,17 @@
       (value): value is string => Boolean(value)
     );
     return parts.join(' • ');
+  }
+
+  function getItemKey(item: Item, index: number): string {
+    return [
+      item.name,
+      item.source,
+      item.page ?? 'no-page',
+      item.displayName ?? 'no-display-name',
+      item.type ?? 'no-type',
+      index,
+    ].join('-');
   }
 
   onMounted(async () => {

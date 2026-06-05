@@ -543,10 +543,51 @@ export type SpellcastingInfo = {
   expandedSpellNames: string[];
 };
 
+export type JsonObject = {
+  [key: string]: unknown;
+};
+
 export type ItemOtherSource = {
   source: string;
   page?: number;
-} & Record<string, any>;
+} & JsonObject;
+
+export type ItemTypeCode =
+  | '$'
+  | 'A'
+  | 'AF'
+  | 'AT'
+  | 'EXP'
+  | 'G'
+  | 'GS'
+  | 'HA'
+  | 'INS'
+  | 'LA'
+  | 'M'
+  | 'MA'
+  | 'MNT'
+  | 'P'
+  | 'R'
+  | 'RD'
+  | 'RG'
+  | 'S'
+  | 'SCF'
+  | 'SCF-P'
+  | 'SCF-D'
+  | 'SCF-W'
+  | 'TAH'
+  | 'TG'
+  | 'T'
+  | 'VEH'
+  | 'WD'
+  | (string & {});
+
+export type ItemRange = string | JsonObject;
+
+export type ItemPackContent = {
+  item?: string;
+  quantity?: number;
+} & JsonObject;
 
 export type Item = {
   name: string;
@@ -555,11 +596,21 @@ export type Item = {
   displayName?: string;
   equipped?: boolean;
   attuned?: boolean;
-  type?: string;
+  type?: ItemTypeCode;
   rarity?: string;
   value?: number;
   weight?: number;
   age?: string;
+  ac?: number | string;
+  armor?: boolean;
+  weapon?: boolean;
+  weaponCategory?: string;
+  dmg1?: string;
+  dmg2?: string;
+  dmgType?: string;
+  range?: ItemRange;
+  property?: string[];
+  packContents?: ItemPackContent[];
   entries?: Entries;
   images?: Image[];
   otherSources?: ItemOtherSource[];
@@ -580,6 +631,9 @@ export type Item = {
   vehSpeed?: number;
   capCargo?: number;
   seeAlsoVehicle?: string[];
-} & Record<string, any>;
+  seeAlsoDeck?: string[];
+  lootTables?: string[];
+  miscTags?: string[];
+} & JsonObject;
 
 export type Items = Item[];

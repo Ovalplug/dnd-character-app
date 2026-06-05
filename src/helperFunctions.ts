@@ -27,8 +27,19 @@ import type {
   Items,
 } from './types';
 import { SKILL_NAME_MAP, SAVING_THROW_MAP } from './constants';
-
 export type ItemFilterTag = 'attunement' | 'wondrous' | 'tattoo' | 'vehicle';
+
+const ITEM_RARITY_ORDER: Record<string, number> = {
+  none: 0,
+  common: 1,
+  uncommon: 2,
+  rare: 3,
+  'very rare': 4,
+  legendary: 5,
+  artifact: 6,
+  varies: 7,
+  unknown: 8,
+};
 
 export type InventoryStackRow = {
   key: string;
@@ -36,6 +47,90 @@ export type InventoryStackRow = {
   quantity: number;
   indexes: number[];
 };
+
+function normalizeSearchFragment(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[|/_-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+type ItemSearchScore = {
+  bucket: number;
+  position: number;
+  length: number;
+};
+
+function getSearchFieldScore(value: string | undefined, query: string): ItemSearchScore | null {
+  if (!value) return null;
+
+  const normalizedValue = normalizeSearchFragment(value);
+  if (!normalizedValue) return null;
+
+  if (normalizedValue === query) {
+    return { bucket: 0, position: 0, length: normalizedValue.length };
+  }
+
+  if (normalizedValue.startsWith(query)) {
+    return { bucket: 1, position: 0, length: normalizedValue.length };
+  }
+
+  const wordStartIndex = normalizedValue
+    .split(' ')
+    .findIndex(part => part.startsWith(query));
+  if (wordStartIndex !== -1) {
+    return { bucket: 2, position: wordStartIndex, length: normalizedValue.length };
+  }
+
+  const includesIndex = normalizedValue.indexOf(query);
+  if (includesIndex !== -1) {
+    return { bucket: 3, position: includesIndex, length: normalizedValue.length };
+  }
+
+  return null;
+}
+
+function compareSearchScores(left: ItemSearchScore | null, right: ItemSearchScore | null): number {
+  if (!left && !right) return 0;
+  if (!left) return 1;
+  if (!right) return -1;
+
+  if (left.bucket !== right.bucket) return left.bucket - right.bucket;
+  if (left.position !== right.position) return left.position - right.position;
+  if (left.length !== right.length) return left.length - right.length;
+  return 0;
+}
+
+function compareItemsBySearchRelevance(
+  left: Item,
+  right: Item,
+  query: string,
+  orderBy: 'name' | 'rarity'
+): number {
+  const leftNameScore =
+    getSearchFieldScore(left.displayName, query) ?? getSearchFieldScore(left.name, query);
+  const rightNameScore =
+    getSearchFieldScore(right.displayName, query) ?? getSearchFieldScore(right.name, query);
+  const nameCompare = compareSearchScores(leftNameScore, rightNameScore);
+  if (nameCompare !== 0) return nameCompare;
+
+  const leftTypeScore =
+    getSearchFieldScore(getPrettyItemType(left.type), query) ?? getSearchFieldScore(left.type, query);
+  const rightTypeScore =
+    getSearchFieldScore(getPrettyItemType(right.type), query) ?? getSearchFieldScore(right.type, query);
+  const typeCompare = compareSearchScores(leftTypeScore, rightTypeScore);
+  if (typeCompare !== 0) return typeCompare;
+
+  if (orderBy === 'rarity') {
+    const rarityRankLeft = ITEM_RARITY_ORDER[left.rarity?.trim().toLowerCase() ?? 'unknown'] ?? 999;
+    const rarityRankRight =
+      ITEM_RARITY_ORDER[right.rarity?.trim().toLowerCase() ?? 'unknown'] ?? 999;
+    if (rarityRankLeft !== rarityRankRight) return rarityRankLeft - rarityRankRight;
+  }
+
+  return left.name.localeCompare(right.name);
+}
 
 export function getPrettyAbilityName(shorthand: string): string {
   switch (shorthand) {
@@ -161,13 +256,21 @@ export function getRefinedItemsList(
   orderBy: 'name' | 'rarity' = 'name',
   searchVal?: string
 ): Items {
-  const normalizedSearch = searchVal?.trim().toLowerCase();
+  const normalizedSearch = searchVal ? normalizeSearchFragment(searchVal) : undefined;
+  const normalizedRarities = new Set(rarities.map(value => value.trim().toLowerCase()));
+  const normalizedTypes = new Set(types.map(value => value.trim().toLowerCase()));
 
   const refinedItems = items.filter(item => {
-    const itemRarity = item.rarity?.toLowerCase() ?? '';
-    const itemType = item.type?.toLowerCase() ?? '';
-    const matchesRarity = rarities.length === 0 || rarities.includes(itemRarity);
-    const matchesType = types.length === 0 || types.includes(itemType);
+    const itemRarity = item.rarity?.trim().toLowerCase() ?? '';
+    const itemType = item.type?.trim().toLowerCase() ?? '';
+    const itemTypeLabel = getPrettyItemType(item.type).trim().toLowerCase();
+    const itemName = normalizeSearchFragment(item.name);
+    const itemDisplayName = item.displayName ? normalizeSearchFragment(item.displayName) : '';
+    const matchesRarity = normalizedRarities.size === 0 || normalizedRarities.has(itemRarity);
+    const matchesType =
+      normalizedTypes.size === 0 ||
+      normalizedTypes.has(itemType) ||
+      normalizedTypes.has(itemTypeLabel);
     const matchesTags =
       tags.length === 0 ||
       tags.every(tag => {
@@ -192,18 +295,26 @@ export function getRefinedItemsList(
       });
     const matchesSearch =
       !normalizedSearch ||
-      item.name.toLowerCase().includes(normalizedSearch) ||
-      item.source.toLowerCase().includes(normalizedSearch) ||
-      item.displayName?.toLowerCase().includes(normalizedSearch);
+      itemName.includes(normalizedSearch) ||
+      itemDisplayName.includes(normalizedSearch) ||
+      itemType.includes(normalizedSearch) ||
+      itemTypeLabel.includes(normalizedSearch);
 
     return matchesRarity && matchesType && matchesTags && matchesSearch;
   });
+
+  if (normalizedSearch) {
+    refinedItems.sort((a, b) => compareItemsBySearchRelevance(a, b, normalizedSearch, orderBy));
+    return refinedItems;
+  }
 
   if (orderBy === 'name') {
     refinedItems.sort((a, b) => a.name.localeCompare(b.name));
   } else {
     refinedItems.sort((a, b) => {
-      const rarityCompare = (a.rarity ?? '').localeCompare(b.rarity ?? '');
+      const rarityRankA = ITEM_RARITY_ORDER[a.rarity?.trim().toLowerCase() ?? 'unknown'] ?? 999;
+      const rarityRankB = ITEM_RARITY_ORDER[b.rarity?.trim().toLowerCase() ?? 'unknown'] ?? 999;
+      const rarityCompare = rarityRankA - rarityRankB;
       if (rarityCompare !== 0) return rarityCompare;
       return a.name.localeCompare(b.name);
     });
@@ -216,6 +327,10 @@ export function getPrettyItemType(type?: string): string {
   switch (type?.toUpperCase()) {
     case '$':
       return 'Treasure';
+    case '$A':
+      return 'Treasure (Art Object)';
+    case '$G':
+      return 'Treasure (Gemstone)';
     case 'A':
       return 'Ammunition';
     case 'AF':
@@ -232,6 +347,8 @@ export function getPrettyItemType(type?: string): string {
       return 'Generic Variant';
     case 'HA':
       return 'Heavy Armor';
+    case 'INS':
+      return 'Instrument';
     case 'LA':
       return 'Light Armor';
     case 'M':
@@ -254,6 +371,12 @@ export function getPrettyItemType(type?: string): string {
       return 'Scroll';
     case 'SCF':
       return 'Spellcasting Focus';
+    case 'SCF-D':
+      return 'Spellcasting Focus (Druid)';
+    case 'SCF-P':
+      return 'Spellcasting Focus (Paladin)';
+    case 'SCF-W':
+      return 'Spellcasting Focus (Wizard)';
     case 'SPC':
       return 'Spelljamming Ship';
     case 'T':
