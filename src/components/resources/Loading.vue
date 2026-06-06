@@ -1,13 +1,13 @@
 <script setup lang="ts">
   import { computed } from 'vue';
   import type { PropType } from 'vue';
+  import loadingDiceGif from '../../assets/loadingDice.gif';
 
   const props = defineProps({
     message: { type: String, default: 'Preparing your adventure...' },
     size: { type: Number, default: 72 },
     variant: { type: String as PropType<'subtle' | 'bold'>, default: 'subtle' },
-    /* @vite-ignore */
-    gif: { type: String, default: new URL('../assets/loadingDice.gif', import.meta.url).href },
+    gif: { type: String, default: loadingDiceGif },
   });
 
   const variantClass = computed(() => (props.variant === 'bold' ? 'bold' : 'subtle'));

@@ -35,4 +35,19 @@ export default defineConfig({
       },
     }),
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return undefined;
+
+          if (id.includes('vue')) return 'vue-vendor';
+          if (id.includes('pinia') || id.includes('vue-router')) return 'app-vendor';
+          if (id.includes('workbox') || id.includes('vite-plugin-pwa')) return 'pwa-vendor';
+
+          return 'vendor';
+        },
+      },
+    },
+  },
 });
