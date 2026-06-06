@@ -155,65 +155,122 @@
             >
           </div>
 
-          <div v-if="stackedInventory.length" class="selected-list">
-            <div v-for="row in stackedInventory" :key="row.key" class="selected-row">
-              <div class="selected-copy-block">
-                <div class="selected-title-row">
-                  <p class="selected-title">
-                    {{ getStackedItemDisplayName(row.item, row.quantity) }}
-                  </p>
-                  <span v-if="row.quantity > 1" class="stack-badge">x{{ row.quantity }}</span>
-                </div>
-                <p class="selected-copy">{{ getItemMeta(row.item) }}</p>
-                <div class="inline-actions inline-actions--inventory">
-                  <button
-                    type="button"
-                    class="btn btn-ghost btn-inline-toggle"
-                    :class="{ 'btn-inline-toggle--active': !!row.item.equipped }"
-                    @click="toggleEquipped(row.indexes[0] ?? -1)"
+          <div class="items-panel-layout">
+            <AccordianHolder
+              header="Carried Items"
+              kicker="Current Loadout"
+              description="Review equipped gear, attuned items, and remove duplicates if needed."
+              :count-label="`${props.character.inventory.length} total`"
+              class="items-panel-accordion"
+            >
+              <template #default>
+                <div v-if="stackedInventory.length" class="selected-list">
+                  <div
+                    v-for="row in stackedInventory"
+                    :key="row.key"
+                    class="selected-row selected-row--item"
                   >
-                    {{ row.item.equipped ? 'Equipped' : 'Equip' }}
-                  </button>
-                  <button
-                    v-if="itemRequiresAttunement(row.item)"
-                    type="button"
-                    class="btn btn-ghost btn-inline-toggle"
-                    :class="{ 'btn-inline-toggle--active': !!row.item.attuned }"
-                    @click="toggleAttuned(row.indexes[0] ?? -1)"
-                  >
-                    {{ row.item.attuned ? 'Attuned' : 'Attune' }}
-                  </button>
+                    <div class="selected-copy-block">
+                      <div class="selected-title-row">
+                        <p class="selected-title">
+                          {{ getStackedItemDisplayName(row.item, row.quantity) }}
+                        </p>
+                        <span v-if="row.quantity > 1" class="stack-badge">x{{ row.quantity }}</span>
+                      </div>
+                      <div class="item-badge-row item-badge-row--compact">
+                        <span
+                          v-for="badge in getItemBadges(row.item)"
+                          :key="`${row.key}-${badge}`"
+                          class="item-badge"
+                        >
+                          {{ badge }}
+                        </span>
+                      </div>
+                      <p v-if="getItemFacts(row.item)" class="selected-copy">
+                        {{ getItemFacts(row.item) }}
+                      </p>
+                      <p class="selected-copy">{{ getItemMeta(row.item) }}</p>
+                      <div class="inline-actions inline-actions--inventory">
+                        <button
+                          type="button"
+                          class="btn btn-ghost btn-inline-toggle"
+                          :class="{ 'btn-inline-toggle--active': !!row.item.equipped }"
+                          @click="toggleEquipped(row.indexes[0] ?? -1)"
+                        >
+                          {{ row.item.equipped ? 'Equipped' : 'Equip' }}
+                        </button>
+                        <button
+                          v-if="itemRequiresAttunement(row.item)"
+                          type="button"
+                          class="btn btn-ghost btn-inline-toggle"
+                          :class="{ 'btn-inline-toggle--active': !!row.item.attuned }"
+                          @click="toggleAttuned(row.indexes[0] ?? -1)"
+                        >
+                          {{ row.item.attuned ? 'Attuned' : 'Attune' }}
+                        </button>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      class="btn btn-danger item-remove-btn"
+                      @click="removeItem(row.indexes[0] ?? -1)"
+                    >
+                      Remove
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <button
-                type="button"
-                class="btn btn-danger"
-                @click="removeItem(row.indexes[0] ?? -1)"
-              >
-                Remove
-              </button>
-            </div>
-          </div>
-          <p v-else class="panel-copy">No items in this inventory yet.</p>
+                <p v-else class="panel-copy">No items in this inventory yet.</p>
+              </template>
+            </AccordianHolder>
 
-          <label class="form-label" for="item-search">Find an item</label>
-          <input
-            id="item-search"
-            v-model="itemSearch"
-            type="search"
-            placeholder="Search items by name or source"
-          />
-
-          <p v-if="isLoadingItems" class="panel-copy">Loading items...</p>
-          <div v-else class="available-list">
-            <div v-for="item in filteredItems" :key="itemKey(item)" class="selected-row">
-              <div>
-                <p class="selected-title">{{ getItemDisplayName(item) }}</p>
-                <p class="selected-copy">{{ getItemMeta(item) }}</p>
+            <section class="items-panel-card items-panel-card--search">
+              <div class="items-panel-card__header items-panel-card__header--stacked">
+                <div>
+                  <p class="items-panel-kicker">Compendium</p>
+                  <h3 class="items-panel-title">Add Items</h3>
+                  <p class="panel-copy">Search by name, rarity, or item type.</p>
+                </div>
+                <span class="items-panel-count">{{ filteredItems.length }} shown</span>
               </div>
-              <button type="button" class="btn btn-primary" @click="addItem(item)">Add</button>
-            </div>
-            <p v-if="!filteredItems.length" class="panel-copy">No matching items available.</p>
+
+              <label class="form-label" for="item-search">Find an item</label>
+              <input
+                id="item-search"
+                v-model="itemSearch"
+                type="search"
+                placeholder="Search weapons, armor, tools, or magic items"
+              />
+
+              <p v-if="isLoadingItems" class="panel-copy">Loading items...</p>
+              <div v-else class="items-results-grid">
+                <article
+                  v-for="item in filteredItems"
+                  :key="itemKey(item)"
+                  class="item-result-card"
+                >
+                  <div class="item-result-card__copy">
+                    <div class="selected-title-row">
+                      <p class="selected-title">{{ getItemDisplayName(item) }}</p>
+                    </div>
+                    <div class="item-badge-row">
+                      <span
+                        v-for="badge in getItemBadges(item)"
+                        :key="`${itemKey(item)}-${badge}`"
+                        class="item-badge"
+                      >
+                        {{ badge }}
+                      </span>
+                    </div>
+                    <p v-if="getItemFacts(item)" class="selected-copy">{{ getItemFacts(item) }}</p>
+                    <p class="selected-copy">{{ getItemMeta(item) }}</p>
+                  </div>
+                  <button type="button" class="btn btn-primary item-add-btn" @click="addItem(item)">
+                    Add Item
+                  </button>
+                </article>
+                <p v-if="!filteredItems.length" class="panel-copy">No matching items available.</p>
+              </div>
+            </section>
           </div>
         </div>
       </div>
@@ -224,7 +281,10 @@
 <script lang="ts" setup>
   import { computed, ref, onMounted, watch, nextTick } from 'vue';
   import {
-    getPrettyItemType,
+    getInventoryItemBadges,
+    getInventoryItemDisplayName,
+    getInventoryItemFacts,
+    getRefinedItemsList,
     itemRequiresAttunement,
     stackInventoryItems,
   } from '../../../../helperFunctions';
@@ -241,6 +301,7 @@
 
   import editIcon from '../../../../assets/icons/editIcon.svg';
 
+  import AccordianHolder from '../../../AccordianHolder.vue';
   import PopOut from '../../../PopOut.vue';
 
   const LANGUAGE_KEYS = [
@@ -312,17 +373,14 @@
   });
 
   const filteredItems = computed(() => {
-    const query = itemSearch.value.trim().toLowerCase();
-
-    return [...((dataStore.filteredItems || []) as Item[])]
-      .filter(item => {
-        if (!query) return true;
-        return [item.name, item.displayName, item.source]
-          .filter((value): value is string => Boolean(value))
-          .some(value => value.toLowerCase().includes(query));
-      })
-      .sort((left, right) => getItemDisplayName(left).localeCompare(getItemDisplayName(right)))
-      .slice(0, 24);
+    return getRefinedItemsList(
+      (dataStore.filteredItems || []) as Item[],
+      [],
+      [],
+      [],
+      'name',
+      itemSearch.value.trim()
+    ).slice(0, 24);
   });
 
   const stackedInventory = computed(() => stackInventoryItems(props.character.inventory));
@@ -393,7 +451,7 @@
   }
 
   function getItemDisplayName(item: Item): string {
-    return item.displayName || item.name;
+    return getInventoryItemDisplayName(item);
   }
 
   function getStackedItemDisplayName(item: Item, quantity: number): string {
@@ -402,12 +460,15 @@
   }
 
   function getItemMeta(item: Item): string {
-    const parts = [
-      item.source || 'Unknown source',
-      item.rarity,
-      item.type ? getPrettyItemType(item.type) : undefined,
-    ].filter((value): value is string => Boolean(value));
-    return parts.join(' • ');
+    return item.source || 'Unknown source';
+  }
+
+  function getItemBadges(item: Item): string[] {
+    return getInventoryItemBadges(item);
+  }
+
+  function getItemFacts(item: Item): string {
+    return getInventoryItemFacts(item).join(' • ');
   }
 
   function openEditPopout() {
@@ -684,6 +745,51 @@
     flex-wrap: wrap;
   }
 
+  .items-panel-layout {
+    display: grid;
+    gap: 0.85rem;
+  }
+
+  .items-panel-card {
+    display: grid;
+    gap: 0.8rem;
+    padding: 0.85rem;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.46);
+    border: 1px solid rgba(107, 46, 46, 0.08);
+  }
+
+  .items-panel-card__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .items-panel-card__header--stacked {
+    align-items: stretch;
+  }
+
+  .items-panel-accordion {
+    border-radius: 14px;
+  }
+
+  .items-panel-kicker,
+  .items-panel-count {
+    margin: 0;
+    font-size: 0.76rem;
+    color: var(--color-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .items-panel-title {
+    margin: 0.1rem 0 0;
+    font-size: 1.02rem;
+    color: var(--color-text);
+  }
+
   .selected-list,
   .available-list {
     display: flex;
@@ -693,13 +799,17 @@
 
   .selected-row {
     display: flex;
-    justify-content: space-between;
     gap: 0.8rem;
-    align-items: center;
+    align-items: flex-start;
     padding: 0.7rem 0.8rem;
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.5);
     border: 1px solid rgba(107, 46, 46, 0.08);
+    flex-direction: column;
+  }
+
+  .selected-row--item {
+    justify-content: space-between;
   }
 
   .selected-title,
@@ -710,6 +820,7 @@
   .selected-copy-block {
     display: grid;
     gap: 0.35rem;
+    width: 100%;
   }
 
   .selected-title-row {
@@ -733,6 +844,26 @@
     gap: 0.45rem;
   }
 
+  .item-badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .item-badge-row--compact {
+    gap: 0.3rem;
+  }
+
+  .item-badge {
+    padding: 0.14rem 0.48rem;
+    border-radius: 999px;
+    background: rgba(107, 46, 46, 0.08);
+    border: 1px solid rgba(107, 46, 46, 0.1);
+    color: var(--color-primary);
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
   .btn-inline-toggle {
     min-width: 0;
   }
@@ -741,6 +872,31 @@
     background: rgba(201, 164, 75, 0.18);
     border-color: rgba(201, 164, 75, 0.45);
     color: var(--color-primary);
+  }
+
+  .item-remove-btn,
+  .item-add-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .items-results-grid {
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .item-result-card {
+    display: grid;
+    gap: 0.7rem;
+    padding: 0.8rem;
+    border-radius: 12px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(201, 164, 75, 0.08));
+    border: 1px solid rgba(107, 46, 46, 0.08);
+  }
+
+  .item-result-card__copy {
+    display: grid;
+    gap: 0.4rem;
   }
 
   .language-table {
@@ -783,6 +939,32 @@
     .language-row {
       grid-template-columns: minmax(0, 1.4fr) repeat(3, 0.7fr);
       font-size: 0.8rem;
+    }
+  }
+
+  @media (min-width: 720px) {
+    .items-panel-layout {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      align-items: start;
+    }
+
+    .selected-row {
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .item-remove-btn {
+      width: auto;
+    }
+
+    .item-result-card {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+    }
+
+    .item-add-btn {
+      width: auto;
+      min-width: 7rem;
     }
   }
 </style>

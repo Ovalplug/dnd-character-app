@@ -40,7 +40,9 @@
             <article v-for="row in section.rows" :key="row.key" class="inventory-row">
               <div class="inventory-copy">
                 <div class="inventory-name-row">
-                  <p class="inventory-name">{{ getStackedItemDisplayName(row.item, row.quantity) }}</p>
+                  <p class="inventory-name">
+                    {{ getStackedItemDisplayName(row.item, row.quantity) }}
+                  </p>
                   <span v-if="row.quantity > 1" class="stack-badge">x{{ row.quantity }}</span>
                   <button
                     type="button"
@@ -53,12 +55,18 @@
                 </div>
 
                 <div class="inventory-badge-row">
-                  <span v-for="badge in getItemBadges(row.item)" :key="`${row.key}-${badge}`" class="inventory-badge">
+                  <span
+                    v-for="badge in getItemBadges(row.item)"
+                    :key="`${row.key}-${badge}`"
+                    class="inventory-badge"
+                  >
                     {{ badge }}
                   </span>
                 </div>
 
-                <p v-if="getItemFacts(row.item)" class="inventory-facts">{{ getItemFacts(row.item) }}</p>
+                <p v-if="getItemFacts(row.item)" class="inventory-facts">
+                  {{ getItemFacts(row.item) }}
+                </p>
                 <p class="inventory-source">{{ getItemSource(row.item) }}</p>
               </div>
               <div class="inventory-actions">
@@ -129,10 +137,16 @@
   const charStore = useCharacterStore();
   const selectedItem = ref<Item | null>(null);
   const stackedInventory = computed(() => stackInventoryItems(props.character.inventory));
-  const totalEquipped = computed(() => countRows(stackedInventory.value, row => !!row.item.equipped));
+  const totalEquipped = computed(() =>
+    countRows(stackedInventory.value, row => !!row.item.equipped)
+  );
   const totalAttuned = computed(() => countRows(stackedInventory.value, row => !!row.item.attuned));
-  const totalWeapons = computed(() => countRows(stackedInventory.value, row => isWeaponItem(row.item)));
-  const totalArmor = computed(() => countRows(stackedInventory.value, row => isArmorItem(row.item)));
+  const totalWeapons = computed(() =>
+    countRows(stackedInventory.value, row => isWeaponItem(row.item))
+  );
+  const totalArmor = computed(() =>
+    countRows(stackedInventory.value, row => isArmorItem(row.item))
+  );
 
   const inventorySummary = computed(() => [
     { label: 'Equipped', value: totalEquipped.value },

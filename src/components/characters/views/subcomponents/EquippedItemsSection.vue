@@ -30,7 +30,11 @@
             <div class="gear-row__copy">
               <p class="gear-row__name">{{ getDisplayName(row.item, row.quantity) }}</p>
               <div class="gear-row__badges">
-                <span v-for="badge in getBadges(row.item)" :key="`${row.key}-${badge}`" class="gear-badge">
+                <span
+                  v-for="badge in getBadges(row.item)"
+                  :key="`${row.key}-${badge}`"
+                  class="gear-badge"
+                >
                   {{ badge }}
                 </span>
               </div>
@@ -111,7 +115,10 @@
     { label: 'Equipped', value: countRows(stackedInventory.value, row => !!row.item.equipped) },
     {
       label: 'Weapons',
-      value: countRows(stackedInventory.value, row => isWeaponItem(row.item) && !!row.item.equipped),
+      value: countRows(
+        stackedInventory.value,
+        row => isWeaponItem(row.item) && !!row.item.equipped
+      ),
     },
     {
       label: 'Defense',
