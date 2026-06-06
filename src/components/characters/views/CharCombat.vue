@@ -14,6 +14,9 @@
     <!-- ── Saving Throws ──────────────────────────────────────────── -->
     <SavingThrows :character="character" />
 
+    <!-- ── Equipped Gear ──────────────────────────────────────────── -->
+    <EquippedItemsSection :character="character" />
+
     <!-- ── Attacks ────────────────────────────────────────────────── -->
     <AttacksTable :character="character" />
 
@@ -33,6 +36,7 @@
   import OtherInfo from './subcomponents/OtherInfo.vue';
   import AbilityTable from './subcomponents/AbilityTable.vue';
   import SavingThrows from './subcomponents/SavingThrows.vue';
+  import EquippedItemsSection from './subcomponents/EquippedItemsSection.vue';
   import AttacksTable from './subcomponents/AttacksTable.vue';
   import ActionsReference from './subcomponents/ActionsReference.vue';
   import CombatSpellcasting from './subcomponents/CombatSpellcasting.vue';
@@ -42,6 +46,7 @@
     character: playerCharacter;
   }>();
 
+  const character = computed(() => props.character);
   const spellInfo = computed(() => computeCharSpellcasting(props.character));
 </script>
 

@@ -76,9 +76,7 @@ function getSearchFieldScore(value: string | undefined, query: string): ItemSear
     return { bucket: 1, position: 0, length: normalizedValue.length };
   }
 
-  const wordStartIndex = normalizedValue
-    .split(' ')
-    .findIndex(part => part.startsWith(query));
+  const wordStartIndex = normalizedValue.split(' ').findIndex(part => part.startsWith(query));
   if (wordStartIndex !== -1) {
     return { bucket: 2, position: wordStartIndex, length: normalizedValue.length };
   }
@@ -116,9 +114,11 @@ function compareItemsBySearchRelevance(
   if (nameCompare !== 0) return nameCompare;
 
   const leftTypeScore =
-    getSearchFieldScore(getPrettyItemType(left.type), query) ?? getSearchFieldScore(left.type, query);
+    getSearchFieldScore(getPrettyItemType(left.type), query) ??
+    getSearchFieldScore(left.type, query);
   const rightTypeScore =
-    getSearchFieldScore(getPrettyItemType(right.type), query) ?? getSearchFieldScore(right.type, query);
+    getSearchFieldScore(getPrettyItemType(right.type), query) ??
+    getSearchFieldScore(right.type, query);
   const typeCompare = compareSearchScores(leftTypeScore, rightTypeScore);
   if (typeCompare !== 0) return typeCompare;
 
@@ -394,6 +394,85 @@ export function getPrettyItemType(type?: string): string {
 
 export function itemRequiresAttunement(item: Item): boolean {
   return item.reqAttune !== undefined && item.reqAttune !== false;
+}
+
+function titleCaseLabel(value: string): string {
+  return value.replace(/\b\w/g, letter => letter.toUpperCase());
+}
+
+export function getInventoryItemDisplayName(item: Item): string {
+  return item.displayName || item.name;
+}
+
+export function isWeaponItem(item: Item): boolean {
+  return item.weapon === true || item.type === 'M' || item.type === 'R';
+}
+
+export function isShieldItem(item: Item): boolean {
+  return item.type === 'S';
+}
+
+export function isArmorItem(item: Item): boolean {
+  return (
+    item.armor === true ||
+    item.type === 'LA' ||
+    item.type === 'MA' ||
+    item.type === 'HA' ||
+    isShieldItem(item)
+  );
+}
+
+export function getInventoryItemCategory(item: Item): string {
+  if (isShieldItem(item)) return 'Shield';
+  if (isWeaponItem(item)) return item.type === 'R' ? 'Ranged Weapon' : 'Weapon';
+  if (item.wondrous) return 'Wondrous Item';
+  if (item.tattoo) return 'Magical Tattoo';
+  return getPrettyItemType(item.type);
+}
+
+export function getInventoryItemBadges(item: Item): string[] {
+  const badges = [getInventoryItemCategory(item)];
+
+  if (typeof item.rarity === 'string' && item.rarity.trim()) {
+    badges.push(titleCaseLabel(item.rarity.trim()));
+  }
+
+  if (item.equipped) badges.push('Equipped');
+  if (item.attuned) badges.push('Attuned');
+  else if (itemRequiresAttunement(item)) badges.push('Requires Attunement');
+
+  return badges;
+}
+
+export function getInventoryItemFacts(item: Item): string[] {
+  const facts: string[] = [];
+
+  if (item.weaponCategory && isWeaponItem(item)) {
+    facts.push(item.weaponCategory);
+  }
+
+  if (item.ac !== undefined && item.ac !== '') {
+    facts.push(`AC ${item.ac}`);
+  }
+
+  if (typeof item.dmg1 === 'string' && item.dmg1) {
+    const damage = item.dmg2 ? `${item.dmg1} / ${item.dmg2}` : item.dmg1;
+    facts.push(`Damage ${damage}`);
+  }
+
+  if (typeof item.range === 'string' && item.range.trim()) {
+    facts.push(`Range ${item.range}`);
+  }
+
+  if (typeof item.weight === 'number' && item.weight > 0) {
+    facts.push(`${item.weight} lb${item.weight === 1 ? '' : 's'}`);
+  }
+
+  if (typeof item.charges === 'number' && item.charges > 0) {
+    facts.push(`${item.charges} charge${item.charges === 1 ? '' : 's'}`);
+  }
+
+  return facts;
 }
 
 export function stackInventoryItems(items: Items): InventoryStackRow[] {

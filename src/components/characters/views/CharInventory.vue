@@ -17,43 +17,74 @@
         <span class="inventory-count">{{ props.character.inventory.length }} total</span>
       </div>
 
-      <div v-if="stackedInventory.length" class="inventory-list">
-        <article v-for="row in stackedInventory" :key="row.key" class="inventory-row">
-          <div class="inventory-copy">
-            <div class="inventory-name-row">
-              <p class="inventory-name">{{ getStackedItemDisplayName(row.item, row.quantity) }}</p>
-              <span v-if="row.quantity > 1" class="stack-badge">x{{ row.quantity }}</span>
-              <button
-                type="button"
-                class="inventory-info-button"
-                :aria-label="`View details for ${row.item.displayName || row.item.name}`"
-                @click="openItemDetails(row.item)"
-              >
-                <img :src="questionIcon" alt="" />
-              </button>
-            </div>
-            <p class="inventory-meta">{{ getItemMeta(row.item) }}</p>
-          </div>
-          <div class="inventory-actions">
-            <button
-              type="button"
-              class="inventory-toggle"
-              :class="{ 'inventory-toggle--active': !!row.item.equipped }"
-              @click="toggleEquipped(row.indexes[0] ?? -1)"
-            >
-              {{ row.item.equipped ? 'Equipped' : 'Equip' }}
-            </button>
-            <button
-              v-if="itemRequiresAttunement(row.item)"
-              type="button"
-              class="inventory-toggle"
-              :class="{ 'inventory-toggle--active': !!row.item.attuned }"
-              @click="toggleAttuned(row.indexes[0] ?? -1)"
-            >
-              {{ row.item.attuned ? 'Attuned' : 'Attune' }}
-            </button>
-          </div>
+      <div v-if="stackedInventory.length" class="inventory-summary">
+        <article v-for="stat in inventorySummary" :key="stat.label" class="inventory-summary-card">
+          <span class="inventory-summary-label">{{ stat.label }}</span>
+          <strong class="inventory-summary-value">{{ stat.value }}</strong>
         </article>
+      </div>
+
+      <div v-if="stackedInventory.length" class="inventory-sections">
+        <section v-for="section in inventorySections" :key="section.key" class="inventory-section">
+          <div class="inventory-section-header">
+            <div>
+              <h4 class="inventory-section-title">{{ section.title }}</h4>
+              <p class="inventory-section-description">{{ section.description }}</p>
+            </div>
+            <span class="inventory-section-count">
+              {{ section.rows.reduce((total, row) => total + row.quantity, 0) }} item(s)
+            </span>
+          </div>
+
+          <div v-if="section.rows.length" class="inventory-list">
+            <article v-for="row in section.rows" :key="row.key" class="inventory-row">
+              <div class="inventory-copy">
+                <div class="inventory-name-row">
+                  <p class="inventory-name">{{ getStackedItemDisplayName(row.item, row.quantity) }}</p>
+                  <span v-if="row.quantity > 1" class="stack-badge">x{{ row.quantity }}</span>
+                  <button
+                    type="button"
+                    class="inventory-info-button"
+                    :aria-label="`View details for ${row.item.displayName || row.item.name}`"
+                    @click="openItemDetails(row.item)"
+                  >
+                    <img :src="questionIcon" alt="" />
+                  </button>
+                </div>
+
+                <div class="inventory-badge-row">
+                  <span v-for="badge in getItemBadges(row.item)" :key="`${row.key}-${badge}`" class="inventory-badge">
+                    {{ badge }}
+                  </span>
+                </div>
+
+                <p v-if="getItemFacts(row.item)" class="inventory-facts">{{ getItemFacts(row.item) }}</p>
+                <p class="inventory-source">{{ getItemSource(row.item) }}</p>
+              </div>
+              <div class="inventory-actions">
+                <button
+                  type="button"
+                  class="inventory-toggle"
+                  :class="{ 'inventory-toggle--active': !!row.item.equipped }"
+                  @click="toggleEquipped(row.indexes[0] ?? -1)"
+                >
+                  {{ row.item.equipped ? 'Equipped' : 'Equip' }}
+                </button>
+                <button
+                  v-if="itemRequiresAttunement(row.item)"
+                  type="button"
+                  class="inventory-toggle"
+                  :class="{ 'inventory-toggle--active': !!row.item.attuned }"
+                  @click="toggleAttuned(row.indexes[0] ?? -1)"
+                >
+                  {{ row.item.attuned ? 'Attuned' : 'Attune' }}
+                </button>
+              </div>
+            </article>
+          </div>
+
+          <p v-else class="inventory-empty">{{ section.emptyText }}</p>
+        </section>
       </div>
 
       <p v-else class="inventory-empty">
@@ -75,10 +106,15 @@
   import { computed, ref } from 'vue';
   import questionIcon from '../../../assets/icons/question.svg';
   import {
-    getPrettyItemType,
+    getInventoryItemBadges,
+    getInventoryItemDisplayName,
+    getInventoryItemFacts,
+    isArmorItem,
+    isWeaponItem,
     itemRequiresAttunement,
     stackInventoryItems,
   } from '../../../helperFunctions';
+  import type { InventoryStackRow } from '../../../helperFunctions';
   import PopOut from '../../PopOut.vue';
   import SingleItem from '../../resources/SingleItem.vue';
   import { useCharacterStore } from '../../../stores/characterStore';
@@ -93,21 +129,72 @@
   const charStore = useCharacterStore();
   const selectedItem = ref<Item | null>(null);
   const stackedInventory = computed(() => stackInventoryItems(props.character.inventory));
+  const totalEquipped = computed(() => countRows(stackedInventory.value, row => !!row.item.equipped));
+  const totalAttuned = computed(() => countRows(stackedInventory.value, row => !!row.item.attuned));
+  const totalWeapons = computed(() => countRows(stackedInventory.value, row => isWeaponItem(row.item)));
+  const totalArmor = computed(() => countRows(stackedInventory.value, row => isArmorItem(row.item)));
+
+  const inventorySummary = computed(() => [
+    { label: 'Equipped', value: totalEquipped.value },
+    { label: 'Attuned', value: totalAttuned.value },
+    { label: 'Weapons', value: totalWeapons.value },
+    { label: 'Armor', value: totalArmor.value },
+  ]);
+
+  const equippedRows = computed(() => stackedInventory.value.filter(row => row.item.equipped));
+  const attunedRows = computed(() =>
+    stackedInventory.value.filter(row => row.item.attuned && !row.item.equipped)
+  );
+  const carriedRows = computed(() =>
+    stackedInventory.value.filter(row => !row.item.equipped && !row.item.attuned)
+  );
+
+  const inventorySections = computed(() => [
+    {
+      key: 'equipped',
+      title: 'Equipped Now',
+      description: 'Active weapons, armor, shields, and worn gear.',
+      rows: equippedRows.value,
+      emptyText: 'Nothing is marked equipped yet.',
+    },
+    {
+      key: 'attuned',
+      title: 'Attuned Items',
+      description: 'Magic items that are currently bonded but not marked equipped.',
+      rows: attunedRows.value,
+      emptyText: 'No extra attuned items are active.',
+    },
+    {
+      key: 'carried',
+      title: 'Pack and Pockets',
+      description: 'Everything else the character is carrying.',
+      rows: carriedRows.value,
+      emptyText: 'The pack is empty.',
+    },
+  ]);
 
   function getStackedItemDisplayName(item: Item, quantity: number): string {
-    if (quantity <= 1) return item.displayName || item.name;
-    return `${quantity} x ${item.displayName || item.name}`;
+    if (quantity <= 1) return getInventoryItemDisplayName(item);
+    return `${quantity} x ${getInventoryItemDisplayName(item)}`;
   }
 
-  function getItemMeta(item: Item): string {
-    const parts = [
-      item.source || 'Unknown source',
-      item.rarity,
-      item.type ? getPrettyItemType(item.type) : undefined,
-      item.equipped ? 'Equipped' : undefined,
-      item.attuned ? 'Attuned' : undefined,
-    ].filter((value): value is string => Boolean(value));
-    return parts.join(' • ');
+  function getItemBadges(item: Item): string[] {
+    return getInventoryItemBadges(item);
+  }
+
+  function getItemFacts(item: Item): string {
+    return getInventoryItemFacts(item).join(' • ');
+  }
+
+  function getItemSource(item: Item): string {
+    return item.source || 'Unknown source';
+  }
+
+  function countRows(
+    rows: InventoryStackRow[],
+    predicate: (row: InventoryStackRow) => boolean
+  ): number {
+    return rows.reduce((total, row) => total + (predicate(row) ? row.quantity : 0), 0);
   }
 
   async function toggleEquipped(index: number) {
@@ -135,7 +222,7 @@
 
   .inventory-card {
     display: grid;
-    gap: 0.9rem;
+    gap: 1rem;
     padding: 1rem;
     border-radius: 16px;
     background: rgba(255, 255, 255, 0.72);
@@ -170,6 +257,65 @@
     gap: 0.65rem;
   }
 
+  .inventory-summary {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.65rem;
+  }
+
+  .inventory-summary-card {
+    display: grid;
+    gap: 0.2rem;
+    padding: 0.75rem 0.8rem;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.58);
+    border: 1px solid rgba(107, 46, 46, 0.08);
+  }
+
+  .inventory-summary-label {
+    color: var(--color-muted);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .inventory-summary-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .inventory-sections {
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .inventory-section {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .inventory-section-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .inventory-section-title {
+    margin: 0;
+  }
+
+  .inventory-section-description,
+  .inventory-section-count,
+  .inventory-source,
+  .inventory-facts {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 0.85rem;
+  }
+
   .inventory-row {
     display: flex;
     justify-content: space-between;
@@ -184,7 +330,9 @@
 
   .inventory-copy {
     display: grid;
-    gap: 0.3rem;
+    gap: 0.45rem;
+    flex: 1;
+    min-width: 0;
   }
 
   .inventory-name-row {
@@ -234,6 +382,22 @@
     height: 1rem;
   }
 
+  .inventory-badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .inventory-badge {
+    padding: 0.14rem 0.5rem;
+    border-radius: 999px;
+    background: rgba(107, 46, 46, 0.08);
+    border: 1px solid rgba(107, 46, 46, 0.1);
+    color: var(--color-primary);
+    font-size: 0.76rem;
+    font-weight: 700;
+  }
+
   .inventory-actions {
     display: flex;
     gap: 0.5rem;
@@ -254,5 +418,11 @@
     background: rgba(201, 164, 75, 0.18);
     border-color: rgba(201, 164, 75, 0.45);
     color: var(--color-primary);
+  }
+
+  @media (max-width: 720px) {
+    .inventory-summary {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 </style>

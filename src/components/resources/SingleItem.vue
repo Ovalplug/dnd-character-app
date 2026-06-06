@@ -150,7 +150,10 @@
       fields.push({ label: 'Damage', value: damage });
     }
     if (item.dmgType) {
-      fields.push({ label: 'Damage Type', value: DAMAGE_TYPE_LABELS[item.dmgType] ?? item.dmgType });
+      fields.push({
+        label: 'Damage Type',
+        value: DAMAGE_TYPE_LABELS[item.dmgType] ?? item.dmgType,
+      });
     }
 
     const propertyText = getPropertyText(item.property);
