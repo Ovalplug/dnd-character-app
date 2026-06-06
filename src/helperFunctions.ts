@@ -357,10 +357,7 @@ export function getFeatAbilityFilters(feat: Feat): SavingThrow[] {
     }
 
     Object.entries(bonus).forEach(([ability, value]) => {
-      if (
-        typeof value === 'number' &&
-        FEAT_ABILITY_FILTERS.includes(ability as SavingThrow)
-      ) {
+      if (typeof value === 'number' && FEAT_ABILITY_FILTERS.includes(ability as SavingThrow)) {
         abilities.add(ability as SavingThrow);
       }
     });
@@ -468,7 +465,11 @@ function entryMentionsLearningSpells(entry: Entry): boolean {
     return true;
   }
 
-  if ('items' in entry && Array.isArray(entry.items) && entry.items.some(entryMentionsLearningSpells)) {
+  if (
+    'items' in entry &&
+    Array.isArray(entry.items) &&
+    entry.items.some(entryMentionsLearningSpells)
+  ) {
     return true;
   }
 
@@ -480,8 +481,10 @@ function entryMentionsLearningSpells(entry: Entry): boolean {
 }
 
 export function getFeatSpellTags(feat: Feat): FeatSpellTag[] {
-  const hasAdditionalSpells = Array.isArray(feat.additionalSpells) && feat.additionalSpells.length > 0;
-  const mentionsLearningSpells = Array.isArray(feat.entries) && feat.entries.some(entryMentionsLearningSpells);
+  const hasAdditionalSpells =
+    Array.isArray(feat.additionalSpells) && feat.additionalSpells.length > 0;
+  const mentionsLearningSpells =
+    Array.isArray(feat.entries) && feat.entries.some(entryMentionsLearningSpells);
 
   if (hasAdditionalSpells || mentionsLearningSpells) {
     return ['grants-spells'];
@@ -569,8 +572,7 @@ export function getRefinedFeatsList(
     const featSpellTags = getFeatSpellTags(feat);
     const matchesSource = normalizedSources.size === 0 || normalizedSources.has(featSource);
     const matchesAbility =
-      selectedAbilities.size === 0 ||
-      featAbilities.some(ability => selectedAbilities.has(ability));
+      selectedAbilities.size === 0 || featAbilities.some(ability => selectedAbilities.has(ability));
     const matchesPrerequisite =
       selectedPrerequisites.size === 0 ||
       featPrerequisites.some(tag => selectedPrerequisites.has(tag));
@@ -590,11 +592,7 @@ export function getRefinedFeatsList(
       !normalizedSearch || normalizeSearchFragment(searchableText).includes(normalizedSearch);
 
     return (
-      matchesSource &&
-      matchesAbility &&
-      matchesPrerequisite &&
-      matchesSpellTag &&
-      matchesSearch
+      matchesSource && matchesAbility && matchesPrerequisite && matchesSpellTag && matchesSearch
     );
   });
 

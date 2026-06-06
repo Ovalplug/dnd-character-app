@@ -150,7 +150,9 @@
 
   const allPrerequisiteTags = computed(() =>
     Array.from(new Set(props.feats.flatMap(feat => getFeatPrerequisiteTags(feat))))
-      .sort((a, b) => getPrettyFeatPrerequisiteTag(a).localeCompare(getPrettyFeatPrerequisiteTag(b)))
+      .sort((a, b) =>
+        getPrettyFeatPrerequisiteTag(a).localeCompare(getPrettyFeatPrerequisiteTag(b))
+      )
       .map(tag => ({ value: tag, label: getPrettyFeatPrerequisiteTag(tag) }))
   );
 
