@@ -23,11 +23,28 @@ import type {
   SpellcastingInfo,
   SpellcastingCastingMode,
   playerCharacter,
+  Entry,
   Item,
   Items,
 } from './types';
 import { SKILL_NAME_MAP, SAVING_THROW_MAP } from './constants';
 export type ItemFilterTag = 'attunement' | 'wondrous' | 'tattoo' | 'vehicle';
+export type FeatPrerequisiteTag =
+  | 'ability'
+  | 'background'
+  | 'class'
+  | 'feat'
+  | 'invocation'
+  | 'item'
+  | 'level'
+  | 'pact'
+  | 'proficiency'
+  | 'psionics'
+  | 'race'
+  | 'special'
+  | 'spell'
+  | 'spellcasting';
+export type FeatSpellTag = 'grants-spells';
 
 const ITEM_RARITY_ORDER: Record<string, number> = {
   none: 0,
@@ -321,6 +338,282 @@ export function getRefinedItemsList(
   }
 
   return refinedItems;
+}
+
+const FEAT_ABILITY_FILTERS: SavingThrow[] = ['str', 'dex', 'con', 'int', 'wis', 'cha'];
+
+export function getFeatAbilityFilters(feat: Feat): SavingThrow[] {
+  if (!feat.ability) return [];
+
+  const bonuses = Array.isArray(feat.ability) ? feat.ability : [feat.ability];
+  const abilities = new Set<SavingThrow>();
+
+  bonuses.forEach(bonus => {
+    if ('choose' in bonus) {
+      bonus.choose.from.forEach(ability => {
+        if (FEAT_ABILITY_FILTERS.includes(ability)) abilities.add(ability);
+      });
+      return;
+    }
+
+    Object.entries(bonus).forEach(([ability, value]) => {
+      if (
+        typeof value === 'number' &&
+        FEAT_ABILITY_FILTERS.includes(ability as SavingThrow)
+      ) {
+        abilities.add(ability as SavingThrow);
+      }
+    });
+  });
+
+  return Array.from(abilities);
+}
+
+export function getFeatPrerequisiteTags(feat: Feat): FeatPrerequisiteTag[] {
+  const prerequisites = feat.prerequisite ?? [];
+  const tags = new Set<FeatPrerequisiteTag>();
+
+  prerequisites.forEach(prerequisite => {
+    if (typeof prerequisite === 'string') {
+      tags.add('special');
+      return;
+    }
+
+    if ('ability' in prerequisite) tags.add('ability');
+    if ('background' in prerequisite) tags.add('background');
+    if ('class' in prerequisite) tags.add('class');
+    if ('feat' in prerequisite) tags.add('feat');
+    if ('invocation' in prerequisite) tags.add('invocation');
+    if ('level' in prerequisite) tags.add('level');
+    if ('proficiency' in prerequisite) tags.add('proficiency');
+    if ('psionics' in prerequisite) tags.add('psionics');
+    if ('race' in prerequisite) tags.add('race');
+    if ('spell' in prerequisite) tags.add('spell');
+    if ('spellcasting' in prerequisite || 'spellcasting2020' in prerequisite) {
+      tags.add('spellcasting');
+    }
+
+    switch (prerequisite.type) {
+      case 'prereqItem':
+        tags.add('item');
+        break;
+      case 'prereqLevel':
+        tags.add('level');
+        if (prerequisite.class) tags.add('class');
+        break;
+      case 'prereqPact':
+        tags.add('pact');
+        break;
+      case 'prereqSpecial':
+        tags.add('special');
+        break;
+      case 'prereqSpell':
+        tags.add('spell');
+        break;
+      default:
+        break;
+    }
+  });
+
+  return Array.from(tags);
+}
+
+export function getPrettyFeatPrerequisiteTag(tag: FeatPrerequisiteTag): string {
+  switch (tag) {
+    case 'ability':
+      return 'Ability';
+    case 'background':
+      return 'Background';
+    case 'class':
+      return 'Class';
+    case 'feat':
+      return 'Feat';
+    case 'invocation':
+      return 'Invocation';
+    case 'item':
+      return 'Item';
+    case 'level':
+      return 'Level';
+    case 'pact':
+      return 'Pact';
+    case 'proficiency':
+      return 'Proficiency';
+    case 'psionics':
+      return 'Psionics';
+    case 'race':
+      return 'Race';
+    case 'special':
+      return 'Special';
+    case 'spell':
+      return 'Spell';
+    case 'spellcasting':
+      return 'Spellcasting';
+    default:
+      return tag;
+  }
+}
+
+function entryMentionsLearningSpells(entry: Entry): boolean {
+  if (typeof entry === 'string') {
+    const normalized = normalizeSearchFragment(entry);
+
+    return (
+      /\blearn\b.*\bspell(s)?\b/.test(normalized) ||
+      /\byou know\b.*\bspell(s)?\b/.test(normalized) ||
+      /\bcan cast\b.*\bspell(s)?\b/.test(normalized)
+    );
+  }
+
+  if (Array.isArray(entry.entries) && entry.entries.some(entryMentionsLearningSpells)) {
+    return true;
+  }
+
+  if ('items' in entry && Array.isArray(entry.items) && entry.items.some(entryMentionsLearningSpells)) {
+    return true;
+  }
+
+  if (entry.type === 'item' && entry.entry) {
+    return entryMentionsLearningSpells(entry.entry);
+  }
+
+  return false;
+}
+
+export function getFeatSpellTags(feat: Feat): FeatSpellTag[] {
+  const hasAdditionalSpells = Array.isArray(feat.additionalSpells) && feat.additionalSpells.length > 0;
+  const mentionsLearningSpells = Array.isArray(feat.entries) && feat.entries.some(entryMentionsLearningSpells);
+
+  if (hasAdditionalSpells || mentionsLearningSpells) {
+    return ['grants-spells'];
+  }
+
+  return [];
+}
+
+export function getPrettyFeatSpellTag(tag: FeatSpellTag): string {
+  switch (tag) {
+    case 'grants-spells':
+      return 'Grants Spells';
+    default:
+      return tag;
+  }
+}
+
+function compareFeatsBySearchRelevance(
+  left: Feat,
+  right: Feat,
+  query: string,
+  orderBy: 'name' | 'source'
+): number {
+  const leftNameScore = getSearchFieldScore(left.name, query);
+  const rightNameScore = getSearchFieldScore(right.name, query);
+  const nameCompare = compareSearchScores(leftNameScore, rightNameScore);
+  if (nameCompare !== 0) return nameCompare;
+
+  const leftSourceScore = getSearchFieldScore(left.source, query);
+  const rightSourceScore = getSearchFieldScore(right.source, query);
+  const sourceCompare = compareSearchScores(leftSourceScore, rightSourceScore);
+  if (sourceCompare !== 0) return sourceCompare;
+
+  const leftAbilityScore = compareSearchScores(
+    getSearchFieldScore(getFeatAbilityFilters(left).map(getPrettyAbilityName).join(' '), query),
+    getSearchFieldScore(getFeatAbilityFilters(right).map(getPrettyAbilityName).join(' '), query)
+  );
+  if (leftAbilityScore !== 0) return leftAbilityScore;
+
+  const leftPrereqScore = compareSearchScores(
+    getSearchFieldScore(
+      getFeatPrerequisiteTags(left).map(getPrettyFeatPrerequisiteTag).join(' '),
+      query
+    ),
+    getSearchFieldScore(
+      getFeatPrerequisiteTags(right).map(getPrettyFeatPrerequisiteTag).join(' '),
+      query
+    )
+  );
+  if (leftPrereqScore !== 0) return leftPrereqScore;
+
+  const spellTagCompare = compareSearchScores(
+    getSearchFieldScore(getFeatSpellTags(left).map(getPrettyFeatSpellTag).join(' '), query),
+    getSearchFieldScore(getFeatSpellTags(right).map(getPrettyFeatSpellTag).join(' '), query)
+  );
+  if (spellTagCompare !== 0) return spellTagCompare;
+
+  if (orderBy === 'source') {
+    const sourceOrder = (left.source ?? '').localeCompare(right.source ?? '');
+    if (sourceOrder !== 0) return sourceOrder;
+  }
+
+  return left.name.localeCompare(right.name);
+}
+
+export function getRefinedFeatsList(
+  feats: Feat[],
+  sources: string[],
+  abilities: SavingThrow[],
+  prerequisiteTags: FeatPrerequisiteTag[],
+  spellTags: FeatSpellTag[],
+  orderBy: 'name' | 'source' = 'name',
+  searchVal?: string
+): Feat[] {
+  const normalizedSearch = searchVal ? normalizeSearchFragment(searchVal) : undefined;
+  const normalizedSources = new Set(sources.map(source => source.trim().toLowerCase()));
+  const selectedAbilities = new Set(abilities);
+  const selectedPrerequisites = new Set(prerequisiteTags);
+  const selectedSpellTags = new Set(spellTags);
+
+  const refinedFeats = feats.filter(feat => {
+    const featSource = feat.source?.trim().toLowerCase() ?? '';
+    const featAbilities = getFeatAbilityFilters(feat);
+    const featPrerequisites = getFeatPrerequisiteTags(feat);
+    const featSpellTags = getFeatSpellTags(feat);
+    const matchesSource = normalizedSources.size === 0 || normalizedSources.has(featSource);
+    const matchesAbility =
+      selectedAbilities.size === 0 ||
+      featAbilities.some(ability => selectedAbilities.has(ability));
+    const matchesPrerequisite =
+      selectedPrerequisites.size === 0 ||
+      featPrerequisites.some(tag => selectedPrerequisites.has(tag));
+    const matchesSpellTag =
+      selectedSpellTags.size === 0 || featSpellTags.some(tag => selectedSpellTags.has(tag));
+
+    const searchableText = [
+      feat.name,
+      feat.source,
+      featAbilities.map(getPrettyAbilityName).join(' '),
+      featPrerequisites.map(getPrettyFeatPrerequisiteTag).join(' '),
+      featSpellTags.map(getPrettyFeatSpellTag).join(' '),
+    ]
+      .filter((value): value is string => Boolean(value))
+      .join(' ');
+    const matchesSearch =
+      !normalizedSearch || normalizeSearchFragment(searchableText).includes(normalizedSearch);
+
+    return (
+      matchesSource &&
+      matchesAbility &&
+      matchesPrerequisite &&
+      matchesSpellTag &&
+      matchesSearch
+    );
+  });
+
+  if (normalizedSearch) {
+    refinedFeats.sort((a, b) => compareFeatsBySearchRelevance(a, b, normalizedSearch, orderBy));
+    return refinedFeats;
+  }
+
+  if (orderBy === 'source') {
+    refinedFeats.sort((a, b) => {
+      const sourceCompare = (a.source ?? '').localeCompare(b.source ?? '');
+      if (sourceCompare !== 0) return sourceCompare;
+      return a.name.localeCompare(b.name);
+    });
+  } else {
+    refinedFeats.sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  return refinedFeats;
 }
 
 export function getPrettyItemType(type?: string): string {
