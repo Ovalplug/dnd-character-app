@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { getSetting, setSetting } from '../database/db';
-import type { Item, Items } from '../types';
+import type { Feat, Item, Items } from '../types';
 
 let datasets: any[] = [];
 export let allData: any[] = [];
@@ -149,7 +149,7 @@ export const useDataStore = defineStore('data', {
     loaded: false as boolean,
     rawDatasets: datasets as any[],
     sources: allData as any[],
-    feats: [] as any[],
+    feats: [] as Feat[],
     races: [] as any[],
     backgrounds: [] as any[],
     backgroundFluff: [] as any[],
@@ -172,8 +172,8 @@ export const useDataStore = defineStore('data', {
         .map((d: any) => ({ name: d.name, acronym: d.acronym, edition: d._edition ?? 'unknown' }))
         .sort((a, b) => a.name.localeCompare(b.name));
     },
-    filteredFeats(state): any[] {
-      return state.feats.filter((f: any) => state.enabledSources[f.source] !== false);
+    filteredFeats(state): Feat[] {
+      return state.feats.filter(feat => state.enabledSources[feat.source ?? ''] !== false);
     },
     filteredRaces(state): any[] {
       return state.races.filter((r: any) => state.enabledSources[r.source] !== false);
@@ -232,7 +232,7 @@ export const useDataStore = defineStore('data', {
       allData = datasets;
 
       this.rawDatasets = datasets;
-      this.feats = aggregate('feats');
+      this.feats = aggregate<Feat>('feats');
       this.races = aggregate('races');
       this.backgrounds = aggregate('backgrounds');
       this.backgroundFluff = aggregate('backgroundFluff');
@@ -287,8 +287,8 @@ export const useDataStore = defineStore('data', {
     },
 
     // Small helpers
-    findFeat(name: string) {
-      return this.feats.find((f: any) => f.name === name || f.displayName === name);
+    findFeat(name: string): Feat | undefined {
+      return this.feats.find(feat => feat.name === name || feat.displayName === name);
     },
 
     findRace(name: string) {

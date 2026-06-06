@@ -76,13 +76,13 @@
     <!-- Racial Choice Banner -->
     <div v-if="!useSetRacialBonus && chooseRacialBonusInfo" class="racial-choice-banner">
       <span
-        >Racial Bonus — pick <strong>{{ chooseRacialBonusInfo.choose.count }}</strong></span
+        >Racial Bonus — pick <strong>{{ chooseRacialBonusCount }}</strong></span
       >
       <span
         class="racial-choice-pip"
-        :class="{ 'racial-choice-pip--done': chosenCount === chooseRacialBonusInfo.choose.count }"
+        :class="{ 'racial-choice-pip--done': chosenCount === chooseRacialBonusCount }"
       >
-        {{ chosenCount }}/{{ chooseRacialBonusInfo.choose.count }}
+        {{ chosenCount }}/{{ chooseRacialBonusCount }}
       </span>
     </div>
 
@@ -259,7 +259,7 @@
   import downArrow from '../../../assets/icons/down-arrow.svg';
   import rollDice from '../../../assets/icons/roll-dice.svg';
 
-  import type { AbilityScoreValues, DiceTypes, Ability } from '../../../types';
+  import type { AbilityScoreValues, DiceTypes, Ability, ChooseAbilityBonus } from '../../../types';
 
   import {
     suggestedAbilityScores,
@@ -456,8 +456,8 @@
     cha: 0,
   });
 
-  function isChooseBonus(obj: any): obj is { choose: { from: string[]; count: number } } {
-    return (
+  function isChooseBonus(obj: Ability | null | undefined): obj is ChooseAbilityBonus {
+    return !!(
       obj &&
       typeof obj === 'object' &&
       'choose' in obj &&
@@ -472,17 +472,24 @@
     return currRaceBonus.value.find(isChooseBonus) ?? null;
   });
 
+  const chooseRacialBonusCount = computed(
+    () =>
+      chooseRacialBonusInfo.value?.choose.amount ?? chooseRacialBonusInfo.value?.choose.count ?? 0
+  );
+
   const chosenCount = computed(() =>
     Object.values(chosenRacialBonuses.value).reduce((sum, v) => sum + v, 0)
   );
 
   function isInChooseFrom(score: string): boolean {
-    return chooseRacialBonusInfo.value?.choose.from.includes(score) ?? false;
+    return (
+      chooseRacialBonusInfo.value?.choose.from.includes(score as keyof AbilityScoreValues) ?? false
+    );
   }
 
   function canSelectBonus(_score: keyof AbilityScoreValues): boolean {
     if (!chooseRacialBonusInfo.value) return false;
-    return chosenCount.value < chooseRacialBonusInfo.value.choose.count;
+    return chosenCount.value < chooseRacialBonusCount.value;
   }
 
   function increaseChosenBonus(score: keyof AbilityScoreValues) {

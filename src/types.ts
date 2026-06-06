@@ -211,12 +211,15 @@ export type Feat = {
   name: string;
   description?: string;
   source?: string;
-  otherSources?: object[];
+  otherSources?: JsonObject[];
   level?: number;
   page?: number;
-  prerequisite?: string[];
+  ability?: Ability[] | Ability;
+  prerequisite?: Prerequisites;
   entries?: Entries;
-};
+  additionalSpells?: JsonObject[];
+  hasFluffImages?: boolean;
+} & JsonObject;
 
 export type EntryBase = {
   type: string;
@@ -269,8 +272,10 @@ export type FixedAbilityBonus = Partial<
 >;
 export type ChooseAbilityBonus = {
   choose: {
-    from: string[];
-    count: number;
+    from: SavingThrow[];
+    amount?: number;
+    count?: number;
+    entry?: string;
   };
 };
 export type Ability = FixedAbilityBonus | ChooseAbilityBonus;
@@ -378,14 +383,54 @@ export type Invocation = {
 } & Record<string, any>;
 export type Invocations = Invocation[];
 
-export type Prerequisite = {
-  type: string;
-  feat?: string;
-  spell?: string;
-  invocation?: string;
-  ability?: Partial<Record<'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha', number>>;
+export type PrerequisiteAbility = Partial<Record<SavingThrow, number>>;
+
+export type PrerequisiteClass = {
+  name?: string;
   level?: number;
-};
+  visible?: boolean;
+} & JsonObject;
+
+export type PrerequisiteRace = {
+  name?: string;
+  subrace?: string;
+  source?: string;
+  displayEntry?: string;
+} & JsonObject;
+
+export type PrerequisiteBackground = {
+  name?: string;
+  displayEntry?: string;
+} & JsonObject;
+
+export type PrerequisiteProficiency = {
+  weapon?: string;
+  armor?: string;
+  tool?: string;
+  skill?: string;
+} & JsonObject;
+
+export type Prerequisite =
+  | string
+  | ({ type?: 'prerequisite'; feat: string } & JsonObject)
+  | ({ ability: PrerequisiteAbility[] } & JsonObject)
+  | ({ race: PrerequisiteRace[] } & JsonObject)
+  | ({ class: PrerequisiteClass; level?: number } & JsonObject)
+  | ({ type: 'prereqLevel'; level?: number; class?: PrerequisiteClass } & JsonObject)
+  | ({ type: 'prereqPact'; entry?: string } & JsonObject)
+  | ({ type: 'prereqSpecial'; entry?: string; entrySummary?: string } & JsonObject)
+  | ({ type: 'prereqItem' | 'prereqSpell'; entries?: string[] } & JsonObject)
+  | ({ background: PrerequisiteBackground } & JsonObject)
+  | ({ proficiency: PrerequisiteProficiency[] } & JsonObject)
+  | ({
+      spellcasting?: boolean;
+      spellcasting2020?: boolean;
+      psionics?: boolean;
+      feat?: string;
+      spell?: string;
+      invocation?: string;
+      level?: number;
+    } & JsonObject);
 
 export type Prerequisites = Prerequisite[];
 
