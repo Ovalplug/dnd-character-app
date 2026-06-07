@@ -2,7 +2,7 @@
   <section class="creation-step-frame">
     <header class="creation-step-frame__header">
       <div class="creation-step-frame__eyebrow-row">
-        <span class="creation-step-frame__eyebrow">Character Creation</span>
+        <span class="creation-step-frame__eyebrow">{{ eyebrow ?? 'Character Creation' }}</span>
         <span class="creation-step-frame__progress">Step {{ stepNumber }} of {{ totalSteps }}</span>
       </div>
 
@@ -45,6 +45,7 @@
     totalSteps: number;
     stepKey: string;
     canGoBack?: boolean;
+    eyebrow?: string;
   }>();
 
   defineEmits<{

@@ -847,6 +847,50 @@ export const useCharacterStore = defineStore('characters', {
       await this.updateCharacter(character);
     },
 
+    async applyLevelUp(
+      id: string,
+      classData: CharClass,
+      hpGain: number,
+      subclassData?: Subclass
+    ) {
+      const character = await db.characters.get(id);
+      if (!character) return;
+
+      const hpDeficit = Math.max(0, character.maxHp - character.currHp);
+
+      // Increment this class's level (add class entry if it's a multiclass)
+      const classKey = classData.name.toLowerCase() as keyof ClassLevels;
+      character.classLevels[classKey] = (character.classLevels[classKey] ?? 0) + 1;
+      if (!character.classes.some(c => c.name.toLowerCase() === classData.name.toLowerCase())) {
+        character.classes = [...character.classes, classData];
+      }
+
+      // Apply subclass if one was chosen this level
+      if (subclassData) {
+        character.subclasses = {
+          ...(character.subclasses ?? {}),
+          [classData.name]: [subclassData],
+        };
+      }
+
+      // Boost max HP; touchUpCharacter will keep the non-zero value
+      character.maxHp = character.maxHp + hpGain;
+
+      await this.updateCharacter(character);
+      await this.touchUpCharacter(id);
+
+      // Restore HP deficit so leveling up doesn't auto-heal the character
+      if (hpDeficit > 0) {
+        const updated = await db.characters.get(id);
+        if (updated) {
+          updated.currHp = Math.max(0, updated.maxHp - hpDeficit);
+          await this.updateCharacter(updated);
+          const idx = this.characters.findIndex(c => c.id === id);
+          if (idx !== -1) this.characters[idx] = updated;
+        }
+      }
+    },
+
     async touchUpCharacter(id: string) {
       // this function can be used at any time to recalculate and update any derived fields on the character, such as proficiency bonus or passive perception, based on their current state. This is useful to ensure all fields are up-to-date before saving or displaying the character.
       const character = await db.characters.get(id);

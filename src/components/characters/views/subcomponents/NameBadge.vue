@@ -44,6 +44,10 @@
               >Add gear from the compendium or remove carried items.</span
             >
           </button>
+          <button type="button" class="action-card action-card--level card" @click="goToLevelUp">
+            <span class="action-card-title">Level Up</span>
+            <span class="action-card-copy">Advance a class level, gain HP, and unlock new features.</span>
+          </button>
         </div>
 
         <form v-else-if="activePanel === 'name'" class="edit-form" @submit.prevent="saveName">
@@ -280,6 +284,7 @@
 
 <script lang="ts" setup>
   import { computed, ref, onMounted, watch, nextTick } from 'vue';
+  import { useRouter } from 'vue-router';
   import {
     getInventoryItemBadges,
     getInventoryItemDisplayName,
@@ -330,6 +335,12 @@
 
   const charStore = useCharacterStore();
   const dataStore = useDataStore();
+  const router = useRouter();
+
+  function goToLevelUp() {
+    closeEditPopout();
+    router.push(`/character/${props.character.id}/levelup`);
+  }
 
   const nameEl = ref<HTMLElement | null>(null);
   const showEditPopout = ref(false);
@@ -696,6 +707,11 @@
 
   .action-card--muted {
     background: linear-gradient(180deg, rgba(122, 107, 87, 0.12), rgba(255, 255, 255, 0.3));
+  }
+
+  .action-card--level {
+    background: linear-gradient(180deg, rgba(75, 107, 201, 0.14), rgba(255, 255, 255, 0.3));
+    border-color: rgba(46, 72, 170, 0.2);
   }
 
   .action-card-title,

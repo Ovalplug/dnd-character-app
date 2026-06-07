@@ -11,12 +11,14 @@ import PlaceHolder from '../components/PlaceHolder.vue';
 import QuickCharCreate from '../components/creation/QuickCharCreate.vue';
 import FullCreation from '../components/creation/FullCreation.vue';
 import RandomCreation from '../components/creation/RandomCreation.vue';
+import LevelUpView from '../views/LevelUpView.vue';
 import { useDataStore } from '../stores/dataStore';
 
 const routes: Array<RouteRecordRaw> = [
   { path: '/', name: 'home', component: HomeView },
   { path: '/characters', name: 'characters', component: AllCharacters },
   { path: '/character/:id', name: 'character', component: CharacterView },
+  { path: '/character/:id/levelup', name: 'levelUp', component: LevelUpView },
   { path: '/create', name: 'create', component: CreationView },
   { path: '/settings', name: 'settings', component: SettingsView },
   { path: '/resources', name: 'resources', component: ResourcesView },
