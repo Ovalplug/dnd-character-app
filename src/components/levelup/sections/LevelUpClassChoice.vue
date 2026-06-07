@@ -2,9 +2,8 @@
   <section class="creation-panel">
     <div class="creation-intro">
       <p v-if="currentClasses.length">
-        {{ character.name }} is currently
-        <strong>{{ currentClassSummary }}</strong>. Choose a class to advance in, or multiclass
-        into a new one.
+        {{ character.name }} is currently <strong>{{ currentClassSummary }}</strong
+        >. Choose a class to advance in, or multiclass into a new one.
       </p>
     </div>
 
@@ -124,7 +123,7 @@
   }>();
 
   const selectedClass = ref<CharClass | null>(
-    props.character.classes.length === 1 ? (props.character.classes[0] ?? null) : null
+    props.character.classes.length === 1 ? props.character.classes[0] ?? null : null
   );
 
   const popoutClass = ref<CharClass | null>(null);
@@ -138,8 +137,7 @@
   const availableMulticlasses = computed(() =>
     [...props.classes]
       .filter(
-        cls =>
-          !props.character.classes.some(c => c.name.toLowerCase() === cls.name.toLowerCase())
+        cls => !props.character.classes.some(c => c.name.toLowerCase() === cls.name.toLowerCase())
       )
       .sort((a, b) => a.name.localeCompare(b.name))
   );
@@ -147,8 +145,7 @@
   const currentClassSummary = computed(() => {
     return props.character.classes
       .map(cls => {
-        const lvl =
-          props.character.classLevels[cls.name.toLowerCase() as keyof ClassLevels] ?? 0;
+        const lvl = props.character.classLevels[cls.name.toLowerCase() as keyof ClassLevels] ?? 0;
         return `${cls.name} ${lvl}`;
       })
       .join(' / ');

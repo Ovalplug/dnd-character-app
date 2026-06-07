@@ -46,7 +46,9 @@
           </button>
           <button type="button" class="action-card action-card--level card" @click="goToLevelUp">
             <span class="action-card-title">Level Up</span>
-            <span class="action-card-copy">Advance a class level, gain HP, and unlock new features.</span>
+            <span class="action-card-copy"
+              >Advance a class level, gain HP, and unlock new features.</span
+            >
           </button>
         </div>
 

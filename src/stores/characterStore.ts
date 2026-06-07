@@ -25,6 +25,7 @@ import type {
   playerCharacter,
   PlayerSkills,
   Race,
+  Spell,
   Subclass,
   Subrace,
   SpellcastingInfo,
@@ -851,35 +852,75 @@ export const useCharacterStore = defineStore('characters', {
       id: string,
       classData: CharClass,
       hpGain: number,
-      subclassData?: Subclass
+      options?: {
+        subclass?: Subclass;
+        abilityScoreChanges?: Partial<AbilityScoreValues>;
+        newFeat?: Feat;
+        newCantrips?: Spell[];
+        newSpells?: Spell[];
+      }
     ) {
       const character = await db.characters.get(id);
       if (!character) return;
 
       const hpDeficit = Math.max(0, character.maxHp - character.currHp);
 
-      // Increment this class's level (add class entry if it's a multiclass)
+      // ── Class level ───────────────────────────────────────────────────────────
       const classKey = classData.name.toLowerCase() as keyof ClassLevels;
       character.classLevels[classKey] = (character.classLevels[classKey] ?? 0) + 1;
       if (!character.classes.some(c => c.name.toLowerCase() === classData.name.toLowerCase())) {
         character.classes = [...character.classes, classData];
       }
 
-      // Apply subclass if one was chosen this level
-      if (subclassData) {
+      // ── Subclass ──────────────────────────────────────────────────────────────
+      if (options?.subclass) {
         character.subclasses = {
           ...(character.subclasses ?? {}),
-          [classData.name]: [subclassData],
+          [classData.name]: [options.subclass],
         };
       }
 
-      // Boost max HP; touchUpCharacter will keep the non-zero value
+      // ── Ability scores / feat ─────────────────────────────────────────────────
+      if (options?.abilityScoreChanges && Object.keys(options.abilityScoreChanges).length > 0) {
+        character.abilityScores = {
+          ...character.abilityScores,
+          ...options.abilityScoreChanges,
+        };
+      }
+      if (options?.newFeat) {
+        const alreadyHas = character.feats.some(
+          f => f.name === options.newFeat!.name && f.source === options.newFeat!.source
+        );
+        if (!alreadyHas) {
+          character.feats = [...character.feats, options.newFeat];
+        }
+      }
+
+      // ── New spells (cantrips + known/spellbook) ───────────────────────────────
+      if (options?.newCantrips?.length) {
+        const existingNames = new Set((character.spellcasting?.cantrips ?? []).map(s => s.name));
+        const toAdd = options.newCantrips.filter(s => !existingNames.has(s.name));
+        character.spellcasting = {
+          ...character.spellcasting,
+          cantrips: [...(character.spellcasting?.cantrips ?? []), ...toAdd],
+        };
+      }
+      if (options?.newSpells?.length) {
+        const existingNames = new Set((character.spellcasting?.knownSpells ?? []).map(s => s.name));
+        const toAdd = options.newSpells.filter(s => !existingNames.has(s.name));
+        character.spellcasting = {
+          ...character.spellcasting,
+          knownSpells: [...(character.spellcasting?.knownSpells ?? []), ...toAdd],
+        };
+      }
+
+      // ── HP ────────────────────────────────────────────────────────────────────
       character.maxHp = character.maxHp + hpGain;
 
       await this.updateCharacter(character);
       await this.touchUpCharacter(id);
 
-      // Restore HP deficit so leveling up doesn't auto-heal the character
+      // After touchUpCharacter (which resets currHp to maxHp), restore deficit
       if (hpDeficit > 0) {
         const updated = await db.characters.get(id);
         if (updated) {
@@ -887,6 +928,28 @@ export const useCharacterStore = defineStore('characters', {
           await this.updateCharacter(updated);
           const idx = this.characters.findIndex(c => c.id === id);
           if (idx !== -1) this.characters[idx] = updated;
+        }
+      }
+
+      // ── Recompute spell slots to reflect new level ────────────────────────────
+      const finalChar = await db.characters.get(id);
+      if (finalChar) {
+        const newSpellInfo = computeCharSpellcasting(finalChar);
+        if (newSpellInfo.isSpellcaster) {
+          const existingSlots = finalChar.spellcasting?.spellSlots ?? {};
+          const updatedSlots: Record<number, { max: number; used: number }> = {};
+          for (const [lvlStr, slot] of Object.entries(newSpellInfo.spellSlots)) {
+            const lvl = Number(lvlStr);
+            const prev = existingSlots[lvl];
+            updatedSlots[lvl] = {
+              max: slot.max,
+              used: Math.min(prev?.used ?? 0, slot.max),
+            };
+          }
+          finalChar.spellcasting = { ...finalChar.spellcasting, spellSlots: updatedSlots };
+          await this.updateCharacter(finalChar);
+          const idx = this.characters.findIndex(c => c.id === id);
+          if (idx !== -1) this.characters[idx] = finalChar;
         }
       }
     },

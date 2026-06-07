@@ -2,18 +2,14 @@
   <section class="creation-panel">
     <div class="creation-intro">
       <p>
-        Roll or enter the HP gained for this level of <strong>{{ classData.name }}</strong>. The
-        hit die is <strong>{{ classData.hd }}</strong>.
+        Roll or enter the HP gained for this level of <strong>{{ classData.name }}</strong
+        >. The hit die is <strong>{{ classData.hd }}</strong
+        >.
       </p>
     </div>
 
     <div class="creation-actions creation-actions--top">
-      <button
-        type="button"
-        class="creation-primary-button"
-        :disabled="hpGain < 1"
-        @click="confirm"
-      >
+      <button type="button" class="creation-primary-button" :disabled="hpGain < 1" @click="confirm">
         Continue
       </button>
     </div>
@@ -55,7 +51,8 @@
 
       <div v-if="mode === 'roll'" class="hp-panel__roll-area">
         <p v-if="rolledValue !== null" class="hp-panel__roll-result">
-          You rolled a <strong>{{ rolledValue }}</strong>!
+          You rolled a <strong>{{ rolledValue }}</strong
+          >!
         </p>
         <button type="button" class="btn btn-primary" @click="rollDie">
           {{ rolledValue === null ? `Roll ${classData.hd}` : `Re-roll ${classData.hd}` }}
@@ -75,12 +72,7 @@
     </div>
 
     <div class="creation-actions">
-      <button
-        type="button"
-        class="creation-primary-button"
-        :disabled="hpGain < 1"
-        @click="confirm"
-      >
+      <button type="button" class="creation-primary-button" :disabled="hpGain < 1" @click="confirm">
         Continue
       </button>
     </div>
@@ -116,7 +108,9 @@
     calculateAbilityScoreModifier(props.character.abilityScores.con, 0, false, false)
   );
 
-  const conModDisplay = computed(() => (conMod.value >= 0 ? `+${conMod.value}` : `${conMod.value}`));
+  const conModDisplay = computed(() =>
+    conMod.value >= 0 ? `+${conMod.value}` : `${conMod.value}`
+  );
 
   const baseRoll = computed(() => {
     if (mode.value === 'roll') return rolledValue.value ?? 0;
