@@ -485,6 +485,7 @@ export type Subclasses = Record<string, Subclass[]>;
 export type SpellSchools = 'a' | 'c' | 'd' | 'e' | 'v' | 'i' | 'n' | 't';
 
 export type SpellClass =
+  | 'artificer'
   | 'bard'
   | 'cleric'
   | 'druid'

@@ -158,6 +158,7 @@
     { label: 'Transmutation', value: 't' },
   ];
   const allClasses: SpellClass[] = [
+    'artificer',
     'bard',
     'cleric',
     'druid',
