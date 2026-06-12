@@ -127,10 +127,10 @@
   }
 
   .feature-card {
-    padding: 0.9rem 1rem;
+    padding: 0.7rem 0.85rem;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.4rem;
   }
 
   .feature-card__header {

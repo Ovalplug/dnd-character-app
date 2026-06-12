@@ -146,13 +146,14 @@
   .hp-panel {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
-    padding: 1.25rem;
+    gap: 0.85rem;
+    padding: 0.85rem;
   }
 
   .hp-panel__row {
     display: flex;
-    gap: 1.5rem;
+    gap: 1rem;
+    flex-wrap: wrap;
   }
 
   .hp-panel__col {

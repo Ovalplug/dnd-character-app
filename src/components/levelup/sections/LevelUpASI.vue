@@ -234,8 +234,8 @@
   .asi-modes {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    padding: 1rem;
+    gap: 0.4rem;
+    padding: 0.75rem;
   }
 
   .asi-scores {
@@ -247,8 +247,8 @@
   .score-row {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding: 0.7rem 1rem;
+    gap: 0.75rem;
+    padding: 0.55rem 0.75rem;
     border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: 0;
     transition: background 0.1s;
@@ -326,7 +326,7 @@
   }
 
   .selected-feat {
-    padding: 0.9rem 1rem;
+    padding: 0.65rem 0.85rem;
   }
 
   .selected-feat__header {

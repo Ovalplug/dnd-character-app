@@ -4,6 +4,7 @@
     "char-ua.json",
     "spells-full.json",
     "items-full.json",
-    "items-ua.json"
+    "items-ua.json",
+    "bestiary-complete.json"
   ]
 }

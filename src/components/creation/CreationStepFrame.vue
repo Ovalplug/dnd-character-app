@@ -61,19 +61,19 @@
   .creation-step-frame {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    padding: 1.5rem;
-    border-radius: 18px;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 14px;
     background: radial-gradient(circle at top right, rgba(201, 164, 75, 0.18), transparent 28%),
       linear-gradient(180deg, rgba(255, 248, 235, 0.96), rgba(239, 230, 208, 0.96));
     border: 1px solid rgba(107, 46, 46, 0.16);
-    box-shadow: 0 16px 36px rgba(31, 27, 22, 0.12);
+    box-shadow: 0 8px 20px rgba(31, 27, 22, 0.1);
   }
 
   .creation-step-frame__header {
     display: flex;
     flex-direction: column;
-    gap: 0.9rem;
+    gap: 0.6rem;
   }
 
   .creation-step-frame__eyebrow-row,
@@ -81,11 +81,11 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 1rem;
+    gap: 0.75rem;
   }
 
   .creation-step-frame__eyebrow {
-    font-size: 0.78rem;
+    font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -93,26 +93,30 @@
   }
 
   .creation-step-frame__progress {
-    font-size: 0.9rem;
+    font-size: 0.82rem;
     color: var(--color-muted);
+    white-space: nowrap;
   }
 
   .creation-step-frame__title {
     margin: 0;
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
   }
 
   .creation-step-frame__description {
-    margin: 0.35rem 0 0;
-    max-width: 54rem;
+    margin: 0.2rem 0 0;
+    font-size: 0.88rem;
     color: var(--color-muted);
   }
 
   .creation-step-frame__back {
-    padding: 0.65rem 1rem;
-    border-radius: 999px;
+    flex-shrink: 0;
+    padding: 0.45rem 0.85rem;
+    border-radius: 8px;
     border: 1px solid rgba(107, 46, 46, 0.22);
     background: rgba(255, 252, 245, 0.92);
     color: var(--color-primary);
+    font-size: 0.88rem;
     font-weight: 600;
     cursor: pointer;
   }
@@ -123,7 +127,7 @@
 
   .creation-step-frame__meter {
     width: 100%;
-    height: 0.5rem;
+    height: 3px;
     overflow: hidden;
     border-radius: 999px;
     background: rgba(107, 46, 46, 0.12);
@@ -139,21 +143,5 @@
 
   .creation-step-frame__body {
     min-width: 0;
-  }
-
-  @media (max-width: 720px) {
-    .creation-step-frame {
-      padding: 1.1rem;
-    }
-
-    .creation-step-frame__eyebrow-row,
-    .creation-step-frame__headline-row {
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    .creation-step-frame__back {
-      align-self: flex-start;
-    }
   }
 </style>

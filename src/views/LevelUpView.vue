@@ -23,9 +23,7 @@
 
 <style scoped>
   .level-up-view {
-    padding: 1.5rem;
-    max-width: 720px;
-    margin: 0 auto;
+    padding: 0;
   }
 
   .level-up-view--not-found {
