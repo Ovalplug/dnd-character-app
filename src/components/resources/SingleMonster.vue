@@ -10,17 +10,23 @@
   </div>
 
   <!-- base stats -->
-  <div v-if="statsSelected">
-    <p>
-      {{ monsterSize }} {{ monsterType }},
-      {{ props.monster.alignment.map(getPrettyAlignment).join(' ') }}
-    </p>
-    <p>AC: {{ prettyAC }}</p>
-    <p>HP: {{ prettyHP }}</p>
-    <p>Speed: {{ getPrettySpeed(props.monster.speed) }}</p>
-    <p>Initiative: {{ monsterInitiative }}</p>
-    <p>{{ prettyCR }}</p>
-    <div>
+  <div v-if="statsSelected" class="stats-container">
+    <div class="stat-row stat-row--header">
+      <p>
+        {{ monsterSize }} {{ monsterType }},
+        {{ props.monster.alignment.map(getPrettyAlignment).join(' ') }}
+      </p>
+    </div>
+
+    <div class="stat-row">
+      <p><strong>AC:</strong> {{ prettyAC }}</p>
+      <p><strong>HP:</strong> {{ prettyHP }}</p>
+      <p><strong>Speed:</strong> {{ getPrettySpeed(props.monster.speed) }}</p>
+      <p><strong>Initiative:</strong> {{ monsterInitiative }}</p>
+      <p><strong>{{ prettyCR }}</strong></p>
+    </div>
+
+    <div class="ability-scores-table">
       <table>
         <thead>
           <tr>
@@ -44,9 +50,10 @@
         </tbody>
       </table>
     </div>
-    <div v-if="monster.save">
+
+    <div v-if="monster.save" class="saves-section">
       <p>
-        Saves:
+        <strong>Saves:</strong>
         {{
           Object.entries(monster.save)
             .map(([ability, value]) => `${capitalizeFirstLetter(ability)} ${value}`)
@@ -54,29 +61,72 @@
         }}
       </p>
     </div>
-    <p>Skills: {{ prettySkills }}</p>
-    <p>Senses: {{ prettySenses }}</p>
-    <p v-if="props.monster.languages">Languages: {{ props.monster.languages.join(', ') }}</p>
-    <p v-if="prettyResist !== 'N/A'">Damage Resistances: {{ prettyResist }}</p>
-    <p v-if="prettyImmune !== 'N/A'">Damage Immunities: {{ prettyImmune }}</p>
-    <p v-if="prettyVulnerable !== 'N/A'">Damage Vulnerabilities: {{ prettyVulnerable }}</p>
-    <h2>Traits</h2>
-    <ResourceEntries :entries="props.monster.trait || []" />
-    <h2>Actions</h2>
-    <ResourceEntries :entries="props.monster.action || []" />
-    <h2>Reactions</h2>
-    <ResourceEntries :entries="props.monster.reaction || []" />
-    <h2>Legendary Actions</h2>
-    <ResourceEntries :entries="props.monster.legendary || []" />
+
+    <div class="skills-section">
+      <p><strong>Skills:</strong> {{ prettySkills }}</p>
+    </div>
+
+    <div class="senses-section">
+      <p><strong>Senses:</strong> {{ prettySenses }}</p>
+    </div>
+
+    <div v-if="props.monster.languages" class="stat-row">
+      <p><strong>Languages:</strong> {{ props.monster.languages.join(', ') }}</p>
+    </div>
+
+    <div v-if="prettyResist !== 'N/A'" class="stat-row">
+      <p style="margin-bottom: 0.5rem"><strong>Damage Resistances:</strong></p>
+      <p>{{ prettyResist }}</p>
+    </div>
+
+    <div v-if="prettyImmune !== 'N/A'" class="stat-row">
+      <p style="margin-bottom: 0.5rem"><strong>Damage Immunities:</strong></p>
+      <p>{{ prettyImmune }}</p>
+    </div>
+
+    <div v-if="prettyVulnerable !== 'N/A'" class="stat-row">
+      <p style="margin-bottom: 0.5rem"><strong>Damage Vulnerabilities:</strong></p>
+      <p>{{ prettyVulnerable }}</p>
+    </div>
+
+    <div v-if="props.monster.trait && props.monster.trait.length">
+      <h2 class="section-title">Traits</h2>
+      <div class="section-content">
+        <ResourceEntries :entries="props.monster.trait" />
+      </div>
+    </div>
+
+    <div v-if="props.monster.action && props.monster.action.length">
+      <h2 class="section-title">Actions</h2>
+      <div class="section-content">
+        <ResourceEntries :entries="props.monster.action" />
+      </div>
+    </div>
+
+    <div v-if="props.monster.reaction && props.monster.reaction.length">
+      <h2 class="section-title">Reactions</h2>
+      <div class="section-content">
+        <ResourceEntries :entries="props.monster.reaction" />
+      </div>
+    </div>
+
+    <div v-if="props.monster.legendary && props.monster.legendary.length">
+      <h2 class="section-title">Legendary Actions</h2>
+      <div class="section-content">
+        <ResourceEntries :entries="props.monster.legendary" />
+      </div>
+    </div>
   </div>
 
   <!-- Fluff -->
-  <div v-if="fluffSelected">
-    <h2>{{ fluff?.name }}</h2>
+  <div v-if="fluffSelected" class="fluff-content">
+    <h2 class="fluff-title">{{ fluff?.name }}</h2>
     <div v-if="imageRef">
       <img :src="imageRef" :alt="`Image of ${props.monster.name}`" class="monsterImg" />
     </div>
-    <ResourceEntries :entries="fluff?.entries || []" />
+    <div class="section-content">
+      <ResourceEntries :entries="fluff?.entries || []" />
+    </div>
   </div>
 </template>
 
@@ -268,11 +318,151 @@
 </script>
 
 <style lang="css" scoped>
+  /* Mobile-first layout */
+  .stats-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .stat-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.75rem;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(107, 46, 46, 0.1);
+  }
+
+  .stat-row p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  .stat-row--header {
+    background: rgba(107, 46, 46, 0.05);
+    border-color: rgba(107, 46, 46, 0.15);
+    font-weight: 600;
+    color: var(--color-primary);
+  }
+
+  .ability-scores-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(107, 46, 46, 0.12);
+    background: rgba(255, 255, 255, 0.72);
+    margin: 0.5rem 0;
+  }
+
+  .ability-scores-table thead {
+    background: linear-gradient(
+      135deg,
+      rgba(107, 46, 46, 0.08),
+      rgba(107, 46, 46, 0.05)
+    );
+  }
+
+  .ability-scores-table th {
+    padding: 0.6rem 0.5rem;
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    border-right: 1px solid rgba(107, 46, 46, 0.08);
+  }
+
+  .ability-scores-table th:last-child {
+    border-right: none;
+  }
+
+  .ability-scores-table td {
+    padding: 0.7rem 0.5rem;
+    text-align: center;
+    font-weight: 600;
+    border-right: 1px solid rgba(107, 46, 46, 0.08);
+    font-size: 0.9rem;
+  }
+
+  .ability-scores-table td:last-child {
+    border-right: none;
+  }
+
+  .saves-section,
+  .skills-section,
+  .senses-section {
+    padding: 0.75rem;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(107, 46, 46, 0.1);
+  }
+
+  .saves-section p,
+  .skills-section p,
+  .senses-section p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    word-break: break-word;
+  }
+
+  .resistances-grid {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0.5rem 0;
+  }
+
+  .resistance-item {
+    padding: 0.65rem 0.75rem;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(107, 46, 46, 0.1);
+    font-size: 0.9rem;
+  }
+
+  .section-title {
+    margin: 1.25rem 0 0.75rem 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid rgba(107, 46, 46, 0.15);
+    padding-bottom: 0.5rem;
+  }
+
+  .section-content {
+    padding: 0.75rem;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(107, 46, 46, 0.1);
+  }
+
+  .fluff-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .fluff-title {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
   .monsterImg {
     max-width: 100%;
     height: auto;
-    margin-top: 1em;
-    border-radius: 8px;
+    margin: 0.5rem 0;
+    border-radius: 10px;
+    border: 1px solid rgba(107, 46, 46, 0.1);
+    box-shadow: 0 4px 12px rgba(31, 27, 22, 0.08);
   }
 
   .tab-row {
@@ -283,21 +473,75 @@
 
   .tab-btn {
     flex: 1;
-    padding: 0.5rem 0.75rem;
+    padding: 0.6rem 0.75rem;
     min-height: 44px;
     border: 1px solid rgba(107, 46, 46, 0.25);
     border-radius: 8px;
-    background: var(--color-bg);
-    color: var(--color-text);
+    background: rgba(255, 255, 255, 0.55);
+    color: var(--color-primary);
     font-size: 0.9rem;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
-    transition: background 0.14s, border-color 0.14s, color 0.14s;
+    transition: all 0.2s ease;
+  }
+
+  .tab-btn:active {
+    transform: scale(0.98);
   }
 
   .tab-btn--active {
-    background: var(--color-primary);
+    background: linear-gradient(
+      90deg,
+      var(--color-primary),
+      var(--color-primary-600)
+    );
     color: white;
     border-color: var(--color-primary);
+    box-shadow: 0 4px 12px rgba(107, 46, 46, 0.15);
+  }
+
+  /* Tablet breakpoint */
+  @media (min-width: 600px) {
+    .stats-container {
+      gap: 1.25rem;
+    }
+
+    .ability-scores-table {
+      margin: 1rem 0;
+    }
+
+    .resistances-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+    }
+
+    .section-title {
+      margin: 1.5rem 0 1rem 0;
+      font-size: 1.2rem;
+    }
+  }
+
+  /* Desktop breakpoint */
+  @media (min-width: 900px) {
+    .stats-container {
+      gap: 1.5rem;
+      padding: 0;
+    }
+
+    .resistances-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .section-content {
+      padding: 1rem;
+    }
+
+    .tab-btn {
+      padding: 0.7rem 1rem;
+      font-size: 0.95rem;
+    }
   }
 </style>
