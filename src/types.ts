@@ -683,3 +683,146 @@ export type Item = {
 } & JsonObject;
 
 export type Items = Item[];
+
+export type SkillChoice =
+  | 'acrobatics'
+  | 'animalHandling'
+  | 'arcana'
+  | 'athletics'
+  | 'deception'
+  | 'history'
+  | 'insight'
+  | 'intimidation'
+  | 'investigation'
+  | 'medicine'
+  | 'nature'
+  | 'perception'
+  | 'performance'
+  | 'persuasion'
+  | 'religion'
+  | 'sleightOfHand'
+  | 'stealth'
+  | 'survival';
+
+export type Monster = {
+  name: string;
+  source: string;
+  page?: number;
+  size: string | string[];
+  type: MonsterType;
+  alignment: string[];
+  alignmentPrefix?: string;
+  ac: MonsterAc[];
+  hp: MonsterHp;
+  speed: CreatureSpeed;
+  str: number;
+  dex: number;
+  con: number;
+  int: number;
+  wis: number;
+  cha: number;
+  save: Partial<Record<SavingThrow, string>>;
+  skill: Record<SkillChoice, string>;
+  senses?: string[];
+  passive: number;
+  languages: string[];
+  cr: MonsterCR;
+  resist?: string[];
+  immune?: string[];
+  vulnerable?: string[];
+  spellcasting?: MonsterSpellcasting[];
+  trait?: Entries;
+  action?: Entries;
+  reaction?: Entries;
+  legendary?: Entries;
+  traitTags?: string[];
+  actionTags?: string[];
+  reactionTags?: string[];
+  legendaryTags?: string[];
+  senseTags?: string[];
+  damageTags?: string[];
+  miscTags?: string[];
+  attachedItems?: string[];
+  varieant?: Entries;
+  environment?: string[];
+  hasFluff?: boolean;
+};
+
+export type MonsterCR = string | { cr: string; coven?: string; lair?: string };
+
+export type MonsterFluff = {
+  name: string;
+  source: string;
+  entries?: Entries;
+  images?: Image[];
+};
+
+export type MonsterType = string | { type: string; tags?: string[] };
+
+export type MonsterAc = string | number | MonsterAcFrom;
+
+export type MonsterAcFrom = {
+  ac: number;
+  from: string[];
+  condition?: string;
+  braces?: boolean;
+};
+
+export type MonsterHp = number | { formula: string; average: number };
+
+export type CreatureSpeed = {
+  walk?: number;
+  fly?: number;
+  swim?: number;
+  climb?: number;
+  burrow?: number;
+  hover?: boolean;
+};
+
+export type MonsterSpellcasting = {
+  name: string;
+  headerEntries: Entries;
+  ability?: string;
+  spells?: MonsterSpell;
+  will?: string[];
+  daily?: MonsterDailySpells;
+};
+
+export type MonsterSpell = {
+  0?: MonsterSpellBreakdown;
+  1?: MonsterSpellBreakdown;
+  2?: MonsterSpellBreakdown;
+  3?: MonsterSpellBreakdown;
+  4?: MonsterSpellBreakdown;
+  5?: MonsterSpellBreakdown;
+  6?: MonsterSpellBreakdown;
+  7?: MonsterSpellBreakdown;
+  8?: MonsterSpellBreakdown;
+  9?: MonsterSpellBreakdown;
+};
+
+export type MonsterSpellBreakdown = {
+  slots?: number;
+  spells: string[];
+};
+
+export type MonsterDailySpells = {
+  1?: string[];
+  2?: string[];
+  3?: string[];
+  4?: string[];
+  5?: string[];
+  6?: string[];
+  7?: string[];
+  8?: string[];
+  9?: string[];
+  '1e'?: string[];
+  '2e'?: string[];
+  '3e'?: string[];
+  '4e'?: string[];
+  '5e'?: string[];
+  '6e'?: string[];
+  '7e'?: string[];
+  '8e'?: string[];
+  '9e'?: string[];
+};

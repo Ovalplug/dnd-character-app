@@ -12,6 +12,7 @@
           <option value="aInfusions">Artificer Infusions</option>
           <option value="spells">Spells</option>
           <option value="items">Items</option>
+          <option value="monsters">Monsters</option>
         </select>
       </div>
     </div>
@@ -30,6 +31,7 @@
         <button @click="showData('aInfusions')">Artificer Infusions</button>
         <button @click="showData('spells')">Spells</button>
         <button @click="showData('items')">Items</button>
+        <button @click="showData('monsters')">Monsters</button>
       </div>
       <AllFeats v-if="show_feats" :feats="dataStore.filteredFeats" />
       <AllRaces
@@ -51,6 +53,11 @@
       />
       <AllSpells v-if="show_spells" :spells="dataStore.filteredSpells" />
       <AllItems v-if="show_items" :items="dataStore.filteredItems" />
+      <AllMonsters
+        v-if="show_monsters"
+        :monsters="dataStore.monsters"
+        :monsterFluff="dataStore.monsterFluff"
+      />
     </div>
   </div>
 </template>
@@ -67,6 +74,7 @@
   import AllClasses from '../components/resources/AllClasses.vue';
   import AllSpells from '../components/resources/AllSpells.vue';
   import AllItems from '../components/resources/AllItems.vue';
+  import AllMonsters from '../components/resources/AllMonsters.vue';
   const { initDebug } = useDebug();
 
   const dataStore = useDataStore();
@@ -83,6 +91,7 @@
   const show_subclasses = ref(false);
   const show_spells = ref(false);
   const show_items = ref(false);
+  const show_monsters = ref(false);
   // Track which data type is currently selected
   const selectedType = ref('');
 
@@ -99,7 +108,8 @@
       show_aInfusions.value ||
       show_subclasses.value ||
       show_spells.value ||
-      show_items.value
+      show_items.value ||
+      show_monsters.value
     );
   });
 
@@ -134,6 +144,7 @@
     show_subclasses.value = false;
     show_spells.value = false;
     show_items.value = false;
+    show_monsters.value = false;
   }
 
   function showData(dataType: string) {
@@ -186,6 +197,10 @@
       case 'items':
         show_items.value = true;
         selectedType.value = 'items';
+        break;
+      case 'monsters':
+        show_monsters.value = true;
+        selectedType.value = 'monsters';
         break;
       default:
         selectedType.value = '';

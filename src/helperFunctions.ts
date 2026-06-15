@@ -187,6 +187,25 @@ export function getPrettySize(size: string): string {
   }
 }
 
+export function getPrettyAlignment(alignment: string): string {
+  switch (alignment.toLowerCase()) {
+    case 'l':
+      return 'Lawful';
+    case 'n':
+      return 'Neutral';
+    case 'c':
+      return 'Chaotic';
+    case 'g':
+      return 'Good';
+    case 'e':
+      return 'Evil';
+    case 'u':
+      return 'Unaligned';
+    default:
+      return alignment;
+  }
+}
+
 export function getPrettySpellSchool(school: string): string {
   switch (school.toLowerCase()) {
     case 'a':
@@ -803,17 +822,62 @@ export function getPrettySpeed(speed: number | Record<string, any>): string {
     return `${speed} ft.`;
   } else if (typeof speed === 'object') {
     const parts: string[] = [];
+
+    const formatSpeedType = (type: string): string => {
+      if (type === 'walk') return 'walking';
+      if (type === 'fly') return 'flying';
+      if (type === 'swim') return 'swimming';
+      if (type === 'climb') return 'climbing';
+      return type;
+    };
+
+    const formatSpeedValue = (type: string, value: any): string => {
+      if (typeof value === 'number') {
+        return `${value} ft. ${formatSpeedType(type)}`;
+      } else if (typeof value === 'object' && value !== null) {
+        const speedType = formatSpeedType(type);
+        if (value.condition) {
+          return `${value.number} ft. ${speedType} ${value.condition}`;
+        } else {
+          return `${value.number} ft. ${speedType}`;
+        }
+      }
+      return '';
+    };
+
     for (const [key, value] of Object.entries(speed)) {
-      if (key === 'walk') {
-        parts.push(`${value} ft. walking`);
-      } else if (key === 'fly') {
-        parts.push(`${value} ft. flying`);
-      } else if (key === 'swim') {
-        parts.push(`${value} ft. swimming`);
-      } else if (key === 'climb') {
-        parts.push(`${value} ft. climbing`);
-      } else {
-        parts.push(`${value} ft. ${key}`);
+      if (key === 'alternate') {
+        // Handle alternate speeds
+        for (const [altKey, altValue] of Object.entries(value)) {
+          if (Array.isArray(altValue)) {
+            for (const altSpeed of altValue) {
+              const speedType = formatSpeedType(altKey);
+              if (altSpeed.condition) {
+                parts.push(`${altSpeed.number} ft. ${speedType} (${altSpeed.condition})`);
+              } else {
+                parts.push(`${altSpeed.number} ft. ${speedType}`);
+              }
+            }
+          } else if (typeof altValue === 'number') {
+            parts.push(formatSpeedValue(altKey, altValue));
+          } else if (typeof altValue === 'object' && altValue !== null) {
+            parts.push(formatSpeedValue(altKey, altValue));
+          }
+        }
+      } else if (key === 'walk' || key === 'fly' || key === 'swim' || key === 'climb') {
+        const formatted = formatSpeedValue(key, value);
+        if (formatted) parts.push(formatted);
+      } else if (key !== 'canHover') {
+        // Skip special keys like 'canHover'
+        if (typeof value === 'number') {
+          parts.push(`${value} ft. ${key}`);
+        } else if (typeof value === 'object' && value !== null && value.number) {
+          if (value.condition) {
+            parts.push(`${value.number} ft. ${key} ${value.condition}`);
+          } else {
+            parts.push(`${value.number} ft. ${key}`);
+          }
+        }
       }
     }
     return parts.join(', ');
@@ -1316,6 +1380,11 @@ export function calculateAbilityScoreModifier(
 ): number {
   const baseMod = Math.floor((score - 10) / 2);
   return baseMod + (isProficient ? proficiencyBonus : 0) + (isExpert ? proficiencyBonus : 0);
+}
+
+export function capitalizeFirstLetter(str: string): string {
+  if (!str) return str;
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 // ---------------------------------------------------------------------------

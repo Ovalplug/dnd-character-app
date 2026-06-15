@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { getSetting, setSetting } from '../database/db';
-import type { Feat, Item, Items } from '../types';
+import type { Feat, Item, Items, Monster, MonsterFluff } from '../types';
 
 let datasets: any[] = [];
 export let allData: any[] = [];
@@ -162,6 +162,8 @@ export const useDataStore = defineStore('data', {
     spells: [] as any[],
     // Record<acronym, boolean>; absence or true = enabled, false = disabled
     enabledSources: {} as Record<string, boolean>,
+    monsters: [] as Monster[],
+    monsterFluff: [] as MonsterFluff[],
   }),
 
   getters: {
@@ -243,6 +245,8 @@ export const useDataStore = defineStore('data', {
       this.items = aggregate<Item>('items');
       this.subclasses = aggregateSubclasses(allData);
       this.spells = aggregateSpells(datasets);
+      this.monsters = aggregate<Monster>('monster');
+      this.monsterFluff = aggregate<MonsterFluff>('monsterFluff');
       await this.loadSourceSettings();
       this.loaded = true;
     },
