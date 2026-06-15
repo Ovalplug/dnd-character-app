@@ -60,6 +60,14 @@
     <p v-if="prettyResist !== 'N/A'">Damage Resistances: {{ prettyResist }}</p>
     <p v-if="prettyImmune !== 'N/A'">Damage Immunities: {{ prettyImmune }}</p>
     <p v-if="prettyVulnerable !== 'N/A'">Damage Vulnerabilities: {{ prettyVulnerable }}</p>
+    <h2>Traits</h2>
+    <ResourceEntries :entries="props.monster.trait || []" />
+    <h2>Actions</h2>
+    <ResourceEntries :entries="props.monster.action || []" />
+    <h2>Reactions</h2>
+    <ResourceEntries :entries="props.monster.reaction || []" />
+    <h2>Legendary Actions</h2>
+    <ResourceEntries :entries="props.monster.legendary || []" />
   </div>
 
   <!-- Fluff -->
