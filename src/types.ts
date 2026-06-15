@@ -727,9 +727,10 @@ export type Monster = {
   passive: number;
   languages: string[];
   cr: MonsterCR;
-  resist?: string[];
-  immune?: string[];
-  vulnerable?: string[];
+  resist?: MonsterDamageVulnerability[];
+  immune?: MonsterDamageVulnerability[];
+  conditionImmune?: MonsterDamageVulnerability[];
+  vulnerable?: MonsterDamageVulnerability[];
   spellcasting?: MonsterSpellcasting[];
   trait?: Entries;
   action?: Entries;
@@ -748,7 +749,7 @@ export type Monster = {
   hasFluff?: boolean;
 };
 
-export type MonsterCR = string | { cr: string; coven?: string; lair?: string };
+export type MonsterCR = string | { cr: string; coven?: string; lair?: string; };
 
 export type MonsterFluff = {
   name: string;
@@ -762,13 +763,16 @@ export type MonsterType = string | { type: string; tags?: string[] };
 export type MonsterAc = string | number | MonsterAcFrom;
 
 export type MonsterAcFrom = {
-  ac: number;
-  from: string[];
+  ac?: number;
+  from?: string[];
   condition?: string;
   braces?: boolean;
+  special?: string;
 };
 
-export type MonsterHp = number | { formula: string; average: number };
+export type MonsterHp = number | { formula: string; average: number; special?: string };
+
+export type MonsterDamageVulnerability = string | { immune?: string[]; resist?: string[]; vulnerable?: string[]; conditionImmune?: string[]; note: string };
 
 export type CreatureSpeed = {
   walk?: number;

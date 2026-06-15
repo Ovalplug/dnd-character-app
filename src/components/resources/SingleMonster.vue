@@ -55,13 +55,17 @@
       </p>
     </div>
     <p>Skills: {{ prettySkills }}</p>
+    <p>Senses: {{ prettySenses }}</p>
+    <p v-if="props.monster.languages">Languages: {{ props.monster.languages.join(', ') }}</p>
+    <p v-if="prettyResist !== 'N/A'">Damage Resistances: {{ prettyResist }}</p>
+    <p v-if="prettyImmune !== 'N/A'">Damage Immunities: {{ prettyImmune }}</p>
+    <p v-if="prettyVulnerable !== 'N/A'">Damage Vulnerabilities: {{ prettyVulnerable }}</p>
   </div>
 
   <!-- Fluff -->
   <div v-if="fluffSelected">
     <h2>{{ fluff?.name }}</h2>
     <div v-if="imageRef">
-      <p>{{ imageRef }}</p>
       <img :src="imageRef" :alt="`Image of ${props.monster.name}`" class="monsterImg" />
     </div>
     <ResourceEntries :entries="fluff?.entries || []" />
@@ -99,6 +103,10 @@
     }
   });
 
+  const prettySenses = computed(() => {
+    if (!props.monster.senses) return `Passive Perception ${props.monster.passive}`;
+    return `Passive Perception ${props.monster.passive}, ${capitalizeFirstLetter(props.monster.senses?.join(', '))}`;
+  });
   const prettyAC = computed(() => {
     if (!Array.isArray(props.monster.ac)) {
       return 'N/A';
@@ -107,8 +115,10 @@
       .map(ac => {
         if (typeof ac === 'number' || typeof ac === 'string') {
           return ac;
+        } else if (ac.special) {
+          return ac.special;
         } else {
-          return `${ac.ac} (${ac.from.join(', ')})`;
+          return `${ac.ac} (${ac.from?.join(', ')})`;
         }
       })
       .join(' or ');
@@ -118,6 +128,9 @@
     if (typeof props.monster.hp === 'number') {
       return props.monster.hp;
     } else if (typeof props.monster.hp === 'object' && props.monster.hp !== null) {
+      if (props.monster.hp.special) {
+        return props.monster.hp.special;
+      }
       return `${props.monster.hp.average} (${props.monster.hp.formula})`;
     } else {
       return 'N/A';
@@ -217,6 +230,33 @@
       .map(([skill, value]) => `${capitalizeFirstLetter(skill)} ${value}`)
       .join(', ');
   });
+
+  const formatDamageVulnerabilities = (vulnerabilities: any[] | undefined): string => {
+    if (!vulnerabilities) return 'N/A';
+    return vulnerabilities
+      .map((item) => {
+        if (typeof item === 'string') {
+          return item;
+        } else if (typeof item === 'object' && item !== null) {
+          if (item.immune) {
+            return `${item.immune.join(', ')} (${item.note})`;
+          } else if (item.resist) {
+            return `${item.resist.join(', ')} (${item.note})`;
+          } else if (item.vulnerable) {
+            return `${item.vulnerable.join(', ')} (${item.note})`;
+          } else if (item.conditionImmune) {
+            return `${item.conditionImmune.join(', ')} (${item.note})`;
+          }
+        }
+        return '';
+      })
+      .filter(Boolean)
+      .join(', ');
+  };
+
+  const prettyResist = computed(() => formatDamageVulnerabilities(props.monster.resist));
+  const prettyImmune = computed(() => formatDamageVulnerabilities(props.monster.immune));
+  const prettyVulnerable = computed(() => formatDamageVulnerabilities(props.monster.vulnerable));
 </script>
 
 <style lang="css" scoped>
