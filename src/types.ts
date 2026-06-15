@@ -749,7 +749,7 @@ export type Monster = {
   hasFluff?: boolean;
 };
 
-export type MonsterCR = string | { cr: string; coven?: string; lair?: string; };
+export type MonsterCR = string | { cr: string; coven?: string; lair?: string };
 
 export type MonsterFluff = {
   name: string;
@@ -772,7 +772,15 @@ export type MonsterAcFrom = {
 
 export type MonsterHp = number | { formula: string; average: number; special?: string };
 
-export type MonsterDamageVulnerability = string | { immune?: string[]; resist?: string[]; vulnerable?: string[]; conditionImmune?: string[]; note: string };
+export type MonsterDamageVulnerability =
+  | string
+  | {
+      immune?: string[];
+      resist?: string[];
+      vulnerable?: string[];
+      conditionImmune?: string[];
+      note: string;
+    };
 
 export type CreatureSpeed = {
   walk?: number;

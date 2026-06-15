@@ -23,7 +23,9 @@
       <p><strong>HP:</strong> {{ prettyHP }}</p>
       <p><strong>Speed:</strong> {{ getPrettySpeed(props.monster.speed) }}</p>
       <p><strong>Initiative:</strong> {{ monsterInitiative }}</p>
-      <p><strong>{{ prettyCR }}</strong></p>
+      <p>
+        <strong>{{ prettyCR }}</strong>
+      </p>
     </div>
 
     <div class="ability-scores-table">
@@ -163,7 +165,9 @@
 
   const prettySenses = computed(() => {
     if (!props.monster.senses) return `Passive Perception ${props.monster.passive}`;
-    return `Passive Perception ${props.monster.passive}, ${capitalizeFirstLetter(props.monster.senses?.join(', '))}`;
+    return `Passive Perception ${props.monster.passive}, ${capitalizeFirstLetter(
+      props.monster.senses?.join(', ')
+    )}`;
   });
   const prettyAC = computed(() => {
     if (!Array.isArray(props.monster.ac)) {
@@ -292,7 +296,7 @@
   const formatDamageVulnerabilities = (vulnerabilities: any[] | undefined): string => {
     if (!vulnerabilities) return 'N/A';
     return vulnerabilities
-      .map((item) => {
+      .map(item => {
         if (typeof item === 'string') {
           return item;
         } else if (typeof item === 'object' && item !== null) {
@@ -359,11 +363,7 @@
   }
 
   .ability-scores-table thead {
-    background: linear-gradient(
-      135deg,
-      rgba(107, 46, 46, 0.08),
-      rgba(107, 46, 46, 0.05)
-    );
+    background: linear-gradient(135deg, rgba(107, 46, 46, 0.08), rgba(107, 46, 46, 0.05));
   }
 
   .ability-scores-table th {
@@ -490,11 +490,7 @@
   }
 
   .tab-btn--active {
-    background: linear-gradient(
-      90deg,
-      var(--color-primary),
-      var(--color-primary-600)
-    );
+    background: linear-gradient(90deg, var(--color-primary), var(--color-primary-600));
     color: white;
     border-color: var(--color-primary);
     box-shadow: 0 4px 12px rgba(107, 46, 46, 0.15);
