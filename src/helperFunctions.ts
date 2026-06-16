@@ -26,6 +26,8 @@ import type {
   Entry,
   Item,
   Items,
+  MonsterType,
+  Monster,
 } from './types';
 import { SKILL_NAME_MAP, SAVING_THROW_MAP } from './constants';
 export type ItemFilterTag = 'attunement' | 'wondrous' | 'tattoo' | 'vehicle';
@@ -1385,6 +1387,87 @@ export function calculateAbilityScoreModifier(
 export function capitalizeFirstLetter(str: string): string {
   if (!str) return str;
   return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+export function getPrettyMonsterType(monsterType: MonsterType): string {
+  if (typeof monsterType === 'string') {
+    return capitalizeFirstLetter(monsterType);
+  } else {
+    return `${capitalizeFirstLetter(monsterType.type)} (${monsterType?.tags?.join(', ')})`;
+  }
+}
+
+export function bestiaryFilter(
+  fullBestiary: Monster[],
+  searchVal?: string,
+  type?: string,
+  size?: string,
+  alignment?: string,
+  cr?: number[],
+  spellcasting?: boolean,
+  legendary?: boolean,
+  mythic?: boolean,
+  environment?: string[],
+  orderby?: 'atoz' | 'ztoa' | 'crUp' | 'crDown' | 'type'
+): Monster[] {
+  // first filter by search and other criteria
+  let filtered = fullBestiary.filter(monster => {
+    if (searchVal) {
+      const searchLower = searchVal.toLowerCase();
+      if (!monster.name.toLowerCase().includes(searchLower)) return false;
+    }
+    
+    if (type) {
+      const monsterTypeStr = typeof monster.type === 'string' 
+        ? monster.type 
+        : monster.type.type;
+      if (monsterTypeStr.toLowerCase() !== type.toLowerCase()) return false;
+    }
+    
+    if (size) {
+      const monsterSizes = Array.isArray(monster.size) 
+        ? monster.size 
+        : [monster.size];
+      const sizeMatch = monsterSizes.some(s => s.toLowerCase() === size.toLowerCase());
+      if (!sizeMatch) return false;
+    }
+    
+    if (alignment && !monster.alignment.some(a => a.toLowerCase() === alignment.toLowerCase())) {
+      return false;
+    }
+    
+    if (cr && cr.length > 0) {
+      const monsterCR = typeof monster.cr === 'string' ? parseFloat(monster.cr) : parseFloat(monster.cr.cr);
+      if (!cr.includes(monsterCR)) return false;
+    }
+    if (spellcasting && !monster.spellcasting) return false;
+    if (legendary && !monster.legendary) return false;
+    if (mythic && !monster.mythicEntries) return false;
+    if (
+      environment &&
+      environment.length > 0 &&
+      (!monster.environment ||
+        !environment.some(env => monster.environment?.includes(env)))
+    )
+      return false;
+    return true;
+  });
+
+  // then sort - if no orderby given, then default to atoz
+  const order = orderby || 'atoz';
+  filtered.sort((a, b) => {
+    if (order === 'atoz') return a.name.localeCompare(b.name);
+    if (order === 'ztoa') return b.name.localeCompare(a.name);
+    if (order === 'crUp') return (a.cr as unknown as number) - (b.cr as unknown as number);
+    if (order === 'crDown') return (b.cr as unknown as number) - (a.cr as unknown as number);
+    if (order === 'type') {
+      const aType = typeof a.type === 'string' ? a.type : a.type.type;
+      const bType = typeof b.type === 'string' ? b.type : b.type.type;
+      return aType.localeCompare(bType);
+    }
+    return 0;
+  });
+  return filtered;
 }
 
 // ---------------------------------------------------------------------------

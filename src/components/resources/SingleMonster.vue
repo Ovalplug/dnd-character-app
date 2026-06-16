@@ -64,7 +64,7 @@
       </p>
     </div>
 
-    <div class="skills-section">
+    <div v-if="monster.skill" class="skills-section">
       <p><strong>Skills:</strong> {{ prettySkills }}</p>
     </div>
 
@@ -142,6 +142,7 @@
     getPrettySpeed,
     calculateAbilityScoreModifier,
     capitalizeFirstLetter,
+    getPrettyMonsterType,
   } from '../../helperFunctions.ts';
   import { CR_TO_XP } from '../../constants.ts';
   const props = defineProps<{
@@ -238,11 +239,7 @@
   });
 
   const monsterType = computed(() => {
-    if (typeof props.monster.type === 'string') {
-      return props.monster.type;
-    } else {
-      return `${props.monster.type.type} (${props.monster.type?.tags?.join(', ')})`;
-    }
+    return getPrettyMonsterType(props.monster.type);
   });
 
   const prettyAbilityScores = computed(() => {

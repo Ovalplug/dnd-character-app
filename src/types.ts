@@ -744,9 +744,11 @@ export type Monster = {
   damageTags?: string[];
   miscTags?: string[];
   attachedItems?: string[];
-  varieant?: Entries;
+  variant?: Entries;
   environment?: string[];
   hasFluff?: boolean;
+  mythicHeader?: string[];
+  mythicEntries?: Entries;
 };
 
 export type MonsterCR = string | { cr: string; coven?: string; lair?: string };

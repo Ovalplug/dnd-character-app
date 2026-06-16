@@ -95,9 +95,12 @@
         role="button"
       >
         <p>
-          {{ monster.name }}<span class="p2"> ({{ monster.source }}) {{ calcCR(monster) }}</span>
+          {{ monster.name
+          }}<span class="p2">
+            ({{ monster.source }}) {{ calcCR(monster) }}
+            {{ getPrettyMonsterType(monster.type ?? '') }}</span
+          >
         </p>
-        <!-- <p v-if="getMonsterMeta(monster)" class="monster-meta">{{ getMonsterMeta(monster) }}</p> -->
       </div>
     </ul>
   </div>
@@ -114,6 +117,7 @@
   import SingleMonster from './SingleMonster.vue';
   import PopOut from '../PopOut.vue';
   import type { Monster, MonsterFluff } from '../../types.ts';
+  import { getPrettyMonsterType } from '../../helperFunctions.ts';
   const props = defineProps<{
     monsters: Monster[];
     monsterFluff: MonsterFluff[];
