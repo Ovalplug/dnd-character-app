@@ -118,6 +118,14 @@
         <ResourceEntries :entries="props.monster.legendary" />
       </div>
     </div>
+
+    <div v-if="props.monster.mythic && props.monster.mythic.length">
+      <h2 class="section-title">Mythic Actions</h2>
+      <div class="section-content">
+        <ResourceEntries :entries="props.monster.mythicHeader || []" />
+        <ResourceEntries :entries="props.monster.mythic" />
+      </div>
+    </div>
   </div>
 
   <!-- Fluff -->

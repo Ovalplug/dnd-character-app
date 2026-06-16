@@ -1416,38 +1416,34 @@ export function bestiaryFilter(
       const searchLower = searchVal.toLowerCase();
       if (!monster.name.toLowerCase().includes(searchLower)) return false;
     }
-    
+
     if (type) {
-      const monsterTypeStr = typeof monster.type === 'string' 
-        ? monster.type 
-        : monster.type.type;
+      const monsterTypeStr = typeof monster.type === 'string' ? monster.type : monster.type.type;
       if (monsterTypeStr.toLowerCase() !== type.toLowerCase()) return false;
     }
-    
+
     if (size) {
-      const monsterSizes = Array.isArray(monster.size) 
-        ? monster.size 
-        : [monster.size];
+      const monsterSizes = Array.isArray(monster.size) ? monster.size : [monster.size];
       const sizeMatch = monsterSizes.some(s => s.toLowerCase() === size.toLowerCase());
       if (!sizeMatch) return false;
     }
-    
+
     if (alignment && !monster.alignment.some(a => a.toLowerCase() === alignment.toLowerCase())) {
       return false;
     }
-    
+
     if (cr && cr.length > 0) {
-      const monsterCR = typeof monster.cr === 'string' ? parseFloat(monster.cr) : parseFloat(monster.cr.cr);
+      const monsterCR =
+        typeof monster.cr === 'string' ? parseFloat(monster.cr) : parseFloat(monster.cr.cr);
       if (!cr.includes(monsterCR)) return false;
     }
     if (spellcasting && !monster.spellcasting) return false;
     if (legendary && !monster.legendary) return false;
-    if (mythic && !monster.mythicEntries) return false;
+    if (mythic && !monster.mythic) return false;
     if (
       environment &&
       environment.length > 0 &&
-      (!monster.environment ||
-        !environment.some(env => monster.environment?.includes(env)))
+      (!monster.environment || !environment.some(env => monster.environment?.includes(env)))
     )
       return false;
     return true;

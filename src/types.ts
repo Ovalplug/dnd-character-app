@@ -748,7 +748,7 @@ export type Monster = {
   environment?: string[];
   hasFluff?: boolean;
   mythicHeader?: string[];
-  mythicEntries?: Entries;
+  mythic?: Entries;
 };
 
 export type MonsterCR = string | { cr: string; coven?: string; lair?: string };
