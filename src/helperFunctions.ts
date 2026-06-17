@@ -1477,7 +1477,8 @@ export function bestiaryFilter(
   type?: string[],
   size?: string[],
   alignment?: string[],
-  cr?: number[],
+  crMin?: number,
+  crMax?: number,
   spellcasting?: boolean,
   legendary?: boolean,
   mythic?: boolean,
@@ -1520,9 +1521,22 @@ export function bestiaryFilter(
       if (!match) return false;
     }
 
-    if (cr?.length) {
-      if (!cr.includes(getCR(monster))) return false;
-    }
+    const getCR = (monster: Monster): number => {
+      if (!monster.cr) return 0; // Default to 0 if CR is missing
+      const cr = typeof monster.cr === 'string' ? monster.cr : monster.cr.cr;
+
+      if (cr.includes('/')) {
+        const [num, den] = cr.split('/');
+        return Number(num) / Number(den);
+      }
+
+      return Number(cr);
+    };
+
+    const monsterCR = getCR(monster);
+
+    if (crMin !== undefined && monsterCR < crMin) return false;
+    if (crMax !== undefined && monsterCR > crMax) return false;
 
     if (spellcasting && !monster.spellcasting) return false;
     if (legendary && !monster.legendary) return false;
@@ -1549,10 +1563,14 @@ export function bestiaryFilter(
         return b.name.localeCompare(a.name);
 
       case 'crUp':
-        return getCR(a) - getCR(b);
+        const aCr = !a.cr ? '-1' : typeof a.cr === 'string' ? a.cr : a.cr.cr;
+        const bCr = !b.cr ? '-1' : typeof b.cr === 'string' ? b.cr : b.cr.cr;
+        return aCr.localeCompare(bCr);
 
       case 'crDown':
-        return getCR(b) - getCR(a);
+        const aCrDown = !a.cr ? '-1' : typeof a.cr === 'string' ? a.cr : a.cr.cr;
+        const bCrDown = !b.cr ? '-1' : typeof b.cr === 'string' ? b.cr : b.cr.cr;
+        return bCrDown.localeCompare(aCrDown);
 
       case 'type': {
         const aType = typeof a.type === 'string' ? a.type : a.type.type;
