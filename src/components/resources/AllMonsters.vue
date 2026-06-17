@@ -1,7 +1,7 @@
 <template>
   <div class="monster-container">
-<!-- The filter -->
- <div class="search-row">
+    <!-- The filter -->
+    <div class="search-row">
       <input v-model="searchVal" type="search" placeholder="Search feats..." class="search-input" />
       <button
         class="filter-toggle"
@@ -15,96 +15,130 @@
 
     <div v-if="showFilters" class="filter-panel">
       <!-- orderby filter pills -->
-        <div class="filter-footer">
-            <div class="sort-group">
-                <span class="filter-label">Sort By:</span>
-                <button
-                    class="chip"
-                    :class="{ 'chip--on': orderBy === 'atoz' }"
-                    @click="orderBy = 'atoz'"
-                >
-                    A → Z
-                </button>
-                <button
-                    class="chip"
-                    :class="{ 'chip--on': orderBy === 'ztoa' }"
-                    @click="orderBy = 'ztoa'"
-                >
-                    Z → A
-                </button>
-                <button
-                    class="chip"
-                    :class="{ 'chip--on': orderBy === 'crUp' }"
-                    @click="orderBy = 'crUp'"
-                >
-                    CR ↑
-                </button>
-                <button
-                    class="chip"
-                    :class="{ 'chip--on': orderBy === 'crDown' }"
-                    @click="orderBy = 'crDown'"
-                >
-                    CR ↓
-                </button>
-                <button
-                    class="chip"
-                    :class="{ 'chip--on': orderBy === 'type' }"
-                    @click="orderBy = 'type'"
-                >
-                    Type
-                </button>
-            </div>
+      <div class="filter-footer">
+        <div class="sort-group">
+          <span class="filter-label">Sort By:</span>
+          <button
+            class="chip"
+            :class="{ 'chip--on': orderBy === 'atoz' }"
+            @click="orderBy = 'atoz'"
+          >
+            A → Z
+          </button>
+          <button
+            class="chip"
+            :class="{ 'chip--on': orderBy === 'ztoa' }"
+            @click="orderBy = 'ztoa'"
+          >
+            Z → A
+          </button>
+          <button
+            class="chip"
+            :class="{ 'chip--on': orderBy === 'crUp' }"
+            @click="orderBy = 'crUp'"
+          >
+            CR ↑
+          </button>
+          <button
+            class="chip"
+            :class="{ 'chip--on': orderBy === 'crDown' }"
+            @click="orderBy = 'crDown'"
+          >
+            CR ↓
+          </button>
+          <button
+            class="chip"
+            :class="{ 'chip--on': orderBy === 'type' }"
+            @click="orderBy = 'type'"
+          >
+            Type
+          </button>
         </div>
+      </div>
 
-        <!-- type filter pills -->
-        <div class="filter-group">
-            <span class="filter-label">Type:</span>
-            <div class="chip-row">
-                <button
-                    v-for="type in ['Aberration', 'Beast', 'Celestial', 'Construct', 'Dragon', 'Elemental', 'Fey', 'Fiend', 'Giant', 'Humanoid', 'Monstrosity', 'Ooze', 'Plant', 'Undead']"
-                    :key="type"
-                    class="chip"
-                    :class="{ 'chip--on': typeFilter.includes(type) }"
-                    @click="toggleTypeFilter(type)"
-                >
-                    {{ type }}
-                </button>
-            </div>
+      <!-- type filter pills -->
+      <div class="filter-group">
+        <span class="filter-label">Type:</span>
+        <div class="chip-row">
+          <button
+            v-for="type in [
+              'Aberration',
+              'Beast',
+              'Celestial',
+              'Construct',
+              'Dragon',
+              'Elemental',
+              'Fey',
+              'Fiend',
+              'Giant',
+              'Humanoid',
+              'Monstrosity',
+              'Ooze',
+              'Plant',
+              'Undead',
+            ]"
+            :key="type"
+            class="chip"
+            :class="{ 'chip--on': typeFilter.includes(type) }"
+            @click="toggleTypeFilter(type)"
+          >
+            {{ type }}
+          </button>
         </div>
+      </div>
 
-        <div class="filter-group">
+      <!-- CR Stuff -->
+      <div class="filter-group">
+        <span class="filter-label"> Challenge Rating: {{ crMin }} - {{ crMax }} </span>
 
-            <!-- CR Stuff -->
-  <span class="filter-label">
-    Challenge Rating: {{ crMin }} - {{ crMax }}
-  </span>
+        <div class="dual-range">
+          <input
+            type="range"
+            min="0"
+            max="30"
+            v-model.number="crMin"
+            @input="crMin = Math.min(crMin, crMax)"
+          />
 
-  <div class="dual-range">
-    <input
-      type="range"
-      min="0"
-      max="30"
-      v-model.number="crMin"
-      @input="crMin = Math.min(crMin, crMax)"
-    />
+          <input
+            type="range"
+            min="0"
+            max="30"
+            v-model.number="crMax"
+            @input="crMax = Math.max(crMax, crMin)"
+          />
 
-    <input
-      type="range"
-      min="0"
-      max="30"
-      v-model.number="crMax"
-      @input="crMax = Math.max(crMax, crMin)"
-    />
+          <div
+            class="dual-range__fill"
+            :style="{
+              left: `${(crMin / 30) * 100}%`,
+              width: `${((crMax - crMin) / 30) * 100}%`,
+            }"
+          />
+        </div>
+      </div>
 
-    <div
-      class="dual-range__fill"
-      :style="{
-        left: `${(crMin / 30) * 100}%`,
-        width: `${((crMax - crMin) / 30) * 100}%`
-      }"
-    />
-  </div>
-</div>
+      <!-- size filter -->
+       <div class="filter-group">
+        <span class="filter-label">Size:</span>
+        <div class="chip-row">
+          <button
+            v-for="size in [['Tiny', 'T'], ['Small', 'S'], ['Medium', 'M'], ['Large', 'L'], ['Huge', 'H'], ['Gargantuan', 'G']]"
+            :key="size[0]"
+            class="chip"
+            :class="{ 'chip--on': sizeFilter.includes(size[1]) }"
+            @click="() => {
+              if (sizeFilter.includes(size[1])) {
+                sizeFilter = sizeFilter.filter(s => s !== size[1]);
+              } else {
+                sizeFilter.push(size[1]);
+              }
+            }"
+          >
+            {{ size[0] }}
+          </button>
+        </div>
+        </div>
     </div>
 
     <p class="result-count">
@@ -186,14 +220,14 @@
 
   const activeFilterCount = computed(
     () =>
-        typeFilter.value.length +
-        sizeFilter.value.length +
-        alignmentFilter.value.length +
-        (crMin.value !== 0 || crMax.value !== 30 ? 1 : 0) +
-        (spellcastingFilter.value !== undefined ? 1 : 0) +
-        (legendaryFilter.value !== undefined ? 1 : 0) +
-        (mythicFilter.value !== undefined ? 1 : 0) +
-        environmentFilter.value.length
+      typeFilter.value.length +
+      sizeFilter.value.length +
+      alignmentFilter.value.length +
+      (crMin.value !== 0 || crMax.value !== 30 ? 1 : 0) +
+      (spellcastingFilter.value !== undefined ? 1 : 0) +
+      (legendaryFilter.value !== undefined ? 1 : 0) +
+      (mythicFilter.value !== undefined ? 1 : 0) +
+      environmentFilter.value.length
   );
 
   const hasActiveFilters = computed(
@@ -427,64 +461,64 @@
   }
 
   .dual-range {
-  position: relative;
-  height: 32px;
-  margin-top: 0.5rem;
-}
+    position: relative;
+    height: 32px;
+    margin-top: 0.5rem;
+  }
 
-.dual-range input[type='range'] {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  margin: 0;
-  pointer-events: none;
-  background: transparent;
-  appearance: none;
-  z-index: 2;
-}
+  .dual-range input[type='range'] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    pointer-events: none;
+    background: transparent;
+    appearance: none;
+    z-index: 2;
+  }
 
-.dual-range input[type='range']::-webkit-slider-thumb {
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--color-primary);
-  cursor: pointer;
-  pointer-events: all;
-  border: 2px solid white;
-}
+  .dual-range input[type='range']::-webkit-slider-thumb {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    cursor: pointer;
+    pointer-events: all;
+    border: 2px solid white;
+  }
 
-.dual-range input[type='range']::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--color-primary);
-  cursor: pointer;
-  pointer-events: all;
-  border: 2px solid white;
-}
+  .dual-range input[type='range']::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    cursor: pointer;
+    pointer-events: all;
+    border: 2px solid white;
+  }
 
-.dual-range::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 8px;
-  height: 4px;
-  border-radius: 999px;
-  background: var(--color-muted);
-  opacity: 0.25;
-}
+  .dual-range::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 8px;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--color-muted);
+    opacity: 0.25;
+  }
 
-.dual-range__fill {
-  position: absolute;
-  top: 8px;
-  height: 4px;
-  border-radius: 999px;
-  background: var(--color-primary);
-  z-index: 1;
-}
+  .dual-range__fill {
+    position: absolute;
+    top: 8px;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--color-primary);
+    z-index: 1;
+  }
 
   @media (min-width: 640px) {
     .chip {
