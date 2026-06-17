@@ -1,6 +1,7 @@
 <template>
   <div class="monster-container">
-    <!-- <div class="search-row">
+<!-- The filter -->
+ <div class="search-row">
       <input v-model="searchVal" type="search" placeholder="Search feats..." class="search-input" />
       <button
         class="filter-toggle"
@@ -13,96 +14,105 @@
     </div>
 
     <div v-if="showFilters" class="filter-panel">
-      <div class="filter-group">
-        <span class="filter-label">Ability</span>
-        <div class="chip-row">
-          <button
-            v-for="ability in allAbilities"
-            :key="ability.value"
-            class="chip"
-            :class="{ 'chip--on': selectedAbilities.includes(ability.value) }"
-            @click="toggleAbility(ability.value)"
-          >
-            {{ ability.label }}
-          </button>
+      <!-- orderby filter pills -->
+        <div class="filter-footer">
+            <div class="sort-group">
+                <span class="filter-label">Sort By:</span>
+                <button
+                    class="chip"
+                    :class="{ 'chip--on': orderBy === 'atoz' }"
+                    @click="orderBy = 'atoz'"
+                >
+                    A → Z
+                </button>
+                <button
+                    class="chip"
+                    :class="{ 'chip--on': orderBy === 'ztoa' }"
+                    @click="orderBy = 'ztoa'"
+                >
+                    Z → A
+                </button>
+                <button
+                    class="chip"
+                    :class="{ 'chip--on': orderBy === 'crUp' }"
+                    @click="orderBy = 'crUp'"
+                    :disabled="true"
+                >
+                    CR ↑
+                </button>
+                <button
+                    class="chip"
+                    :class="{ 'chip--on': orderBy === 'crDown' }"
+                    @click="orderBy = 'crDown'"
+                    :disabled="true"
+                >
+                    CR ↓
+                </button>
+                <button
+                    class="chip"
+                    :class="{ 'chip--on': orderBy === 'type' }"
+                    @click="orderBy = 'type'"
+                >
+                    Type
+                </button>
+            </div>
         </div>
-      </div>
 
-      <div class="filter-group">
-        <span class="filter-label">Prerequisite</span>
-        <div class="chip-row">
-          <button
-            v-for="tag in allPrerequisiteTags"
-            :key="tag.value"
-            class="chip"
-            :class="{ 'chip--on': selectedPrerequisites.includes(tag.value) }"
-            @click="togglePrerequisite(tag.value)"
-          >
-            {{ tag.label }}
-          </button>
+        <!-- type filter pills -->
+        <div class="filter-group">
+            <span class="filter-label">Type:</span>
+            <div class="chip-row">
+                <button
+                    v-for="type in ['Aberration', 'Beast', 'Celestial', 'Construct', 'Dragon', 'Elemental', 'Fey', 'Fiend', 'Giant', 'Humanoid', 'Monstrosity', 'Ooze', 'Plant', 'Undead']"
+                    :key="type"
+                    class="chip"
+                    :class="{ 'chip--on': typeFilter.includes(type) }"
+                    @click="toggleTypeFilter(type)"
+                >
+                    {{ type }}
+                </button>
+            </div>
         </div>
-      </div>
 
-      <div v-if="allSpellTags.length > 0" class="filter-group">
-        <span class="filter-label">Spells</span>
-        <div class="chip-row">
-          <button
-            v-for="tag in allSpellTags"
-            :key="tag.value"
-            class="chip"
-            :class="{ 'chip--on': selectedSpellTags.includes(tag.value) }"
-            @click="toggleSpellTag(tag.value)"
-          >
-            {{ tag.label }}
-          </button>
-        </div>
-      </div>
-
-      <div class="filter-footer">
-        <div class="sort-group">
-          <span class="filter-label">Sort</span>
-          <button
-            class="chip"
-            :class="{ 'chip--on': orderBy === 'name' }"
-            @click="orderBy = 'name'"
-          >
-            Name
-          </button>
-          <button
-            class="chip"
-            :class="{ 'chip--on': orderBy === 'source' }"
-            @click="orderBy = 'source'"
-          >
-            Source
-          </button>
-        </div>
-        <button v-if="hasActiveFilters" class="clear-btn" @click="clearFilters">Clear all</button>
-      </div>
+        <!-- cr slider ... i'll do it properly later.. -->
+         <!-- <div>
+            <span class="filter-label">Challenge Rating:</span>
+            <input
+                type="range"
+                min="0"
+                max="30"
+                v-model.number="crFilter"
+            />
+            <span>{{ crFilter.length ? crFilter.join(', ') : 'Any' }}</span>
+         </div> -->
     </div>
 
     <p class="result-count">
-      {{ sortedMonsters.length }} monster{{ sortedMonsters.length !== 1 ? 's' : '' }}
-    </p> -->
+      {{ sortedMonsters.length }} monsters{{ sortedMonsters.length !== 1 ? 's' : '' }}
+    </p>
 
-    <ul class="resource-list">
-      <div
-        v-for="monster in sortedMonsters"
-        :key="`${monster.name}-${monster.source}`"
-        @click="selectMonster(monster)"
-        class="monster-item"
-        tabindex="0"
-        @keydown.enter="selectMonster(monster)"
-        role="button"
-      >
-        <p>
-          {{ monster.name
-          }}<span class="p2">
-            ({{ monster.source }}) {{ calcCR(monster) }}
-            {{ getPrettyMonsterType(monster.type ?? '') }}</span
-          >
-        </p>
-      </div>
-    </ul>
+    <!-- The monster list -->
+    <div>
+      <ul class="resource-list">
+        <div
+          v-for="monster in sortedMonsters"
+          :key="`${monster.name}-${monster.source}`"
+          @click="selectMonster(monster)"
+          class="monster-item"
+          tabindex="0"
+          @keydown.enter="selectMonster(monster)"
+          role="button"
+        >
+          <p>
+            {{ monster.name
+            }}<span class="p2">
+              ({{ monster.source }}) {{ calcCR(monster) }}
+              {{ getPrettyMonsterType(monster.type ?? '') }}</span
+            >
+          </p>
+        </div>
+      </ul>
+    </div>
   </div>
 
   <PopOut :title="monsterTitle" v-if="selectedMonster" :onClose="deselectMonster">
@@ -117,15 +127,64 @@
   import SingleMonster from './SingleMonster.vue';
   import PopOut from '../PopOut.vue';
   import type { Monster, MonsterFluff } from '../../types.ts';
-  import { getPrettyMonsterType } from '../../helperFunctions.ts';
+  import { getPrettyMonsterType, bestiaryFilter } from '../../helperFunctions.ts';
   const props = defineProps<{
     monsters: Monster[];
     monsterFluff: MonsterFluff[];
   }>();
 
-  const sortedMonsters = computed(() => {
-    return [...props.monsters].sort((a, b) => a.name.localeCompare(b.name));
+  const showFilters = ref(false);
+  const searchVal = ref('');
+  const orderBy = ref<'atoz' | 'ztoa' | 'crUp' | 'crDown' | 'type'>('atoz');
+  const typeFilter = ref<string[]>([]);
+  const sizeFilter = ref<string[]>([]);
+  const alignmentFilter = ref<string[]>([]);
+  const crMax = ref<number>(30);
+    const crMin = ref<number>(0);
+  const spellcastingFilter = ref<boolean | undefined>(undefined);
+  const legendaryFilter = ref<boolean | undefined>(undefined);
+  const mythicFilter = ref<boolean | undefined>(undefined);
+  const environmentFilter = ref<string[]>([]);
+
+  const crFilter = computed(() => {
+    const filters = [];
+    for (let i = crMin.value; i <= crMax.value; i++) {
+      filters.push(i);
+    }
+    return filters;
   });
+
+  const sortedMonsters = computed(() => {
+    return bestiaryFilter(
+      props.monsters,
+      orderBy.value,
+      searchVal.value,
+      typeFilter.value,
+      sizeFilter.value,
+      alignmentFilter.value,
+      crFilter.value,
+      spellcastingFilter.value,
+      legendaryFilter.value,
+      mythicFilter.value,
+      environmentFilter.value
+    );
+  });
+
+  const activeFilterCount = computed(
+    () =>
+        typeFilter.value.length +
+        sizeFilter.value.length +
+        alignmentFilter.value.length +
+        (crMin.value !== 0 || crMax.value !== 30 ? 1 : 0) +
+        (spellcastingFilter.value !== undefined ? 1 : 0) +
+        (legendaryFilter.value !== undefined ? 1 : 0) +
+        (mythicFilter.value !== undefined ? 1 : 0) +
+        environmentFilter.value.length
+  );
+
+  const hasActiveFilters = computed(
+    () => activeFilterCount.value > 0 || searchVal.value.length > 0
+  );
 
   const selectedMonster = ref<Monster | null>(null);
   const monsterTitle = computed(() => {
@@ -134,6 +193,14 @@
       selectedMonster.value.page ?? 'N/A'
     })`;
   });
+
+  function toggleTypeFilter(type: string) {
+    if (typeFilter.value.includes(type)) {
+      typeFilter.value = typeFilter.value.filter(t => t !== type);
+    } else {
+      typeFilter.value.push(type);
+    }
+  }
 
   function calcCR(monster: Monster): string {
     if (typeof monster.cr === 'object') {
@@ -272,6 +339,11 @@
     background: var(--color-primary);
     color: white;
     border-color: var(--color-primary);
+  }
+
+  .chip:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
   }
 
   .filter-footer {

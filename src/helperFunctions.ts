@@ -1397,78 +1397,176 @@ export function getPrettyMonsterType(monsterType: MonsterType): string {
   }
 }
 
+// export function bestiaryFilter(
+//   fullBestiary: Monster[],
+//   orderby?: 'atoz' | 'ztoa' | 'crUp' | 'crDown' | 'type',
+//   searchVal?: string,
+//   type?: string[],
+//   size?: string[],
+//   alignment?: string[],
+//   cr?: number[],
+//   spellcasting?: boolean,
+//   legendary?: boolean,
+//   mythic?: boolean,
+//   environment?: string[],
+// ): Monster[] {
+//   // first filter by search and other criteria
+//   let filtered = fullBestiary.filter(monster => {
+//     if (searchVal) {
+//       const searchLower = searchVal.toLowerCase();
+//       if (!monster.name.toLowerCase().includes(searchLower)) return false;
+//     }
+
+//     if (type) {
+//       const monsterTypeStr = typeof monster.type === 'string' ? monster.type : monster.type.type;
+//       if (monsterTypeStr.toLowerCase() !== monsterTypeStr.toLowerCase()) return false;
+//     }
+
+//     if (size) {
+//       const monsterSizes = Array.isArray(monster.size) ? monster.size : [monster.size];
+//       const sizeMatch = monsterSizes.some(s => s.toLowerCase() === size.toLowerCase());
+//       if (!sizeMatch) return false;
+//     }
+
+//     if (alignment && !monster.alignment.some(a => a.toLowerCase() === alignment.toLowerCase())) {
+//       return false;
+//     }
+
+//     if (cr && cr.length > 0) {
+//       const monsterCR =
+//         typeof monster.cr === 'string' ? parseFloat(monster.cr) : parseFloat(monster.cr.cr);
+//       if (!cr.includes(monsterCR)) return false;
+//     }
+//     if (spellcasting && !monster.spellcasting) return false;
+//     if (legendary && !monster.legendary) return false;
+//     if (mythic && !monster.mythic) return false;
+//     if (
+//       environment &&
+//       environment.length > 0 &&
+//       (!monster.environment || !environment.some(env => monster.environment?.includes(env)))
+//     )
+//       return false;
+//     return true;
+//   });
+
+//   // then sort - if no orderby given, then default to atoz
+//   const order = orderby || 'atoz';
+//   filtered.sort((a, b) => {
+//     if (order === 'atoz') return a.name.localeCompare(b.name);
+//     if (order === 'ztoa') return b.name.localeCompare(a.name);
+//     if (order === 'crUp') return (a.cr as unknown as number) - (b.cr as unknown as number);
+//     if (order === 'crDown') return (b.cr as unknown as number) - (a.cr as unknown as number);
+//     if (order === 'type') {
+//       const aType = typeof a.type === 'string' ? a.type : a.type.type;
+//       const bType = typeof b.type === 'string' ? b.type : b.type.type;
+//       return aType.localeCompare(bType);
+//     }
+//     return 0;
+//   });
+//   return filtered;
+// }
+
+// ---------------------------------------------------------------------------
+// Spellcasting computation
+// ---------------------------------------------------------------------------
+
 export function bestiaryFilter(
   fullBestiary: Monster[],
+  orderby?: 'atoz' | 'ztoa' | 'crUp' | 'crDown' | 'type',
   searchVal?: string,
-  type?: string,
-  size?: string,
-  alignment?: string,
+  type?: string[],
+  size?: string[],
+  alignment?: string[],
   cr?: number[],
   spellcasting?: boolean,
   legendary?: boolean,
   mythic?: boolean,
-  environment?: string[],
-  orderby?: 'atoz' | 'ztoa' | 'crUp' | 'crDown' | 'type'
+  environment?: string[]
 ): Monster[] {
-  // first filter by search and other criteria
-  let filtered = fullBestiary.filter(monster => {
+  const getCR = (monster: Monster): number => {
+    if (typeof monster.cr === 'string') {
+      return parseFloat(monster.cr);
+    }
+    return parseFloat(monster.cr.cr);
+  };
+
+  const filtered = fullBestiary.filter(monster => {
     if (searchVal) {
       const searchLower = searchVal.toLowerCase();
       if (!monster.name.toLowerCase().includes(searchLower)) return false;
     }
 
-    if (type) {
-      const monsterTypeStr = typeof monster.type === 'string' ? monster.type : monster.type.type;
-      if (monsterTypeStr.toLowerCase() !== type.toLowerCase()) return false;
+    if (type?.length) {
+      const monsterType = typeof monster.type === 'string' ? monster.type : monster.type.type;
+
+      if (!type.some(t => t.toLowerCase() === monsterType.toLowerCase())) {
+        return false;
+      }
     }
 
-    if (size) {
+    if (size?.length) {
       const monsterSizes = Array.isArray(monster.size) ? monster.size : [monster.size];
-      const sizeMatch = monsterSizes.some(s => s.toLowerCase() === size.toLowerCase());
-      if (!sizeMatch) return false;
+
+      const match = monsterSizes.some(ms => size.some(s => s.toLowerCase() === ms.toLowerCase()));
+
+      if (!match) return false;
     }
 
-    if (alignment && !monster.alignment.some(a => a.toLowerCase() === alignment.toLowerCase())) {
-      return false;
+    if (alignment?.length) {
+      const match = monster.alignment.some(ma =>
+        alignment.some(a => a.toLowerCase() === ma.toLowerCase())
+      );
+
+      if (!match) return false;
     }
 
-    if (cr && cr.length > 0) {
-      const monsterCR =
-        typeof monster.cr === 'string' ? parseFloat(monster.cr) : parseFloat(monster.cr.cr);
-      if (!cr.includes(monsterCR)) return false;
+    if (cr?.length) {
+      if (!cr.includes(getCR(monster))) return false;
     }
+
     if (spellcasting && !monster.spellcasting) return false;
     if (legendary && !monster.legendary) return false;
     if (mythic && !monster.mythic) return false;
+
     if (
-      environment &&
-      environment.length > 0 &&
+      environment?.length &&
       (!monster.environment || !environment.some(env => monster.environment?.includes(env)))
-    )
+    ) {
       return false;
+    }
+
     return true;
   });
 
-  // then sort - if no orderby given, then default to atoz
-  const order = orderby || 'atoz';
+  const order = orderby ?? 'atoz';
+
   filtered.sort((a, b) => {
-    if (order === 'atoz') return a.name.localeCompare(b.name);
-    if (order === 'ztoa') return b.name.localeCompare(a.name);
-    if (order === 'crUp') return (a.cr as unknown as number) - (b.cr as unknown as number);
-    if (order === 'crDown') return (b.cr as unknown as number) - (a.cr as unknown as number);
-    if (order === 'type') {
-      const aType = typeof a.type === 'string' ? a.type : a.type.type;
-      const bType = typeof b.type === 'string' ? b.type : b.type.type;
-      return aType.localeCompare(bType);
+    switch (order) {
+      case 'atoz':
+        return a.name.localeCompare(b.name);
+
+      case 'ztoa':
+        return b.name.localeCompare(a.name);
+
+      case 'crUp':
+        return getCR(a) - getCR(b);
+
+      case 'crDown':
+        return getCR(b) - getCR(a);
+
+      case 'type': {
+        const aType = typeof a.type === 'string' ? a.type : a.type.type;
+        const bType = typeof b.type === 'string' ? b.type : b.type.type;
+        return aType.localeCompare(bType);
+      }
+
+      default:
+        return 0;
     }
-    return 0;
   });
+
   return filtered;
 }
-
-// ---------------------------------------------------------------------------
-// Spellcasting computation
-// ---------------------------------------------------------------------------
 
 /**
  * Full-caster spell slot table indexed by [classLevel - 1][slotLevel - 1].
