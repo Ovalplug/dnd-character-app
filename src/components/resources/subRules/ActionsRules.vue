@@ -10,7 +10,9 @@
         @keydown.enter="selected = item"
         role="button"
       >
-        <p>{{ item.name }}<span class="p2"> ({{ item.source }})</span></p>
+        <p>
+          {{ item.name }}<span class="p2"> ({{ item.source }})</span>
+        </p>
       </div>
     </ul>
     <PopOut :title="selected?.name" v-if="selected" :onClose="() => (selected = null)">
@@ -26,12 +28,18 @@
   import SingleRuleItem from './SingleRuleItem.vue';
 
   const props = defineProps<{ actionRules: ActionRules[] }>();
-  const sorted = computed(() => [...props.actionRules].sort((a, b) => a.name.localeCompare(b.name)));
+  const sorted = computed(() =>
+    [...props.actionRules].sort((a, b) => a.name.localeCompare(b.name))
+  );
   const selected = ref<ActionRules | null>(null);
 </script>
 
 <style scoped>
-  .resource-list { list-style: none; padding: 0; margin: 0; }
+  .resource-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
   .rule-item {
     cursor: pointer;
     padding: 0.75rem 1rem;
@@ -42,6 +50,13 @@
     justify-content: center;
     transition: background 0.14s;
   }
-  .rule-item:hover, .rule-item:focus-visible { background: var(--color-surface); outline: none; }
-  .rule-item p { margin: 0; font-size: 0.95rem; }
+  .rule-item:hover,
+  .rule-item:focus-visible {
+    background: var(--color-surface);
+    outline: none;
+  }
+  .rule-item p {
+    margin: 0;
+    font-size: 0.95rem;
+  }
 </style>

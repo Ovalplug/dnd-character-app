@@ -30,7 +30,10 @@
         <BoonsRules v-else-if="section.key === 'boons'" :boons="props.boons" />
         <DiseasesRules v-else-if="section.key === 'diseases'" :diseases="props.diseases" />
         <TrapsRules v-else-if="section.key === 'traps'" :traps="props.traps" />
-        <PlayerOptionsRules v-else-if="section.key === 'playerOptions'" :playerOptions="props.playerOptions" />
+        <PlayerOptionsRules
+          v-else-if="section.key === 'playerOptions'"
+          :playerOptions="props.playerOptions"
+        />
       </div>
     </div>
   </div>
@@ -38,7 +41,16 @@
 
 <script lang="ts" setup>
   import { ref, computed } from 'vue';
-  import type { Boon, Diseases, Hazard, Rules, Trap, ActionRules, PlayerOptions, ConditionsRules as ConditionsRulesType } from '../../types';
+  import type {
+    Boon,
+    Diseases,
+    Hazard,
+    Rules,
+    Trap,
+    ActionRules,
+    PlayerOptions,
+    ConditionsRules as ConditionsRulesType,
+  } from '../../types';
   import RulesRules from './subRules/RulesRules.vue';
   import ActionsRules from './subRules/ActionsRules.vue';
   import ConditionsRules from './subRules/ConditionsRules.vue';
@@ -85,7 +97,7 @@
   .rules-container {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.25rem;
   }
 
   .section-toggles {
@@ -153,7 +165,7 @@
   .section-block {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.25rem;
   }
 
   .section-title {
