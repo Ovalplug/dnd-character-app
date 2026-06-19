@@ -1,6 +1,20 @@
 import { defineStore } from 'pinia';
 import { getSetting, setSetting } from '../database/db';
-import type { Feat, Item, Items, Monster, MonsterFluff } from '../types';
+import type {
+  ActionRules,
+  Boon,
+  ConditionsRules,
+  Diseases,
+  Feat,
+  Hazard,
+  Item,
+  Items,
+  Monster,
+  MonsterFluff,
+  PlayerOptions,
+  Rules,
+  Trap,
+} from '../types';
 
 let datasets: any[] = [];
 export let allData: any[] = [];
@@ -164,6 +178,14 @@ export const useDataStore = defineStore('data', {
     enabledSources: {} as Record<string, boolean>,
     monsters: [] as Monster[],
     monsterFluff: [] as MonsterFluff[],
+    conditions: [] as ConditionsRules[],
+    playerOptions: [] as PlayerOptions[],
+    actionRules: [] as ActionRules[],
+    traps: [] as Trap[],
+    diseases: [] as Diseases[],
+    boons: [] as Boon[],
+    hazards: [] as Hazard[],
+    rules: [] as Rules[],
   }),
 
   getters: {
@@ -247,6 +269,14 @@ export const useDataStore = defineStore('data', {
       this.spells = aggregateSpells(datasets);
       this.monsters = aggregate<Monster>('monster');
       this.monsterFluff = aggregate<MonsterFluff>('monsterFluff');
+      this.conditions = aggregate<ConditionsRules>('cond');
+      this.playerOptions = aggregate<PlayerOptions>('play');
+      this.actionRules = aggregate<ActionRules>('acti');
+      this.traps = aggregate<Trap>('trap');
+      this.diseases = aggregate<Diseases>('dise');
+      this.boons = aggregate<Boon>('boon');
+      this.hazards = aggregate<Hazard>('haza');
+      this.rules = aggregate<Rules>('rule');
       await this.loadSourceSettings();
       this.loaded = true;
     },

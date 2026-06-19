@@ -13,6 +13,7 @@
           <option value="spells">Spells</option>
           <option value="items">Items</option>
           <option value="monsters">Monsters</option>
+          <option value="rules">Rules</option>
         </select>
       </div>
     </div>
@@ -32,6 +33,7 @@
         <button @click="showData('spells')">Spells</button>
         <button @click="showData('items')">Items</button>
         <button @click="showData('monsters')">Monsters</button>
+        <button @click="showData('rules')">Rules</button>
       </div>
       <AllFeats v-if="show_feats" :feats="dataStore.filteredFeats" />
       <AllRaces
@@ -58,6 +60,17 @@
         :monsters="dataStore.monsters"
         :monsterFluff="dataStore.monsterFluff"
       />
+      <AllRules
+        v-if="show_rules"
+        :rules="dataStore.rules"
+        :hazards="dataStore.hazards"
+        :boons="dataStore.boons"
+        :diseases="dataStore.diseases"
+        :traps="dataStore.traps"
+        :actionRules="dataStore.actionRules"
+        :playerOptions="dataStore.playerOptions"
+        :conditions="dataStore.conditions"
+      />
     </div>
   </div>
 </template>
@@ -75,6 +88,7 @@
   import AllSpells from '../components/resources/AllSpells.vue';
   import AllItems from '../components/resources/AllItems.vue';
   import AllMonsters from '../components/resources/AllMonsters.vue';
+  import AllRules from '../components/resources/AllRules.vue';
   const { initDebug } = useDebug();
 
   const dataStore = useDataStore();
@@ -92,6 +106,7 @@
   const show_spells = ref(false);
   const show_items = ref(false);
   const show_monsters = ref(false);
+  const show_rules = ref(false);
   // Track which data type is currently selected
   const selectedType = ref('');
 
@@ -109,7 +124,8 @@
       show_subclasses.value ||
       show_spells.value ||
       show_items.value ||
-      show_monsters.value
+      show_monsters.value ||
+      show_rules.value
     );
   });
 
@@ -145,6 +161,7 @@
     show_spells.value = false;
     show_items.value = false;
     show_monsters.value = false;
+    show_rules.value = false;
   }
 
   function showData(dataType: string) {
@@ -201,6 +218,10 @@
       case 'monsters':
         show_monsters.value = true;
         selectedType.value = 'monsters';
+        break;
+      case 'rules':
+        show_rules.value = true;
+        selectedType.value = 'rules';
         break;
       default:
         selectedType.value = '';
