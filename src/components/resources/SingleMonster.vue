@@ -1,6 +1,6 @@
 <template>
   <!-- Top buttons -->
-  <div class="tab-row">
+  <div v-if="!props.hideFluff" class="tab-row">
     <button :class="['tab-btn', { 'tab-btn--active': statsSelected }]" @click="selectStats">
       Stats
     </button>
@@ -129,7 +129,7 @@
   </div>
 
   <!-- Fluff -->
-  <div v-if="fluffSelected" class="fluff-content">
+  <div v-if="fluffSelected && !props.hideFluff" class="fluff-content">
     <h2 class="fluff-title">{{ fluff?.name }}</h2>
     <div v-if="imageRef">
       <img :src="imageRef" :alt="`Image of ${props.monster.name}`" class="monsterImg" />
@@ -156,6 +156,7 @@
   const props = defineProps<{
     monster: Monster;
     fluff?: MonsterFluff;
+    hideFluff?: boolean;
   }>();
 
   const statsSelected = ref(true);

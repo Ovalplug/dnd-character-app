@@ -922,3 +922,10 @@ export type ConditionsRules = {
   hasFluff?: boolean;
   hasFluffImages?: boolean;
 };
+
+export type EncounterCreature = Monster & {
+  initiative: number;
+  currentHp: number;
+  maxHp: number;
+  conditions: ConditionsRules[];
+}

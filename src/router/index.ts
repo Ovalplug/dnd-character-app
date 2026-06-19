@@ -12,6 +12,7 @@ import QuickCharCreate from '../components/creation/QuickCharCreate.vue';
 import FullCreation from '../components/creation/FullCreation.vue';
 import RandomCreation from '../components/creation/RandomCreation.vue';
 import LevelUpView from '../views/LevelUpView.vue';
+import TrainingGround from '../views/TrainingGround.vue';
 import { useDataStore } from '../stores/dataStore';
 
 const routes: Array<RouteRecordRaw> = [
@@ -33,6 +34,7 @@ const routes: Array<RouteRecordRaw> = [
   { path: '/create/itemCreate', name: 'itemCreate', component: PlaceHolder },
   { path: '/create/monsterCreate', name: 'monsterCreate', component: PlaceHolder },
   { path: '/create/spellCreate', name: 'spellCreate', component: PlaceHolder },
+  { path: '/training', name: 'trainingGround', component: TrainingGround },
   { path: '/:pathMatch(.*)*', redirect: '/' }, // catch-all route to redirect to home
 ];
 

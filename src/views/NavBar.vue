@@ -101,6 +101,7 @@
   import usersIcon from '../assets/icons/users.svg?url';
   import plusIcon from '../assets/icons/plus.svg?url';
   import settingsIcon from '../assets/icons/settings.svg?url';
+  import trainIcon from '../assets/icons/train.svg?url';
 
   // `expanded` controls whether the sidebar shows labels and takes more screen.
   // When false, the sidebar is a narrow icon-only strip for quick navigation.
@@ -119,6 +120,7 @@
     { label: 'Create', icon: plusIcon, path: '/create' },
     { label: 'Settings', icon: settingsIcon, path: '/settings' },
     { label: 'Resources', icon: bookIcon, path: '/resources' },
+    { label: 'Training', icon: trainIcon, path: '/training' },
   ];
 
   function toggle() {
