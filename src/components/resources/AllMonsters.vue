@@ -119,97 +119,92 @@
       </div>
 
       <!-- size filter -->
-       <div class="filter-group">
+      <div class="filter-group">
         <span class="filter-label">Size:</span>
         <div class="chip-row">
           <button
-            v-for="size in [['Tiny', 'T'], ['Small', 'S'], ['Medium', 'M'], ['Large', 'L'], ['Huge', 'H'], ['Gargantuan', 'G']]"
+            v-for="size in ([
+              ['Tiny', 'T'],
+              ['Small', 'S'],
+              ['Medium', 'M'],
+              ['Large', 'L'],
+              ['Huge', 'H'],
+              ['Gargantuan', 'G'],
+            ] as const)"
             :key="size[0]"
             class="chip"
             :class="{ 'chip--on': sizeFilter.includes(size[1]) }"
-            @click="() => {
-              if (sizeFilter.includes(size[1])) {
-                sizeFilter = sizeFilter.filter(s => s !== size[1]);
-              } else {
-                sizeFilter.push(size[1]);
+            @click="
+              () => {
+                if (sizeFilter.includes(size[1])) {
+                  sizeFilter = sizeFilter.filter(s => s !== size[1]);
+                } else {
+                  sizeFilter.push(size[1]);
+                }
               }
-            }"
+            "
           >
             {{ size[0] }}
           </button>
         </div>
-        </div>
-
-        <!-- alignment filter -->
-    <div class="filter-group">
-      <span class="filter-label">Alignment:</span>
-      <div class="chip-row">
-        <button
-          v-for="alignment in [['Lawful', 'L'], ['Neutral', 'N'], ['Chaotic', 'C'], ['Good', 'G'], ['Evil', 'E']]"
-          :key="alignment[1]"
-          class="chip"
-          :class="{ 'chip--on': alignmentFilter.includes(alignment[1]) }"
-          @click="() => {
-            if (alignmentFilter.includes(alignment[1])) {
-              alignmentFilter = alignmentFilter.filter(a => a !== alignment[1]);
-            } else {
-              alignmentFilter.push(alignment[1]);
-            }
-          }"
-        >
-          {{ alignment[0] }}
-        </button>
       </div>
-    </div>
 
-    <!-- spellcasting, legendary, mythic filters for both include and exclude -->
-     <div class="filter-group">
+      <!-- alignment filter -->
+      <div class="filter-group">
+        <span class="filter-label">Alignment:</span>
+        <div class="chip-row">
+          <button
+            v-for="alignment in ([
+              ['Lawful', 'L'],
+              ['Neutral', 'N'],
+              ['Chaotic', 'C'],
+              ['Good', 'G'],
+              ['Evil', 'E'],
+            ] as const)"
+            :key="alignment[1]"
+            class="chip"
+            :class="{ 'chip--on': alignmentFilter.includes(alignment[1]) }"
+            @click="
+              () => {
+                if (alignmentFilter.includes(alignment[1])) {
+                  alignmentFilter = alignmentFilter.filter(a => a !== alignment[1]);
+                } else {
+                  alignmentFilter.push(alignment[1] ? alignment[1] : '');
+                }
+              }
+            "
+          >
+            {{ alignment[0] }}
+          </button>
+        </div>
+      </div>
+
+      <!-- spellcasting, legendary, mythic filters for both include and exclude -->
+      <div class="filter-group">
         <span class="filter-label">Spellcasting:</span>
         <div class="chip-row">
-            <button
+          <button
             class="chip"
             :class="{ 'chip--on': spellcastingFilter === true }"
             @click="spellcastingFilter = spellcastingFilter === true ? undefined : true"
-            >
+          >
             Has Spellcasting
-            </button>
-            <button
+          </button>
+          <button
             class="chip"
             :class="{ 'chip--on': legendaryFilter === true }"
             @click="legendaryFilter = legendaryFilter === true ? undefined : true"
-            >
+          >
             Has Legendary Actions
-            </button>
-            <button
+          </button>
+          <button
             class="chip"
             :class="{ 'chip--on': mythicFilter === true }"
             @click="mythicFilter = mythicFilter === true ? undefined : true"
-            >
+          >
             Has Mythic Actions
-            </button>
+          </button>
         </div>
-    </div>
-
-    <!-- environment filter -->
-    <div class="filter-group">
-      <span class="filter-label">Environment:</span>
-      <div class="chip-row">
-        <button
-          v-for="env in [['Arctic', 'arctic'], ['Coastal', 'coastal'], ['Desert', 'desert'], ['Forest', 'forest'], ['Grassland', 'grassland'], ['Hill', 'hill'], ['Mountain', 'mountain'], ['Swamp', 'swamp'], ['Underground', 'underground'], ['Underwater', 'underwater']]"
-          :key="env[1]"
-          class="chip"
-          :class="{ 'chip--on': environmentFilter.includes(env[1]) }"
-          @click="() => {
-            if (environmentFilter.includes(env[1])) {
-              environmentFilter = environmentFilter.filter(e => e !== env[1]);
-            } else {
-              environmentFilter.push(env[1]);
-            }
-          }"
-        >
-          {{ env[0] }}
-        </button>
-      </div>
       </div>
     </div>
 

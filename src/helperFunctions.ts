@@ -1484,13 +1484,6 @@ export function bestiaryFilter(
   mythic?: boolean,
   environment?: string[]
 ): Monster[] {
-  const getCR = (monster: Monster): number => {
-    if (typeof monster.cr === 'string') {
-      return parseFloat(monster.cr);
-    }
-    return parseFloat(monster.cr.cr);
-  };
-
   const filtered = fullBestiary.filter(monster => {
     if (searchVal) {
       const searchLower = searchVal.toLowerCase();
@@ -1514,9 +1507,7 @@ export function bestiaryFilter(
     }
 
     if (alignment?.length) {
-      const match = monster.alignment.some(ma =>
-        alignment.some(a => a === ma)
-      );
+      const match = monster.alignment.some(ma => alignment.some(a => a === ma));
 
       if (!match) return false;
     }

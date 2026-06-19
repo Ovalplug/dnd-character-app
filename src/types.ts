@@ -840,3 +840,85 @@ export type MonsterDailySpells = {
   '8e'?: string[];
   '9e'?: string[];
 };
+
+export type Rules = {
+  name: string;
+  source: string;
+  page?: number;
+  entries?: Entries;
+  images?: Image[];
+  ruleType?: string;
+};
+
+export type Hazard = {
+  name: string;
+  source: string;
+  page?: number;
+  entries?: Entries;
+  images?: Image[];
+};
+
+export type Boon = {
+  name: string;
+  source: string;
+  page?: number;
+  entries?: Entries;
+  images?: Image[];
+  type?: string;
+};
+
+// dise
+export type Diseases = {
+  name: string;
+  source: string;
+  entries?: Entries;
+  images?: Image[];
+  page?: number;
+};
+
+export type Trap = {
+  name: string;
+  source: string;
+  page?: number;
+  entries?: Entries;
+  images?: Image[];
+  srd?: boolean;
+  trapHazType?: string; // double check
+};
+
+export type ActionRules = {
+  name: string;
+  source: string;
+  page?: number;
+  entries?: Entries;
+  images?: Image[];
+  srd?: boolean;
+  time?: TimeRule[];
+  seeAlsoAction?: string[];
+  fromVariant?: string;
+};
+
+export type TimeRule = {
+  number: number;
+  unit: string;
+};
+
+export type PlayerOptions = {
+  name: string;
+  source: string;
+  page?: number;
+  entries?: Entries;
+  images?: Image[];
+  optionType?: string;
+};
+
+export type ConditionsRules = {
+  name: string;
+  source: string;
+  page?: number;
+  entries?: Entries;
+  images?: Image[];
+  srd?: boolean;
+  hasFluff?: boolean;
+  hasFluffImages?: boolean;
+};
