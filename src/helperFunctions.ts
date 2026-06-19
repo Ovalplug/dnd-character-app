@@ -1515,7 +1515,7 @@ export function bestiaryFilter(
 
     if (alignment?.length) {
       const match = monster.alignment.some(ma =>
-        alignment.some(a => a.toLowerCase() === ma.toLowerCase())
+        alignment.some(a => a === ma)
       );
 
       if (!match) return false;
@@ -1583,7 +1583,15 @@ export function bestiaryFilter(
     }
   });
 
-  return filtered;
+  // i need to make sure there are no duplicate monsters in the filtered list, based on their name
+  const uniqueMonsters = new Map<string, Monster>();
+  for (const monster of filtered) {
+    if (!uniqueMonsters.has(monster.name)) {
+      uniqueMonsters.set(monster.name, monster);
+    }
+  }
+
+  return Array.from(uniqueMonsters.values());
 }
 
 /**
