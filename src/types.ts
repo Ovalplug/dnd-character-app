@@ -928,4 +928,4 @@ export type EncounterCreature = Monster & {
   currentHp: number;
   maxHp: number;
   conditions: ConditionsRules[];
-}
+};

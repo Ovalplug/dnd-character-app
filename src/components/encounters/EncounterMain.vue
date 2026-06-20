@@ -1,124 +1,115 @@
 <template>
-    <div class="encounterHeader">
-        <button @click="resetEncounter">Reset Encounter</button>
-        <button @click="damageParticipant(activeParticipantIndex, 5)">Damage Active Participant (5)</button>
-    </div>
+  <div class="encounterHeader">
+    <button @click="resetEncounter">Reset Encounter</button>
+    <button @click="damageParticipant(activeParticipantIndex, 5)">
+      Damage Active Participant (5)
+    </button>
+  </div>
 
-    <div class="encounterHolder">
+  <div class="encounterHolder">
+    <div
+      v-for="(participant, index) in encounterParticipants"
+      :key="`participant-${index}`"
+      :class="['participant', { 'active-participant': index === activeParticipantIndex }]"
+    >
+      <div class="participantHp">
         <div
-            v-for="(participant, index) in encounterParticipants"
-            :key="`participant-${index}`"
-            :class="['participant', { 'active-participant': index === activeParticipantIndex }]"
-        >
-            <div class="participantHp">
-                <div
-                    class="participantHpBar"
-                    :style="{
-                        width: `${getHpPercentage(participant)}%`,
-                        backgroundColor: getHpColor(participant)
-                    }"
-                />
+          class="participantHpBar"
+          :style="{
+            width: `${getHpPercentage(participant)}%`,
+            backgroundColor: getHpColor(participant),
+          }"
+        />
 
-                <div class="participantHpText">
-                    {{ participant.currentHp }} / {{ participant.maxHp }}
-                </div>
-            </div>
+        <div class="participantHpText">{{ participant.currentHp }} / {{ participant.maxHp }}</div>
+      </div>
 
-            <SingleMonster
-                :monster="participant"
-                :hideFluff="true"
-            />
-        </div>
+      <SingleMonster :monster="participant" :hideFluff="true" />
     </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-import type { Monster, EncounterCreature } from '../../types';
-import SingleMonster from '../resources/SingleMonster.vue';
+  import { ref } from 'vue';
+  import type { Monster, EncounterCreature } from '../../types';
+  import SingleMonster from '../resources/SingleMonster.vue';
 
-import { diceRoll } from '../../helperFunctions.ts';
+  import { diceRoll } from '../../helperFunctions.ts';
 
-const props = defineProps<{
+  const props = defineProps<{
     participants: Monster[];
-}>();
+  }>();
 
-const activeParticipantIndex = ref(0);
+  const activeParticipantIndex = ref(0);
 
-const encounterParticipants = ref<EncounterCreature[]>(
-    props.participants.map(participant => {
+  const encounterParticipants = ref<EncounterCreature[]>(
+    props.participants
+      .map(participant => {
         const hp =
-            typeof participant.hp === 'number'
-                ? participant.hp
-                : participant.hp?.average || 0;
+          typeof participant.hp === 'number' ? participant.hp : participant.hp?.average || 0;
 
         return {
-            ...participant,
-            initiative: diceRoll([{ dType: 'd20', count: 1 }]),
-            currentHp: hp,
-            maxHp: hp,
-            conditions: [],
+          ...participant,
+          initiative: diceRoll([{ dType: 'd20', count: 1 }]),
+          currentHp: hp,
+          maxHp: hp,
+          conditions: [],
         };
-    }).sort((a, b) => b.initiative - a.initiative)
-);
+      })
+      .sort((a, b) => b.initiative - a.initiative)
+  );
 
-function resetEncounter() {
+  function resetEncounter() {
     activeParticipantIndex.value = 0;
 
-    encounterParticipants.value = props.participants.map(participant => {
+    encounterParticipants.value = props.participants
+      .map(participant => {
         const hp =
-            typeof participant.hp === 'number'
-                ? participant.hp
-                : participant.hp?.average || 0;
+          typeof participant.hp === 'number' ? participant.hp : participant.hp?.average || 0;
 
         return {
-            ...participant,
-            initiative: diceRoll([{ dType: 'd20', count: 1 }]),
-            currentHp: hp,
-            maxHp: hp,
-            conditions: [],
+          ...participant,
+          initiative: diceRoll([{ dType: 'd20', count: 1 }]),
+          currentHp: hp,
+          maxHp: hp,
+          conditions: [],
         };
-    }).sort((a, b) => b.initiative - a.initiative);
-}
+      })
+      .sort((a, b) => b.initiative - a.initiative);
+  }
 
-function getHpPercentage(participant: EncounterCreature): number {
+  function getHpPercentage(participant: EncounterCreature): number {
     if (!participant.maxHp) return 0;
 
-    return Math.max(
-        0,
-        Math.min(
-            100,
-            (participant.currentHp / participant.maxHp) * 100
-        )
-    );
-}
+    return Math.max(0, Math.min(100, (participant.currentHp / participant.maxHp) * 100));
+  }
 
-function getHpColor(participant: EncounterCreature): string {
+  function getHpColor(participant: EncounterCreature): string {
     const percentage = getHpPercentage(participant);
 
     if (percentage > 50) return '#4caf50';
     if (percentage > 25) return '#ff9800';
     return '#f44336';
-}
+  }
 
-function damageParticipant(index: number, damage: number) {
+  function damageParticipant(index: number, damage: number) {
     const participant = encounterParticipants.value[index];
     if (!participant) return;
 
     participant.currentHp = Math.max(0, participant.currentHp - damage);
-}
+  }
 </script>
 
 <style scoped>
-.encounterHeader {
+  .encounterHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
     border: 1px solid rgba(107, 46, 46, 0.12);
     height: 10%;
-}
+  }
 
-.encounterHolder {
+  .encounterHolder {
     display: flex;
     flex-direction: row;
     gap: 0.5rem;
@@ -133,9 +124,9 @@ function damageParticipant(index: number, damage: number) {
     box-sizing: border-box;
 
     scroll-snap-type: x mandatory;
-}
+  }
 
-.participant {
+  .participant {
     flex-shrink: 0;
 
     display: flex;
@@ -150,14 +141,14 @@ function damageParticipant(index: number, damage: number) {
     width: calc(100vw - 5rem);
 
     overflow-y: auto;
-}
+  }
 
-.active-participant {
+  .active-participant {
     border: 2px solid var(--color-primary);
     background-color: var(--color-surface);
-}
+  }
 
-.participantHp {
+  .participantHp {
     position: relative;
 
     height: 3rem;
@@ -167,20 +158,18 @@ function damageParticipant(index: number, damage: number) {
     background-color: #2b2b2b;
 
     overflow: hidden;
-}
+  }
 
-.participantHpBar {
+  .participantHpBar {
     position: absolute;
     top: 0;
     left: 0;
     bottom: 0;
 
-    transition:
-        width 0.3s ease,
-        background-color 0.3s ease;
-}
+    transition: width 0.3s ease, background-color 0.3s ease;
+  }
 
-.participantHpText {
+  .participantHpText {
     position: relative;
     z-index: 1;
 
@@ -196,19 +185,19 @@ function damageParticipant(index: number, damage: number) {
     color: white;
 
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-}
+  }
 
-/* Tablet */
-@media (min-width: 768px) {
+  /* Tablet */
+  @media (min-width: 768px) {
     .participant {
-        width: 350px;
+      width: 350px;
     }
-}
+  }
 
-/* Desktop */
-@media (min-width: 1200px) {
+  /* Desktop */
+  @media (min-width: 1200px) {
     .participant {
-        width: 400px;
+      width: 400px;
     }
-}
+  }
 </style>
