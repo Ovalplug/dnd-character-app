@@ -238,7 +238,11 @@
 
   <PopOut :title="monsterTitle" v-if="selectedMonster" :onClose="deselectMonster">
     <div>
-      <SingleMonster :monster="selectedMonster" :fluff="getMonsterFluff(selectedMonster)" />
+      <SingleMonster
+        :monster="selectedMonster"
+        :fluff="getMonsterFluff(selectedMonster)"
+        :spells="props.spells"
+      />
     </div>
   </PopOut>
 </template>
@@ -247,12 +251,13 @@
   import { computed, ref } from 'vue';
   import SingleMonster from './SingleMonster.vue';
   import PopOut from '../PopOut.vue';
-  import type { Monster, MonsterFluff } from '../../types.ts';
+  import type { Monster, MonsterFluff, Spells } from '../../types.ts';
   import { getPrettyMonsterType, bestiaryFilter } from '../../helperFunctions.ts';
   import { CR_VALUES } from '../../constants.ts';
   const props = defineProps<{
     monsters: Monster[];
     monsterFluff: MonsterFluff[];
+    spells: Spells;
   }>();
 
   const showFilters = ref(false);

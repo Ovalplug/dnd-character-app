@@ -101,7 +101,10 @@
     <div v-if="props.monster.spellcasting && props.monster.spellcasting.length">
       <h2 class="section-title">Spellcasting</h2>
       <div class="section-content">
-        <SingleMonsterSpellcasting :spellcasting="props.monster.spellcasting || []" />
+        <SingleMonsterSpellcasting
+          :spellcasting="props.monster.spellcasting || []"
+          :spells="props.spells"
+        />
       </div>
     </div>
 
@@ -148,10 +151,10 @@
 </template>
 
 <script lang="ts" setup>
-import SingleMonsterSpellcasting from './SingleMonsterSpellcasting.vue';
+  import SingleMonsterSpellcasting from './SingleMonsterSpellcasting.vue';
   import { ref, computed } from 'vue';
   import ResourceEntries from './ResourceEntries.vue';
-  import type { Monster, MonsterFluff } from '../../types.ts';
+  import type { Monster, MonsterFluff, Spells } from '../../types.ts';
   import {
     getPrettySize,
     getPrettyAlignment,
@@ -163,6 +166,7 @@ import SingleMonsterSpellcasting from './SingleMonsterSpellcasting.vue';
   import { CR_TO_XP } from '../../constants.ts';
   const props = defineProps<{
     monster: Monster;
+    spells: Spells;
     fluff?: MonsterFluff;
     hideFluff?: boolean;
   }>();

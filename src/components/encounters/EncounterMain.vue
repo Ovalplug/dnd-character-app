@@ -24,20 +24,21 @@
         <div class="participantHpText">{{ participant.currentHp }} / {{ participant.maxHp }}</div>
       </div>
 
-      <SingleMonster :monster="participant" :hideFluff="true" />
+      <SingleMonster :monster="participant" :hideFluff="true" :spells="spells" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
   import { ref } from 'vue';
-  import type { Monster, EncounterCreature } from '../../types';
+  import type { Monster, EncounterCreature, Spells } from '../../types';
   import SingleMonster from '../resources/SingleMonster.vue';
 
   import { diceRoll } from '../../helperFunctions.ts';
 
   const props = defineProps<{
     participants: Monster[];
+    spells: Spells;
   }>();
 
   const activeParticipantIndex = ref(0);

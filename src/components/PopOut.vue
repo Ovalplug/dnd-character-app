@@ -1,5 +1,5 @@
 <template>
-  <div class="popout">
+  <div class="popout" :style="{ zIndex: popoutZIndex }">
     <div
       class="popout-panel"
       :class="{ 'popout-panel--mini': isMini }"
@@ -21,12 +21,13 @@
 </template>
 
 <script setup lang="ts">
-  import { onMounted, onBeforeUnmount } from 'vue';
+  import { onMounted, onBeforeUnmount, computed } from 'vue';
   import closeIcon from '../assets/icons/close.svg';
 
   const props = defineProps<{
     title?: string;
     mini?: boolean;
+    zIndex?: number;
     onClose?: () => void;
   }>();
 
@@ -82,6 +83,8 @@
     if (typeof props.onClose === 'function') props.onClose();
     emit('close');
   }
+
+  const popoutZIndex = computed(() => props.zIndex ?? 1000);
 </script>
 
 <style scoped>
@@ -91,7 +94,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
     background: rgba(0, 0, 0, 0.18);
     padding: 16px;
   }

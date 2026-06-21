@@ -59,6 +59,7 @@
         v-if="show_monsters"
         :monsters="dataStore.monsters"
         :monsterFluff="dataStore.monsterFluff"
+        :spells="dataStore.spells"
       />
       <AllRules
         v-if="show_rules"
