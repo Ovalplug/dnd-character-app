@@ -98,6 +98,13 @@
       </div>
     </div>
 
+    <div v-if="props.monster.spellcasting && props.monster.spellcasting.length">
+      <h2 class="section-title">Spellcasting</h2>
+      <div class="section-content">
+        <SingleMonsterSpellcasting :spellcasting="props.monster.spellcasting || []" />
+      </div>
+    </div>
+
     <div v-if="props.monster.action && props.monster.action.length">
       <h2 class="section-title">Actions</h2>
       <div class="section-content">
@@ -141,6 +148,7 @@
 </template>
 
 <script lang="ts" setup>
+import SingleMonsterSpellcasting from './SingleMonsterSpellcasting.vue';
   import { ref, computed } from 'vue';
   import ResourceEntries from './ResourceEntries.vue';
   import type { Monster, MonsterFluff } from '../../types.ts';
