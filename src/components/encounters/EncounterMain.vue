@@ -11,6 +11,7 @@
       v-for="(participant, index) in encounterParticipants"
       :key="`participant-${index}`"
       :class="['participant', { 'active-participant': index === activeParticipantIndex }]"
+      :ref="el => participantRefs[index] = el as HTMLElement"
     >
       <div class="participantHp" @click="openMenu(index)">
         <div
@@ -21,11 +22,14 @@
           }"
         />
 
-        <div class="participantHpText" v-if="!participant.tempHp || participant.tempHp <= 0">{{ participant.currentHp }} / {{ participant.maxHp }}</div>
-        <div class="participantHpText" v-if="participant.tempHp >0">{{ participant.tempHp }}</div>
-
+        <div class="participantHpText" v-if="!participant.tempHp || participant.tempHp <= 0">
+          {{ participant.currentHp }} / {{ participant.maxHp }}
+        </div>
+        <div class="participantHpText" v-if="participant.tempHp > 0">{{ participant.tempHp }}</div>
       </div>
-      <h2>{{ participant.name }} - <span class="p2">Initiative: {{ participant.initiative }}</span></h2>
+      <h2>
+        {{ participant.name }} - <span class="p2">Initiative: {{ participant.initiative }}</span>
+      </h2>
       <SingleMonster :monster="participant" :hideFluff="true" :spells="spells" />
     </div>
   </div>
@@ -37,44 +41,44 @@
     :title="encounterParticipants[menuIndex]?.name"
     @close="closeMenu"
   >
-  <div class="take-damage">
-    <div class="value-row">
-      <button class="stepper-btn" @click="damageDown" aria-label="Decrease">
-        <img :src="downArrow" alt="−" class="stepper-icon" />
-      </button>
-      <input type="number" v-model.number="damageVal" class="value-input" min="0" />
-      <button class="stepper-btn" @click="damageUp" aria-label="Increase">
-        <img :src="upArrow" alt="+" class="stepper-icon" />
-      </button>
+    <div class="take-damage">
+      <div class="value-row">
+        <button class="stepper-btn" @click="damageDown" aria-label="Decrease">
+          <img :src="downArrow" alt="−" class="stepper-icon" />
+        </button>
+        <input type="number" v-model.number="damageVal" class="value-input" min="0" />
+        <button class="stepper-btn" @click="damageUp" aria-label="Increase">
+          <img :src="upArrow" alt="+" class="stepper-icon" />
+        </button>
+      </div>
+      <div class="action-row">
+        <button class="action-btn damage-btn" @click="damageParticipant(menuIndex, damageVal)">
+          <span class="action-label">⚔</span>
+          <span>Damage</span>
+        </button>
+        <button class="action-btn heal-btn" @click="healParticipant(menuIndex, damageVal)">
+          <span class="action-label">♥</span>
+          <span>Heal</span>
+        </button>
+        <button class="action-btn temp-btn" @click="applyTempHp(menuIndex, damageVal)">
+          <span class="action-label">🛡</span>
+          <span>Temp HP</span>
+        </button>
+      </div>
     </div>
-    <div class="action-row">
-      <button class="action-btn damage-btn" @click="damageParticipant(menuIndex, damageVal)">
-        <span class="action-label">⚔</span>
-        <span>Damage</span>
-      </button>
-      <button class="action-btn heal-btn" @click="healParticipant(menuIndex, damageVal)">
-        <span class="action-label">♥</span>
-        <span>Heal</span>
-      </button>
-      <button class="action-btn temp-btn" @click="applyTempHp(menuIndex, damageVal)">
-        <span class="action-label">🛡</span>
-        <span>Temp HP</span>
-      </button>
-    </div>
-  </div>
   </PopOut>
 </template>
 
 <script lang="ts" setup>
-  import { ref } from 'vue';
+  import { ref, nextTick } from 'vue';
   import type { Monster, EncounterCreature, Spells } from '../../types';
   import SingleMonster from '../resources/SingleMonster.vue';
 
   import { diceRoll } from '../../helperFunctions.ts';
-import PopOut from '../PopOut.vue';
+  import PopOut from '../PopOut.vue';
 
-import downArrow from '../../assets/icons/down-arrow.svg';
-import upArrow from '../../assets/icons/up-arrow.svg';
+  import downArrow from '../../assets/icons/down-arrow.svg';
+  import upArrow from '../../assets/icons/up-arrow.svg';
 
   const props = defineProps<{
     participants: Monster[];
@@ -84,6 +88,9 @@ import upArrow from '../../assets/icons/up-arrow.svg';
   const activeParticipantIndex = ref(0);
   const damageVal = ref(0);
   const combatRound = ref(1);
+
+  const participantRefs = ref<HTMLElement[]>([]);
+
   function damageUp() {
     damageVal.value++;
   }
@@ -138,6 +145,10 @@ import upArrow from '../../assets/icons/up-arrow.svg';
         };
       })
       .sort((a, b) => b.initiative - a.initiative);
+
+    nextTick(() => {
+      scrollToActiveParticipant();
+    });
   }
 
   function getHpPercentage(participant: EncounterCreature): number {
@@ -179,10 +190,26 @@ import upArrow from '../../assets/icons/up-arrow.svg';
   }
 
   function nextInitiative() {
-    activeParticipantIndex.value = (activeParticipantIndex.value + 1) % encounterParticipants.value.length;
+    activeParticipantIndex.value =
+      (activeParticipantIndex.value + 1) % encounterParticipants.value.length;
     if (activeParticipantIndex.value === 0) {
       combatRound.value++;
     }
+    scrollToActiveParticipant();
+  }
+
+  async function scrollToActiveParticipant() {
+    await nextTick();
+
+    const activeEl = participantRefs.value[activeParticipantIndex.value];
+
+    if (!activeEl) return;
+
+    activeEl.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'center',
+    });
   }
 </script>
 
@@ -286,9 +313,9 @@ import upArrow from '../../assets/icons/up-arrow.svg';
       width: 400px;
     }
   }
-/* ------------------ */
+  /* ------------------ */
   /* damage section */
-   .take-damage {
+  .take-damage {
     display: flex;
     flex-direction: column;
     align-items: center;

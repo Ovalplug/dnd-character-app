@@ -30,19 +30,19 @@
 
 <style scoped>
   .loading {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
 
-  color: var(--text, #efe6d6);
-  font-family: ui-rounded, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-}
+    color: var(--text, #efe6d6);
+    font-family: ui-rounded, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  }
 
   .d20 {
     transform-origin: 50% 50%;

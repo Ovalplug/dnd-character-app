@@ -1,7 +1,7 @@
 <template>
   <div v-if="!dataStore.loaded" class="content-under-header">
-      <Loading message="Loading resources..." :size="96" variant="bold"></Loading>
-    </div>
+    <Loading message="Loading resources..." :size="96" variant="bold"></Loading>
+  </div>
   <div v-else>
     <h1>Welcome to D&D Character Manager</h1>
     <p>
@@ -12,12 +12,12 @@
 </template>
 
 <script setup lang="ts">
-import Loading from '../components/resources/Loading.vue';
+  import Loading from '../components/resources/Loading.vue';
 
-import { useDataStore } from '../stores/dataStore';
-import { onMounted } from 'vue';
-const dataStore = useDataStore();
-onMounted(async () => {
+  import { useDataStore } from '../stores/dataStore';
+  import { onMounted } from 'vue';
+  const dataStore = useDataStore();
+  onMounted(async () => {
     if (!dataStore.loaded) {
       try {
         await dataStore.init();
