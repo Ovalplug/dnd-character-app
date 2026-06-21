@@ -6,7 +6,7 @@
 
     <!-- At Will -->
     <p v-if="spellcasting.will?.length">
-      <strong>At will:</strong>
+      <strong>At will: </strong>
       <a
         v-for="(spell, i) in spellcasting.will"
         :key="spell"
@@ -19,7 +19,7 @@
     <!-- Daily -->
     <template v-if="spellcasting.daily">
       <p v-for="[frequency, spells] in dailyEntries(spellcasting.daily)" :key="frequency">
-        <strong>{{ dailyLabel(frequency) }}:</strong>
+        <strong>{{ dailyLabel(frequency) }}: </strong>
         <a v-for="(spell, i) in spells" :key="spell" href="#" @click.prevent="selectSpell(spell)"
           >{{ spell }}<span v-if="i < spells.length - 1">, </span></a
         >
@@ -34,7 +34,7 @@
         class="spell-level"
       >
         <p>
-          <strong>{{ spellLevelLabel(level, spellData.slots) }}:</strong>
+          <strong>{{ spellLevelLabel(level, spellData.slots) }}: </strong>
           <a
             v-for="(spell, i) in spellData.spells"
             :key="spell"
@@ -48,7 +48,7 @@
   </div>
 
   <PopOut :title="fullSpell?.name" v-if="selectedSpell" :onClose="deselectSpell">
-    <SingleSpell :spell="selectedSpell" />
+    <SingleSpell v-if="fullSpell" :spell="fullSpell" />
   </PopOut>
 </template>
 
@@ -66,6 +66,8 @@
   import ResourceEntries from './ResourceEntries.vue';
 
   import PopOut from '../PopOut.vue';
+
+  import SingleSpell from './SingleSpell.vue';
 
   const props = defineProps<{
     spellcasting: MonsterSpellcasting[];
