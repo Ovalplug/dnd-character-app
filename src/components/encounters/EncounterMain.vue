@@ -1,9 +1,9 @@
 <template>
   <div class="encounterHeader">
     <button @click="resetEncounter">Reset Encounter</button>
-    <button @click="damageParticipant(activeParticipantIndex, 5)">
-      Damage Active Participant (5)
-    </button>
+    <p>Current Initiative: {{ encounterParticipants[activeParticipantIndex]?.initiative }}</p>
+    <p>Current Round: {{ combatRound }}</p>
+    <button @click="nextInitiative">Next</button>
   </div>
 
   <div class="encounterHolder">
@@ -83,6 +83,7 @@ import upArrow from '../../assets/icons/up-arrow.svg';
 
   const activeParticipantIndex = ref(0);
   const damageVal = ref(0);
+  const combatRound = ref(1);
   function damageUp() {
     damageVal.value++;
   }
@@ -175,6 +176,13 @@ import upArrow from '../../assets/icons/up-arrow.svg';
     if (!participant) return;
 
     participant.tempHp = Math.max(0, tempHp);
+  }
+
+  function nextInitiative() {
+    activeParticipantIndex.value = (activeParticipantIndex.value + 1) % encounterParticipants.value.length;
+    if (activeParticipantIndex.value === 0) {
+      combatRound.value++;
+    }
   }
 </script>
 
