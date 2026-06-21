@@ -21,7 +21,9 @@
           }"
         />
 
-        <div class="participantHpText">{{ participant.currentHp }} / {{ participant.maxHp }}</div>
+        <div class="participantHpText" v-if="!participant.tempHp || participant.tempHp <= 0">{{ participant.currentHp }} / {{ participant.maxHp }}</div>
+        <div class="participantHpText" v-if="participant.tempHp >0">{{ participant.tempHp }}</div>
+
       </div>
       <h2>{{ participant.name }} - <span class="p2">Initiative: {{ participant.initiative }}</span></h2>
       <SingleMonster :monster="participant" :hideFluff="true" :spells="spells" />
@@ -139,13 +141,14 @@ import upArrow from '../../assets/icons/up-arrow.svg';
 
   function getHpPercentage(participant: EncounterCreature): number {
     if (!participant.maxHp) return 0;
+    if (participant.tempHp > 0) return 100;
 
     return Math.max(0, Math.min(100, (participant.currentHp / participant.maxHp) * 100));
   }
 
   function getHpColor(participant: EncounterCreature): string {
     const percentage = getHpPercentage(participant);
-
+    if (participant.tempHp > 0) return '#2196f3';
     if (percentage > 50) return '#4caf50';
     if (percentage > 25) return '#ff9800';
     return '#f44336';
