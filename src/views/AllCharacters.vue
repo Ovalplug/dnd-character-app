@@ -1,11 +1,12 @@
 <template>
   <div>
-    <h1>Look at all your pretty characters!</h1>
+    <h1>Look at all your pretty creations!</h1>
     <accordian-holder header="charStore.characters">
       <pre>{{ charStore.characters }}</pre>
     </accordian-holder>
 
     <table class="characterTable">
+      <caption>Character List</caption>
       <thead>
         <tr>
           <th>Name</th>
@@ -27,16 +28,45 @@
             <img
               :src="icons.editIcon"
               alt="Edit"
-              @click="openPopout(char)"
+              @click="openCharPopout(char)"
               class="reloadCharIcon"
             />
           </td>
         </tr>
       </tbody>
     </table>
+    <br />
+    <table class="characterTable">
+      <caption>Encounter List</caption>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Updated At</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="enc in encounterStore.encounters" :key="enc.id">
+          <td>
+            <router-link :to="`/encounter/${enc.id}`">
+              {{ enc.name }}
+            </router-link>
+          </td>
+          <td>{{ new Date(enc.updatedAt).toLocaleString() }}</td>
+          <td>
+            <img
+              :src="icons.editIcon"
+              alt="Edit"
+              @click="console.log('Edit encounter', enc.id)"
+              class="reloadCharIcon"
+            />
+          </td>
+        </tr>
+        </tbody>
+    </table>
   </div>
 
-  <PopOut v-if="selectedChar" :title="selectedChar.name" @close="closePopout">
+  <PopOut v-if="selectedChar" :title="selectedChar.name" @close="closeCharPopout">
     <div class="char-popout-actions">
       <p>Classes: {{ selectedChar.classes.map(c => c.name).join(', ') }}</p>
       <p>Level: {{ selectedChar.level }}</p>
@@ -89,6 +119,7 @@
   import { ref } from 'vue';
   import { useCharacterStore } from '../stores/characterStore';
   import type { Character } from '../database/db';
+  import { useEncounterStore } from '../stores/encounterStore.ts';
 
   import binIcon from '../assets/bin-svgrepo-com.svg';
   import reloadIcon from '../assets/icons/reload.svg';
@@ -99,6 +130,7 @@
   const newName = ref('');
 
   const charStore = useCharacterStore();
+  const encounterStore = useEncounterStore();
 
   const icons: Record<string, string> = {
     binIcon: binIcon,
@@ -109,12 +141,12 @@
   const selectedChar = ref<Character | null>(null);
   const confirmingDelete = ref(false);
 
-  function openPopout(char: Character) {
+  function openCharPopout(char: Character) {
     selectedChar.value = char;
     confirmingDelete.value = false;
   }
 
-  function closePopout() {
+  function closeCharPopout() {
     selectedChar.value = null;
     confirmingDelete.value = false;
     newName.value = '';
@@ -122,7 +154,7 @@
 
   async function deleteCharacter(id: string) {
     await charStore.deleteCharacter(id);
-    closePopout();
+    closeCharPopout();
   }
 
   async function softRefresh() {

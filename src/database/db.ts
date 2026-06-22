@@ -1,6 +1,6 @@
 import Dexie from 'dexie';
 import type { Table } from 'dexie';
-import type { playerCharacter } from '../types';
+import type { Monster, playerCharacter } from '../types';
 
 export type Character = playerCharacter;
 
@@ -30,10 +30,20 @@ export interface CharacterNotesRecord {
   updatedAt: number;
 }
 
+export interface Encounter {
+  id: string;
+  name: string;
+  monsters: Monster[];
+  players: Character[];
+  createdAt: number;
+  updatedAt: number;
+}
+
 export class DndDatabase extends Dexie {
   characters!: Table<Character>;
   settings!: Table<Setting, string>;
   notes!: Table<CharacterNotesRecord, string>;
+  encounters!: Table<Encounter, string>;
 
   constructor() {
     super('DndDatabase');
@@ -51,6 +61,13 @@ export class DndDatabase extends Dexie {
       characters: 'id, name, level, updatedAt',
       settings: 'key',
       notes: 'characterId, updatedAt',
+    });
+
+    this.version(4).stores({
+      characters: '&id, name, level, updatedAt',
+      settings: 'key',
+      notes: '&characterId, updatedAt',
+      encounters: '&id, name, updatedAt',
     });
   }
 }
@@ -89,4 +106,20 @@ export async function getDebugSetting(): Promise<boolean> {
 
 export async function setDebugSetting(enabled: boolean): Promise<void> {
   await setSetting('debug', !!enabled);
+}
+
+export async function addEncounter(encounter: Encounter): Promise<void> {
+  await db.encounters.put(encounter);
+}
+
+export async function getEncounter(id: string): Promise<Encounter | undefined> {
+  return await db.encounters.get(id);
+}
+
+export async function deleteEncounter(id: string): Promise<void> {
+  await db.encounters.delete(id);
+}
+
+export async function getAllEncounters(): Promise<Encounter[]> {
+  return await db.encounters.toArray();
 }

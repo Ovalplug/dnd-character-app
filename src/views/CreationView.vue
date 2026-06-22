@@ -9,18 +9,12 @@
 
   <div v-else>
     <div class="button-list">
-      <button @click="navigateTo('/create/quickCreate')" :disabled="true">
-        Quick Character Creation
-      </button>
       <button @click="navigateTo('/create/fullCreate')" :disabled="!isDataLoaded">
         Full Character Creation
       </button>
-      <button @click="navigateTo('/create/randomCreate')" :disabled="true">Random Character</button>
-      <button @click="navigateTo('/create/itemCreate')" :disabled="true">Item Creation</button>
-      <button @click="navigateTo('/create/monsterCreate')" :disabled="true">
-        Monster Creation
+      <button @click="navigateTo('/create/encounter')" :disabled="!isDataLoaded">
+        Encounter Creation
       </button>
-      <button @click="navigateTo('/create/spellCreate')" :disabled="true">Spell Creation</button>
     </div>
   </div>
 </template>
