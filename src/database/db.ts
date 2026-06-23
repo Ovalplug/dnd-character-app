@@ -123,3 +123,8 @@ export async function deleteEncounter(id: string): Promise<void> {
 export async function getAllEncounters(): Promise<Encounter[]> {
   return await db.encounters.toArray();
 }
+
+export async function updateEncounter(encounter: Encounter): Promise<void> {
+  encounter.updatedAt = Date.now();
+  await db.encounters.put(encounter);
+}

@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <div v-if="!loaded">
+    <Loading message="Loading resources..." :size="96" variant="bold"></Loading>
+  </div>
+  <div v-else>
     <h1>Look at all your pretty creations!</h1>
     <accordian-holder header="charStore.characters">
       <pre>{{ charStore.characters }}</pre>
@@ -43,6 +46,7 @@
           <th>Name</th>
           <th>Updated At</th>
           <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -53,6 +57,14 @@
             </router-link>
           </td>
           <td>{{ new Date(enc.updatedAt).toLocaleString() }}</td>
+          <td>
+            <img
+              :src="icons.swordIcon"
+              alt="Run"
+              @click="console.log('Run encounter', enc.id)"
+              class="deleteCharIcon"
+            />
+          </td>
           <td>
             <img
               :src="icons.editIcon"
@@ -116,14 +128,17 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue';
+  import { computed, ref } from 'vue';
   import { useCharacterStore } from '../stores/characterStore';
   import type { Character } from '../database/db';
   import { useEncounterStore } from '../stores/encounterStore.ts';
 
+  import Loading from '../components/resources/Loading.vue';
+
   import binIcon from '../assets/bin-svgrepo-com.svg';
   import reloadIcon from '../assets/icons/reload.svg';
   import editIcon from '../assets/icons/editIcon.svg';
+  import swordIcon from '../assets/icons/sword.svg';
   import AccordianHolder from '../components/AccordianHolder.vue';
   import PopOut from '../components/PopOut.vue';
 
@@ -132,10 +147,16 @@
   const charStore = useCharacterStore();
   const encounterStore = useEncounterStore();
 
+  // do encounterstore.init() on mount
+  encounterStore.loadEncounters();
+
+  const loaded = computed(() => charStore.loaded && encounterStore.loaded);
+
   const icons: Record<string, string> = {
     binIcon: binIcon,
     reloadIcon: reloadIcon,
     editIcon: editIcon,
+    swordIcon: swordIcon,
   };
 
   const selectedChar = ref<Character | null>(null);

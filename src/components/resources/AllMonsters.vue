@@ -254,11 +254,14 @@
   import type { Monster, MonsterFluff, Spells } from '../../types.ts';
   import { getPrettyMonsterType, bestiaryFilter } from '../../helperFunctions.ts';
   import { CR_VALUES } from '../../constants.ts';
+  import { useEncounterStore } from '../../stores/encounterStore.ts';
   const props = defineProps<{
     monsters: Monster[];
     monsterFluff: MonsterFluff[];
     spells: Spells;
   }>();
+
+  const encounterStore = useEncounterStore();
 
   const showFilters = ref(false);
   const searchVal = ref('');
