@@ -6,7 +6,7 @@
     </div>
 
     <pre v-else>
-{{ JSON.stringify(encounter, null, 2) }}
+{{ encounter }}
     </pre>
 </template>
 

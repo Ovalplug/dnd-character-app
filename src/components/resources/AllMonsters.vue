@@ -262,6 +262,7 @@
   }>();
 
   const encounterStore = useEncounterStore();
+  encounterStore.loadEncounters();
 
   const showFilters = ref(false);
   const searchVal = ref('');
