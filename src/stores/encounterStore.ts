@@ -10,7 +10,7 @@ export const useEncounterStore = defineStore('encounter', {
   }),
   actions: {
     async loadEncounters() {
-      if (this.loaded) return;
+        this.loaded = false;
       const encounters = await getAllEncounters();
       this.encounters = encounters;
       this.loaded = true;

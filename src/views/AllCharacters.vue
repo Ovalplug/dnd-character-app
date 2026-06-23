@@ -59,9 +59,9 @@
           <td>{{ new Date(enc.updatedAt).toLocaleString() }}</td>
           <td>
             <img
-              :src="icons.swordIcon"
+              :src="icons.binIcon"
               alt="Run"
-              @click="console.log('Run encounter', enc.id)"
+              @click="deleteEncounter(enc.id)"
               class="deleteCharIcon"
             />
           </td>
@@ -69,7 +69,7 @@
             <img
               :src="icons.editIcon"
               alt="Edit"
-              @click="console.log('Edit encounter', enc.id)"
+              @click="editEncounter(enc.id)"
               class="reloadCharIcon"
             />
           </td>
@@ -132,6 +132,9 @@
   import { useCharacterStore } from '../stores/characterStore';
   import type { Character } from '../database/db';
   import { useEncounterStore } from '../stores/encounterStore.ts';
+  import { useRouter } from 'vue-router';
+
+  const router = useRouter();
 
   import Loading from '../components/resources/Loading.vue';
 
@@ -184,6 +187,22 @@
       selectedChar.value = charStore.characters.find(c => c.id === selectedChar.value!.id) ?? null;
     }
   }
+
+  async function deleteEncounter(id: string) {
+    await encounterStore.deleteEncounter(id);
+    await encounterStore.loadEncounters();
+  }
+
+  function editEncounter(id: string) {
+    console.log('Navigating to edit encounter with ID:', id);
+
+    router.push({
+        path: '/encounter/edit',
+        query: {
+            id: id
+        }
+    });
+}
 </script>
 
 <style scoped>

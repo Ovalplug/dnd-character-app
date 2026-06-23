@@ -12,6 +12,7 @@ import QuickCharCreate from '../components/creation/QuickCharCreate.vue';
 import FullCreation from '../components/creation/FullCreation.vue';
 import RandomCreation from '../components/creation/RandomCreation.vue';
 import EncounterCreation from '../components/encounters/EncounterCreation.vue';
+import EditEncounter from '../components/encounters/EditEncounter.vue';
 import LevelUpView from '../views/LevelUpView.vue';
 import TrainingGround from '../views/TrainingGround.vue';
 import { useDataStore } from '../stores/dataStore';
@@ -36,6 +37,7 @@ const routes: Array<RouteRecordRaw> = [
   { path: '/create/monsterCreate', name: 'monsterCreate', component: PlaceHolder },
   { path: '/create/spellCreate', name: 'spellCreate', component: PlaceHolder },
   { path: '/create/encounter', name: 'encounterCreate', component: EncounterCreation },
+  { path: '/encounter/edit', name: 'EditEncounter', component: EditEncounter },
   { path: '/training', name: 'trainingGround', component: TrainingGround },
   { path: '/:pathMatch(.*)*', redirect: '/' }, // catch-all route to redirect to home
 ];
