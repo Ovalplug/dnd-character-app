@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 // import { v4 as uuidv4 } from 'uuid';
 import { addEncounter, deleteEncounter, getAllEncounters, getEncounter, updateEncounter } from '../database/db';
-import type { Monster } from '../types';
+import type { EncounterCreature, Monster } from '../types';
 
 export const useEncounterStore = defineStore('encounter', {
   state: () => ({
@@ -30,10 +30,20 @@ export const useEncounterStore = defineStore('encounter', {
     async addMonsterToEncounter(encounterId: string, monster: Monster) {
         const encounter = await getEncounter(encounterId);
         if (encounter) {
-            encounter.monsters.push(monster);
-            await updateEncounter(encounter); // Update the encounter in the database
-            await this.loadEncounters(); // Refresh the list after updating
-        }
+            const monsterHp = typeof monster.hp === 'number' ? monster.hp : typeof monster.hp === 'object' && monster.hp.average ? monster.hp.average : 0;
+            const encounterMonster: EncounterCreature = {
+                ...structuredClone(JSON.parse(JSON.stringify(monster))),
+                initiative: 0,
+                currentHp: monsterHp,
+                maxHp: monsterHp,
+                conditions: [],
+                tempHp: 0,
+            }
+        encounter.monsters.push(encounterMonster);
+
+        await updateEncounter(encounter);
+        await this.loadEncounters();
+    }
     }
   },
 });

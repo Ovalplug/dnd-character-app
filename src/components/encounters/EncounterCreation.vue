@@ -12,6 +12,7 @@
 import { ref } from 'vue';
 import { v4 as uuidv4 } from 'uuid';
 import { useEncounterStore } from '../../stores/encounterStore';
+import type { EncounterCreature } from '../../types';
 
 const encounterName = ref('');
 const encounterStore = useEncounterStore();
@@ -22,6 +23,8 @@ async function createEncounter() {
     id: uuidv4(),
     name: encounterName.value,
     updatedAt: Date.now(),
+    monsters: [] as EncounterCreature[],
+    players: [],
   };
   await encounterStore.addEncounter(newEncounter);
   encounterName.value = '';

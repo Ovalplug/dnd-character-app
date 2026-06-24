@@ -1,6 +1,6 @@
 import Dexie from 'dexie';
 import type { Table } from 'dexie';
-import type { Monster, playerCharacter } from '../types';
+import type { EncounterCreature, Monster, playerCharacter } from '../types';
 
 export type Character = playerCharacter;
 
@@ -33,7 +33,7 @@ export interface CharacterNotesRecord {
 export interface Encounter {
   id: string;
   name: string;
-  monsters: Monster[];
+  monsters: EncounterCreature[];
   players: Character[];
   createdAt: number;
   updatedAt: number;
@@ -126,5 +126,15 @@ export async function getAllEncounters(): Promise<Encounter[]> {
 
 export async function updateEncounter(encounter: Encounter): Promise<void> {
   encounter.updatedAt = Date.now();
+
+  console.log('Saving encounter:', encounter);
+
+  try {
+    structuredClone(encounter);
+    console.log('Encounter is cloneable');
+  } catch (err) {
+    console.error('Not cloneable:', err);
+  }
+
   await db.encounters.put(encounter);
 }

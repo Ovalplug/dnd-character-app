@@ -231,6 +231,7 @@
               {{ getPrettyMonsterType(monster.type ?? '') }}</span
             >
           </p>
+          <img :src="shieldIcon" alt="shield icon" class="icon" @click="addToEncounter(monster)"/>
         </div>
       </ul>
     </div>
@@ -245,6 +246,24 @@
       />
     </div>
   </PopOut>
+
+  <PopOut
+    v-if="encounterPopupOpen && monsterForEncounter"
+    :title="`Add ${monsterForEncounter.name} to Encounter`"
+    @close="encounterPopupOpen = false"
+  >
+  <div>
+    <p>Select encounter to add to:</p>
+    <ul>
+      <li v-for="enc in encounterStore.encounters" :key="enc.id">
+        <button @click="addThisMOnsterToThisEncounter(enc.id)">
+          {{ enc.name }}
+        </button>
+
+      </li>
+    </ul>
+  </div>
+  </PopOut>
 </template>
 
 <script lang="ts" setup>
@@ -255,6 +274,7 @@
   import { getPrettyMonsterType, bestiaryFilter } from '../../helperFunctions.ts';
   import { CR_VALUES } from '../../constants.ts';
   import { useEncounterStore } from '../../stores/encounterStore.ts';
+  import shieldIcon from '../../assets/icons/shield.svg';
   const props = defineProps<{
     monsters: Monster[];
     monsterFluff: MonsterFluff[];
@@ -276,6 +296,8 @@
   const legendaryFilter = ref<boolean | undefined>(undefined);
   const mythicFilter = ref<boolean | undefined>(undefined);
   const environmentFilter = ref<string[]>([]);
+  const monsterForEncounter = ref<Monster | null>(null);
+    const encounterPopupOpen = ref(false);
 
   const sortedMonsters = computed(() => {
     return bestiaryFilter(
@@ -350,9 +372,31 @@
       fluff => fluff.name === monster.name && fluff.source === monster.source
     );
   }
+
+  function addToEncounter(monster: Monster) {
+    monsterForEncounter.value = monster;
+    encounterPopupOpen.value = true;
+  }
+  async function addThisMOnsterToThisEncounter(encounterId: string) {
+    if (!monsterForEncounter.value) return;
+
+    await encounterStore.addMonsterToEncounter(encounterId, monsterForEncounter.value);
+    encounterPopupOpen.value = false;
+    monsterForEncounter.value = null;
+  }
 </script>
 
 <style scoped>
+.icon {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.15s ease;
+    display: block;
+    margin: 0 auto;
+  }
+
   .monster-container {
     display: flex;
     flex-direction: column;
