@@ -57,7 +57,7 @@
         <tr v-for="enc in encounterStore.encounters" :key="enc.id">
           <td>
             <!-- <router-link :to="`/encounter/${enc.id}`"> -->
-              {{ enc.name }}
+            {{ enc.name }}
             <!-- </router-link> -->
           </td>
           <td>{{ new Date(enc.updatedAt).toLocaleString() }}</td>

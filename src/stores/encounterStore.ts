@@ -22,7 +22,7 @@ export const useEncounterStore = defineStore('encounter', {
       this.loaded = true;
     },
     async updateThisEncounter(encounter: any) {
-        await updateEncounter(encounter);
+      await updateEncounter(encounter);
     },
     async addEncounter(encounter: any) {
       await addEncounter(encounter);

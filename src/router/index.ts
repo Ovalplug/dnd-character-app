@@ -13,6 +13,7 @@ import FullCreation from '../components/creation/FullCreation.vue';
 import RandomCreation from '../components/creation/RandomCreation.vue';
 import EncounterCreation from '../components/encounters/EncounterCreation.vue';
 import EditEncounter from '../components/encounters/EditEncounter.vue';
+import EncounterMain from '../components/encounters/EncounterMain.vue';
 import LevelUpView from '../views/LevelUpView.vue';
 import TrainingGround from '../views/TrainingGround.vue';
 import { useDataStore } from '../stores/dataStore';
@@ -38,6 +39,7 @@ const routes: Array<RouteRecordRaw> = [
   { path: '/create/spellCreate', name: 'spellCreate', component: PlaceHolder },
   { path: '/create/encounter', name: 'encounterCreate', component: EncounterCreation },
   { path: '/encounter/edit', name: 'EditEncounter', component: EditEncounter },
+  { path: '/encounter/run', name: 'RunEncounter', component: EncounterMain },
   { path: '/training', name: 'trainingGround', component: TrainingGround },
   { path: '/:pathMatch(.*)*', redirect: '/' }, // catch-all route to redirect to home
 ];

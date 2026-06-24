@@ -70,21 +70,34 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, nextTick } from 'vue';
+  import { ref, nextTick, onMounted } from 'vue';
   import type { EncounterCreature, Spells } from '../../types';
   import SingleMonster from '../resources/SingleMonster.vue';
+  import { useEncounterStore } from '../../stores/encounterStore.ts';
+  import { useDataStore } from '../../stores/dataStore.ts';
 
   // import { diceRoll } from '../../helperFunctions.ts';
   import PopOut from '../PopOut.vue';
 
   import downArrow from '../../assets/icons/down-arrow.svg';
   import upArrow from '../../assets/icons/up-arrow.svg';
+  import { useRoute } from 'vue-router';
 
-  const props = defineProps<{
-    encounterParticipants: EncounterCreature[];
-    spells: Spells;
-  }>();
+  const dataStore = useDataStore();
+  const encounterStore = useEncounterStore();
+  encounterStore.loadEncounters();
+  const route = useRoute();
+  const spells: Spells = dataStore.spells;
+  // get encounterId from url ?
+  const encounterId = route.query.id as string | undefined;
+  const encounterParticipants = ref<EncounterCreature[]>([]);
 
+  onMounted(async () => {
+    if (encounterId) {
+      const encounter = await encounterStore.getEncounterById(encounterId);
+      encounterParticipants.value = encounter?.monsters || [];
+    }
+  });
   const activeParticipantIndex = ref(0);
   const damageVal = ref(0);
   const combatRound = ref(1);
@@ -132,7 +145,7 @@
   }
 
   function damageParticipant(index: number, damage: number) {
-    const participant = props.encounterParticipants[index];
+    const participant = encounterParticipants.value[index];
     if (!participant) return;
 
     const effectiveDamage = Math.max(0, damage - participant.tempHp);
@@ -141,14 +154,14 @@
   }
 
   function healParticipant(index: number, heal: number) {
-    const participant = props.encounterParticipants[index];
+    const participant = encounterParticipants.value[index];
     if (!participant) return;
 
     participant.currentHp = Math.min(participant.maxHp, participant.currentHp + heal);
   }
 
   function applyTempHp(index: number, tempHp: number) {
-    const participant = props.encounterParticipants[index];
+    const participant = encounterParticipants.value[index];
     if (!participant) return;
 
     participant.tempHp = Math.max(0, tempHp);
@@ -156,7 +169,7 @@
 
   function nextInitiative() {
     activeParticipantIndex.value =
-      (activeParticipantIndex.value + 1) % props.encounterParticipants.length;
+      (activeParticipantIndex.value + 1) % encounterParticipants.value.length;
     if (activeParticipantIndex.value === 0) {
       combatRound.value++;
     }
