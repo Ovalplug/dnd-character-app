@@ -929,4 +929,5 @@ export type EncounterCreature = Monster & {
   maxHp: number;
   conditions: ConditionsRules[];
   tempHp: number;
+  useName: string;
 };

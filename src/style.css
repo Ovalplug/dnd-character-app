@@ -688,3 +688,66 @@ ul.arrow-list li::before {
 .button-list button:hover {
   background: #e0e0e0;
 }
+
+
+/* ==========================================
+   Styled Table Wrapper
+   Usage:
+   <div class="styled-table">
+     <table>...</table>
+   </div>
+========================================== */
+
+.styled-table table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--color-card-shadow);
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(31, 27, 22, 0.1);
+}
+
+.styled-table th {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: rgba(31, 27, 22, 0.04);
+}
+
+.styled-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.styled-table tbody tr:hover {
+  background: rgba(201, 164, 75, 0.08);
+}
+
+/* First column gets priority */
+.styled-table th:first-child,
+.styled-table td:first-child {
+  width: 100%;
+}
+
+/* All other columns stay as small as possible */
+.styled-table th:not(:first-child),
+.styled-table td:not(:first-child) {
+  white-space: nowrap;
+}
+
+@media (max-width: 479px) {
+  .styled-table th,
+  .styled-table td {
+    font-size: 0.78rem;
+    padding: 0.5rem 0.4rem;
+  }
+}

@@ -71,17 +71,17 @@
 
 <script lang="ts" setup>
   import { ref, nextTick } from 'vue';
-  import type { Monster, EncounterCreature, Spells } from '../../types';
+  import type { EncounterCreature, Spells } from '../../types';
   import SingleMonster from '../resources/SingleMonster.vue';
 
-  import { diceRoll } from '../../helperFunctions.ts';
+  // import { diceRoll } from '../../helperFunctions.ts';
   import PopOut from '../PopOut.vue';
 
   import downArrow from '../../assets/icons/down-arrow.svg';
   import upArrow from '../../assets/icons/up-arrow.svg';
 
   const props = defineProps<{
-    participants: Monster[];
+    encounterParticipants: EncounterCreature[];
     spells: Spells;
   }>();
 
@@ -98,24 +98,6 @@
     damageVal.value = Math.max(0, damageVal.value - 1);
   }
 
-  const encounterParticipants = ref<EncounterCreature[]>(
-    props.participants
-      .map(participant => {
-        const hp =
-          typeof participant.hp === 'number' ? participant.hp : participant.hp?.average || 0;
-
-        return {
-          ...participant,
-          initiative: diceRoll([{ dType: 'd20', count: 1 }]),
-          currentHp: hp,
-          maxHp: hp,
-          conditions: [],
-          tempHp: 0,
-        };
-      })
-      .sort((a, b) => b.initiative - a.initiative)
-  );
-
   const menuOpen = ref<boolean>(false);
   const menuIndex = ref<number | null>(null);
 
@@ -129,23 +111,6 @@
 
   function resetEncounter() {
     activeParticipantIndex.value = 0;
-
-    encounterParticipants.value = props.participants
-      .map(participant => {
-        const hp =
-          typeof participant.hp === 'number' ? participant.hp : participant.hp?.average || 0;
-
-        return {
-          ...participant,
-          initiative: diceRoll([{ dType: 'd20', count: 1 }]),
-          currentHp: hp,
-          maxHp: hp,
-          conditions: [],
-          tempHp: 0,
-        };
-      })
-      .sort((a, b) => b.initiative - a.initiative);
-
     nextTick(() => {
       scrollToActiveParticipant();
     });
@@ -167,7 +132,7 @@
   }
 
   function damageParticipant(index: number, damage: number) {
-    const participant = encounterParticipants.value[index];
+    const participant = props.encounterParticipants[index];
     if (!participant) return;
 
     const effectiveDamage = Math.max(0, damage - participant.tempHp);
@@ -176,14 +141,14 @@
   }
 
   function healParticipant(index: number, heal: number) {
-    const participant = encounterParticipants.value[index];
+    const participant = props.encounterParticipants[index];
     if (!participant) return;
 
     participant.currentHp = Math.min(participant.maxHp, participant.currentHp + heal);
   }
 
   function applyTempHp(index: number, tempHp: number) {
-    const participant = encounterParticipants.value[index];
+    const participant = props.encounterParticipants[index];
     if (!participant) return;
 
     participant.tempHp = Math.max(0, tempHp);
@@ -191,7 +156,7 @@
 
   function nextInitiative() {
     activeParticipantIndex.value =
-      (activeParticipantIndex.value + 1) % encounterParticipants.value.length;
+      (activeParticipantIndex.value + 1) % props.encounterParticipants.length;
     if (activeParticipantIndex.value === 0) {
       combatRound.value++;
     }

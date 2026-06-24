@@ -21,6 +21,9 @@ export const useEncounterStore = defineStore('encounter', {
       this.encounters = encounters;
       this.loaded = true;
     },
+    async updateThisEncounter(encounter: any) {
+        await updateEncounter(encounter);
+    },
     async addEncounter(encounter: any) {
       await addEncounter(encounter);
       await this.loadEncounters(); // Refresh the list after adding
@@ -49,6 +52,7 @@ export const useEncounterStore = defineStore('encounter', {
           maxHp: monsterHp,
           conditions: [],
           tempHp: 0,
+          useName: monster.name,
         };
         encounter.monsters.push(encounterMonster);
 
