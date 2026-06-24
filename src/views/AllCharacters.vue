@@ -9,7 +9,9 @@
     </accordian-holder>
 
     <table class="characterTable">
-      <caption>Character List</caption>
+      <caption>
+        Character List
+      </caption>
       <thead>
         <tr>
           <th>Name</th>
@@ -40,7 +42,9 @@
     </table>
     <br />
     <table class="characterTable">
-      <caption>Encounter List</caption>
+      <caption>
+        Encounter List
+      </caption>
       <thead>
         <tr>
           <th>Name</th>
@@ -74,7 +78,7 @@
             />
           </td>
         </tr>
-        </tbody>
+      </tbody>
     </table>
   </div>
 
@@ -197,12 +201,12 @@
     console.log('Navigating to edit encounter with ID:', id);
 
     router.push({
-        path: '/encounter/edit',
-        query: {
-            id: id
-        }
+      path: '/encounter/edit',
+      query: {
+        id: id,
+      },
     });
-}
+  }
 </script>
 
 <style scoped>

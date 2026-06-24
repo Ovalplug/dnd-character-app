@@ -231,7 +231,7 @@
               {{ getPrettyMonsterType(monster.type ?? '') }}</span
             >
           </p>
-          <img :src="shieldIcon" alt="shield icon" class="icon" @click="addToEncounter(monster)"/>
+          <img :src="shieldIcon" alt="shield icon" class="icon" @click="addToEncounter(monster)" />
         </div>
       </ul>
     </div>
@@ -252,17 +252,16 @@
     :title="`Add ${monsterForEncounter.name} to Encounter`"
     @close="encounterPopupOpen = false"
   >
-  <div>
-    <p>Select encounter to add to:</p>
-    <ul>
-      <li v-for="enc in encounterStore.encounters" :key="enc.id">
-        <button @click="addThisMOnsterToThisEncounter(enc.id)">
-          {{ enc.name }}
-        </button>
-
-      </li>
-    </ul>
-  </div>
+    <div>
+      <p>Select encounter to add to:</p>
+      <ul>
+        <li v-for="enc in encounterStore.encounters" :key="enc.id">
+          <button @click="addThisMOnsterToThisEncounter(enc.id)">
+            {{ enc.name }}
+          </button>
+        </li>
+      </ul>
+    </div>
   </PopOut>
 </template>
 
@@ -297,7 +296,7 @@
   const mythicFilter = ref<boolean | undefined>(undefined);
   const environmentFilter = ref<string[]>([]);
   const monsterForEncounter = ref<Monster | null>(null);
-    const encounterPopupOpen = ref(false);
+  const encounterPopupOpen = ref(false);
 
   const sortedMonsters = computed(() => {
     return bestiaryFilter(
@@ -387,7 +386,7 @@
 </script>
 
 <style scoped>
-.icon {
+  .icon {
     width: 18px;
     height: 18px;
     cursor: pointer;
