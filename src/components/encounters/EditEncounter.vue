@@ -1,13 +1,12 @@
 <template>
   <div v-if="!encounter">Loading...</div>
   <div v-else>
-    <!-- json for debugging -->
-    <AccordianHolder header="json">
-      <pre>{{ encounter }}</pre>
-    </AccordianHolder>
-
     <!-- actual content -->
-    <div class="styled-table">
+     <div class="button-container">
+        <button @click="runEncounter()" class="run-encounter-btn">Run Encounter</button>
+        <button @click="randomiseInitiatives()" class="run-encounter-btn">Randomise Initiatives</button>
+     </div>
+    <div class="styled-table"> 
       <table>
         <thead>
           <tr>
@@ -25,6 +24,11 @@
         </tbody>
       </table>
     </div>
+
+    <!-- json for debugging -->
+    <AccordianHolder header="json">
+      <pre>{{ encounter }}</pre>
+    </AccordianHolder>
 
     <!-- popouts -->
     <PopOut v-if="showEditName" title="Edit Name" :mini="true" @close="closeEditName">
@@ -70,7 +74,7 @@
   import { computed, ref, onMounted, toRaw } from 'vue';
   import { useRoute } from 'vue-router';
   import { useEncounterStore } from '../../stores/encounterStore.ts';
-  import { diceRoll } from '../../helperFunctions';
+  import { diceRoll, calculateAbilityScoreModifier } from '../../helperFunctions';
 
   import AccordianHolder from '../AccordianHolder.vue';
   import PopOut from '../PopOut.vue';
@@ -152,8 +156,22 @@
   }
 
   function rollInitiative() {
-    const rolled = diceRoll([{ count: 1, dType: 'd20', modifier: 0 }]);
+    const rolled = diceRoll([{ count: 1, dType: 'd20', modifier: calculateAbilityScoreModifier(creatureToEdit.value.dex, 0, false, false) }]);
     newInitiative.value = rolled;
+  }
+
+  function randomiseInitiatives() {
+    if (!encounter.value) return;
+    encounter.value.monsters.forEach((monster: any) => {
+      monster.initiative = diceRoll([{ count: 1, dType: 'd20', modifier: calculateAbilityScoreModifier(monster.dex, 0, false, false) }]);
+    });
+    encounterStore.updateThisEncounter(toRaw(encounter.value));
+  }
+
+  function runEncounter() {
+    if (!encounter.value) return;
+    // Navigate to the encounter view with the encounter id
+    window.location.href = `/encounter?id=${encounterId.value}`;
   }
 
   onMounted(async () => {
@@ -163,6 +181,33 @@
 </script>
 
 <style scoped>
+.button-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.run-encounter-btn {
+  padding: 10px 20px;
+  background-color: #0066cc;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  transition: background-color 0.2s, transform 0.15s;
+}
+
+.run-encounter-btn:hover {
+  background-color: #0052a3;
+  transform: translateY(-1px);
+}
+
+.run-encounter-btn:active {
+  transform: translateY(0);
+}
+
 .styled-table table {
   width: 100%;
   border-collapse: collapse;

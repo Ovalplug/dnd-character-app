@@ -382,6 +382,7 @@
     await encounterStore.addMonsterToEncounter(encounterId, monsterForEncounter.value);
     encounterPopupOpen.value = false;
     monsterForEncounter.value = null;
+    selectedMonster.value = null;
   }
 </script>
 
@@ -557,8 +558,10 @@
     border-bottom: 1px solid rgba(107, 46, 46, 0.12);
     min-height: 44px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
     transition: background 0.14s;
   }
 
@@ -571,6 +574,7 @@
   .monster-item p {
     margin: 0;
     font-size: 0.95rem;
+    flex: 1;
   }
 
   .p2,
