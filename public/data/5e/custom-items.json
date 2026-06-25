@@ -80,6 +80,332 @@
             ]
           }
         ]
+      },
+      {
+        "name": "Grenade Belt (Prototype)",
+        "source": "DMCC",
+        "page": 2,
+        "rarity": "Wondrous Invention",
+        "type": "W",
+        "weight": 3,
+        "reqAttune": "by an artificer",
+        "wondrous": true,
+        "entries": [
+          {
+            "type": "quote",
+            "name": "Grenade Belt (Prototype)",
+            "entries": [
+              "A reinforced utility belt fitted with six alchemical grenade housings. Through a combination of arcane engineering and volatile reagents, spells can be condensed into throwable devices."
+            ]
+          },
+          {
+            "type": "entries",
+            "name": "Charges",
+            "entries": [
+              "The belt can store up to 6 charges worth of grenades at any one time.",
+              "A grenade occupies a number of charges equal to the spell level stored within it, to a maximum of 3 charges per grenade.",
+              "The belt cannot store more than 6 charges total."
+            ]
+          },
+          {
+            "type": "entries",
+            "name": "Creating Grenades",
+            "entries": [
+              "During a long rest, or during a short rest in which you do not gain the normal benefits of resting, you may create grenade capsules by expending spell slots and paying the appropriate material cost.",
+              "Grenades are highly volatile and can only be stored safely within the Grenade Belt. A grenade removed from the belt immediately becomes unstable and is destroyed at the end of your next turn if not returned to the belt.",
+              "To create a grenade:",
+              {
+                "type": "list",
+                "items": [
+                  "Choose a valid spell.",
+                  "Expend spell slots whose combined levels equal the desired grenade charge value (maximum 3).",
+                  "Pay the associated material cost."
+                ]
+              },
+              "A grenade's charge value determines the maximum level of spell that may be stored within it.",
+              "For example:",
+              {
+                "type": "list",
+                "items": [
+                  "A 1-charge grenade may store a 1st-level spell.",
+                  "A 2-charge grenade may store a 1st- or 2nd-level spell.",
+                  "A 3-charge grenade may store a spell of up to 3rd level."
+                ]
+              },
+              "A spell is considered to be 'upcast' when stored in a capsule of higher charge level than the spell.",
+              "Material costs may be paid using gold or materials of equivalent value.",
+              "Wizard spells require additional reagents due to their unfamiliar magical structure. To create a grenade containing a Wizard spell, you must also possess the appropriate spell scroll, which is not consumed during creation.",
+              {
+                "type": "table",
+                "caption": "Grenade Cost Table",
+                "colLabels": ["Charges", "Artificer Spell", "Wizard Spell"],
+                "rows": [
+                  ["1", "15gp", "25gp"],
+                  ["2", "30gp", "50gp"],
+                  ["3", "45gp", "75gp"]
+                ]
+              }
+            ]
+          },
+          {
+            "type": "entries",
+            "name": "Throwing a Grenade",
+            "entries": [
+              "As an action, you may throw a grenade to a point within 60 feet, provided there is sufficient vertical space to arc the throw. Otherwise, the grenade's range is reduced to 20 feet.",
+              "When the grenade lands, the stored spell is immediately released as though you had cast it from that location.",
+              "Any attack rolls, saving throws, spell attack modifiers, and spell save DCs use your statistics.",
+              "The grenade is destroyed after use."
+            ]
+          },
+          {
+            "type": "entries",
+            "name": "Limitations",
+            "entries": [
+              "A grenade may only store a spell that meets all of the following requirements:",
+              {
+                "type": "list",
+                "items": [
+                  "The spell is on the Artificer spell list, or is copied from a Wizard spell scroll.",
+                  "The spell has a casting time of 1 action.",
+                  "The spell is 3rd level or lower.",
+                  "The spell does not have a range of Self.",
+                  "The spell creates an area of effect or targets a point in space.",
+                  "The spell does not consume costly material components beyond those required to create the grenade."
+                ]
+              }
+            ]
+          },
+          {
+            "type": "entries",
+            "name": "Prototype Bonus",
+            "entries": [
+              "When you first acquire this invention, you gain Wizard spell scrolls with a combined spell level total of 3."
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Pain Link (Prototype)",
+        "source": "DMCC",
+        "page": 3,
+        "rarity": "Wondrous Invention",
+        "type": "W",
+        "weight": 1,
+        "reqAttune": "by an artificer with an Iron Defender",
+        "wondrous": true,
+        "entries": [
+          {
+            "type": "quote",
+            "name": "Pain Link (Prototype)",
+            "entries": [
+              "A pair of humming brass conductors linked by unstable arcane circuitry. One is worn by the artificer, while the other is integrated into their Iron Defender.",
+              "The devices attempt to distribute physical trauma between their wearers."
+            ]
+          },
+          {
+            "type": "entries",
+            "name": "Charges",
+            "entries": [
+              "The Pain Link has a number of charges equal to your proficiency bonus.",
+              "All expended charges are restored when you finish a long rest."
+            ]
+          },
+          {
+            "type": "entries",
+            "name": "Pain Link",
+            "entries": [
+              "When either you or your Iron Defender is hit by an attack, but before damage is rolled, you may expend 1 charge and use your reaction to activate the Pain Link.",
+              "The creature that will receive the transferred damage immediately makes a Constitution ability check.",
+              "After the check is rolled, consult the table below.",
+              {
+                "type": "table",
+                "caption": "Damage Transferred",
+                "colLabels": ["Constitution Check", "Damage Transferred"],
+                "rows": [
+                  ["20+", "100%"],
+                  ["15-19", "75%"],
+                  ["10-14", "50%"],
+                  ["5-9", "25%"],
+                  ["4 or less", "0%"]
+                ]
+              },
+              "The chosen amount of damage is transferred from the original target to the linked creature.",
+              "Transferred damage retains its original type and cannot be reduced, prevented, redirected, or transferred again by the Pain Link.",
+              "For example, if Dave is struck for 40 slashing damage and you roll a Constitution check of 16, Dave takes 10 damage and you take 30 damage."
+            ]
+          },
+          {
+            "type": "entries",
+            "name": "Feedback Shock",
+            "entries": [
+              "The link strains both body and machine.",
+              "If the Constitution check result is 4 or less:",
+              {
+                "type": "list",
+                "items": ["Both linked creatures take 1d6 psychic damage."]
+              }
+            ]
+          },
+          {
+            "type": "entries",
+            "name": "Arcane Conductors",
+            "entries": [
+              "The Pain Link functions only while:",
+              {
+                "type": "list",
+                "items": [
+                  "Both creatures are on the same plane of existence.",
+                  "Both creatures are within 120 feet of one another.",
+                  "Both creatures are conscious."
+                ]
+              },
+              "If any of these conditions are not met, the link immediately becomes dormant."
+            ]
+          },
+          {
+            "type": "entries",
+            "name": "Experimental Prototype",
+            "entries": [
+              "The Pain Link is considered a prototype invention.",
+              "At the DM's discretion, repeated field testing may reveal improvements, modifications, or unexpected side effects."
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Yoink Box (Prototype)",
+        "source": "DMCC",
+        "page": 4,
+        "rarity": "Wondrous Invention",
+        "type": "W",
+        "weight": 2,
+        "wondrous": true,
+        "entries": [
+          {
+            "type": "quote",
+            "name": "Yoink Box (Prototype)",
+            "entries": [
+              "A whimsical, spring-loaded contraption disguised as a wooden jack-in-the-box. When activated, it violently unfolds into a grasping mechanical arm, snapping through space to retrieve nearby objects.",
+              "The device is helpful in principle, and unpredictable in practice."
+            ]
+          },
+          {
+            "type": "entries",
+            "name": "Charges",
+            "entries": [
+              "The apparatus has 3 charges, which are restored when you finish a long rest.",
+              "You may expend multiple charges when activating the apparatus to trigger Overclocked Retrieval Effects."
+            ]
+          },
+          {
+            "type": "entries",
+            "name": "Snatch Protocol",
+            "entries": [
+              "When a creature or object within 30 feet that you can see, you may expend 1 charge and use your action or reaction to activate the apparatus.",
+              "Choose one target:",
+              {
+                "type": "list",
+                "items": [
+                  "A non-magical object not being worn or carried.",
+                  "An object held or carried by a creature.",
+                  "A potion, vial, or similarly small item carried by a creature.",
+                  "An object in an unoccupied space or unsecured container."
+                ]
+              },
+              "The target must be Small or smaller."
+            ]
+          },
+          {
+            "type": "entries",
+            "name": "Retrieval Check",
+            "entries": [
+              "If the target is not unattended, make a Dexterity (Sleight of Hand) check contested by the target's Strength (Athletics) check.",
+              "On a success, the item is pulled into your hand or deposited in a space within 5 feet of you.",
+              "On a failure, the attempt fails and the charge is still expended."
+            ]
+          },
+          {
+            "type": "entries",
+            "name": "Overclocked Retrieval",
+            "entries": [
+              {
+                "type": "entries",
+                "name": "Disarm Pulse (2 charges total)",
+                "entries": [
+                  "If targeting a creature holding an item:",
+                  {
+                    "type": "list",
+                    "items": [
+                      "The target must succeed on a Strength saving throw (DC = your spell save DC) or drop the item.",
+                      "The item is immediately retrieved into your hand.",
+                      "On a success, the normal retrieval check is still made, but the creature has advantage on it."
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "entries",
+                "name": "Pocket Extraction (2 charges total)",
+                "entries": [
+                  "If targeting a creature carrying multiple items:",
+                  {
+                    "type": "list",
+                    "items": [
+                      "Make the normal retrieval check.",
+                      "On a success, instead of choosing a known item, you pull a random non-attuned item from the target's inventory."
+                    ]
+                  },
+                  "The DM determines the item, but it must be something physically carried or worn (no artifacts or plot items unless appropriate)."
+                ]
+              },
+              {
+                "type": "entries",
+                "name": "Precision Yank (2 charges total)",
+                "entries": [
+                  "You gain advantage on the retrieval check.",
+                  "If you succeed by 5 or more, you may immediately use your reaction to make a second retrieval attempt on the same target."
+                ]
+              },
+              {
+                "type": "entries",
+                "name": "Panic Snatch (3 charges total)",
+                "entries": [
+                  "The apparatus becomes violently overexcited:",
+                  {
+                    "type": "list",
+                    "items": [
+                      "You automatically succeed on the retrieval check.",
+                      "The target creature must succeed on a Dexterity saving throw (DC = your spell save DC) or be pulled 10 feet toward you (if possible).",
+                      "On a failure by 5 or more, the creature is also knocked prone."
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "entries",
+            "name": "Emergency Assistance Mode",
+            "entries": [
+              "If targeting a willing creature or unattended object, no check is required."
+            ]
+          },
+          {
+            "type": "entries",
+            "name": "Limitations",
+            "entries": [
+              {
+                "type": "list",
+                "items": [
+                  "Cannot retrieve creatures.",
+                  "Cannot retrieve items in extradimensional spaces.",
+                  "Cannot retrieve items secured by locks, restraints, or active magical containment (unless the DM allows).",
+                  "Requires line of effect."
+                ]
+              }
+            ]
+          }
+        ]
       }
     ],
     "acronym": "DMCC",
