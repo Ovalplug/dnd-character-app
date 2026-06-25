@@ -95,7 +95,7 @@
   onMounted(async () => {
     if (encounterId) {
       const encounter = await encounterStore.getEncounterById(encounterId);
-      encounterParticipants.value = encounter?.monsters || [];
+      encounterParticipants.value = encounter?.monsters.sort((a, b) => b.initiative - a.initiative) || [];
     }
   });
   const activeParticipantIndex = ref(0);
