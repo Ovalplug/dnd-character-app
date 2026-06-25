@@ -254,6 +254,12 @@
   >
     <div>
       <p>Select encounter to add to:</p>
+      <input
+        type="number"
+        v-model.number="numberToAdd"
+        min="1"
+        placeholder="Number of monsters to add"
+      />
       <ul>
         <li v-for="enc in encounterStore.encounters" :key="enc.id">
           <button @click="addThisMOnsterToThisEncounter(enc.id)">
@@ -297,6 +303,7 @@
   const environmentFilter = ref<string[]>([]);
   const monsterForEncounter = ref<Monster | null>(null);
   const encounterPopupOpen = ref(false);
+  const numberToAdd = ref<number>(1);
 
   const sortedMonsters = computed(() => {
     return bestiaryFilter(
@@ -378,11 +385,11 @@
   }
   async function addThisMOnsterToThisEncounter(encounterId: string) {
     if (!monsterForEncounter.value) return;
-
-    await encounterStore.addMonsterToEncounter(encounterId, monsterForEncounter.value);
+    await encounterStore.addMonsterToEncounter(encounterId, monsterForEncounter.value, numberToAdd.value);
     encounterPopupOpen.value = false;
     monsterForEncounter.value = null;
     selectedMonster.value = null;
+    numberToAdd.value = 1; // Reset the number to add after adding monsters
   }
 </script>
 
