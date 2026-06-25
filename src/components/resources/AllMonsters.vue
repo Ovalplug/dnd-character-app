@@ -385,7 +385,11 @@
   }
   async function addThisMOnsterToThisEncounter(encounterId: string) {
     if (!monsterForEncounter.value) return;
-    await encounterStore.addMonsterToEncounter(encounterId, monsterForEncounter.value, numberToAdd.value);
+    await encounterStore.addMonsterToEncounter(
+      encounterId,
+      monsterForEncounter.value,
+      numberToAdd.value
+    );
     encounterPopupOpen.value = false;
     monsterForEncounter.value = null;
     selectedMonster.value = null;

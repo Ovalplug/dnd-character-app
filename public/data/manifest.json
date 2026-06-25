@@ -6,6 +6,7 @@
     "items-full.json",
     "items-ua.json",
     "bestiary-complete.json",
-    "others-official.json"
+    "others-official.json",
+    "custom-items.json"
   ]
 }

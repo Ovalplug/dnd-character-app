@@ -158,10 +158,7 @@ function aggregateSpells(datasets: any[]) {
   return spells;
 }
 
-function mergeMonsterLegendaryGroups(
-  monsters: Monster[],
-  legendaryGroups: any[]
-): Monster[] {
+function mergeMonsterLegendaryGroups(monsters: Monster[], legendaryGroups: any[]): Monster[] {
   const legendaryMap = new Map<string, any>();
   // Create a map of legendary groups by name and source for quick lookup
   legendaryGroups.forEach(group => {

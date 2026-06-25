@@ -1,0 +1,89 @@
+[
+  {
+    "items": [
+      {
+        "name": "Anchor Of The Drowned",
+        "source": "DMCC",
+        "page": 1,
+        "rarity": "Legendary",
+        "type": "M",
+        "weight": 11,
+        "weaponCategory": "martial",
+        "property": ["H", "2H"],
+        "dmg1": "1d12",
+        "dmgType": "S",
+        "reqAttune": "by a warlock",
+        "wondrous": false,
+        "entries": [
+          {
+            "type": "quote",
+            "name": "Anchor of the Drowned",
+            "entries": [
+              "The anchor used to drown the bearer, transformed into their weapon.",
+              "As the wielders power grows, so too does their weapon, unlocking new abilities upon reaching certain Warlock levels."
+            ]
+          },
+          "This weapon is counted as a magical with a +1 bonus to attack and damage rolls starting at level 3, +2 at level 7, and +3 at level 13.",
+          {
+            "type": "entries",
+            "name": "Drowning Chain (level 1)",
+            "entries": [
+              "The anchor has a section of the chain still wrapped around it, giving it a reach of 15ft."
+            ]
+          },
+          {
+            "type": "entries",
+            "name": " Abyssal Power (level 3)",
+            "entries": [
+              "This weapon has a number of charges equal to 2 plus your proficiency bonus. It regains 1d4 (changing to 1d6 at lvl 10) charges every day at dusk.",
+              {
+                "type": "entries",
+                "name": "Abyssal Aura (level 3)",
+                "entries": [
+                  " As an action, spend two charges to cast the Shadow of Moil spell without expending a spell slot.",
+                  "When this spell is cast using the Anchor, it does not require concentration, deals cold damage instead of necrotic, and allows you to see normally in both magical and nonmagical darkness to a distance of 120ft "
+                ]
+              }
+            ]
+          },
+          {
+            "type": "entries",
+            "name": "Vengeance of the Drowned (level 5)",
+            "entries": [
+              "When you hit with this weapon, you may spend a charge to force the target to make a Strength saving throw against your spell save DC.",
+              "On a fail, the target becomes restrained for 1 minute as skeletal arms reach up to drag it down.",
+              "A creature restrained in this way may make a Strength saving throw as an action to attempt to free itself, ending the effect on a success."
+            ]
+          },
+          {
+            "type": "entries",
+            "name": "Drowning curse (level 7)",
+            "entries": [
+              "As an action, you can target 1 creature you can see, and expend any number of charges. That creature must make a CON save using your spell save DC, and on a failed save, takes 1d6 necrotic damage per charge spent, and begins to drown as their lungs full with water.",
+              "This effect lasts a number of turns equal to the number of charges spent, and a creature can repeat the saving throw at the end of each of their turns, ending it's effects on a save.",
+              "If a creature succeeds in their initial CON save, they take half damage and do not suffer from the drowning effects."
+            ]
+          },
+          {
+            "type": "entries",
+            "name": "Invocations of the Betrayed (level 9)",
+            "entries": [
+              "When this weapon hits a creature, you can expend 2 charges to activate one of your eldritch invocations that normally trigger from a hit with eldritch blast."
+            ]
+          },
+          {
+            "type": "entries",
+            "name": "The reach of Betrayal (level 11)",
+            "entries": [
+              "As a bonus action, you can spend any number of charges to increase this weapons reach by 5ft for every charge spent.",
+              "This effect lasts for 1 minute, and is treated as you concentrating on a spell."
+            ]
+          }
+        ]
+      }
+    ],
+    "acronym": "DMCC",
+    "name": "Dungeon Master's Custom Creations",
+    "fluff": []
+  }
+]
