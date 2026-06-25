@@ -736,6 +736,9 @@ export type Monster = {
   action?: Entries;
   reaction?: Entries;
   legendary?: Entries;
+  lairActions?: Entries;
+  regionalEffects?: Entries;
+  legendaryGroup?: { name: string; source: string };
   traitTags?: string[];
   actionTags?: string[];
   reactionTags?: string[];

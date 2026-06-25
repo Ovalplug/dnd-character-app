@@ -659,7 +659,7 @@ ul.arrow-list li {
   font-size: 1.05em;
 }
 ul.arrow-list li::before {
-  content: '\2192'; /* Unicode right arrow */
+  content: '\2606'; /* Unicode star */
   position: absolute;
   left: 0;
   top: 0.08em;

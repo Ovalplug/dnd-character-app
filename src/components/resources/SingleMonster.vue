@@ -136,6 +136,20 @@
         <ResourceEntries :entries="props.monster.mythic" />
       </div>
     </div>
+
+    <div v-if="props.monster.lairActions && props.monster.lairActions.length">
+      <h2 class="section-title">Lair Actions</h2>
+      <div class="section-content">
+        <ResourceEntries :entries="props.monster.lairActions" />
+      </div>
+    </div>
+
+    <div v-if="props.monster.regionalEffects && props.monster.regionalEffects.length">
+      <h2 class="section-title">Regional Effects</h2>
+      <div class="section-content">
+        <ResourceEntries :entries="props.monster.regionalEffects" />
+      </div>
+    </div>
   </div>
 
   <!-- Fluff -->

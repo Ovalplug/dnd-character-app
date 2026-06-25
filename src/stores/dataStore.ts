@@ -158,6 +158,35 @@ function aggregateSpells(datasets: any[]) {
   return spells;
 }
 
+function mergeMonsterLegendaryGroups(
+  monsters: Monster[],
+  legendaryGroups: any[]
+): Monster[] {
+  const legendaryMap = new Map<string, any>();
+  // Create a map of legendary groups by name and source for quick lookup
+  legendaryGroups.forEach(group => {
+    const key = `${group.name}|${group.source}`;
+    legendaryMap.set(key, group);
+  });
+
+  // Merge legendary group data into monsters
+  return monsters.map(monster => {
+    // If the monster has a legendaryGroup reference, use that
+    if (monster.legendaryGroup) {
+      const key = `${monster.legendaryGroup.name}|${monster.legendaryGroup.source}`;
+      const legendaryGroup = legendaryMap.get(key);
+      if (legendaryGroup) {
+        return {
+          ...monster,
+          lairActions: legendaryGroup.lairActions || monster.lairActions,
+          regionalEffects: legendaryGroup.regionalEffects || monster.regionalEffects,
+        };
+      }
+    }
+    return monster;
+  });
+}
+
 export const useDataStore = defineStore('data', {
   state: () => ({
     loaded: false as boolean,
@@ -178,6 +207,7 @@ export const useDataStore = defineStore('data', {
     enabledSources: {} as Record<string, boolean>,
     monsters: [] as Monster[],
     monsterFluff: [] as MonsterFluff[],
+    legendaryGroups: [] as any[],
     conditions: [] as ConditionsRules[],
     playerOptions: [] as PlayerOptions[],
     actionRules: [] as ActionRules[],
@@ -267,7 +297,10 @@ export const useDataStore = defineStore('data', {
       this.items = aggregate<Item>('items');
       this.subclasses = aggregateSubclasses(allData);
       this.spells = aggregateSpells(datasets);
-      this.monsters = aggregate<Monster>('monster');
+      let monsters = aggregate<Monster>('monster');
+      this.legendaryGroups = aggregate('legendaryGroups');
+      // Merge legendary groups (which contain lairActions and regionalEffects) into monsters
+      this.monsters = mergeMonsterLegendaryGroups(monsters, this.legendaryGroups);
       this.monsterFluff = aggregate<MonsterFluff>('monsterFluff');
       this.conditions = aggregate<ConditionsRules>('cond');
       this.playerOptions = aggregate<PlayerOptions>('play');
