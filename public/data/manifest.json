@@ -7,6 +7,8 @@
     "items-ua.json",
     "bestiary-complete.json",
     "others-official.json",
-    "custom-items.json"
+    "custom-items.json",
+    "custom-characters.json",
+    "custom-monsters.json"
   ]
 }

@@ -19,7 +19,7 @@
         </thead>
         <tbody>
           <tr v-for="monster in encounter.monsters" :key="monster.id">
-            <td class="clickable" @click="editCreatureName(monster)">{{ monster.useName }}</td>
+            <td class="clickable" @click="editCreatureName(monster)">{{ monster.name }}</td>
             <td class="clickable" @click="editHP(monster)">
               {{ monster.currentHp }}/{{ monster.maxHp }}
             </td>

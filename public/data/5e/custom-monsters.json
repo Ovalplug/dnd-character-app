@@ -1,0 +1,450 @@
+[
+  {
+    "name": "Dungeon Master's Custom Creations",
+    "acronym": "DMCC",
+    "monster": [
+      {
+        "name": "The Great Mighty Poo",
+        "source": "DMCC",
+        "page": 69,
+        "size": "H",
+        "type": "ooze",
+        "alignment": ["C", "N"],
+        "ac": [
+          {
+            "ac": 15
+          }
+        ],
+        "hp": {
+          "special": "Infinite*"
+        },
+        "speed": {
+          "walk": 15
+        },
+        "str": 22,
+        "dex": 6,
+        "con": 24,
+        "int": 10,
+        "wis": 12,
+        "cha": 20,
+        "save": {
+          "con": "+10",
+          "cha": "+8"
+        },
+        "immune": ["poison"],
+        "conditionImmune": ["charmed", "frightened", "poisoned", "prone"],
+        "senses": ["blindsight 60 ft."],
+        "passive": 11,
+        "languages": ["Common"],
+        "cr": "10",
+        "trait": [
+          {
+            "name": "Immortal Mass",
+            "entries": [
+              "The Great Mighty Poo cannot be reduced below 1 hit point.",
+              "Any damage dealt to him simply blasts chunks away that immediately reform."
+            ]
+          },
+          {
+            "name": "The Show Must Go On",
+            "entries": [
+              "The Great Mighty Poo constantly sings.",
+              "While singing, he has resistance to all damage and cannot become Flushable."
+            ]
+          },
+          {
+            "name": "Vulnerable Core",
+            "entries": [
+              "If The Great Mighty Poo is interrupted while singing, his sweetcorn-filled core is exposed until the start of his next turn.",
+              "During this time:",
+              {
+                "type": "list",
+                "items": [
+                  "He loses all resistances.",
+                  "Toilet Paper attacks can affect him.",
+                  "He cannot use Legendary Actions."
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Interrupting the Performance",
+            "entries": [
+              "The players may expose his core in any of the following ways:",
+              {
+                "type": "list",
+                "items": [
+                  "Deal 20 damage from a single attack.",
+                  "Deal any Thunder damage.",
+                  "Use a Silence spell.",
+                  "Successfully counter one of his songs.",
+                  "A creature adjacent to him may use an action to heckle him. Make a DC 16 Charisma (Performance, Persuasion, or Intimidation) check. On a success, he becomes enraged and exposes his core."
+                ]
+              },
+              "Reward creative ideas that would interrupt a self-important opera singer."
+            ]
+          },
+          {
+            "name": "Toilet Paper Hits",
+            "entries": [
+              "While his core is exposed, a creature holding a roll of enchanted toilet paper may use an action to make a ranged attack.",
+              {
+                "type": "entries",
+                "name": "Toilet Paper Toss",
+                "entries": [
+                  "Ranged Weapon Attack: +6 to hit, range 30/60 ft. Hit: The Great Mighty Poo gains 1 Flush Counter."
+                ]
+              },
+              "When he reaches 3 Flush Counters, he becomes Flushable."
+            ]
+          },
+          {
+            "name": "Flushable",
+            "entries": [
+              "While Flushable, a creature adjacent to the Giant Flush Lever may use an action to activate it.",
+              "The Great Mighty Poo must make a DC 18 Strength saving throw.",
+              "On a failure, he is instantly defeated.",
+              "On a success, one Flush Counter is removed."
+            ]
+          },
+          {
+            "name": "Filthy",
+            "entries": [
+              "A creature affected by Dung Lob has its speed reduced by 10 feet.",
+              "A creature may use an action to clean itself."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Multiattack",
+            "entries": ["The Great Mighty Poo makes two Dung Lob attacks."]
+          },
+          {
+            "name": "Dung Lob",
+            "entries": [
+              "Ranged Weapon Attack: +8 to hit, range 90 ft., one target. Hit: 13 (2d8 + 4) bludgeoning damage. The target must succeed on a DC 16 Dexterity saving throw or become Filthy."
+            ]
+          },
+          {
+            "name": "Mighty Slap",
+            "entries": [
+              "Melee Weapon Attack: +8 to hit, reach 5 ft., one target. Hit: 17 (3d6 + 6) bludgeoning damage."
+            ]
+          },
+          {
+            "name": "Brown Note Aria (Recharge 5-6)",
+            "entries": [
+              "The Great Mighty Poo unleashes a terrible operatic note. Every creature within 60 feet must make a DC 16 Constitution saving throw. On a failed save, a creature takes 18 (4d8) thunder damage and is knocked prone. On a successful save, it takes half as much damage."
+            ]
+          }
+        ],
+        "legendary": [
+          "The Great Mighty Poo has 2 legendary actions.",
+          {
+            "name": "Throw More Poo",
+            "entries": ["The Great Mighty Poo makes one Dung Lob attack."]
+          },
+          {
+            "name": "Dramatic Solo",
+            "entries": [
+              "One creature within 60 feet must succeed on a DC 16 Wisdom saving throw or have disadvantage on its next attack roll."
+            ]
+          }
+        ],
+        "legendaryActions": 2,
+        "traitTags": ["Damage Resistance"],
+        "senseTags": ["B"],
+        "languageTags": ["C"],
+        "damageTags": ["B", "T"],
+        "conditionInflict": ["prone"],
+        "miscTags": ["MW", "RW", "RNG", "AOE"]
+      },
+      {
+        "name": "Tiny Tiny Dragon",
+        "source": "DMCC",
+        "page": 1,
+        "size": "T",
+        "type": "dragon",
+        "alignment": ["L", "E"],
+        "ac": [
+          {
+            "ac": 18,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 168,
+          "formula": "16d4 + 128"
+        },
+        "speed": {
+          "walk": 20,
+          "fly": 80,
+          "burrow": 10
+        },
+        "str": 12,
+        "dex": 22,
+        "con": 26,
+        "int": 16,
+        "wis": 15,
+        "cha": 19,
+        "save": {
+          "dex": "+10",
+          "con": "+12",
+          "wis": "+7",
+          "cha": "+9"
+        },
+        "skill": {
+          "perception": "+11",
+          "stealth": "+14"
+        },
+        "immune": ["lightning"],
+        "senses": ["blindsight 30 ft.", "darkvision 120 ft."],
+        "passive": 21,
+        "languages": ["Common", "Draconic"],
+        "cr": "10",
+        "trait": [
+          {
+            "name": "Tiny Target",
+            "entries": [
+              "Opportunity attacks against the Tiny Tiny Dragon are made with disadvantage."
+            ]
+          },
+          {
+            "name": "Lightning Scurry",
+            "entries": [
+              "The Tiny Tiny Dragon does not provoke opportunity attacks when it flies out of a creature's reach."
+            ]
+          },
+          {
+            "name": "Legendary Resistance (2/Day)",
+            "entries": ["If the dragon fails a saving throw, it can choose to succeed instead."]
+          }
+        ],
+        "action": [
+          {
+            "name": "Multiattack",
+            "entries": [
+              "The Tiny Tiny Dragon makes three attacks: one with its Bite and two with its Claws."
+            ]
+          },
+          {
+            "name": "Bite",
+            "entries": [
+              "Melee Weapon Attack: +10 to hit, reach 5 ft., one target. Hit: 12 (2d6 + 5) piercing damage plus 9 (2d8) lightning damage."
+            ]
+          },
+          {
+            "name": "Claw",
+            "entries": [
+              "Melee Weapon Attack: +10 to hit, reach 5 ft., one target. Hit: 9 (1d8 + 5) slashing damage."
+            ]
+          },
+          {
+            "name": "Static Tail",
+            "entries": [
+              "Melee Weapon Attack: +10 to hit, reach 10 ft., one target. Hit: 11 (1d12 + 5) bludgeoning damage plus 4 (1d8) lightning damage."
+            ]
+          },
+          {
+            "name": "Tiny Frightful Presence",
+            "entries": [
+              "Each creature of the dragon's choice within 30 feet that can see or hear it must succeed on a DC 17 Wisdom saving throw or become frightened until the end of the dragon's next turn. Creatures that succeed are immune to this effect for 24 hours."
+            ]
+          },
+          {
+            "name": "Lightning Breath (Recharge 5-6)",
+            "entries": [
+              "The Tiny Tiny Dragon exhales lightning in a 30-foot line that is 5 feet wide. Each creature in the line must make a DC 18 Dexterity saving throw, taking 45 (10d8) lightning damage on a failed save, or half as much damage on a successful one."
+            ]
+          }
+        ],
+        "bonus": [
+          {
+            "name": "Zip",
+            "entries": [
+              "The Tiny Tiny Dragon flies up to half its flying speed without provoking opportunity attacks."
+            ]
+          }
+        ],
+        "legendary": [
+          {
+            "name": "Detect",
+            "entries": ["The Tiny Tiny Dragon makes a Wisdom (Perception) check."]
+          },
+          {
+            "name": "Tail Attack",
+            "entries": ["The Tiny Tiny Dragon makes one Static Tail attack."]
+          },
+          {
+            "name": "Spark Dash (Costs 2 Actions)",
+            "entries": [
+              "The Tiny Tiny Dragon moves up to its flying speed. Each creature whose space it leaves within 5 feet takes 7 (2d6) lightning damage."
+            ]
+          }
+        ],
+        "legendaryActions": 3,
+        "traitTags": ["Legendary Resistances"],
+        "senseTags": ["B", "SD"],
+        "actionTags": ["Multiattack", "Frightful Presence"],
+        "languageTags": ["C", "DR"],
+        "damageTags": ["B", "L", "P", "S"],
+        "miscTags": ["AOE", "MW", "RCH", "RW"],
+        "conditionInflict": ["frightened"]
+      },
+      {
+        "name": "The Hundred Thousand Clucks",
+        "source": "DMCC",
+        "page": 1,
+        "size": "G",
+        "type": {
+          "type": "swarm",
+          "swarmSize": "T",
+          "swarmType": "beast"
+        },
+        "alignment": ["U"],
+        "ac": [
+          {
+            "ac": 8
+          }
+        ],
+        "hp": {
+          "average": 480,
+          "special": "480 (see Diminishing Flock)"
+        },
+        "speed": {
+          "walk": 40
+        },
+        "str": 28,
+        "dex": 6,
+        "con": 22,
+        "int": 2,
+        "wis": 10,
+        "cha": 1,
+        "save": {
+          "con": "+12"
+        },
+        "resist": ["bludgeoning", "piercing", "slashing"],
+        "conditionImmune": [
+          "charmed",
+          "frightened",
+          "grappled",
+          "paralyzed",
+          "petrified",
+          "prone",
+          "restrained",
+          "stunned"
+        ],
+        "passive": 10,
+        "cr": "11",
+        "trait": [
+          {
+            "name": "Swarmform Catastrophe",
+            "entries": [
+              "The horde occupies a 120-foot-long, 60-foot-wide mass and moves as a single entity.",
+              "It can pass through openings as small as 1 inch without slowing.",
+              "It can climb over itself to scale walls up to 40 feet high."
+            ]
+          },
+          {
+            "name": "Diminishing Flock",
+            "entries": [
+              "When the horde takes damage, reduce its hit points normally.",
+              "Additionally:",
+              {
+                "type": "list",
+                "items": [
+                  "For every 25 damage dealt in a single turn, its speed is reduced by 5 feet until the end of its next turn.",
+                  "If it takes 50 or more damage in a single turn, it becomes disorganized and cannot use Chicken Surge on its next turn."
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Pecking Mass",
+            "entries": [
+              "A creature that starts its turn within 10 feet of the horde or inside it must make a DC 16 Constitution saving throw.",
+              "On a failed save, the creature takes 16 (3d10) piercing damage and has disadvantage on the next attack roll it makes before the end of its turn.",
+              "If the saving throw fails by 5 or more, the creature is also blinded until the end of its turn.",
+              "On a successful save, the creature takes half as much damage."
+            ]
+          },
+          {
+            "name": "Overwhelming Pressure",
+            "entries": [
+              "When the horde enters a creature's space or passes through it, the creature must succeed on a DC 17 Strength saving throw.",
+              "On a failed save, the creature takes 27 (5d10) bludgeoning damage, is pushed 15 feet, and is knocked prone.",
+              "If the saving throw fails by 5 or more, the creature is also restrained until the end of its next turn.",
+              "On a successful save, the creature takes half as much damage and isn't moved."
+            ]
+          },
+          {
+            "name": "Living Avalanche",
+            "entries": [
+              "Structures and barricades are forced to make a DC 18 Strength check when the horde collides with them.",
+              "On a failure, they take 30 damage and degrade (DM's discretion)."
+            ]
+          },
+          {
+            "name": "Momentum Swarm",
+            "entries": [
+              "The horde ignores nonmagical difficult terrain and slowing effects.",
+              "Magical effects reduce its speed by half for 1 round before it adapts."
+            ]
+          },
+          {
+            "name": "Rooster Apex (240 HP or Fewer)",
+            "entries": [
+              "When the horde is reduced to 240 hit points or fewer, a massive rooster erupts from the swarm and takes command.",
+              "While the Rooster Apex lives:",
+              {
+                "type": "list",
+                "items": [
+                  "The horde's speed increases by 10 feet.",
+                  "Pecking Mass damage increases to 27 (5d10) piercing damage.",
+                  "Chicken Surge recharges on a 4-6."
+                ]
+              },
+              "The Rooster Apex acts on initiative count 20 (losing initiative ties)."
+            ]
+          },
+          {
+            "name": "Legendary Movement",
+            "entries": [
+              "At initiative count 20, the horde moves up to 20 feet.",
+              "If it moves at least 20 feet, each creature in its path must succeed on a DC 15 Dexterity saving throw or be knocked prone."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Multiattack",
+            "entries": ["The horde makes two Pecking Mass attacks."]
+          },
+          {
+            "name": "Pecking Mass",
+            "entries": [
+              "Melee Weapon Attack: +12 to hit, reach 10 ft., one target. Hit: 22 (4d10) piercing damage, and the target must succeed on a DC 17 Strength saving throw or be pulled into the horde's space."
+            ]
+          },
+          {
+            "name": "Chicken Surge (Recharge 5-6)",
+            "entries": [
+              "The horde erupts forward in a 60-foot push. Each creature in its path must make a DC 17 Strength saving throw. On a failed save, a creature takes 44 (8d10) bludgeoning damage, is pushed 20 feet, and is knocked prone. On a successful save, it takes half as much damage and is pushed 10 feet."
+            ]
+          },
+          {
+            "name": "Featherstorm Eruption (Recharge 6)",
+            "entries": [
+              "The horde flaps and panics violently. Each creature within 30 feet must make a DC 16 Constitution saving throw. On a failed save, the creature is blinded until the end of its next turn and has disadvantage on Constitution saving throws made to maintain concentration. On a successful save, the creature suffers no additional effect."
+            ]
+          }
+        ],
+        "traitTags": ["Swarm"],
+        "damageTags": ["B", "P"],
+        "conditionInflict": ["blinded", "prone", "restrained"],
+        "miscTags": ["AOE", "MW"]
+      }
+    ]
+  }
+]
