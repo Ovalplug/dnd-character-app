@@ -1,7 +1,6 @@
 import Dexie from 'dexie';
 import type { Table } from 'dexie';
 import type { EncounterCreature, playerCharacter, SpellBook } from '../types';
-import { v4 as uuidv4 } from 'uuid';
 
 export type Character = playerCharacter;
 

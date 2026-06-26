@@ -83,9 +83,11 @@
       </select>
 
       //submit
-      <button @click="spellBookStore.addSpellbook(newSpellbook)">Create Spellbook</button>
-      </div>
+    </div>
 
+    <button @click="spellBookStore.addSpellbook(newSpellbook)" :disabled="true">
+      Create Spellbook
+    </button>
     <pre>{{ newSpellbook }}</pre>
   </div>
 </template>
@@ -155,7 +157,13 @@
   }
 
   function prefillSpells() {
-    const refinedSpells = getRefinedSpellsList(spells, ["a", "c", "d", "e", "v", "i", "n", "t"], [1, 2, 3, 4, 5, 6, 7, 8, 9], [spellClass.value], "level");
+    const refinedSpells = getRefinedSpellsList(
+      spells,
+      ['a', 'c', 'd', 'e', 'v', 'i', 'n', 't'],
+      [1, 2, 3, 4, 5, 6, 7, 8, 9],
+      [spellClass.value],
+      'level'
+    );
     newSpellbook.value.spellsKnown = refinedSpells;
   }
 </script>
