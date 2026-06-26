@@ -1,6 +1,7 @@
 import Dexie from 'dexie';
 import type { Table } from 'dexie';
-import type { EncounterCreature, playerCharacter } from '../types';
+import type { EncounterCreature, playerCharacter, SpellBook } from '../types';
+import { v4 as uuidv4 } from 'uuid';
 
 export type Character = playerCharacter;
 
@@ -44,6 +45,7 @@ export class DndDatabase extends Dexie {
   settings!: Table<Setting, string>;
   notes!: Table<CharacterNotesRecord, string>;
   encounters!: Table<Encounter, string>;
+  spellBooks!: Table<SpellBook, string>;
 
   constructor() {
     super('DndDatabase');
@@ -68,6 +70,14 @@ export class DndDatabase extends Dexie {
       settings: 'key',
       notes: '&characterId, updatedAt',
       encounters: '&id, name, updatedAt',
+    });
+
+    this.version(5).stores({
+      characters: '&id, name, level, updatedAt',
+      settings: 'key',
+      notes: '&characterId, updatedAt',
+      encounters: '&id, name, updatedAt',
+      spellBooks: '&id, name',
     });
   }
 }
@@ -137,4 +147,24 @@ export async function updateEncounter(encounter: Encounter): Promise<void> {
   }
 
   await db.encounters.put(encounter);
+}
+
+export async function addSpellBook(spellBook: SpellBook): Promise<void> {
+  await db.spellBooks.put(spellBook);
+}
+
+export async function getSpellBook(id: string): Promise<SpellBook | undefined> {
+  return await db.spellBooks.get(id);
+}
+
+export async function deleteSpellBook(id: string): Promise<void> {
+  await db.spellBooks.delete(id);
+}
+
+export async function getAllSpellBooks(): Promise<SpellBook[]> {
+  return await db.spellBooks.toArray();
+}
+
+export async function updateSpellBook(spellBook: SpellBook): Promise<void> {
+  await db.spellBooks.put(spellBook);
 }

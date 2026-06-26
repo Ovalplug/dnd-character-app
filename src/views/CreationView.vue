@@ -15,6 +15,9 @@
       <button @click="navigateTo('/create/encounter')" :disabled="!isDataLoaded">
         Encounter Creation
       </button>
+      <button @click="navigateTo('/create/spellbook')" :disabled="!isDataLoaded">
+        Spellbook Creation
+      </button>
     </div>
   </div>
 </template>

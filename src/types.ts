@@ -934,3 +934,17 @@ export type EncounterCreature = Monster & {
   tempHp: number;
   useName: string;
 };
+
+// spellbook stuff
+export type SpellBook = {
+  id: string;
+  name: string;
+  spellcastingAbility: string;
+  spellcastingDc: number;
+  spellcastingAttackBonus: number;
+  spellSlots: Record<number, { max: number; used: number }>;
+  innateSpells: Array<{ name: string; level: number; ability: string; usesPerDay?: number }>;
+  cantrips: Spells;
+  spellsKnown: Spells;
+  spellsPrepared: Spells;
+};
