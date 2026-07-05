@@ -17,6 +17,7 @@ import EncounterMain from '../components/encounters/EncounterMain.vue';
 import LevelUpView from '../views/LevelUpView.vue';
 import TrainingGround from '../views/TrainingGround.vue';
 import CreateSpellbook from '../components/spellBooks/CreateSpellbook.vue';
+import SpellBookView from '../components/spellBooks/SpellBookView.vue';
 import { useDataStore } from '../stores/dataStore';
 
 const routes: Array<RouteRecordRaw> = [
@@ -40,6 +41,7 @@ const routes: Array<RouteRecordRaw> = [
   { path: '/create/spellCreate', name: 'spellCreate', component: PlaceHolder },
   { path: '/create/encounter', name: 'encounterCreate', component: EncounterCreation },
   { path: '/create/spellbook', name: 'spellbookCreate', component: CreateSpellbook },
+  { path: '/spellbook/:id', name: 'spellbook', component: SpellBookView },
   { path: '/encounter/edit', name: 'EditEncounter', component: EditEncounter },
   { path: '/encounter/run', name: 'RunEncounter', component: EncounterMain },
   { path: '/training', name: 'trainingGround', component: TrainingGround },

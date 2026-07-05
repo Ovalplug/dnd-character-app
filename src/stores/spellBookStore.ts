@@ -20,6 +20,12 @@ export const useSpellBookStore = defineStore('spellbook', {
       await addSpellBook(clonedSpellbook);
       await this.loadSpellbooks(); // Refresh the list after adding
     },
+    async updateSpellbook(spellbook: SpellBook) {
+      // Deep clone to ensure all data is serializable for IndexedDB
+      const clonedSpellbook = structuredClone(JSON.parse(JSON.stringify(spellbook)));
+      await addSpellBook(clonedSpellbook); // IndexedDB put overwrites if ID exists
+      await this.loadSpellbooks(); // Refresh the list after updating
+    },
     async getSpellbookById(id: string) {
       await this.loadSpellbooks(); // Ensure spellbooks are loaded
       const spellbook = await getSpellBook(id); // Fetch the spellbook from the database

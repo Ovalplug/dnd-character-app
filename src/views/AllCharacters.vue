@@ -4,9 +4,9 @@
   </div>
   <div v-else>
     <h1>Look at all your pretty creations!</h1>
-    <accordian-holder header="charStore.characters">
+    <!-- <accordian-holder header="charStore.characters">
       <pre>{{ charStore.characters }}</pre>
-    </accordian-holder>
+    </accordian-holder> -->
 
     <table class="characterTable">
       <caption>
@@ -80,6 +80,39 @@
         </tr>
       </tbody>
     </table>
+    <br />
+    <table class="characterTable">
+      <caption>
+        Spellbook List
+      </caption>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Ability</th>
+          <th>DC</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="spellbook in spellBookStore.spellbooks" :key="spellbook.id">
+          <td>
+            <router-link :to="`/spellbook/${spellbook.id}`">
+              {{ spellbook.name }}
+            </router-link>
+          </td>
+          <td>{{ spellbook.spellcastingAbility }}</td>
+          <td>{{ spellbook.spellcastingDc }}</td>
+          <td>
+            <img
+              :src="icons.binIcon"
+              alt="Delete"
+              @click="deleteSpellbook(spellbook.id)"
+              class="deleteCharIcon"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
   <PopOut v-if="selectedChar" :title="selectedChar.name" @close="closeCharPopout">
@@ -136,6 +169,7 @@
   import { useCharacterStore } from '../stores/characterStore';
   import type { Character } from '../database/db';
   import { useEncounterStore } from '../stores/encounterStore.ts';
+  import { useSpellBookStore } from '../stores/spellBookStore.ts';
   import { useRouter } from 'vue-router';
 
   const router = useRouter();
@@ -153,11 +187,13 @@
 
   const charStore = useCharacterStore();
   const encounterStore = useEncounterStore();
+  const spellBookStore = useSpellBookStore();
 
-  // do encounterstore.init() on mount
+  // Load on mount
   encounterStore.loadEncounters();
+  spellBookStore.loadSpellbooks();
 
-  const loaded = computed(() => charStore.loaded && encounterStore.loaded);
+  const loaded = computed(() => charStore.loaded && encounterStore.loaded && spellBookStore.loaded);
 
   const icons: Record<string, string> = {
     binIcon: binIcon,
@@ -206,6 +242,11 @@
         id: id,
       },
     });
+  }
+
+  async function deleteSpellbook(id: string) {
+    await spellBookStore.deleteSpellbook(id);
+    await spellBookStore.loadSpellbooks();
   }
 </script>
 
