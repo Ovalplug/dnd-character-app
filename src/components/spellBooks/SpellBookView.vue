@@ -71,12 +71,43 @@
       </div>
 
       <div v-if="spellbook.spellsKnown.length > 0" class="detail-card">
-        <h3>Spells Known ({{ spellbook.spellsKnown.length }})</h3>
+        <div class="spells-header">
+          <h3>Spells Known ({{ filteredSpellsKnown.length }})</h3>
+        </div>
+        <div class="spells-controls">
+          <input
+            v-model="searchQuery"
+            type="text"
+            placeholder="Search spells..."
+            class="search-input"
+          />
+          <div class="level-filter">
+            <button
+              class="level-btn"
+              :class="{ active: selectedSpellLevel === null }"
+              @click="selectedSpellLevel = null"
+            >
+              All
+            </button>
+            <button
+              v-for="level in availableSpellLevels"
+              :key="level"
+              class="level-btn"
+              :class="{ active: selectedSpellLevel === level }"
+              @click="selectedSpellLevel = level"
+            >
+              {{ level }}
+            </button>
+          </div>
+        </div>
         <ul class="spell-list">
-          <li v-for="spell in spellbook.spellsKnown" :key="spell.name">
+          <li v-for="spell in filteredSpellsKnown" :key="spell.name">
             {{ spell.name }} <span class="spell-level">(Level {{ spell.level }})</span>
           </li>
         </ul>
+        <div v-if="filteredSpellsKnown.length === 0" class="no-spells">
+          No spells match your filters.
+        </div>
       </div>
 
       <div v-if="spellbook.spellsPrepared.length > 0" class="detail-card">
@@ -108,19 +139,58 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, onMounted, type Ref } from 'vue';
+  import { ref, onMounted, computed, type Ref } from 'vue';
   import { useRoute } from 'vue-router';
   import { useSpellBookStore } from '../../stores/spellBookStore';
   import type { SpellBook } from '../../types';
   import Loading from '../resources/Loading.vue';
   import reloadIcon from '../../assets/icons/reload.svg';
   import fireIcon from '../../assets/icons/fire.svg';
-import AccordianHolder from '../AccordianHolder.vue';
+  import AccordianHolder from '../AccordianHolder.vue';
 
   const route = useRoute();
   const spellBookStore = useSpellBookStore();
   const spellbook: Ref<SpellBook | undefined> = ref(undefined);
   const loaded = ref(false);
+  const searchQuery = ref('');
+  const selectedSpellLevel: Ref<number | null> = ref(null);
+
+  const availableSpellLevels = computed(() => {
+    if (!spellbook.value) return [];
+    return Object.keys(spellbook.value.spellSlots)
+      .map(Number)
+      .filter(level => (spellbook.value!.spellSlots[level]?.max || 0) > 0)
+      .sort((a, b) => a - b);
+  });
+
+  const filteredSpellsKnown = computed(() => {
+    if (!spellbook.value) return [];
+
+    let filtered = [...spellbook.value.spellsKnown];
+
+    // Filter by available spell levels (only show spells of castable levels)
+    const availableLevels = availableSpellLevels.value;
+    filtered = filtered.filter(spell => availableLevels.includes(spell.level));
+
+    // Filter by selected level
+    if (selectedSpellLevel.value !== null) {
+      filtered = filtered.filter(spell => spell.level === selectedSpellLevel.value);
+    }
+
+    // Filter by search query
+    if (searchQuery.value.trim()) {
+      const query = searchQuery.value.toLowerCase();
+      filtered = filtered.filter(spell => spell.name.toLowerCase().includes(query));
+    }
+
+    // Sort by level, then by name
+    filtered.sort((a, b) => {
+      if (a.level !== b.level) return a.level - b.level;
+      return a.name.localeCompare(b.name);
+    });
+
+    return filtered;
+  });
 
   onMounted(async () => {
     const id = route.params.id as string;
@@ -394,6 +464,81 @@ import AccordianHolder from '../AccordianHolder.vue';
     font-size: 0.85rem;
     color: var(--color-muted);
     margin-left: 0.5rem;
+  }
+
+  .spells-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .spells-header h3 {
+    margin: 0;
+  }
+
+  .spells-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .search-input {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid rgba(107, 46, 46, 0.2);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--color-text);
+    font-size: 0.9rem;
+    transition: all 0.15s ease;
+  }
+
+  .search-input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.04);
+    border-color: var(--color-accent);
+  }
+
+  .search-input::placeholder {
+    color: var(--color-muted);
+  }
+
+  .level-filter {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .level-btn {
+    padding: 0.4rem 0.8rem;
+    border: 1px solid rgba(107, 46, 46, 0.2);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--color-primary);
+    font-weight: 600;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .level-btn:hover {
+    background: rgba(107, 46, 46, 0.08);
+    border-color: var(--color-primary);
+  }
+
+  .level-btn.active {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-bg);
+  }
+
+  .no-spells {
+    padding: 1rem;
+    text-align: center;
+    color: var(--color-muted);
+    font-style: italic;
   }
 
   .spellbook-error {
