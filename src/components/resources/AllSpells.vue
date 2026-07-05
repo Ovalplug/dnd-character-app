@@ -102,6 +102,7 @@
           {{ getPrettySpellSchool(spell.school) }} ({{ getPrettySpellLevel(spell.level) }})
         </p>
         <p class="spell_p3">{{ getPrettySpellClassList(spell.classes?.fromClassList ?? []) }}</p>
+        <img :src="bookIcon" alt="add to spellbook icon" class="icon" @click.stop="addToSpellbook(spell)" />
       </div>
     </ul>
 
@@ -111,6 +112,26 @@
       </div>
       <div>
         <SingleSpell :spell="selectedSpell" />
+      </div>
+    </PopOut>
+
+    <PopOut
+      v-if="spellbookPopupOpen && spellForSpellbook"
+      :title="`Add ${spellForSpellbook.name} to Spellbook`"
+      @close="spellbookPopupOpen = false"
+    >
+      <div>
+        <p>Select spellbook to add to:</p>
+        <ul class="spellbook-list">
+          <li v-for="spellbook in spellBookStore.spellbooks" :key="spellbook.id">
+            <button @click="addThisSpellToThisSpellbook(spellbook.id)" class="spellbook-btn">
+              {{ spellbook.name }}
+            </button>
+          </li>
+        </ul>
+        <div v-if="spellBookStore.spellbooks.length === 0" class="no-spellbooks">
+          No spellbooks available. Create one first.
+        </div>
       </div>
     </PopOut>
   </div>
@@ -123,15 +144,18 @@
   import { useDebug } from '../../composables/useDebug';
   import { useDataStore } from '../../stores/dataStore';
   import SingleSpell from './SingleSpell.vue';
+  import { useSpellBookStore } from '../../stores/spellBookStore';
   import {
     getPrettySpellLevel,
     getPrettySpellSchool,
     getPrettySpellClassList,
     getRefinedSpellsList,
   } from '../../helperFunctions';
+  import bookIcon from '../../assets/icons/book.svg';
 
   const { debug, initDebug } = useDebug();
   const dataStore = useDataStore();
+  const spellBookStore = useSpellBookStore();
 
   const props = defineProps<{
     spells: Spells;
@@ -220,11 +244,52 @@
   const selectedSpell = ref<Spell | null>(null);
   const spellTitle = computed(() => (selectedSpell.value ? selectedSpell.value.name : ''));
 
+  const spellForSpellbook = ref<Spell | null>(null);
+  const spellbookPopupOpen = ref(false);
+
   function selectSpell(spell: Spell) {
     selectedSpell.value = spell;
   }
 
   function deselectSpell() {
+    selectedSpell.value = null;
+  }
+
+  function addToSpellbook(spell: Spell) {
+    spellForSpellbook.value = spell;
+    spellbookPopupOpen.value = true;
+  }
+
+  async function addThisSpellToThisSpellbook(spellbookId: string) {
+    if (!spellForSpellbook.value) return;
+
+    const spellbook = await spellBookStore.getSpellbookById(spellbookId);
+    if (!spellbook) return;
+
+    const spell = spellForSpellbook.value;
+    const isCantrip = spell.level === 0;
+
+    // Determine target list
+    const targetList = isCantrip ? spellbook.cantrips : spellbook.spellsKnown;
+
+    // Check if spell already exists
+    if (targetList.some(s => s.name === spell.name)) {
+      // eslint-disable-next-line no-console
+      console.warn(`${spell.name} is already in this spellbook`);
+      spellbookPopupOpen.value = false;
+      spellForSpellbook.value = null;
+      return;
+    }
+
+    // Add spell to the appropriate list
+    targetList.push(spell);
+
+    // Save the updated spellbook
+    await spellBookStore.updateSpellbook(spellbook);
+
+    // Close popup and reset
+    spellbookPopupOpen.value = false;
+    spellForSpellbook.value = null;
     selectedSpell.value = null;
   }
 
@@ -238,6 +303,7 @@
         console.error('Failed to load data store', err);
       }
     }
+    await spellBookStore.loadSpellbooks();
   });
 </script>
 
@@ -420,6 +486,62 @@
   .spell_p3 {
     color: var(--color-muted);
     font-size: 0.85rem;
+  }
+
+  .feat-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .icon {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.15s ease;
+    display: block;
+    flex-shrink: 0;
+  }
+
+  .icon:hover {
+    opacity: 1;
+  }
+
+  .spellbook-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .spellbook-btn {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid rgba(107, 46, 46, 0.2);
+    border-radius: 6px;
+    background: rgba(201, 164, 75, 0.08);
+    color: var(--color-primary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: left;
+  }
+
+  .spellbook-btn:hover {
+    background: rgba(201, 164, 75, 0.16);
+    border-color: var(--color-accent);
+  }
+
+  .no-spellbooks {
+    padding: 1rem;
+    text-align: center;
+    color: var(--color-muted);
+    font-style: italic;
   }
 
   @media (min-width: 640px) {
