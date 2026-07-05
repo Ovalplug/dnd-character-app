@@ -64,69 +64,92 @@
       <div v-if="spellbook.cantrips.length > 0" class="detail-card">
         <h3>Cantrips ({{ spellbook.cantrips.length }})</h3>
         <ul class="spell-list">
-          <li v-for="spell in spellbook.cantrips" :key="spell.name">
-            {{ spell.name }}
+          <li v-for="spell in spellbook.cantrips" :key="spell.name" class="spell-item">
+            <div class="spell-info" @click="selectedSpellForPopout = spell">
+              {{ spell.name }}
+            </div>
           </li>
         </ul>
       </div>
 
-      <div v-if="spellbook.spellsKnown.length > 0" class="detail-card">
-        <div class="spells-header">
-          <h3>Spells Known ({{ filteredSpellsKnown.length }})</h3>
-        </div>
-        <div class="spells-controls">
-          <input
-            v-model="searchQuery"
-            type="text"
-            placeholder="Search spells..."
-            class="search-input"
-          />
-          <div class="level-filter">
-            <button
-              class="level-btn"
-              :class="{ active: selectedSpellLevel === null }"
-              @click="selectedSpellLevel = null"
-            >
-              All
-            </button>
-            <button
-              v-for="level in availableSpellLevels"
-              :key="level"
-              class="level-btn"
-              :class="{ active: selectedSpellLevel === level }"
-              @click="selectedSpellLevel = level"
-            >
-              {{ level }}
-            </button>
+      <AccordianHolder v-if="spellbook.spellsKnown.length > 0" header="Spells Known" class="detail-card">
+        <div class="accordion-content">
+          <div class="spells-controls">
+            <input
+              v-model="searchQuery"
+              type="text"
+              placeholder="Search spells..."
+              class="search-input"
+            />
+            <div class="level-filter">
+              <button
+                class="level-btn"
+                :class="{ active: selectedSpellLevel === null }"
+                @click="selectedSpellLevel = null"
+              >
+                All
+              </button>
+              <button
+                v-for="level in availableSpellLevels"
+                :key="level"
+                class="level-btn"
+                :class="{ active: selectedSpellLevel === level }"
+                @click="selectedSpellLevel = level"
+              >
+                {{ level }}
+              </button>
+            </div>
+          </div>
+          <ul class="spell-list">
+            <li v-for="spell in filteredSpellsKnown" :key="spell.name" class="spell-item">
+              <div class="spell-info" @click="selectedSpellForPopout = spell">
+                {{ spell.name }} <span class="spell-level">(Level {{ spell.level }})</span>
+              </div>
+              <button
+                class="spell-action-btn prepare-btn"
+                @click="prepareSpell(spell)"
+                :title="spellbook.spellsPrepared.some(s => s.name === spell.name) ? 'Already prepared' : 'Prepare spell'"
+                :disabled="spellbook.spellsPrepared.some(s => s.name === spell.name)"
+              >
+                +
+              </button>
+            </li>
+          </ul>
+          <div v-if="filteredSpellsKnown.length === 0" class="no-spells">
+            No spells match your filters.
           </div>
         </div>
-        <ul class="spell-list">
-          <li v-for="spell in filteredSpellsKnown" :key="spell.name">
-            {{ spell.name }} <span class="spell-level">(Level {{ spell.level }})</span>
-          </li>
-        </ul>
-        <div v-if="filteredSpellsKnown.length === 0" class="no-spells">
-          No spells match your filters.
-        </div>
-      </div>
+      </AccordianHolder>
 
-      <div v-if="spellbook.spellsPrepared.length > 0" class="detail-card">
-        <h3>Spells Prepared ({{ spellbook.spellsPrepared.length }})</h3>
-        <ul class="spell-list">
-          <li v-for="spell in spellbook.spellsPrepared" :key="spell.name">
-            {{ spell.name }} <span class="spell-level">(Level {{ spell.level }})</span>
-          </li>
-        </ul>
-      </div>
+      <AccordianHolder v-if="spellbook.spellsPrepared.length > 0" header="Spells Prepared" class="detail-card">
+        <div class="accordion-content">
+          <ul class="spell-list">
+            <li v-for="spell in spellbook.spellsPrepared" :key="spell.name" class="spell-item">
+              <div class="spell-info" @click="selectedSpellForPopout = spell">
+                {{ spell.name }} <span class="spell-level">(Level {{ spell.level }})</span>
+              </div>
+              <button
+                class="spell-action-btn unprepare-btn"
+                @click="unprepareSpell(spell)"
+                title="Unprepare spell"
+              >
+                −
+              </button>
+            </li>
+          </ul>
+        </div>
+      </AccordianHolder>
 
       <div v-if="spellbook.innateSpells.length > 0" class="detail-card">
         <h3>Innate Spells ({{ spellbook.innateSpells.length }})</h3>
         <ul class="spell-list">
-          <li v-for="spell in spellbook.innateSpells" :key="spell.name">
-            {{ spell.name }}
-            <span class="spell-level" v-if="spell.usesPerDay"
-              >({{ spell.usesPerDay }}/day)</span
-            >
+          <li v-for="spell in spellbook.innateSpells" :key="spell.name" class="spell-item">
+            <div class="spell-info" @click="selectedSpellForPopout = spell">
+              {{ spell.name }}
+              <span class="spell-level" v-if="spell.usesPerDay"
+                >({{ spell.usesPerDay }}/day)</span
+              >
+            </div>
           </li>
         </ul>
       </div>
@@ -136,6 +159,10 @@
   <div v-else class="spellbook-error">
     <p>Spellbook not found.</p>
   </div>
+
+  <PopOut v-if="selectedSpellForPopout" @close="selectedSpellForPopout = null">
+    <SingleSpell :spell="selectedSpellForPopout" @close="selectedSpellForPopout = null" />
+  </PopOut>
 </template>
 
 <script lang="ts" setup>
@@ -147,6 +174,8 @@
   import reloadIcon from '../../assets/icons/reload.svg';
   import fireIcon from '../../assets/icons/fire.svg';
   import AccordianHolder from '../AccordianHolder.vue';
+import PopOut from '../PopOut.vue';
+import SingleSpell from '../resources/SingleSpell.vue';
 
   const route = useRoute();
   const spellBookStore = useSpellBookStore();
@@ -154,6 +183,9 @@
   const loaded = ref(false);
   const searchQuery = ref('');
   const selectedSpellLevel: Ref<number | null> = ref(null);
+
+    import type { Spell } from '../../types';
+    const selectedSpellForPopout: Ref<Spell | null> = ref(null);
 
   const availableSpellLevels = computed(() => {
     if (!spellbook.value) return [];
@@ -237,6 +269,20 @@
     } catch (error) {
       console.error('Error saving spellbook:', error);
     }
+  }
+
+  function prepareSpell(spell: Spell) {
+    if (!spellbook.value) return;
+    if (!spellbook.value.spellsPrepared.some(s => s.name === spell.name)) {
+      spellbook.value.spellsPrepared.push(spell);
+      saveSpellbook();
+    }
+  }
+
+  function unprepareSpell(spell: Spell) {
+    if (!spellbook.value) return;
+    spellbook.value.spellsPrepared = spellbook.value.spellsPrepared.filter(s => s.name !== spell.name);
+    saveSpellbook();
   }
 </script>
 
@@ -460,6 +506,69 @@
     border: 1px solid rgba(107, 46, 46, 0.08);
   }
 
+  .spell-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+  }
+
+  .spell-info {
+    flex: 1;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .spell-info:hover {
+    color: var(--color-accent);
+  }
+
+  .spell-action-btn {
+    padding: 0.3rem 0.6rem;
+    border: 1px solid rgba(107, 46, 46, 0.2);
+    border-radius: 4px;
+    background: rgba(201, 164, 75, 0.08);
+    color: var(--color-primary);
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+    min-width: 2rem;
+  }
+
+  .spell-action-btn:hover:not(:disabled) {
+    background: rgba(201, 164, 75, 0.16);
+    border-color: var(--color-accent);
+  }
+
+  .spell-action-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .prepare-btn {
+    background: rgba(107, 139, 107, 0.08);
+    border-color: rgba(107, 139, 107, 0.2);
+    color: #6b8b6b;
+  }
+
+  .prepare-btn:hover:not(:disabled) {
+    background: rgba(107, 139, 107, 0.16);
+    border-color: #6b8b6b;
+  }
+
+  .unprepare-btn {
+    background: rgba(183, 59, 59, 0.08);
+    border-color: rgba(183, 59, 59, 0.2);
+    color: var(--color-danger);
+  }
+
+  .unprepare-btn:hover:not(:disabled) {
+    background: rgba(183, 59, 59, 0.16);
+    border-color: var(--color-danger);
+  }
+
   .spell-level {
     font-size: 0.85rem;
     color: var(--color-muted);
@@ -539,6 +648,10 @@
     text-align: center;
     color: var(--color-muted);
     font-style: italic;
+  }
+
+  .accordion-content {
+    padding: 0.5rem 0;
   }
 
   .spellbook-error {
