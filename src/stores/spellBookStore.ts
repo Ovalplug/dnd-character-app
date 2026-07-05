@@ -15,7 +15,9 @@ export const useSpellBookStore = defineStore('spellbook', {
       this.loaded = true;
     },
     async addSpellbook(spellbook: SpellBook) {
-      await addSpellBook(spellbook);
+      // Deep clone to ensure all data is serializable for IndexedDB
+      const clonedSpellbook = structuredClone(JSON.parse(JSON.stringify(spellbook)));
+      await addSpellBook(clonedSpellbook);
       await this.loadSpellbooks(); // Refresh the list after adding
     },
     async getSpellbookById(id: string) {

@@ -81,14 +81,15 @@
         <option value="druid">Druid</option>
         <option value="paladin">Paladin</option>
       </select>
-
-      //submit
     </div>
 
-    <button @click="spellBookStore.addSpellbook(newSpellbook)" :disabled="true">
+    <button @click="submitSpellbook" :disabled="!isFormValid()" class="creation-primary-button">
       Create Spellbook
     </button>
-    <pre>{{ newSpellbook }}</pre>
+
+    <div v-if="submitMessage" :class="['creation-message', { 'creation-message--error': isError }]">
+      {{ submitMessage }}
+    </div>
   </div>
 </template>
 
@@ -114,6 +115,8 @@
   const useSpellSlots = ref(false);
   const usePrefillSpells = ref(false);
   const spellClass = ref<SpellClass>('artificer');
+  const submitMessage = ref('');
+  const isError = ref(false);
 
   const newSpellbook = ref<SpellBook>({
     id: uuidv4(),
@@ -166,4 +169,127 @@
     );
     newSpellbook.value.spellsKnown = refinedSpells;
   }
+
+  function isFormValid(): boolean {
+    return (
+      newSpellbook.value.name.trim() !== '' &&
+      newSpellbook.value.spellcastingAbility !== ''
+    );
+  }
+
+  async function submitSpellbook() {
+    submitMessage.value = '';
+    isError.value = false;
+
+    try {
+      if (!isFormValid()) {
+        submitMessage.value = 'Please fill in all required fields.';
+        isError.value = true;
+        return;
+      }
+
+      await spellBookStore.addSpellbook(newSpellbook.value);
+
+      submitMessage.value = `Spellbook "${newSpellbook.value.name}" created successfully!`;
+      isError.value = false;
+
+      // Reset form
+      setTimeout(() => {
+        newSpellbook.value = {
+          id: uuidv4(),
+          name: '',
+          spellcastingAbility: '',
+          spellcastingDc: 0,
+          spellcastingAttackBonus: 0,
+          spellSlots: {},
+          innateSpells: [],
+          cantrips: [],
+          spellsKnown: [],
+          spellsPrepared: [],
+        };
+        useSpellSlots.value = false;
+        usePrefillSpells.value = false;
+        submitMessage.value = '';
+      }, 2000);
+    } catch (error) {
+      submitMessage.value = `Error creating spellbook: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      isError.value = true;
+    }
+  }
 </script>
+
+<style scoped>
+  .creation-message {
+    margin-top: 1rem;
+    padding: 0.85rem;
+    border-radius: var(--radius);
+    background: linear-gradient(180deg, rgba(107, 46, 46, 0.06), rgba(107, 46, 46, 0.02));
+    color: var(--color-text);
+    border: 1px solid rgba(107, 46, 46, 0.12);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .creation-message--error {
+    background: linear-gradient(180deg, rgba(183, 59, 59, 0.08), rgba(183, 59, 59, 0.04));
+    color: var(--color-danger);
+    border-color: rgba(183, 59, 59, 0.2);
+  }
+
+  .creation-view {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .creation-input {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    color: var(--color-text);
+    font-family: inherit;
+  }
+
+  .creation-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(201, 164, 75, 0.12);
+    border-color: var(--color-primary);
+  }
+
+  .spell-slot-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    padding: 1rem;
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(107, 46, 46, 0.08);
+  }
+
+  .spell-slot-row {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .spell-slot-row label {
+    min-width: 4rem;
+    font-weight: 600;
+  }
+
+  .spell-slot-row input {
+    max-width: 6rem;
+  }
+
+  .prefill-spells-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    padding: 1rem;
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(107, 46, 46, 0.08);
+  }
+</style>
