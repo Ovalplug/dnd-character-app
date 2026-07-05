@@ -113,6 +113,37 @@
         </tr>
       </tbody>
     </table>
+    <br />
+    <table class="characterTable">
+      <caption>
+        Backpack List
+      </caption>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Items</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="backpack in itemStore.backpacks" :key="backpack.id">
+          <td>
+            <router-link :to="`/backpack/${backpack.id}`">
+              {{ backpack.name }}
+            </router-link>
+          </td>
+          <td>{{ backpack.items.length }}</td>
+          <td>
+            <img
+              :src="icons.binIcon"
+              alt="Delete"
+              @click="deleteBackpack(backpack.id)"
+              class="deleteCharIcon"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
   <PopOut v-if="selectedChar" :title="selectedChar.name" @close="closeCharPopout">
@@ -170,6 +201,7 @@
   import type { Character } from '../database/db';
   import { useEncounterStore } from '../stores/encounterStore.ts';
   import { useSpellBookStore } from '../stores/spellBookStore.ts';
+  import { useItemStore } from '../stores/itemStore.ts';
   import { useRouter } from 'vue-router';
 
   const router = useRouter();
@@ -180,7 +212,6 @@
   import reloadIcon from '../assets/icons/reload.svg';
   import editIcon from '../assets/icons/editIcon.svg';
   import swordIcon from '../assets/icons/sword.svg';
-  import AccordianHolder from '../components/AccordianHolder.vue';
   import PopOut from '../components/PopOut.vue';
 
   const newName = ref('');
@@ -188,12 +219,14 @@
   const charStore = useCharacterStore();
   const encounterStore = useEncounterStore();
   const spellBookStore = useSpellBookStore();
+  const itemStore = useItemStore();
 
   // Load on mount
   encounterStore.loadEncounters();
   spellBookStore.loadSpellbooks();
+  itemStore.loadBackpacks();
 
-  const loaded = computed(() => charStore.loaded && encounterStore.loaded && spellBookStore.loaded);
+  const loaded = computed(() => charStore.loaded && encounterStore.loaded && spellBookStore.loaded && itemStore.loaded);
 
   const icons: Record<string, string> = {
     binIcon: binIcon,
@@ -247,6 +280,11 @@
   async function deleteSpellbook(id: string) {
     await spellBookStore.deleteSpellbook(id);
     await spellBookStore.loadSpellbooks();
+  }
+
+  async function deleteBackpack(id: string) {
+    await itemStore.deleteBackpack(id);
+    await itemStore.loadBackpacks();
   }
 </script>
 

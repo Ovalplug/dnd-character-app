@@ -1,6 +1,6 @@
 import Dexie from 'dexie';
 import type { Table } from 'dexie';
-import type { EncounterCreature, playerCharacter, SpellBook } from '../types';
+import type { EncounterCreature, playerCharacter, SpellBook, Backpack } from '../types';
 
 export type Character = playerCharacter;
 
@@ -45,6 +45,7 @@ export class DndDatabase extends Dexie {
   notes!: Table<CharacterNotesRecord, string>;
   encounters!: Table<Encounter, string>;
   spellBooks!: Table<SpellBook, string>;
+  backpacks!: Table<Backpack, string>;
 
   constructor() {
     super('DndDatabase');
@@ -77,6 +78,15 @@ export class DndDatabase extends Dexie {
       notes: '&characterId, updatedAt',
       encounters: '&id, name, updatedAt',
       spellBooks: '&id, name',
+    });
+
+    this.version(6).stores({
+      characters: '&id, name, level, updatedAt',
+      settings: 'key',
+      notes: '&characterId, updatedAt',
+      encounters: '&id, name, updatedAt',
+      spellBooks: '&id, name',
+      backpacks: '&id, name',
     });
   }
 }
@@ -166,4 +176,25 @@ export async function getAllSpellBooks(): Promise<SpellBook[]> {
 
 export async function updateSpellBook(spellBook: SpellBook): Promise<void> {
   await db.spellBooks.put(spellBook);
+}
+
+export async function addBackpack(backpack: Backpack): Promise<void> {
+  await db.backpacks.put(backpack);
+}
+
+export async function getBackpack(id: string): Promise<Backpack | undefined> {
+  return await db.backpacks.get(id);
+}
+
+export async function deleteBackpack(id: string): Promise<void> {
+  await db.backpacks.delete(id);
+}
+
+export async function getAllBackpacks(): Promise<Backpack[]> {
+  return await db.backpacks.toArray();
+}
+
+export async function updateBackpack(backpack: Backpack): Promise<void> {
+  backpack.updatedAt = Date.now();
+  await db.backpacks.put(backpack);
 }

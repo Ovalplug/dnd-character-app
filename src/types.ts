@@ -948,3 +948,18 @@ export type SpellBook = {
   spellsKnown: Spells;
   spellsPrepared: Spells;
 };
+
+// backpack stuff
+export type BackpackItem = Item & {
+  quantity: number;
+  equipped?: boolean;
+  attuned?: boolean;
+};
+
+export type Backpack = {
+  id: string;
+  name: string;
+  items: BackpackItem[];
+  createdAt: number;
+  updatedAt: number;
+};

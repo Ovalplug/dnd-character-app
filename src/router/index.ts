@@ -18,6 +18,8 @@ import LevelUpView from '../views/LevelUpView.vue';
 import TrainingGround from '../views/TrainingGround.vue';
 import CreateSpellbook from '../components/spellBooks/CreateSpellbook.vue';
 import SpellBookView from '../components/spellBooks/SpellBookView.vue';
+import CreateBackpack from '../components/items/CreateBackpack.vue';
+import BackpackView from '../components/items/BackpackView.vue';
 import { useDataStore } from '../stores/dataStore';
 
 const routes: Array<RouteRecordRaw> = [
@@ -42,6 +44,8 @@ const routes: Array<RouteRecordRaw> = [
   { path: '/create/encounter', name: 'encounterCreate', component: EncounterCreation },
   { path: '/create/spellbook', name: 'spellbookCreate', component: CreateSpellbook },
   { path: '/spellbook/:id', name: 'spellbook', component: SpellBookView },
+  { path: '/create/backpack', name: 'backpackCreate', component: CreateBackpack },
+  { path: '/backpack/:id', name: 'backpack', component: BackpackView },
   { path: '/encounter/edit', name: 'EditEncounter', component: EditEncounter },
   { path: '/encounter/run', name: 'RunEncounter', component: EncounterMain },
   { path: '/training', name: 'trainingGround', component: TrainingGround },

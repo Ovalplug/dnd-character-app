@@ -94,10 +94,13 @@
         @keydown.enter="selectItem(item)"
         role="button"
       >
-        <p>
-          {{ item.name }}<span class="p2"> ({{ item.source }})</span>
-        </p>
-        <p class="item-meta">{{ getItemMeta(item) }}</p>
+        <div>
+          <p>
+            {{ item.name }}<span class="p2"> ({{ item.source }})</span>
+          </p>
+          <p class="item-meta">{{ getItemMeta(item) }}</p>
+        </div>
+        <img :src="bagIcon" alt="add to backpack icon" class="icon" @click.stop="addToBackpack(item)" />
       </div>
     </ul>
   </div>
@@ -110,6 +113,35 @@
       <SingleItem :item="selectedItem" />
     </div>
   </PopOut>
+
+  <PopOut
+    v-if="backpackPopupOpen && itemForBackpack"
+    :title="`Add ${itemForBackpack.name} to Backpack`"
+    @close="backpackPopupOpen = false"
+  >
+    <div>
+      <p>Select backpack to add to:</p>
+      <div class="quantity-input">
+        <label>Quantity:</label>
+        <input
+          v-model.number="quantityToAdd"
+          type="number"
+          min="1"
+          placeholder="1"
+        />
+      </div>
+      <ul class="backpack-list">
+        <li v-for="backpack in itemStore.backpacks" :key="backpack.id">
+          <button @click="addThisItemToThisBackpack(backpack.id)" class="backpack-btn">
+            {{ backpack.name }}
+          </button>
+        </li>
+      </ul>
+      <div v-if="itemStore.backpacks.length === 0" class="no-backpacks">
+        No backpacks available. Create one first.
+      </div>
+    </div>
+  </PopOut>
 </template>
 
 <script lang="ts" setup>
@@ -119,11 +151,14 @@
   import { computed, onMounted, ref } from 'vue';
   import { useDebug } from '../../composables/useDebug';
   import { useDataStore } from '../../stores/dataStore';
+  import { useItemStore } from '../../stores/itemStore';
   import SingleItem from './SingleItem.vue';
   import { getPrettyItemType, getRefinedItemsList } from '../../helperFunctions';
+  import bagIcon from '../../assets/icons/bag.svg';
 
   const { debug, initDebug } = useDebug();
   const dataStore = useDataStore();
+  const itemStore = useItemStore();
 
   const props = defineProps<{ items: Item[] }>();
 
@@ -238,6 +273,52 @@
     selectedItem.value = null;
   }
 
+  const itemForBackpack = ref<Item | null>(null);
+  const backpackPopupOpen = ref(false);
+  const quantityToAdd = ref(1);
+
+  function addToBackpack(item: Item) {
+    itemForBackpack.value = item;
+    backpackPopupOpen.value = true;
+    quantityToAdd.value = 1;
+  }
+
+  async function addThisItemToThisBackpack(backpackId: string) {
+    if (!itemForBackpack.value) return;
+
+    const backpack = await itemStore.getBackpackById(backpackId);
+    if (!backpack) return;
+
+    const item = itemForBackpack.value;
+
+    // Check if item already exists
+    const existingItem = backpack.items.find(
+      i => i.name === item.name && i.source === item.source
+    );
+
+    if (existingItem) {
+      // Increase quantity
+      existingItem.quantity += quantityToAdd.value;
+    } else {
+      // Add new item
+      backpack.items.push({
+        ...item,
+        quantity: quantityToAdd.value,
+        equipped: false,
+        attuned: false,
+      });
+    }
+
+    // Save the updated backpack
+    await itemStore.updateBackpack(backpack);
+
+    // Close popup and reset
+    backpackPopupOpen.value = false;
+    itemForBackpack.value = null;
+    quantityToAdd.value = 1;
+    selectedItem.value = null;
+  }
+
   function getItemMeta(item: Item): string {
     const parts = [item.rarity, item.type ? getPrettyItemType(item.type) : undefined].filter(
       (value): value is string => Boolean(value)
@@ -267,6 +348,7 @@
         console.error('Failed to load data store', err);
       }
     }
+    await itemStore.loadBackpacks();
   });
 </script>
 
@@ -425,6 +507,11 @@
     cursor: pointer;
     padding: 0.6rem 0.5rem;
     border-bottom: 1px solid rgba(122, 107, 87, 0.2);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
     transition: background 0.1s;
   }
 
@@ -442,6 +529,75 @@
   .item-meta {
     color: var(--color-muted);
     font-size: 0.85rem;
+  }
+
+  .icon {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.15s ease;
+    display: block;
+    flex-shrink: 0;
+  }
+
+  .icon:hover {
+    opacity: 1;
+  }
+
+  .quantity-input {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .quantity-input label {
+    font-weight: 600;
+    color: var(--color-primary);
+  }
+
+  .quantity-input input {
+    width: 60px;
+    padding: 0.4rem;
+    border: 1px solid rgba(107, 46, 46, 0.2);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--color-text);
+  }
+
+  .backpack-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .backpack-btn {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid rgba(107, 46, 46, 0.2);
+    border-radius: 6px;
+    background: rgba(201, 164, 75, 0.08);
+    color: var(--color-primary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: left;
+  }
+
+  .backpack-btn:hover {
+    background: rgba(201, 164, 75, 0.16);
+    border-color: var(--color-accent);
+  }
+
+  .no-backpacks {
+    padding: 1rem;
+    text-align: center;
+    color: var(--color-muted);
+    font-style: italic;
   }
 
   @media (min-width: 640px) {
