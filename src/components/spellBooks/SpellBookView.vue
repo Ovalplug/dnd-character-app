@@ -72,6 +72,25 @@
         </ul>
       </div>
 
+      <AccordianHolder v-if="spellbook.spellsPrepared.length > 0" header="Spells Prepared" class="detail-card">
+        <div class="accordion-content">
+          <ul class="spell-list">
+            <li v-for="spell in spellbook.spellsPrepared" :key="spell.name" class="spell-item">
+              <div class="spell-info" @click="selectedSpellForPopout = spell">
+                {{ spell.name }} <span class="spell-level">(Level {{ spell.level }})</span>
+              </div>
+              <button
+                class="spell-action-btn unprepare-btn"
+                @click="unprepareSpell(spell)"
+                title="Unprepare spell"
+              >
+                −
+              </button>
+            </li>
+          </ul>
+        </div>
+      </AccordianHolder>
+
       <AccordianHolder v-if="spellbook.spellsKnown.length > 0" header="Spells Known" class="detail-card">
         <div class="accordion-content">
           <div class="spells-controls">
@@ -120,39 +139,6 @@
           </div>
         </div>
       </AccordianHolder>
-
-      <AccordianHolder v-if="spellbook.spellsPrepared.length > 0" header="Spells Prepared" class="detail-card">
-        <div class="accordion-content">
-          <ul class="spell-list">
-            <li v-for="spell in spellbook.spellsPrepared" :key="spell.name" class="spell-item">
-              <div class="spell-info" @click="selectedSpellForPopout = spell">
-                {{ spell.name }} <span class="spell-level">(Level {{ spell.level }})</span>
-              </div>
-              <button
-                class="spell-action-btn unprepare-btn"
-                @click="unprepareSpell(spell)"
-                title="Unprepare spell"
-              >
-                −
-              </button>
-            </li>
-          </ul>
-        </div>
-      </AccordianHolder>
-
-      <div v-if="spellbook.innateSpells.length > 0" class="detail-card">
-        <h3>Innate Spells ({{ spellbook.innateSpells.length }})</h3>
-        <ul class="spell-list">
-          <li v-for="spell in spellbook.innateSpells" :key="spell.name" class="spell-item">
-            <div class="spell-info" @click="selectedSpellForPopout = spell">
-              {{ spell.name }}
-              <span class="spell-level" v-if="spell.usesPerDay"
-                >({{ spell.usesPerDay }}/day)</span
-              >
-            </div>
-          </li>
-        </ul>
-      </div>
     </div>
   </div>
 
