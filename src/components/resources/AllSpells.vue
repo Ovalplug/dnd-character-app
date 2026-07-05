@@ -102,7 +102,12 @@
           {{ getPrettySpellSchool(spell.school) }} ({{ getPrettySpellLevel(spell.level) }})
         </p>
         <p class="spell_p3">{{ getPrettySpellClassList(spell.classes?.fromClassList ?? []) }}</p>
-        <img :src="bookIcon" alt="add to spellbook icon" class="icon" @click.stop="addToSpellbook(spell)" />
+        <img
+          :src="bookIcon"
+          alt="add to spellbook icon"
+          class="icon"
+          @click.stop="addToSpellbook(spell)"
+        />
       </div>
     </ul>
 

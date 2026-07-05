@@ -171,10 +171,7 @@
   }
 
   function isFormValid(): boolean {
-    return (
-      newSpellbook.value.name.trim() !== '' &&
-      newSpellbook.value.spellcastingAbility !== ''
-    );
+    return newSpellbook.value.name.trim() !== '' && newSpellbook.value.spellcastingAbility !== '';
   }
 
   async function submitSpellbook() {
@@ -212,7 +209,9 @@
         submitMessage.value = '';
       }, 2000);
     } catch (error) {
-      submitMessage.value = `Error creating spellbook: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      submitMessage.value = `Error creating spellbook: ${
+        error instanceof Error ? error.message : 'Unknown error'
+      }`;
       isError.value = true;
     }
   }

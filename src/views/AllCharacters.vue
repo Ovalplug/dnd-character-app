@@ -226,7 +226,9 @@
   spellBookStore.loadSpellbooks();
   itemStore.loadBackpacks();
 
-  const loaded = computed(() => charStore.loaded && encounterStore.loaded && spellBookStore.loaded && itemStore.loaded);
+  const loaded = computed(
+    () => charStore.loaded && encounterStore.loaded && spellBookStore.loaded && itemStore.loaded
+  );
 
   const icons: Record<string, string> = {
     binIcon: binIcon,

@@ -61,10 +61,18 @@
     <div class="item-detail">
       <h2>{{ selectedItemForPopout.name }}</h2>
       <p><strong>Source:</strong> {{ selectedItemForPopout.source }}</p>
-      <p v-if="selectedItemForPopout.rarity"><strong>Rarity:</strong> {{ selectedItemForPopout.rarity }}</p>
-      <p v-if="selectedItemForPopout.value"><strong>Value:</strong> {{ selectedItemForPopout.value }} gp</p>
-      <p v-if="selectedItemForPopout.weight"><strong>Weight:</strong> {{ selectedItemForPopout.weight }} lb</p>
-      <p v-if="selectedItemForPopout.type"><strong>Type:</strong> {{ selectedItemForPopout.type }}</p>
+      <p v-if="selectedItemForPopout.rarity">
+        <strong>Rarity:</strong> {{ selectedItemForPopout.rarity }}
+      </p>
+      <p v-if="selectedItemForPopout.value">
+        <strong>Value:</strong> {{ selectedItemForPopout.value }} gp
+      </p>
+      <p v-if="selectedItemForPopout.weight">
+        <strong>Weight:</strong> {{ selectedItemForPopout.weight }} lb
+      </p>
+      <p v-if="selectedItemForPopout.type">
+        <strong>Type:</strong> {{ selectedItemForPopout.type }}
+      </p>
       <div v-if="selectedItemForPopout.entries" class="item-entries">
         <p v-for="(entry, idx) in selectedItemForPopout.entries" :key="idx">
           {{ typeof entry === 'string' ? entry : JSON.stringify(entry) }}

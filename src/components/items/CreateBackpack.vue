@@ -15,16 +15,10 @@
       />
 
       <div class="form-actions">
-        <button
-          @click="submitForm"
-          :disabled="!isFormValid()"
-          class="creation-primary-button"
-        >
+        <button @click="submitForm" :disabled="!isFormValid()" class="creation-primary-button">
           Create Backpack
         </button>
-        <button @click="$router.back()" class="creation-secondary-button">
-          Cancel
-        </button>
+        <button @click="$router.back()" class="creation-secondary-button">Cancel</button>
       </div>
 
       <div v-if="errorMessage" class="creation-message error-message">

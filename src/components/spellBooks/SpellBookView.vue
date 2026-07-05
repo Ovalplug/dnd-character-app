@@ -4,7 +4,7 @@
   <div v-else-if="spellbook" class="spellbook-view">
     <h1>{{ spellbook.name }}</h1>
     <AccordianHolder header="json details">
-        <pre>{{ spellbook }}</pre>
+      <pre>{{ spellbook }}</pre>
     </AccordianHolder>
 
     <div class="spellbook-details">
@@ -24,7 +24,12 @@
           </button>
         </div>
         <div class="spell-slots-grid">
-          <div v-for="level in 9" :key="level" v-show="spellbook?.spellSlots[level]?.max! > 0" class="spell-level-row">
+          <div
+            v-for="level in 9"
+            :key="level"
+            v-show="spellbook?.spellSlots[level]?.max! > 0"
+            class="spell-level-row"
+          >
             <div class="level-label">Level {{ level }}</div>
             <div class="pips-container">
               <div
@@ -45,7 +50,10 @@
               <button
                 class="slot-btn cast-btn"
                 @click="castSlot(level)"
-                :disabled="(spellbook.spellSlots[level]?.used || 0) >= (spellbook.spellSlots[level]?.max || 0)"
+                :disabled="
+                  (spellbook.spellSlots[level]?.used || 0) >=
+                  (spellbook.spellSlots[level]?.max || 0)
+                "
               >
                 Cast
               </button>
@@ -72,7 +80,11 @@
         </ul>
       </div>
 
-      <AccordianHolder v-if="spellbook.spellsPrepared.length > 0" header="Spells Prepared" class="detail-card">
+      <AccordianHolder
+        v-if="spellbook.spellsPrepared.length > 0"
+        header="Spells Prepared"
+        class="detail-card"
+      >
         <div class="accordion-content">
           <ul class="spell-list">
             <li v-for="spell in spellbook.spellsPrepared" :key="spell.name" class="spell-item">
@@ -91,7 +103,11 @@
         </div>
       </AccordianHolder>
 
-      <AccordianHolder v-if="spellbook.spellsKnown.length > 0" header="Spells Known" class="detail-card">
+      <AccordianHolder
+        v-if="spellbook.spellsKnown.length > 0"
+        header="Spells Known"
+        class="detail-card"
+      >
         <div class="accordion-content">
           <div class="spells-controls">
             <input
@@ -127,7 +143,11 @@
               <button
                 class="spell-action-btn prepare-btn"
                 @click="prepareSpell(spell)"
-                :title="spellbook.spellsPrepared.some(s => s.name === spell.name) ? 'Already prepared' : 'Prepare spell'"
+                :title="
+                  spellbook.spellsPrepared.some(s => s.name === spell.name)
+                    ? 'Already prepared'
+                    : 'Prepare spell'
+                "
                 :disabled="spellbook.spellsPrepared.some(s => s.name === spell.name)"
               >
                 +
@@ -160,8 +180,8 @@
   import reloadIcon from '../../assets/icons/reload.svg';
   import fireIcon from '../../assets/icons/fire.svg';
   import AccordianHolder from '../AccordianHolder.vue';
-import PopOut from '../PopOut.vue';
-import SingleSpell from '../resources/SingleSpell.vue';
+  import PopOut from '../PopOut.vue';
+  import SingleSpell from '../resources/SingleSpell.vue';
 
   const route = useRoute();
   const spellBookStore = useSpellBookStore();
@@ -170,8 +190,8 @@ import SingleSpell from '../resources/SingleSpell.vue';
   const searchQuery = ref('');
   const selectedSpellLevel: Ref<number | null> = ref(null);
 
-    import type { Spell } from '../../types';
-    const selectedSpellForPopout: Ref<Spell | null> = ref(null);
+  import type { Spell } from '../../types';
+  const selectedSpellForPopout: Ref<Spell | null> = ref(null);
 
   const availableSpellLevels = computed(() => {
     if (!spellbook.value) return [];
@@ -267,7 +287,9 @@ import SingleSpell from '../resources/SingleSpell.vue';
 
   function unprepareSpell(spell: Spell) {
     if (!spellbook.value) return;
-    spellbook.value.spellsPrepared = spellbook.value.spellsPrepared.filter(s => s.name !== spell.name);
+    spellbook.value.spellsPrepared = spellbook.value.spellsPrepared.filter(
+      s => s.name !== spell.name
+    );
     saveSpellbook();
   }
 </script>

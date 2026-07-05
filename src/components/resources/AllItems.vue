@@ -100,7 +100,12 @@
           </p>
           <p class="item-meta">{{ getItemMeta(item) }}</p>
         </div>
-        <img :src="bagIcon" alt="add to backpack icon" class="icon" @click.stop="addToBackpack(item)" />
+        <img
+          :src="bagIcon"
+          alt="add to backpack icon"
+          class="icon"
+          @click.stop="addToBackpack(item)"
+        />
       </div>
     </ul>
   </div>
@@ -123,12 +128,7 @@
       <p>Select backpack to add to:</p>
       <div class="quantity-input">
         <label>Quantity:</label>
-        <input
-          v-model.number="quantityToAdd"
-          type="number"
-          min="1"
-          placeholder="1"
-        />
+        <input v-model.number="quantityToAdd" type="number" min="1" placeholder="1" />
       </div>
       <ul class="backpack-list">
         <li v-for="backpack in itemStore.backpacks" :key="backpack.id">
@@ -292,9 +292,7 @@
     const item = itemForBackpack.value;
 
     // Check if item already exists
-    const existingItem = backpack.items.find(
-      i => i.name === item.name && i.source === item.source
-    );
+    const existingItem = backpack.items.find(i => i.name === item.name && i.source === item.source);
 
     if (existingItem) {
       // Increase quantity
