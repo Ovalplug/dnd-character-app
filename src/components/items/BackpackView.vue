@@ -6,12 +6,57 @@
 
     <div class="backpack-details">
       <div class="detail-card">
-        <h3>Items ({{ backpack.items.length }})</h3>
-        <div v-if="backpack.items.length === 0" class="empty-message">
-          No items in this backpack yet. Add some from the resources.
+        <h3>Equipped Items ({{ equippedItems.length }})</h3>
+        <div v-if="equippedItems.length === 0" class="empty-message">
+          No items equipped.
         </div>
         <ul v-else class="item-list">
-          <li v-for="item in backpack.items" :key="`${item.name}-${item.source}`" class="item-row">
+          <li v-for="item in equippedItems" :key="`${item.name}-${item.source}`" class="item-row">
+            <div class="item-info" @click="selectedItemForPopout = item">
+              <div class="item-name">{{ item.name }}</div>
+              <div class="item-details">
+                <span class="item-source">{{ item.source }}</span>
+                <span v-if="item.value" class="item-value">{{ item.value }} gp</span>
+                <span v-if="item.weight" class="item-weight">{{ item.weight }} lb</span>
+                <span v-if="item.quantity > 1" class="item-quantity">x{{ item.quantity }}</span>
+              </div>
+            </div>
+            <div class="item-controls">
+              <button
+                class="item-btn equipped-btn active"
+                @click="toggleEquipped(item)"
+                title="Unequip"
+              >
+                E
+              </button>
+              <button
+                v-if="item.reqAttune"
+                class="item-btn attuned-btn"
+                :class="{ active: item.attuned }"
+                @click="toggleAttuned(item)"
+                :title="item.attuned ? 'Unatune' : 'Attune'"
+              >
+                A
+              </button>
+              <button
+                class="item-btn remove-btn"
+                @click="removeItem(item)"
+                title="Remove from backpack"
+              >
+                −
+              </button>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="detail-card">
+        <h3>Backpack ({{ backpackItems.length }})</h3>
+        <div v-if="backpackItems.length === 0" class="empty-message">
+          No items in backpack. Add some from the resources.
+        </div>
+        <ul v-else class="item-list">
+          <li v-for="item in backpackItems" :key="`${item.name}-${item.source}`" class="item-row">
             <div class="item-info" @click="selectedItemForPopout = item">
               <div class="item-name">{{ item.name }}</div>
               <div class="item-details">
@@ -24,9 +69,8 @@
             <div class="item-controls">
               <button
                 class="item-btn equipped-btn"
-                :class="{ active: item.equipped }"
                 @click="toggleEquipped(item)"
-                :title="item.equipped ? 'Unequip' : 'Equip'"
+                title="Equip"
               >
                 E
               </button>
@@ -83,7 +127,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, onMounted, type Ref } from 'vue';
+  import { ref, onMounted, computed, type Ref } from 'vue';
   import { useRoute } from 'vue-router';
   import { useItemStore } from '../../stores/itemStore';
   import type { Backpack, Item } from '../../types';
@@ -95,6 +139,14 @@
   const backpack: Ref<Backpack | undefined> = ref(undefined);
   const loaded = ref(false);
   const selectedItemForPopout: Ref<Item | null> = ref(null);
+
+  const equippedItems = computed(() => {
+    return backpack.value?.items.filter(item => item.equipped) || [];
+  });
+
+  const backpackItems = computed(() => {
+    return backpack.value?.items.filter(item => !item.equipped) || [];
+  });
 
   onMounted(async () => {
     const id = route.params.id as string;
@@ -117,6 +169,10 @@
   function toggleAttuned(item: Item) {
     if (!backpack.value) return;
     item.attuned = !item.attuned;
+    // Auto-equip when attuning
+    if (item.attuned) {
+      item.equipped = true;
+    }
     saveBackpack();
   }
 
