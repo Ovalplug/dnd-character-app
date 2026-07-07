@@ -9,21 +9,52 @@
 
     <div class="spellbook-details">
       <div class="detail-card">
-        <h3>Spellcasting Info</h3>
-        <p><strong>Ability:</strong> {{ spellbook.spellcastingAbility }}</p>
-        <p><strong>DC:</strong> {{ spellbook.spellcastingDc }}</p>
-        <p><strong>Attack Bonus:</strong> {{ spellbook.spellcastingAttackBonus }}</p>
-      </div>
-
-      <div v-if="Object.keys(spellbook.spellSlots).length > 0" class="detail-card">
-        <div class="slots-header">
-          <h3>Spell Slots</h3>
-          <button class="refresh-btn" @click="refreshSlots">
-            <img :src="reloadIcon" alt="Refresh" />
-            Refresh
+        <div class="info-header">
+          <h3>Spellcasting Info</h3>
+          <button class="edit-btn" @click="editingSpellcastingInfo = !editingSpellcastingInfo">
+            {{ editingSpellcastingInfo ? 'Cancel' : 'Edit' }}
           </button>
         </div>
-        <div class="spell-slots-grid">
+        <div v-if="editingSpellcastingInfo" class="edit-form">
+          <div class="form-group">
+            <label>Ability:</label>
+            <input v-model="spellbook.spellcastingAbility" type="text" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label>DC:</label>
+            <input v-model.number="spellbook.spellcastingDc" type="number" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label>Attack Bonus:</label>
+            <input v-model.number="spellbook.spellcastingAttackBonus" type="number" class="form-input" />
+          </div>
+          <button class="save-btn" @click="saveSpellcastingInfo">Save</button>
+        </div>
+        <div v-else>
+          <p><strong>Ability:</strong> {{ spellbook.spellcastingAbility }}</p>
+          <p><strong>DC:</strong> {{ spellbook.spellcastingDc }}</p>
+          <p><strong>Attack Bonus:</strong> {{ spellbook.spellcastingAttackBonus }}</p>
+        </div>
+      </div>
+
+      <div class="detail-card">
+        <div class="slots-header">
+          <h3>Spell Slots</h3>
+          <div class="slots-button-group">
+            <button class="edit-btn" @click="openSlotsPopout">
+              Edit Slots
+            </button>
+            <button
+              v-if="Object.keys(spellbook.spellSlots).length > 0"
+              class="refresh-btn"
+              @click="refreshSlots"
+            >
+              <img :src="reloadIcon" alt="Refresh" />
+              Refresh
+            </button>
+          </div>
+        </div>
+        <div v-if="Object.keys(spellbook.spellSlots).length > 0" class="spell-slots-grid">
           <div
             v-for="level in 9"
             :key="level"
@@ -67,6 +98,9 @@
             </div>
           </div>
         </div>
+        <div v-else class="no-slots">
+          No spell slots configured. Click "Edit Slots" to add them.
+        </div>
       </div>
 
       <div v-if="spellbook.cantrips.length > 0" class="detail-card">
@@ -76,6 +110,13 @@
             <div class="spell-info" @click="selectedSpellForPopout = spell">
               {{ spell.name }}
             </div>
+            <button
+              class="spell-action-btn remove-btn"
+              @click="removeCantrip(spell)"
+              title="Remove cantrip"
+            >
+              ×
+            </button>
           </li>
         </ul>
       </div>
@@ -140,18 +181,27 @@
               <div class="spell-info" @click="selectedSpellForPopout = spell">
                 {{ spell.name }} <span class="spell-level">(Level {{ spell.level }})</span>
               </div>
-              <button
-                class="spell-action-btn prepare-btn"
-                @click="prepareSpell(spell)"
-                :title="
-                  spellbook.spellsPrepared.some(s => s.name === spell.name)
-                    ? 'Already prepared'
-                    : 'Prepare spell'
-                "
-                :disabled="spellbook.spellsPrepared.some(s => s.name === spell.name)"
-              >
-                +
-              </button>
+              <div class="spell-action-group">
+                <button
+                  class="spell-action-btn prepare-btn"
+                  @click="prepareSpell(spell)"
+                  :title="
+                    spellbook.spellsPrepared.some(s => s.name === spell.name)
+                      ? 'Already prepared'
+                      : 'Prepare spell'
+                  "
+                  :disabled="spellbook.spellsPrepared.some(s => s.name === spell.name)"
+                >
+                  +
+                </button>
+                <button
+                  class="spell-action-btn remove-btn"
+                  @click="removeSpell(spell)"
+                  title="Remove spell"
+                >
+                  ×
+                </button>
+              </div>
             </li>
           </ul>
           <div v-if="filteredSpellsKnown.length === 0" class="no-spells">
@@ -168,6 +218,30 @@
 
   <PopOut v-if="selectedSpellForPopout" @close="selectedSpellForPopout = null">
     <SingleSpell :spell="selectedSpellForPopout" @close="selectedSpellForPopout = null" />
+  </PopOut>
+
+  <PopOut v-if="editingSlotsPopout" @close="editingSlotsPopout = false" class="slots-popout">
+    <div class="slots-edit-container">
+      <h2>Edit Spell Slots</h2>
+      <div class="slots-edit-grid">
+        <div
+          v-for="level in 9"
+          :key="level"
+          class="slot-edit-row"
+        >
+          <label>Level {{ level }}:</label>
+          <input
+            v-model.number="spellbook!.spellSlots[level]!.max"
+            type="number"
+            min="0"
+            class="slot-edit-input"
+          />
+        </div>
+      </div>
+      <div class="slots-edit-actions">
+        <button class="save-btn" @click="closeSlotsPopout">Done</button>
+      </div>
+    </div>
   </PopOut>
 </template>
 
@@ -189,6 +263,8 @@
   const loaded = ref(false);
   const searchQuery = ref('');
   const selectedSpellLevel: Ref<number | null> = ref(null);
+  const editingSpellcastingInfo = ref(false);
+  const editingSlotsPopout = ref(false);
 
   import type { Spell } from '../../types';
   const selectedSpellForPopout: Ref<Spell | null> = ref(null);
@@ -292,6 +368,57 @@
     );
     saveSpellbook();
   }
+
+  function removeCantrip(spell: Spell) {
+    if (!spellbook.value) return;
+    spellbook.value.cantrips = spellbook.value.cantrips.filter(
+      s => s.name !== spell.name
+    );
+    saveSpellbook();
+  }
+
+  function removeSpell(spell: Spell) {
+    if (!spellbook.value) return;
+    spellbook.value.spellsKnown = spellbook.value.spellsKnown.filter(
+      s => s.name !== spell.name
+    );
+    // Also remove from prepared if it was prepared
+    spellbook.value.spellsPrepared = spellbook.value.spellsPrepared.filter(
+      s => s.name !== spell.name
+    );
+    saveSpellbook();
+  }
+
+  function saveSpellcastingInfo() {
+    editingSpellcastingInfo.value = false;
+    saveSpellbook();
+  }
+
+  function updateSlotMax(level: number) {
+    if (!spellbook.value?.spellSlots[level]) return;
+    const slotInfo = spellbook.value.spellSlots[level];
+    // If used slots exceed new max, reset used to 0
+    if (slotInfo.used > slotInfo.max) {
+      slotInfo.used = 0;
+    }
+    saveSpellbook();
+  }
+
+  function closeSlotsPopout() {
+    editingSlotsPopout.value = false;
+    saveSpellbook();
+  }
+
+  function openSlotsPopout() {
+    if (!spellbook.value) return;
+    // Ensure all 9 levels exist in spellSlots
+    for (let level = 1; level <= 9; level++) {
+      if (!spellbook.value.spellSlots[level]) {
+        spellbook.value.spellSlots[level] = { max: 0, used: 0 };
+      }
+    }
+    editingSlotsPopout.value = true;
+  }
 </script>
 
 <style scoped>
@@ -327,6 +454,92 @@
 
   .detail-card strong {
     color: var(--color-primary);
+  }
+
+  .info-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .info-header h3 {
+    margin: 0;
+  }
+
+  .edit-btn {
+    padding: 0.4rem 0.8rem;
+    border: 1px solid rgba(107, 46, 46, 0.2);
+    border-radius: 6px;
+    background: rgba(201, 164, 75, 0.08);
+    color: var(--color-primary);
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .edit-btn:hover {
+    background: rgba(201, 164, 75, 0.16);
+    border-color: var(--color-accent);
+  }
+
+  .edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid rgba(107, 46, 46, 0.1);
+    border-radius: 6px;
+    margin-top: 0.5rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .form-group label {
+    color: var(--color-primary);
+    font-weight: 600;
+    font-size: 0.85rem;
+  }
+
+  .form-input {
+    padding: 0.5rem 0.6rem;
+    border: 1px solid rgba(107, 46, 46, 0.2);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--color-text);
+    font-size: 0.9rem;
+    transition: all 0.15s ease;
+  }
+
+  .form-input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.04);
+    border-color: var(--color-accent);
+  }
+
+  .save-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(107, 139, 107, 0.3);
+    border-radius: 6px;
+    background: rgba(107, 139, 107, 0.12);
+    color: #6b8b6b;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    align-self: flex-start;
+  }
+
+  .save-btn:hover {
+    background: rgba(107, 139, 107, 0.2);
+    border-color: #6b8b6b;
   }
 
   .slots-table {
@@ -521,6 +734,12 @@
     gap: 0.8rem;
   }
 
+  .spell-action-group {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
   .spell-info {
     flex: 1;
     cursor: pointer;
@@ -573,6 +792,18 @@
   }
 
   .unprepare-btn:hover:not(:disabled) {
+    background: rgba(183, 59, 59, 0.16);
+    border-color: var(--color-danger);
+  }
+
+  .remove-btn {
+    background: rgba(183, 59, 59, 0.08);
+    border-color: rgba(183, 59, 59, 0.2);
+    color: var(--color-danger);
+    font-size: 1.1rem;
+  }
+
+  .remove-btn:hover:not(:disabled) {
     background: rgba(183, 59, 59, 0.16);
     border-color: var(--color-danger);
   }
@@ -669,5 +900,73 @@
     background: rgba(183, 59, 59, 0.08);
     border: 1px dashed rgba(183, 59, 59, 0.2);
     color: var(--color-danger);
+  }
+
+  .slots-button-group {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .no-slots {
+    padding: 1rem;
+    text-align: center;
+    color: var(--color-muted);
+    font-style: italic;
+  }
+
+  .slots-edit-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    max-width: 400px;
+  }
+
+  .slots-edit-container h2 {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 1.3rem;
+  }
+
+  .slots-edit-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .slot-edit-row {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .slot-edit-row label {
+    font-weight: 600;
+    color: var(--color-primary);
+    min-width: 70px;
+  }
+
+  .slot-edit-input {
+    flex: 1;
+    padding: 0.5rem 0.6rem;
+    border: 1px solid rgba(107, 46, 46, 0.2);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--color-text);
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .slot-edit-input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.04);
+    border-color: var(--color-accent);
+  }
+
+  .slots-edit-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
   }
 </style>
