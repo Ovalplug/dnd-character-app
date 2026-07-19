@@ -7,9 +7,7 @@
     <div class="backpack-details">
       <div class="detail-card">
         <h3>Equipped Items ({{ equippedItems.length }})</h3>
-        <div v-if="equippedItems.length === 0" class="empty-message">
-          No items equipped.
-        </div>
+        <div v-if="equippedItems.length === 0" class="empty-message">No items equipped.</div>
         <ul v-else class="item-list">
           <li v-for="item in equippedItems" :key="`${item.name}-${item.source}`" class="item-row">
             <div class="item-info" @click="selectedItemForPopout = item">
@@ -67,11 +65,7 @@
               </div>
             </div>
             <div class="item-controls">
-              <button
-                class="item-btn equipped-btn"
-                @click="toggleEquipped(item)"
-                title="Equip"
-              >
+              <button class="item-btn equipped-btn" @click="toggleEquipped(item)" title="Equip">
                 E
               </button>
               <button

@@ -470,9 +470,14 @@
 
   .feat-item {
     cursor: pointer;
-    padding: 0.6rem 0.5rem;
+    padding: 0.75rem 0.75rem;
     border-bottom: 1px solid rgba(122, 107, 87, 0.2);
     transition: background 0.1s;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    position: relative;
+    min-height: 80px;
   }
 
   .feat-item:hover {
@@ -483,32 +488,35 @@
     margin: 0;
   }
 
+  .feat-item p:first-child {
+    font-weight: 600;
+    color: var(--color-text);
+    font-size: 1rem;
+    padding-right: 32px;
+  }
+
   .feat-item .p2 {
     color: var(--color-muted);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
 
   .spell_p3 {
     color: var(--color-muted);
-    font-size: 0.85rem;
-  }
-
-  .feat-item {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
+    font-size: 0.8rem;
+    line-height: 1.3;
   }
 
   .icon {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     cursor: pointer;
     opacity: 0.6;
     transition: opacity 0.15s ease;
     display: block;
     flex-shrink: 0;
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
   }
 
   .icon:hover {
@@ -552,6 +560,23 @@
   @media (min-width: 640px) {
     .chip {
       font-size: 0.9rem;
+    }
+
+    .feat-item {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 1rem;
+      min-height: auto;
+    }
+
+    .feat-item p:first-child {
+      flex: 1;
+      padding-right: 0;
+    }
+
+    .icon {
+      position: static;
+      margin-top: 0.2rem;
     }
   }
 </style>

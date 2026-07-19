@@ -26,7 +26,11 @@
           </div>
           <div class="form-group">
             <label>Attack Bonus:</label>
-            <input v-model.number="spellbook.spellcastingAttackBonus" type="number" class="form-input" />
+            <input
+              v-model.number="spellbook.spellcastingAttackBonus"
+              type="number"
+              class="form-input"
+            />
           </div>
           <button class="save-btn" @click="saveSpellcastingInfo">Save</button>
         </div>
@@ -41,9 +45,7 @@
         <div class="slots-header">
           <h3>Spell Slots</h3>
           <div class="slots-button-group">
-            <button class="edit-btn" @click="openSlotsPopout">
-              Edit Slots
-            </button>
+            <button class="edit-btn" @click="openSlotsPopout">Edit Slots</button>
             <button
               v-if="Object.keys(spellbook.spellSlots).length > 0"
               class="refresh-btn"
@@ -224,11 +226,7 @@
     <div class="slots-edit-container">
       <h2>Edit Spell Slots</h2>
       <div class="slots-edit-grid">
-        <div
-          v-for="level in 9"
-          :key="level"
-          class="slot-edit-row"
-        >
+        <div v-for="level in 9" :key="level" class="slot-edit-row">
           <label>Level {{ level }}:</label>
           <input
             v-model.number="spellbook!.spellSlots[level]!.max"
@@ -371,17 +369,13 @@
 
   function removeCantrip(spell: Spell) {
     if (!spellbook.value) return;
-    spellbook.value.cantrips = spellbook.value.cantrips.filter(
-      s => s.name !== spell.name
-    );
+    spellbook.value.cantrips = spellbook.value.cantrips.filter(s => s.name !== spell.name);
     saveSpellbook();
   }
 
   function removeSpell(spell: Spell) {
     if (!spellbook.value) return;
-    spellbook.value.spellsKnown = spellbook.value.spellsKnown.filter(
-      s => s.name !== spell.name
-    );
+    spellbook.value.spellsKnown = spellbook.value.spellsKnown.filter(s => s.name !== spell.name);
     // Also remove from prepared if it was prepared
     spellbook.value.spellsPrepared = spellbook.value.spellsPrepared.filter(
       s => s.name !== spell.name
@@ -391,16 +385,6 @@
 
   function saveSpellcastingInfo() {
     editingSpellcastingInfo.value = false;
-    saveSpellbook();
-  }
-
-  function updateSlotMax(level: number) {
-    if (!spellbook.value?.spellSlots[level]) return;
-    const slotInfo = spellbook.value.spellSlots[level];
-    // If used slots exceed new max, reset used to 0
-    if (slotInfo.used > slotInfo.max) {
-      slotInfo.used = 0;
-    }
     saveSpellbook();
   }
 
