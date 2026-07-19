@@ -20,6 +20,8 @@ import CreateSpellbook from '../components/spellBooks/CreateSpellbook.vue';
 import SpellBookView from '../components/spellBooks/SpellBookView.vue';
 import CreateBackpack from '../components/items/CreateBackpack.vue';
 import BackpackView from '../components/items/BackpackView.vue';
+import CreateItem from '../components/items/CreateItem.vue';
+import ItemsView from '../components/items/ItemsView.vue';
 import { useDataStore } from '../stores/dataStore';
 
 const routes: Array<RouteRecordRaw> = [
@@ -38,7 +40,6 @@ const routes: Array<RouteRecordRaw> = [
     props: () => ({ dataStore: useDataStore() }),
   },
   { path: '/create/randomCreate', name: 'randomCreate', component: RandomCreation },
-  { path: '/create/itemCreate', name: 'itemCreate', component: PlaceHolder },
   { path: '/create/monsterCreate', name: 'monsterCreate', component: PlaceHolder },
   { path: '/create/spellCreate', name: 'spellCreate', component: PlaceHolder },
   { path: '/create/encounter', name: 'encounterCreate', component: EncounterCreation },
@@ -46,6 +47,9 @@ const routes: Array<RouteRecordRaw> = [
   { path: '/spellbook/:id', name: 'spellbook', component: SpellBookView },
   { path: '/create/backpack', name: 'backpackCreate', component: CreateBackpack },
   { path: '/backpack/:id', name: 'backpack', component: BackpackView },
+  { path: '/create/item', name: 'itemCreate', component: CreateItem },
+  { path: '/items', name: 'items', component: ItemsView },
+  { path: '/items/:id', name: 'itemDetail', component: ItemsView },
   { path: '/encounter/edit', name: 'EditEncounter', component: EditEncounter },
   { path: '/encounter/run', name: 'RunEncounter', component: EncounterMain },
   { path: '/training', name: 'trainingGround', component: TrainingGround },

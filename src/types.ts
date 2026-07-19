@@ -963,3 +963,10 @@ export type Backpack = {
   createdAt: number;
   updatedAt: number;
 };
+
+// custom item stuff
+export type CustomItem = Item & {
+  id: string;
+  createdAt: number;
+  updatedAt: number;
+};

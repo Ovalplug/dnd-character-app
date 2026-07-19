@@ -1,6 +1,6 @@
 import Dexie from 'dexie';
 import type { Table } from 'dexie';
-import type { EncounterCreature, playerCharacter, SpellBook, Backpack } from '../types';
+import type { EncounterCreature, playerCharacter, SpellBook, Backpack, CustomItem } from '../types';
 
 export type Character = playerCharacter;
 
@@ -46,6 +46,7 @@ export class DndDatabase extends Dexie {
   encounters!: Table<Encounter, string>;
   spellBooks!: Table<SpellBook, string>;
   backpacks!: Table<Backpack, string>;
+  customItems!: Table<CustomItem, string>;
 
   constructor() {
     super('DndDatabase');
@@ -87,6 +88,16 @@ export class DndDatabase extends Dexie {
       encounters: '&id, name, updatedAt',
       spellBooks: '&id, name',
       backpacks: '&id, name',
+    });
+
+    this.version(7).stores({
+      characters: '&id, name, level, updatedAt',
+      settings: 'key',
+      notes: '&characterId, updatedAt',
+      encounters: '&id, name, updatedAt',
+      spellBooks: '&id, name',
+      backpacks: '&id, name',
+      customItems: '&id, name',
     });
   }
 }
@@ -197,4 +208,26 @@ export async function getAllBackpacks(): Promise<Backpack[]> {
 export async function updateBackpack(backpack: Backpack): Promise<void> {
   backpack.updatedAt = Date.now();
   await db.backpacks.put(backpack);
+}
+
+// custom items
+export async function addCustomItem(item: CustomItem): Promise<void> {
+  await db.customItems.put(item);
+}
+
+export async function getCustomItem(id: string): Promise<CustomItem | undefined> {
+  return await db.customItems.get(id);
+}
+
+export async function deleteCustomItem(id: string): Promise<void> {
+  await db.customItems.delete(id);
+}
+
+export async function getAllCustomItems(): Promise<CustomItem[]> {
+  return await db.customItems.toArray();
+}
+
+export async function updateCustomItem(item: CustomItem): Promise<void> {
+  item.updatedAt = Date.now();
+  await db.customItems.put(item);
 }
