@@ -1,267 +1,248 @@
 <template>
   <div class="create-item">
-    <div class="header">
-      <h1>Create Custom Item</h1>
-      <p class="description">Define a new custom item with all its properties and abilities</p>
-    </div>
+    <h2 class="page-title">Create Custom Item</h2>
 
-    <div class="form-container">
-      <!-- Basic Information Section -->
-      <div class="form-section">
-        <h2 class="section-title">Basic Information</h2>
+    <!-- Basic Info -->
+    <div class="form-section">
+      <h3 class="section-title">Basic Info</h3>
 
-        <div class="form-grid two-col">
-          <div class="form-group">
-            <label for="item-name">Item Name *</label>
-            <input
-              id="item-name"
-              v-model="formData.name"
-              type="text"
-              placeholder="Enter item name..."
-              class="creation-input"
-              @keyup.enter="submitForm"
-            />
-          </div>
+      <div class="field">
+        <label for="item-name">Name *</label>
+        <input
+          id="item-name"
+          v-model="formData.name"
+          type="text"
+          placeholder="Item name…"
+          class="field-input"
+          @keyup.enter="submitForm"
+        />
+      </div>
 
-          <div class="form-group">
-            <label for="item-source">Source *</label>
-            <input
-              id="item-source"
-              v-model="formData.source"
-              type="text"
-              placeholder="e.g., Custom, Homebrew, DMG..."
-              class="creation-input"
-            />
-          </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="item-type">Type</label>
+          <select id="item-type" v-model="formData.type" class="field-input">
+            <option value="">— Select —</option>
+            <option value="A">Ammunition</option>
+            <option value="AF">Adventuring Gear</option>
+            <option value="AT">Artisan Tools</option>
+            <option value="G">Generic</option>
+            <option value="M">Melee Weapon</option>
+            <option value="P">Potion</option>
+            <option value="R">Ranged Weapon</option>
+            <option value="S">Shield</option>
+            <option value="T">Tools</option>
+            <option value="WD">Wondrous Item</option>
+          </select>
         </div>
-
-        <div class="form-grid two-col">
-          <div class="form-group">
-            <label for="item-page">Page Number</label>
-            <input
-              id="item-page"
-              v-model.number="formData.page"
-              type="number"
-              placeholder="Optional"
-              class="creation-input"
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="item-display-name">Display Name</label>
-            <input
-              id="item-display-name"
-              v-model="formData.displayName"
-              type="text"
-              placeholder="Override (optional)"
-              class="creation-input"
-            />
-          </div>
+        <div class="field">
+          <label for="item-rarity">Rarity</label>
+          <select id="item-rarity" v-model="formData.rarity" class="field-input">
+            <option value="">— Select —</option>
+            <option value="Common">Common</option>
+            <option value="Uncommon">Uncommon</option>
+            <option value="Rare">Rare</option>
+            <option value="Very Rare">Very Rare</option>
+            <option value="Legendary">Legendary</option>
+            <option value="Artifact">Artifact</option>
+          </select>
         </div>
       </div>
 
-      <!-- Item Properties Section -->
-      <div class="form-section">
-        <h2 class="section-title">Item Properties</h2>
-
-        <div class="form-grid three-col">
-          <div class="form-group">
-            <label for="item-type">Item Type</label>
-            <select id="item-type" v-model="formData.type" class="creation-input">
-              <option value="">-- Select Type --</option>
-              <option value="$">Currency</option>
-              <option value="A">Ammunition</option>
-              <option value="AF">Adventuring Gear</option>
-              <option value="AT">Artisan Tools</option>
-              <option value="G">Generic Item</option>
-              <option value="M">Melee Weapon</option>
-              <option value="P">Potion</option>
-              <option value="R">Ranged Weapon</option>
-              <option value="S">Shield</option>
-              <option value="T">Tools</option>
-              <option value="WD">Wondrous Item</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="item-rarity">Rarity</label>
-            <select id="item-rarity" v-model="formData.rarity" class="creation-input">
-              <option value="">-- Select Rarity --</option>
-              <option value="Common">Common</option>
-              <option value="Uncommon">Uncommon</option>
-              <option value="Rare">Rare</option>
-              <option value="Very Rare">Very Rare</option>
-              <option value="Legendary">Legendary</option>
-              <option value="Artifact">Artifact</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="item-value">Value (gp)</label>
-            <input
-              id="item-value"
-              v-model.number="formData.value"
-              type="number"
-              placeholder="0"
-              class="creation-input"
-            />
-          </div>
-        </div>
-
-        <div class="form-grid two-col">
-          <div class="form-group">
-            <label for="item-weight">Weight (lb)</label>
-            <input
-              id="item-weight"
-              v-model.number="formData.weight"
-              type="number"
-              step="0.1"
-              placeholder="0"
-              class="creation-input"
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="item-charges">Charges</label>
-            <input
-              id="item-charges"
-              v-model.number="formData.charges"
-              type="number"
-              placeholder="Optional"
-              class="creation-input"
-            />
-          </div>
-        </div>
-      </div>
-
-      <!-- Combat Properties Section -->
-      <div class="form-section">
-        <h2 class="section-title">Combat Properties</h2>
-
-        <div class="checkbox-group">
-          <label class="checkbox-label">
-            <input v-model="formData.armor" type="checkbox" />
-            Armor
-          </label>
-          <label class="checkbox-label">
-            <input v-model="formData.weapon" type="checkbox" />
-            Weapon
-          </label>
-          <label class="checkbox-label">
-            <input v-model="formData.wondrous" type="checkbox" />
-            Wondrous Item
-          </label>
-        </div>
-
-        <div v-if="formData.armor" class="form-grid">
-          <div class="form-group">
-            <label for="item-ac">Armor Class (AC)</label>
-            <input
-              id="item-ac"
-              v-model="formData.ac"
-              type="text"
-              placeholder="e.g., 12, 10+DEX, 16"
-              class="creation-input"
-            />
-          </div>
-        </div>
-
-        <div v-if="formData.weapon" class="form-grid two-col">
-          <div class="form-group">
-            <label for="item-dmg1">Damage Dice</label>
-            <input
-              id="item-dmg1"
-              v-model="formData.dmg1"
-              type="text"
-              placeholder="e.g., 1d8, 2d6"
-              class="creation-input"
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="item-dmg-type">Damage Type</label>
-            <select id="item-dmg-type" v-model="formData.dmgType" class="creation-input">
-              <option value="">-- Select Type --</option>
-              <option value="Slashing">Slashing</option>
-              <option value="Piercing">Piercing</option>
-              <option value="Bludgeoning">Bludgeoning</option>
-              <option value="Fire">Fire</option>
-              <option value="Cold">Cold</option>
-              <option value="Lightning">Lightning</option>
-              <option value="Thunder">Thunder</option>
-              <option value="Poison">Poison</option>
-              <option value="Psychic">Psychic</option>
-              <option value="Radiant">Radiant</option>
-              <option value="Necrotic">Necrotic</option>
-              <option value="Force">Force</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <!-- Magical Properties Section -->
-      <div class="form-section">
-        <h2 class="section-title">Magical Properties</h2>
-
-        <div class="form-grid two-col">
-          <div class="form-group">
-            <label for="item-req-attune">Attunement Required</label>
-            <select id="item-req-attune" v-model="formData.reqAttune" class="creation-input">
-              <option :value="false">No</option>
-              <option :value="true">Yes</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="item-recharge">Recharge Rate</label>
-            <input
-              id="item-recharge"
-              v-model="formData.recharge"
-              type="text"
-              placeholder="e.g., 1d6, 1/day"
-              class="creation-input"
-            />
-          </div>
-        </div>
-      </div>
-
-      <!-- Description Section -->
-      <div class="form-section">
-        <h2 class="section-title">Description</h2>
-
-        <div class="form-group">
-          <label for="item-entries">Item Description & Abilities</label>
-          <textarea
-            id="item-entries"
-            v-model="itemEntriesText"
-            placeholder="Enter item description or abilities (one per line for multiple entries)"
-            class="creation-textarea"
-            rows="6"
+      <div class="field-row">
+        <div class="field">
+          <label for="item-source">Source</label>
+          <input
+            id="item-source"
+            v-model="formData.source"
+            type="text"
+            placeholder="Custom, Homebrew…"
+            class="field-input"
           />
-          <small class="help-text">Separate multiple descriptions with new lines</small>
+        </div>
+        <div class="field">
+          <label for="item-value">Value (gp)</label>
+          <input
+            id="item-value"
+            v-model.number="formData.valueGp"
+            type="number"
+            min="0"
+            step="0.01"
+            placeholder="0"
+            class="field-input"
+          />
         </div>
       </div>
 
-      <!-- Actions -->
-      <div class="form-actions">
-        <button @click="submitForm" :disabled="!isFormValid()" class="creation-primary-button">
-          Create Item
-        </button>
-        <button @click="$router.back()" class="creation-secondary-button">Cancel</button>
-      </div>
-
-      <div v-if="errorMessage" class="creation-message error-message">
-        {{ errorMessage }}
-      </div>
-      <div v-if="successMessage" class="creation-message success-message">
-        {{ successMessage }}
+      <div class="field-row">
+        <div class="field">
+          <label for="item-weight">Weight (lb)</label>
+          <input
+            id="item-weight"
+            v-model.number="formData.weight"
+            type="number"
+            step="0.1"
+            min="0"
+            placeholder="0"
+            class="field-input"
+          />
+        </div>
+        <div class="field">
+          <label for="item-charges">Charges</label>
+          <input
+            id="item-charges"
+            v-model.number="formData.charges"
+            type="number"
+            min="0"
+            placeholder="—"
+            class="field-input"
+          />
+        </div>
       </div>
     </div>
+
+    <!-- Properties -->
+    <div class="form-section">
+      <h3 class="section-title">Properties</h3>
+
+      <div class="toggle-row">
+        <button
+          type="button"
+          class="toggle-pill"
+          :class="{ 'toggle-pill--on': formData.armor }"
+          @click="formData.armor = !formData.armor"
+        >
+          Armor
+        </button>
+        <button
+          type="button"
+          class="toggle-pill"
+          :class="{ 'toggle-pill--on': formData.weapon }"
+          @click="formData.weapon = !formData.weapon"
+        >
+          Weapon
+        </button>
+        <button
+          type="button"
+          class="toggle-pill"
+          :class="{ 'toggle-pill--on': formData.wondrous }"
+          @click="formData.wondrous = !formData.wondrous"
+        >
+          Wondrous
+        </button>
+        <button
+          type="button"
+          class="toggle-pill"
+          :class="{ 'toggle-pill--on': formData.reqAttune }"
+          @click="formData.reqAttune = !formData.reqAttune"
+        >
+          Attunement
+        </button>
+      </div>
+
+      <div v-if="formData.armor" class="field">
+        <label for="item-ac">Armor Class (AC)</label>
+        <input
+          id="item-ac"
+          v-model="formData.ac"
+          type="text"
+          placeholder="e.g., 14, 10+DEX"
+          class="field-input"
+        />
+      </div>
+
+      <div v-if="formData.weapon" class="field-row">
+        <div class="field">
+          <label for="item-dmg1">Damage Dice</label>
+          <input
+            id="item-dmg1"
+            v-model="formData.dmg1"
+            type="text"
+            placeholder="e.g., 1d8"
+            class="field-input"
+          />
+        </div>
+        <div class="field">
+          <label for="item-dmg-type">Damage Type</label>
+          <select id="item-dmg-type" v-model="formData.dmgType" class="field-input">
+            <option value="">— Select —</option>
+            <option value="B">Bludgeoning</option>
+            <option value="P">Piercing</option>
+            <option value="S">Slashing</option>
+            <option value="F">Fire</option>
+            <option value="C">Cold</option>
+            <option value="L">Lightning</option>
+            <option value="T">Thunder</option>
+            <option value="I">Poison</option>
+            <option value="Y">Psychic</option>
+            <option value="R">Radiant</option>
+            <option value="N">Necrotic</option>
+            <option value="O">Force</option>
+          </select>
+        </div>
+      </div>
+
+      <div v-if="formData.reqAttune" class="field">
+        <label for="item-attune-by">Attunement requirement (optional)</label>
+        <input
+          id="item-attune-by"
+          v-model="formData.reqAttuneBy"
+          type="text"
+          placeholder="e.g., a wizard, a spellcaster…"
+          class="field-input"
+        />
+      </div>
+
+      <div class="field">
+        <label for="item-recharge">Recharge</label>
+        <input
+          id="item-recharge"
+          v-model="formData.recharge"
+          type="text"
+          placeholder="e.g., 1d6 at dawn, 1/day"
+          class="field-input"
+        />
+      </div>
+    </div>
+
+    <!-- Description entries -->
+    <div class="form-section">
+      <h3 class="section-title">Description</h3>
+
+      <div class="entries-list">
+        <div v-for="(_, idx) in formData.entries" :key="idx" class="entry-row">
+          <textarea
+            v-model="formData.entries[idx]"
+            class="field-input entry-textarea"
+            rows="2"
+            :placeholder="`Entry ${idx + 1}…`"
+          />
+          <button
+            type="button"
+            class="remove-entry-btn"
+            @click="removeEntry(idx)"
+            aria-label="Remove entry"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
+      <button type="button" class="add-entry-btn" @click="addEntry">+ Add Entry</button>
+    </div>
+
+    <!-- Actions -->
+    <div class="form-actions">
+      <button @click="submitForm" :disabled="!isFormValid" class="btn-primary">Save Item</button>
+      <button @click="$router.back()" class="btn-secondary">Cancel</button>
+    </div>
+
+    <p v-if="errorMessage" class="msg msg--error">{{ errorMessage }}</p>
+    <p v-if="successMessage" class="msg msg--success">{{ successMessage }}</p>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue';
+  import { ref, computed } from 'vue';
   import { useRouter } from 'vue-router';
   import { useItemStore } from '../../stores/itemStore';
   import { v4 as uuidv4 } from 'uuid';
@@ -272,79 +253,86 @@
 
   const formData = ref({
     name: '',
-    source: '',
-    page: undefined as number | undefined,
-    displayName: '',
-    type: '',
-    rarity: '',
-    value: undefined as number | undefined,
+    source: 'Custom',
+    type: '' as string,
+    rarity: '' as string,
+    valueGp: undefined as number | undefined,
     weight: undefined as number | undefined,
     armor: false,
     weapon: false,
-    ac: '' as string | number | undefined,
-    dmg1: '',
-    dmgType: '',
-    reqAttune: false,
     wondrous: false,
+    reqAttune: false,
+    reqAttuneBy: '',
+    ac: '' as string,
+    dmg1: '' as string,
+    dmgType: '' as string,
     charges: undefined as number | undefined,
-    recharge: '',
+    recharge: '' as string,
+    entries: [''] as string[],
   });
 
-  const itemEntriesText = ref('');
   const errorMessage = ref('');
   const successMessage = ref('');
 
-  function isFormValid(): boolean {
-    return formData.value.name.trim().length > 0 && formData.value.source.trim().length > 0;
+  const isFormValid = computed(() => formData.value.name.trim().length > 0);
+
+  function addEntry() {
+    formData.value.entries.push('');
+  }
+
+  function removeEntry(idx: number) {
+    formData.value.entries.splice(idx, 1);
   }
 
   async function submitForm() {
     errorMessage.value = '';
     successMessage.value = '';
 
-    if (!isFormValid()) {
-      errorMessage.value = 'Item name and source are required';
+    if (!isFormValid.value) {
+      errorMessage.value = 'Item name is required.';
       return;
     }
 
     try {
-      const entries = itemEntriesText.value
-        .split('\n')
-        .map(line => line.trim())
-        .filter(line => line.length > 0);
+      const entries = formData.value.entries
+        .map(e => e.trim())
+        .filter(e => e.length > 0);
+
+      // Attunement: string requirement takes priority over plain boolean
+      const reqAttune = formData.value.reqAttune
+        ? (formData.value.reqAttuneBy.trim() || true)
+        : undefined;
 
       const newItem: CustomItem = {
         id: uuidv4(),
         name: formData.value.name.trim(),
-        source: formData.value.source.trim(),
-        ...(formData.value.page && { page: formData.value.page }),
-        ...(formData.value.displayName && { displayName: formData.value.displayName.trim() }),
+        source: formData.value.source.trim() || 'Custom',
         ...(formData.value.type && { type: formData.value.type as any }),
         ...(formData.value.rarity && { rarity: formData.value.rarity }),
-        ...(formData.value.value !== undefined && { value: formData.value.value }),
+        // Value stored in copper pieces to match 5etools format (1 gp = 100 cp)
+        ...(formData.value.valueGp !== undefined && { value: Math.round(formData.value.valueGp * 100) }),
         ...(formData.value.weight !== undefined && { weight: formData.value.weight }),
         ...(formData.value.armor && { armor: true }),
         ...(formData.value.weapon && { weapon: true }),
+        ...(formData.value.wondrous && { wondrous: true }),
         ...(formData.value.ac && { ac: formData.value.ac }),
         ...(formData.value.dmg1 && { dmg1: formData.value.dmg1 }),
         ...(formData.value.dmgType && { dmgType: formData.value.dmgType }),
-        ...(formData.value.reqAttune && { reqAttune: formData.value.reqAttune }),
-        ...(formData.value.wondrous && { wondrous: true }),
+        ...(reqAttune !== undefined && { reqAttune }),
         ...(formData.value.charges !== undefined && { charges: formData.value.charges }),
         ...(formData.value.recharge && { recharge: formData.value.recharge }),
-        ...(entries.length > 0 && { entries: entries }),
+        ...(entries.length > 0 && { entries }),
         createdAt: Date.now(),
         updatedAt: Date.now(),
       };
 
       await itemStore.addCustomItem(newItem);
-      successMessage.value = 'Item created successfully!';
+      successMessage.value = 'Item created!';
 
       setTimeout(() => {
-        router.push(`/items/${newItem.id}`);
-      }, 500);
-    } catch (error) {
-      console.error('Error creating item:', error);
+        router.push('/items');
+      }, 400);
+    } catch {
       errorMessage.value = 'Failed to create item. Please try again.';
     }
   }
@@ -354,211 +342,231 @@
   .create-item {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    padding: 2rem;
-    max-width: 1000px;
-    margin: 0 auto;
+    gap: 1rem;
+    padding-bottom: 3rem;
   }
 
-  .header {
-    text-align: center;
-    margin-bottom: 1rem;
-  }
-
-  .header h1 {
-    margin: 0;
+  .page-title {
+    margin: 0 0 0.25rem;
     color: var(--color-primary);
-    font-size: 2rem;
+    font-size: 1.4rem;
   }
 
-  .description {
-    color: var(--color-muted);
-    font-size: 1rem;
-    margin: 0.5rem 0 0 0;
-  }
-
-  .form-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
+  /* ── Sections ── */
   .form-section {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    padding: 1.5rem;
-    border-radius: 8px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+    gap: 0.75rem;
+    padding: 1rem;
+    background: var(--color-surface);
     border: 1px solid rgba(107, 46, 46, 0.12);
+    border-radius: var(--radius);
   }
 
   .section-title {
-    margin: 0;
-    padding-bottom: 0.75rem;
-    border-bottom: 2px solid rgba(107, 46, 46, 0.2);
+    margin: 0 0 0.25rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
     color: var(--color-primary);
-    font-size: 1.15rem;
+    border-bottom: 1px solid rgba(107, 46, 46, 0.15);
+    padding-bottom: 0.4rem;
   }
 
-  .form-grid {
-    display: grid;
-    gap: 1rem;
-  }
-
-  .form-grid.two-col {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .form-grid.three-col {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .form-group {
+  /* ── Fields ── */
+  .field {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.25rem;
   }
 
-  .form-group label {
+  .field label {
+    font-size: 0.8rem;
     font-weight: 600;
-    color: var(--color-primary);
-    font-size: 0.9rem;
+    color: var(--color-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
   }
 
-  .creation-input,
-  .creation-textarea {
-    padding: 0.7rem;
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .field-input {
+    padding: 0.6rem 0.75rem;
+    min-height: 44px;
     border: 1px solid rgba(107, 46, 46, 0.2);
-    border-radius: 6px;
-    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+    background: var(--color-bg);
     color: var(--color-text);
     font-size: 0.95rem;
-    transition: all 0.15s ease;
     font-family: inherit;
+    width: 100%;
+    box-sizing: border-box;
   }
 
-  .creation-input:focus,
-  .creation-textarea:focus {
-    outline: none;
-    background: rgba(255, 255, 255, 0.04);
+  .field-input:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 1px;
     border-color: var(--color-accent);
   }
 
-  .creation-textarea {
-    resize: vertical;
+  select.field-input {
+    cursor: pointer;
   }
 
-  .help-text {
-    font-size: 0.8rem;
-    color: var(--color-muted);
-    margin-top: 0.2rem;
-  }
-
-  .checkbox-group {
+  /* ── Toggle pills ── */
+  .toggle-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 1.5rem;
-    padding: 0.75rem 0;
-  }
-
-  .checkbox-label {
-    display: flex;
-    align-items: center;
     gap: 0.5rem;
-    font-weight: 400;
+  }
+
+  .toggle-pill {
+    padding: 0.4rem 0.9rem;
+    min-height: 36px;
+    border: 1px solid rgba(107, 46, 46, 0.25);
+    border-radius: 20px;
+    background: var(--color-bg);
     color: var(--color-text);
+    font-size: 0.85rem;
+    font-weight: 600;
     cursor: pointer;
+    transition: background 0.15s, color 0.15s;
   }
 
-  .checkbox-label input {
-    cursor: pointer;
-  }
-
-  .form-actions {
-    display: flex;
-    gap: 0.8rem;
-    margin-top: 1rem;
-  }
-
-  .creation-primary-button {
-    flex: 1;
-    padding: 0.9rem 1.5rem;
-    border: none;
-    border-radius: 6px;
+  .toggle-pill--on {
     background: var(--color-primary);
     color: white;
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.15s ease;
-  }
-
-  .creation-primary-button:hover:not(:disabled) {
-    background: #8b3e3e;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(107, 46, 46, 0.2);
-  }
-
-  .creation-primary-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  .creation-secondary-button {
-    flex: 1;
-    padding: 0.9rem 1.5rem;
-    border: 1px solid rgba(107, 46, 46, 0.2);
-    border-radius: 6px;
-    background: transparent;
-    color: var(--color-primary);
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.15s ease;
-  }
-
-  .creation-secondary-button:hover {
-    background: rgba(107, 46, 46, 0.08);
     border-color: var(--color-primary);
   }
 
-  .creation-message {
-    padding: 0.9rem;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    margin-top: 0.5rem;
+  /* ── Entries ── */
+  .entries-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 
-  .error-message {
+  .entry-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+
+  .entry-textarea {
+    resize: vertical;
+    min-height: 60px;
+  }
+
+  .remove-entry-btn {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    margin-top: 0.4rem;
+    border: 1px solid rgba(183, 59, 59, 0.25);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--color-danger);
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .add-entry-btn {
+    align-self: flex-start;
+    padding: 0.4rem 0.8rem;
+    min-height: 36px;
+    border: 1px dashed rgba(107, 46, 46, 0.3);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--color-muted);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+  }
+
+  .add-entry-btn:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  /* ── Actions ── */
+  .form-actions {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .btn-primary {
+    flex: 1;
+    padding: 0.8rem;
+    min-height: 48px;
+    border: none;
+    border-radius: var(--radius);
+    background: var(--color-primary);
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    opacity: 0.88;
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .btn-secondary {
+    flex: 1;
+    padding: 0.8rem;
+    min-height: 48px;
+    border: 1px solid rgba(107, 46, 46, 0.25);
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--color-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .btn-secondary:hover {
+    background: rgba(107, 46, 46, 0.06);
+  }
+
+  /* ── Messages ── */
+  .msg {
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  .msg--error {
     background: rgba(183, 59, 59, 0.08);
     border: 1px solid rgba(183, 59, 59, 0.2);
     color: var(--color-danger);
   }
 
-  .success-message {
-    background: rgba(107, 139, 107, 0.08);
-    border: 1px solid rgba(107, 139, 107, 0.2);
-    color: #6b8b6b;
+  .msg--success {
+    background: rgba(80, 140, 80, 0.08);
+    border: 1px solid rgba(80, 140, 80, 0.2);
+    color: #4a7a4a;
   }
 
-  @media (max-width: 768px) {
-    .create-item {
-      padding: 1rem;
-    }
-
-    .header h1 {
-      font-size: 1.5rem;
-    }
-
-    .form-grid.two-col,
-    .form-grid.three-col {
+  /* Collapse two-col to single below 400px */
+  @media (max-width: 399px) {
+    .field-row {
       grid-template-columns: 1fr;
-    }
-
-    .checkbox-group {
-      flex-direction: column;
-      gap: 0.8rem;
     }
 
     .form-actions {
@@ -566,3 +574,4 @@
     }
   }
 </style>
+

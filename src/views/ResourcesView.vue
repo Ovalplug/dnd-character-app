@@ -58,7 +58,7 @@
         :subclasses="dataStore.filteredSubclasses"
       />
       <AllSpells v-if="show_spells" :spells="dataStore.filteredSpells" />
-      <AllItems v-if="show_items" :items="dataStore.filteredItems" />
+      <AllItems v-if="show_items" :items="mergedItems" />
       <AllMonsters
         v-if="show_monsters"
         :monsters="dataStore.monsters"
@@ -94,9 +94,13 @@
   import AllItems from '../components/resources/AllItems.vue';
   import AllMonsters from '../components/resources/AllMonsters.vue';
   import AllRules from '../components/resources/AllRules.vue';
+  import { useItemStore } from '../stores/itemStore';
   const { initDebug } = useDebug();
 
   const dataStore = useDataStore();
+  const itemStore = useItemStore();
+
+  const mergedItems = computed(() => [...dataStore.filteredItems, ...itemStore.customItems]);
 
   const show_rawDatasets = ref(false);
   const show_feats = ref(false);
@@ -150,6 +154,7 @@
         console.error('Failed to load data store', err);
       }
     }
+    await itemStore.loadCustomItems();
   });
 
   function showNoData() {

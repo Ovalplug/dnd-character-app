@@ -36,7 +36,7 @@
             </div>
             <div v-if="item.value" class="detail-row">
               <span class="label">Value:</span>
-              <span class="value">{{ item.value }} gp</span>
+              <span class="value">{{ formatValue(item.value) }}</span>
             </div>
             <div v-if="item.weight" class="detail-row">
               <span class="label">Weight:</span>
@@ -97,7 +97,7 @@
         <p v-if="selectedItem.page"><strong>Page:</strong> {{ selectedItem.page }}</p>
         <p v-if="selectedItem.rarity"><strong>Rarity:</strong> {{ selectedItem.rarity }}</p>
         <p v-if="selectedItem.type"><strong>Type:</strong> {{ selectedItem.type }}</p>
-        <p v-if="selectedItem.value"><strong>Value:</strong> {{ selectedItem.value }} gp</p>
+        <p v-if="selectedItem.value"><strong>Value:</strong> {{ formatValue(selectedItem.value) }}</p>
         <p v-if="selectedItem.weight"><strong>Weight:</strong> {{ selectedItem.weight }} lb</p>
         <p v-if="selectedItem.armor"><strong>AC:</strong> {{ selectedItem.ac }}</p>
         <p v-if="selectedItem.weapon">
@@ -162,6 +162,14 @@
 
   function navigateToCreate() {
     router.push('/create/item');
+  }
+
+  function formatValue(cp: number): string {
+    if (cp === 0) return '0 cp';
+    if (cp % 1000 === 0 && cp >= 1000) return `${(cp / 1000).toLocaleString()} pp`;
+    if (cp % 100 === 0 && cp >= 100) return `${(cp / 100).toLocaleString()} gp`;
+    if (cp % 10 === 0 && cp >= 10) return `${(cp / 10).toLocaleString()} sp`;
+    return `${cp.toLocaleString()} cp`;
   }
 
   function viewItem(item: CustomItem) {
@@ -246,7 +254,8 @@
   }
 
   .create-button:hover {
-    background: #8b3e3e;
+    background: var(--color-primary);
+    opacity: 0.85;
   }
 
   .empty-state {
@@ -432,7 +441,8 @@
   }
 
   .creation-primary-button:hover {
-    background: #8b3e3e;
+    background: var(--color-primary);
+    opacity: 0.85;
   }
 
   .item-detail {
