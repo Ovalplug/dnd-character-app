@@ -75,8 +75,17 @@
   }>();
 
   const selectedSpell = ref<string | null>(null);
+
+  function normalizeSpellName(name: string): string {
+    return name
+      .replace(/\s*\([^)]*\)/g, '') // strip "(at 4th level)" etc.
+      .replace(/\*/g, '')            // strip asterisks
+      .trim()
+      .toLowerCase();
+  }
+
   function selectSpell(name: string) {
-    selectedSpell.value = name.toLowerCase();
+    selectedSpell.value = normalizeSpellName(name);
   }
   function deselectSpell() {
     selectedSpell.value = null;
