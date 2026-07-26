@@ -655,24 +655,34 @@ export function getPrettyItemType(type?: string): string {
       return 'Treasure';
     case '$A':
       return 'Treasure (Art Object)';
+    case '$C':
+      return 'Currency';
     case '$G':
       return 'Treasure (Gemstone)';
     case 'A':
       return 'Ammunition';
     case 'AF':
       return 'Ammunition (Firearm)';
+    case 'AIR':
+      return 'Airship';
     case 'AT':
       return 'Artisan Tool';
     case 'EM':
       return 'Eldritch Machine';
     case 'EXP':
       return 'Explosive';
+    case 'FD':
+      return 'Food & Drink';
     case 'G':
       return 'Adventuring Gear';
+    case 'GS':
+      return 'Gaming Set';
     case 'GV':
       return 'Generic Variant';
     case 'HA':
       return 'Heavy Armor';
+    case 'IDG':
+      return 'Illegal Drug';
     case 'INS':
       return 'Instrument';
     case 'LA':
@@ -683,6 +693,8 @@ export function getPrettyItemType(type?: string): string {
       return 'Medium Armor';
     case 'MNT':
       return 'Mount';
+    case 'OTH':
+      return 'Other';
     case 'P':
       return 'Potion';
     case 'R':
@@ -703,14 +715,20 @@ export function getPrettyItemType(type?: string): string {
       return 'Spellcasting Focus (Paladin)';
     case 'SCF-W':
       return 'Spellcasting Focus (Wizard)';
+    case 'SHP':
+      return 'Ship';
     case 'SPC':
       return 'Spelljamming Ship';
     case 'T':
       return 'Tool';
     case 'TAH':
-      return 'Tack and Harness';
+      return 'Tack & Harness';
+    case 'TB':
+      return 'Trade Bar';
+    case 'TG':
+      return 'Trade Good';
     case 'VEH':
-      return 'Vehicle';
+      return 'Vehicle (Land)';
     case 'WD':
       return 'Wand';
     default:
