@@ -1,27 +1,32 @@
 <template>
   <div class="bg-container">
     <div class="search-row">
-      <input v-model="searchVal" type="search" placeholder="Search backgrounds…" class="search-input" />
+      <input
+        v-model="searchVal"
+        type="search"
+        placeholder="Search backgrounds…"
+        class="search-input"
+      />
     </div>
     <ul class="resource-list">
-    <div
-      v-for="bg in filteredBackgrounds"
-      :key="bg.name"
-      @click="selectBackground(bg)"
-      class="rl-item"
-      tabindex="0"
-      @keydown.enter="selectBackground(bg)"
-      role="button"
-    >
-      <div class="rl-item__body">
-        <span class="rl-item__name">{{ bg.name }}</span>
-        <div class="rl-item__tags">
-          <span v-if="bg.source" class="rl-tag rl-tag--source">{{ bg.source }}</span>
-          <span v-if="getSkillSummary(bg)" class="rl-tag">{{ getSkillSummary(bg) }}</span>
+      <div
+        v-for="bg in filteredBackgrounds"
+        :key="bg.name"
+        @click="selectBackground(bg)"
+        class="rl-item"
+        tabindex="0"
+        @keydown.enter="selectBackground(bg)"
+        role="button"
+      >
+        <div class="rl-item__body">
+          <span class="rl-item__name">{{ bg.name }}</span>
+          <div class="rl-item__tags">
+            <span v-if="bg.source" class="rl-tag rl-tag--source">{{ bg.source }}</span>
+            <span v-if="getSkillSummary(bg)" class="rl-tag">{{ getSkillSummary(bg) }}</span>
+          </div>
         </div>
       </div>
-    </div>
-  </ul>
+    </ul>
   </div>
   <PopOut :title="backgroundTitle" v-if="selectedBackground" :onClose="deselectBackground">
     <div v-if="debug">

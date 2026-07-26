@@ -4,26 +4,30 @@
       <input v-model="searchVal" type="search" placeholder="Search races…" class="search-input" />
     </div>
     <ul class="resource-list">
-    <div
-      v-for="race in filteredRaces"
-      :key="race.name"
-      @click="selectRace(race)"
-      class="rl-item"
-      tabindex="0"
-      @keydown.enter="selectRace(race)"
-      role="button"
-    >
-      <div class="rl-item__body">
-        <span class="rl-item__name">{{ race.name }}</span>
-        <div class="rl-item__tags">
-          <span v-if="race.source" class="rl-tag rl-tag--source">{{ race.source }}</span>
-          <span v-if="getRaceSpeed(race)" class="rl-tag">{{ getRaceSpeed(race) }} ft.</span>
-          <span v-if="race.ability" class="rl-tag rl-tag--primary">{{ getRaceAbilitySummary(race) }}</span>
-          <span v-if="race.subraces?.length" class="rl-tag rl-tag--accent">{{ race.subraces.length }} subrace{{ race.subraces.length > 1 ? 's' : '' }}</span>
+      <div
+        v-for="race in filteredRaces"
+        :key="race.name"
+        @click="selectRace(race)"
+        class="rl-item"
+        tabindex="0"
+        @keydown.enter="selectRace(race)"
+        role="button"
+      >
+        <div class="rl-item__body">
+          <span class="rl-item__name">{{ race.name }}</span>
+          <div class="rl-item__tags">
+            <span v-if="race.source" class="rl-tag rl-tag--source">{{ race.source }}</span>
+            <span v-if="getRaceSpeed(race)" class="rl-tag">{{ getRaceSpeed(race) }} ft.</span>
+            <span v-if="race.ability" class="rl-tag rl-tag--primary">{{
+              getRaceAbilitySummary(race)
+            }}</span>
+            <span v-if="race.subraces?.length" class="rl-tag rl-tag--accent"
+              >{{ race.subraces.length }} subrace{{ race.subraces.length > 1 ? 's' : '' }}</span
+            >
+          </div>
         </div>
       </div>
-    </div>
-  </ul>
+    </ul>
   </div>
   <PopOut :title="raceTitle" v-if="selectedRace" :onClose="deselectRace">
     <div v-if="debug">

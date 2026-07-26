@@ -2,7 +2,12 @@
   <div class="monster-container">
     <!-- The filter -->
     <div class="search-row">
-      <input v-model="searchVal" type="search" placeholder="Search monsters…" class="search-input" />
+      <input
+        v-model="searchVal"
+        type="search"
+        placeholder="Search monsters…"
+        class="search-input"
+      />
       <button
         class="filter-toggle"
         :class="{ 'filter-toggle--active': hasActiveFilters }"
@@ -227,13 +232,24 @@
           <div class="rl-item__body">
             <span class="rl-item__name">{{ monster.name }}</span>
             <div class="rl-item__tags">
-              <span v-if="calcCR(monster)" class="rl-tag rl-tag--primary">{{ calcCR(monster) }}</span>
-              <span v-if="monster.type" class="rl-tag">{{ getPrettyMonsterType(typeof monster.type === 'string' ? monster.type : monster.type?.type ?? '') }}</span>
+              <span v-if="calcCR(monster)" class="rl-tag rl-tag--primary">{{
+                calcCR(monster)
+              }}</span>
+              <span v-if="monster.type" class="rl-tag">{{
+                getPrettyMonsterType(
+                  typeof monster.type === 'string' ? monster.type : monster.type?.type ?? ''
+                )
+              }}</span>
               <span v-if="monsterSize(monster)" class="rl-tag">{{ monsterSize(monster) }}</span>
               <span v-if="monster.source" class="rl-tag rl-tag--source">{{ monster.source }}</span>
             </div>
           </div>
-          <img :src="shieldIcon" alt="add to encounter" class="rl-item__icon" @click.stop="addToEncounter(monster)" />
+          <img
+            :src="shieldIcon"
+            alt="add to encounter"
+            class="rl-item__icon"
+            @click.stop="addToEncounter(monster)"
+          />
         </div>
       </ul>
     </div>

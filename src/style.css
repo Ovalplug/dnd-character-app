@@ -855,7 +855,19 @@ ul.arrow-list li::before {
 }
 
 /* Rarity-specific tag colors for items */
-.rl-tag--uncommon { background: rgba(30, 150, 30, 0.12); color: #1a6b1a; }
-.rl-tag--rare { background: rgba(50, 100, 200, 0.12); color: #2048a0; }
-.rl-tag--very-rare { background: rgba(130, 40, 180, 0.12); color: #7a2090; }
-.rl-tag--legendary { background: rgba(210, 130, 20, 0.15); color: #8a5200; }
+.rl-tag--uncommon {
+  background: rgba(30, 150, 30, 0.12);
+  color: #1a6b1a;
+}
+.rl-tag--rare {
+  background: rgba(50, 100, 200, 0.12);
+  color: #2048a0;
+}
+.rl-tag--very-rare {
+  background: rgba(130, 40, 180, 0.12);
+  color: #7a2090;
+}
+.rl-tag--legendary {
+  background: rgba(210, 130, 20, 0.15);
+  color: #8a5200;
+}

@@ -98,7 +98,12 @@
           <span class="rl-item__name">{{ item.name }}</span>
           <div class="rl-item__tags">
             <span v-if="item.source" class="rl-tag rl-tag--source">{{ item.source }}</span>
-            <span v-if="item.rarity && item.rarity !== 'none'" class="rl-tag" :class="rarityTagClass(item.rarity)">{{ capitalizeRarity(item.rarity) }}</span>
+            <span
+              v-if="item.rarity && item.rarity !== 'none'"
+              class="rl-tag"
+              :class="rarityTagClass(item.rarity)"
+              >{{ capitalizeRarity(item.rarity) }}</span
+            >
             <span v-if="item.type" class="rl-tag">{{ getPrettyItemType(item.type) }}</span>
             <span v-if="item.reqAttune" class="rl-tag rl-tag--primary">Attunement</span>
           </div>
@@ -325,7 +330,10 @@
   }
 
   function capitalizeRarity(rarity: string): string {
-    return rarity.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    return rarity
+      .split(' ')
+      .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(' ');
   }
 
   function rarityTagClass(rarity: string): string {

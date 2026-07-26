@@ -98,7 +98,9 @@
           <span class="rl-item__name">{{ feat.name }}</span>
           <div class="rl-item__tags">
             <span v-if="feat.source" class="rl-tag rl-tag--source">{{ feat.source }}</span>
-            <span v-for="part in getFeatMetaParts(feat)" :key="part" class="rl-tag">{{ part }}</span>
+            <span v-for="part in getFeatMetaParts(feat)" :key="part" class="rl-tag">{{
+              part
+            }}</span>
           </div>
         </div>
       </div>

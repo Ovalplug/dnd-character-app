@@ -12,11 +12,18 @@
           v-if="item.rarity && item.rarity !== 'none'"
           class="item-badge item-badge--rarity"
           :class="`rarity-${item.rarity.replace(' ', '-')}`"
-        >{{ capitalizeRarity(item.rarity) }}</span>
+          >{{ capitalizeRarity(item.rarity) }}</span
+        >
         <span v-if="itemRequiresAttunement(item)" class="item-badge item-badge--attune">
-          {{ typeof item.reqAttune === 'string' ? `Attunement: ${item.reqAttune}` : 'Requires Attunement' }}
+          {{
+            typeof item.reqAttune === 'string'
+              ? `Attunement: ${item.reqAttune}`
+              : 'Requires Attunement'
+          }}
         </span>
-        <span v-for="prop in itemProperties" :key="prop" class="item-badge item-badge--prop">{{ prop }}</span>
+        <span v-for="prop in itemProperties" :key="prop" class="item-badge item-badge--prop">{{
+          prop
+        }}</span>
       </div>
     </header>
 
@@ -176,7 +183,10 @@
   });
 
   function capitalizeRarity(rarity: string): string {
-    return rarity.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    return rarity
+      .split(' ')
+      .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(' ');
   }
 
   const summaryFields = computed(() => {
@@ -360,13 +370,27 @@
     color: #fff;
   }
 
-  .rarity-common        { background: #6b7280; }
-  .rarity-uncommon      { background: #15803d; }
-  .rarity-rare          { background: #1d4ed8; }
-  .rarity-very-rare     { background: #7c3aed; }
-  .rarity-legendary     { background: #b45309; }
-  .rarity-artifact      { background: #92400e; }
-  .rarity-varies        { background: #6b7280; }
+  .rarity-common {
+    background: #6b7280;
+  }
+  .rarity-uncommon {
+    background: #15803d;
+  }
+  .rarity-rare {
+    background: #1d4ed8;
+  }
+  .rarity-very-rare {
+    background: #7c3aed;
+  }
+  .rarity-legendary {
+    background: #b45309;
+  }
+  .rarity-artifact {
+    background: #92400e;
+  }
+  .rarity-varies {
+    background: #6b7280;
+  }
 
   .item-badge--attune {
     background: rgba(201, 164, 75, 0.2);

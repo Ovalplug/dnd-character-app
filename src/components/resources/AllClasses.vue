@@ -8,30 +8,36 @@
       <input v-model="searchVal" type="search" placeholder="Search classes…" class="search-input" />
     </div>
     <ul class="resource-list">
-    <div
-      v-for="charClass in filteredClasses"
-      :key="charClass.name"
-      @click="selectClass(charClass)"
-      class="rl-item"
-      tabindex="0"
-      @keydown.enter="selectClass(charClass)"
-      role="button"
-    >
-      <div class="rl-item__body">
-        <span class="rl-item__name">{{ charClass.name }}</span>
-        <div class="rl-item__tags">
-          <span v-if="charClass.source" class="rl-tag rl-tag--source">{{ charClass.source }}</span>
-          <span v-if="charClass.hd" class="rl-tag rl-tag--primary">{{ charClass.hd }}</span>
-          <span v-if="getSubclassCount(charClass) > 0" class="rl-tag">{{ getSubclassCount(charClass) }} subclass{{ getSubclassCount(charClass) !== 1 ? 'es' : '' }}</span>
+      <div
+        v-for="charClass in filteredClasses"
+        :key="charClass.name"
+        @click="selectClass(charClass)"
+        class="rl-item"
+        tabindex="0"
+        @keydown.enter="selectClass(charClass)"
+        role="button"
+      >
+        <div class="rl-item__body">
+          <span class="rl-item__name">{{ charClass.name }}</span>
+          <div class="rl-item__tags">
+            <span v-if="charClass.source" class="rl-tag rl-tag--source">{{
+              charClass.source
+            }}</span>
+            <span v-if="charClass.hd" class="rl-tag rl-tag--primary">{{ charClass.hd }}</span>
+            <span v-if="getSubclassCount(charClass) > 0" class="rl-tag"
+              >{{ getSubclassCount(charClass) }} subclass{{
+                getSubclassCount(charClass) !== 1 ? 'es' : ''
+              }}</span
+            >
+          </div>
         </div>
       </div>
-    </div>
-    <PopOut :title="selectedClass?.name" v-if="selectedClass" :onClose="deselectClass">
-      <div>
-        <SingleClass :currClass="selectedClass" :currSubclasses="selectedSubclasses" />
-      </div>
-    </PopOut>
-  </ul>
+      <PopOut :title="selectedClass?.name" v-if="selectedClass" :onClose="deselectClass">
+        <div>
+          <SingleClass :currClass="selectedClass" :currSubclasses="selectedSubclasses" />
+        </div>
+      </PopOut>
+    </ul>
   </div>
 </template>
 

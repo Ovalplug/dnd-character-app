@@ -30,7 +30,15 @@ import type {
   Monster,
 } from './types';
 import { SKILL_NAME_MAP, SAVING_THROW_MAP } from './constants';
-export type ItemFilterTag = 'attunement' | 'wondrous' | 'tattoo' | 'vehicle' | 'armor' | 'weapon' | 'magical' | 'cursed';
+export type ItemFilterTag =
+  | 'attunement'
+  | 'wondrous'
+  | 'tattoo'
+  | 'vehicle'
+  | 'armor'
+  | 'weapon'
+  | 'magical'
+  | 'cursed';
 export type FeatPrerequisiteTag =
   | 'ability'
   | 'background'

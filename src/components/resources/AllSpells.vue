@@ -103,7 +103,9 @@
           <div class="rl-item__tags">
             <span class="rl-tag rl-tag--primary">{{ getPrettySpellLevel(spell.level) }}</span>
             <span class="rl-tag">{{ getPrettySpellSchool(spell.school) }}</span>
-            <span v-if="getSpellClassSummary(spell)" class="rl-tag rl-tag--accent">{{ getSpellClassSummary(spell) }}</span>
+            <span v-if="getSpellClassSummary(spell)" class="rl-tag rl-tag--accent">{{
+              getSpellClassSummary(spell)
+            }}</span>
             <span v-if="spell.source" class="rl-tag rl-tag--source">{{ spell.source }}</span>
             <span v-if="spell.meta?.ritual" class="rl-tag">Ritual</span>
             <span v-if="spell.meta?.technomagic" class="rl-tag">Technomagic</span>

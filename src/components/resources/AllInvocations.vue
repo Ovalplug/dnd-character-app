@@ -4,7 +4,12 @@
   </div>
   <div>
     <div class="search-row">
-      <input v-model="searchVal" type="search" placeholder="Search invocations…" class="search-input" />
+      <input
+        v-model="searchVal"
+        type="search"
+        placeholder="Search invocations…"
+        class="search-input"
+      />
     </div>
     <ul class="resource-list">
       <div
@@ -19,8 +24,12 @@
         <div class="rl-item__body">
           <span class="rl-item__name">{{ invocation.name }}</span>
           <div class="rl-item__tags">
-            <span v-if="invocation.source" class="rl-tag rl-tag--source">{{ invocation.source }}</span>
-            <span v-if="getInvocationPrereq(invocation)" class="rl-tag">{{ getInvocationPrereq(invocation) }}</span>
+            <span v-if="invocation.source" class="rl-tag rl-tag--source">{{
+              invocation.source
+            }}</span>
+            <span v-if="getInvocationPrereq(invocation)" class="rl-tag">{{
+              getInvocationPrereq(invocation)
+            }}</span>
           </div>
         </div>
       </div>
