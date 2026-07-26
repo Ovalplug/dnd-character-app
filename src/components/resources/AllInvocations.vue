@@ -3,9 +3,12 @@
     <pre>{{ props.invocations }}</pre>
   </div>
   <div>
+    <div class="search-row">
+      <input v-model="searchVal" type="search" placeholder="Search invocations…" class="search-input" />
+    </div>
     <ul class="resource-list">
       <div
-        v-for="invocation in orderedInvocations"
+        v-for="invocation in filteredInvocations"
         :key="invocation.name"
         class="rl-item"
         @click="selectInvocation(invocation)"
@@ -51,6 +54,14 @@
 
   const orderedInvocations = computed(() => {
     return [...props.invocations].sort((a, b) => a.name.localeCompare(b.name));
+  });
+
+  const searchVal = ref('');
+
+  const filteredInvocations = computed(() => {
+    if (!searchVal.value.trim()) return orderedInvocations.value;
+    const q = searchVal.value.trim().toLowerCase();
+    return orderedInvocations.value.filter(i => i.name.toLowerCase().includes(q));
   });
 
   const selectedInvocation = ref<Invocations[number] | null>(null);
@@ -99,6 +110,29 @@
 </script>
 
 <style scoped>
+  .search-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .search-input {
+    flex: 1;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--color-muted);
+    border-radius: 8px;
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-size: 1rem;
+    min-height: 44px;
+  }
+
+  .search-input:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
+  }
+
   .resource-list {
     list-style: none;
     padding: 0;

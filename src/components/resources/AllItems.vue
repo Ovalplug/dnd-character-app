@@ -44,7 +44,7 @@
       </div>
 
       <div class="filter-group">
-        <span class="filter-label">Tags</span>
+        <span class="filter-label">Properties</span>
         <div class="chip-row">
           <button
             v-for="tag in allTags"
@@ -210,9 +210,13 @@
 
   const allTags: Array<{ label: string; value: ItemFilterTag }> = [
     { label: 'Attunement', value: 'attunement' },
+    { label: 'Magical', value: 'magical' },
+    { label: 'Armor', value: 'armor' },
+    { label: 'Weapon', value: 'weapon' },
     { label: 'Wondrous', value: 'wondrous' },
     { label: 'Tattoo', value: 'tattoo' },
     { label: 'Vehicle', value: 'vehicle' },
+    { label: 'Cursed', value: 'cursed' },
   ];
 
   const refinedItemsList = computed(() =>

@@ -2,7 +2,7 @@
   <div class="monster-container">
     <!-- The filter -->
     <div class="search-row">
-      <input v-model="searchVal" type="search" placeholder="Search feats..." class="search-input" />
+      <input v-model="searchVal" type="search" placeholder="Search monsters…" class="search-input" />
       <button
         class="filter-toggle"
         :class="{ 'filter-toggle--active': hasActiveFilters }"

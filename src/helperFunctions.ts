@@ -30,7 +30,7 @@ import type {
   Monster,
 } from './types';
 import { SKILL_NAME_MAP, SAVING_THROW_MAP } from './constants';
-export type ItemFilterTag = 'attunement' | 'wondrous' | 'tattoo' | 'vehicle';
+export type ItemFilterTag = 'attunement' | 'wondrous' | 'tattoo' | 'vehicle' | 'armor' | 'weapon' | 'magical' | 'cursed';
 export type FeatPrerequisiteTag =
   | 'ability'
   | 'background'
@@ -326,6 +326,20 @@ export function getRefinedItemsList(
               item.vehHp !== undefined ||
               item.vehSpeed !== undefined ||
               item.capCargo !== undefined
+            );
+          case 'armor':
+            return item.armor === true || ['LA', 'MA', 'HA', 'S'].includes(item.type ?? '');
+          case 'weapon':
+            return item.weapon === true || ['M', 'R'].includes(item.type ?? '');
+          case 'magical':
+            return (
+              item.wondrous === true ||
+              (item.rarity !== undefined && item.rarity !== '' && item.rarity !== 'none')
+            );
+          case 'cursed':
+            return (
+              (Array.isArray(item.miscTags) && item.miscTags.includes('Curse')) ||
+              item.curse === true
             );
           default:
             return true;

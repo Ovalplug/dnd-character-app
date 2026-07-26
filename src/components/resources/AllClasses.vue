@@ -3,9 +3,13 @@
     <!-- <pre>{{ classes }}</pre> -->
     <pre>{{ subclasses }}</pre>
   </div>
-  <ul class="resource-list">
+  <div class="class-container">
+    <div class="search-row">
+      <input v-model="searchVal" type="search" placeholder="Search classes…" class="search-input" />
+    </div>
+    <ul class="resource-list">
     <div
-      v-for="charClass in classes"
+      v-for="charClass in filteredClasses"
       :key="charClass.name"
       @click="selectClass(charClass)"
       class="rl-item"
@@ -28,10 +32,11 @@
       </div>
     </PopOut>
   </ul>
+  </div>
 </template>
 
 <script lang="ts" setup>
-  import { onMounted, ref } from 'vue';
+  import { computed, onMounted, ref } from 'vue';
   import { useDebug } from '../../composables/useDebug';
   import { useDataStore } from '../../stores/dataStore';
   import type { Classes, Subclasses, CharClass } from '../../types';
@@ -45,6 +50,15 @@
     classes: Classes;
     subclasses: Subclasses;
   }>();
+
+  const searchVal = ref('');
+
+  const filteredClasses = computed(() => {
+    const sorted = [...props.classes].sort((a, b) => a.name.localeCompare(b.name));
+    if (!searchVal.value.trim()) return sorted;
+    const q = searchVal.value.trim().toLowerCase();
+    return sorted.filter(c => c.name.toLowerCase().includes(q));
+  });
 
   onMounted(async () => {
     await initDebug();
@@ -78,6 +92,34 @@
 </script>
 
 <style scoped>
+  .class-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .search-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .search-input {
+    flex: 1;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--color-muted);
+    border-radius: 8px;
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-size: 1rem;
+    min-height: 44px;
+  }
+
+  .search-input:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
+  }
+
   .resource-list {
     list-style: none;
     padding: 0;

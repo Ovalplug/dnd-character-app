@@ -1,7 +1,11 @@
 <template>
-  <ul class="resource-list">
+  <div class="bg-container">
+    <div class="search-row">
+      <input v-model="searchVal" type="search" placeholder="Search backgrounds…" class="search-input" />
+    </div>
+    <ul class="resource-list">
     <div
-      v-for="bg in sortedBackgrounds"
+      v-for="bg in filteredBackgrounds"
       :key="bg.name"
       @click="selectBackground(bg)"
       class="rl-item"
@@ -18,6 +22,7 @@
       </div>
     </div>
   </ul>
+  </div>
   <PopOut :title="backgroundTitle" v-if="selectedBackground" :onClose="deselectBackground">
     <div v-if="debug">
       <pre>{{ JSON.stringify(selectedBackground, null, 2) }}</pre>
@@ -44,10 +49,18 @@
 
   const props = defineProps<{ backgrounds: Backgrounds; backgroundFluffs: BackgroundFluffs }>();
 
+  const searchVal = ref('');
+
   // Don't mutate props in-place. Create a sorted copy instead.
   const sortedBackgrounds = computed(() =>
     [...props.backgrounds].sort((a, b) => a.name.localeCompare(b.name))
   );
+
+  const filteredBackgrounds = computed(() => {
+    if (!searchVal.value.trim()) return sortedBackgrounds.value;
+    const q = searchVal.value.trim().toLowerCase();
+    return sortedBackgrounds.value.filter(bg => bg.name.toLowerCase().includes(q));
+  });
 
   const selectedBackground = ref<Background | null>(null);
   const selectedBackgroundFluff = computed(() => {
@@ -110,6 +123,34 @@
 </script>
 
 <style scoped>
+  .bg-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .search-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .search-input {
+    flex: 1;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--color-muted);
+    border-radius: 8px;
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-size: 1rem;
+    min-height: 44px;
+  }
+
+  .search-input:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
+  }
+
   .resource-list {
     list-style: none;
     padding: 0;

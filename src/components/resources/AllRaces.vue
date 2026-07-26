@@ -1,7 +1,11 @@
 <template>
-  <ul class="resource-list">
+  <div class="race-container">
+    <div class="search-row">
+      <input v-model="searchVal" type="search" placeholder="Search races…" class="search-input" />
+    </div>
+    <ul class="resource-list">
     <div
-      v-for="race in races"
+      v-for="race in filteredRaces"
       :key="race.name"
       @click="selectRace(race)"
       class="rl-item"
@@ -20,6 +24,7 @@
       </div>
     </div>
   </ul>
+  </div>
   <PopOut :title="raceTitle" v-if="selectedRace" :onClose="deselectRace">
     <div v-if="debug">
       <pre>{{ JSON.stringify(selectedRace, null, 2) }}</pre>
@@ -42,7 +47,16 @@
   const dataStore = useDataStore();
 
   const { races, raceFluff } = defineProps<{ races: Race[]; raceFluff: RaceFluff[] }>();
-  races.sort((a, b) => a.name.localeCompare(b.name));
+
+  const searchVal = ref('');
+
+  const filteredRaces = computed(() => {
+    const sorted = [...races].sort((a, b) => a.name.localeCompare(b.name));
+    if (!searchVal.value.trim()) return sorted;
+    const q = searchVal.value.trim().toLowerCase();
+    return sorted.filter(r => r.name.toLowerCase().includes(q));
+  });
+
   const selectedRace = ref<Race | null>(null);
   const selectedFluff = ref<RaceFluff | undefined>(undefined);
 
@@ -127,6 +141,34 @@
 </script>
 
 <style scoped>
+  .race-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .search-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .search-input {
+    flex: 1;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--color-muted);
+    border-radius: 8px;
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-size: 1rem;
+    min-height: 44px;
+  }
+
+  .search-input:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
+  }
+
   .resource-list {
     list-style: none;
     padding: 0;
