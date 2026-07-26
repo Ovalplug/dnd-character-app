@@ -8,14 +8,19 @@
       v-for="charClass in classes"
       :key="charClass.name"
       @click="selectClass(charClass)"
-      class="class-item"
+      class="rl-item"
       tabindex="0"
       @keydown.enter="selectClass(charClass)"
       role="button"
     >
-      <p>
-        {{ charClass.name }}<span class="p2"> ({{ charClass.source }})</span>
-      </p>
+      <div class="rl-item__body">
+        <span class="rl-item__name">{{ charClass.name }}</span>
+        <div class="rl-item__tags">
+          <span v-if="charClass.source" class="rl-tag rl-tag--source">{{ charClass.source }}</span>
+          <span v-if="charClass.hd" class="rl-tag rl-tag--primary">{{ charClass.hd }}</span>
+          <span v-if="getSubclassCount(charClass) > 0" class="rl-tag">{{ getSubclassCount(charClass) }} subclass{{ getSubclassCount(charClass) !== 1 ? 'es' : '' }}</span>
+        </div>
+      </div>
     </div>
     <PopOut :title="selectedClass?.name" v-if="selectedClass" :onClose="deselectClass">
       <div>
@@ -66,6 +71,9 @@
   }
   function selectSubclassesForClass(charClass: CharClass) {
     return dataStore.subclasses[charClass.name];
+  }
+  function getSubclassCount(charClass: CharClass): number {
+    return dataStore.subclasses[charClass.name]?.length ?? 0;
   }
 </script>
 

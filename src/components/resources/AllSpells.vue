@@ -93,19 +93,26 @@
         v-for="spell in refinedSpellsList"
         :key="`${spell.name}-${spell.source}`"
         @click="selectSpell(spell)"
-        class="feat-item"
+        class="rl-item"
+        tabindex="0"
+        @keydown.enter="selectSpell(spell)"
+        role="button"
       >
-        <p>
-          {{ spell.name }}<span class="p2"> ({{ spell.source }})</span>
-        </p>
-        <p class="spell_p3">
-          {{ getPrettySpellSchool(spell.school) }} ({{ getPrettySpellLevel(spell.level) }})
-        </p>
-        <p class="spell_p3">{{ getPrettySpellClassList(spell.classes?.fromClassList ?? []) }}</p>
+        <div class="rl-item__body">
+          <span class="rl-item__name">{{ spell.name }}</span>
+          <div class="rl-item__tags">
+            <span class="rl-tag rl-tag--primary">{{ getPrettySpellLevel(spell.level) }}</span>
+            <span class="rl-tag">{{ getPrettySpellSchool(spell.school) }}</span>
+            <span v-if="getSpellClassSummary(spell)" class="rl-tag rl-tag--accent">{{ getSpellClassSummary(spell) }}</span>
+            <span v-if="spell.source" class="rl-tag rl-tag--source">{{ spell.source }}</span>
+            <span v-if="spell.meta?.ritual" class="rl-tag">Ritual</span>
+            <span v-if="spell.meta?.technomagic" class="rl-tag">Technomagic</span>
+          </div>
+        </div>
         <img
           :src="bookIcon"
-          alt="add to spellbook icon"
-          class="icon"
+          alt="add to spellbook"
+          class="rl-item__icon"
           @click.stop="addToSpellbook(spell)"
         />
       </div>
@@ -153,7 +160,6 @@
   import {
     getPrettySpellLevel,
     getPrettySpellSchool,
-    getPrettySpellClassList,
     getRefinedSpellsList,
   } from '../../helperFunctions';
   import bookIcon from '../../assets/icons/book.svg';
@@ -244,6 +250,14 @@
 
   function capitalize(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  function getSpellClassSummary(spell: Spell): string {
+    const classes = spell.classes?.fromClassList ?? [];
+    if (!classes.length) return '';
+    const names = classes.map((c: any) => capitalize(c.name ?? ''));
+    if (names.length <= 3) return names.join(', ');
+    return `${names.slice(0, 3).join(', ')} +${names.length - 3}`;
   }
 
   const selectedSpell = ref<Spell | null>(null);

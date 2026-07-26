@@ -89,21 +89,24 @@
         v-for="(item, index) in refinedItemsList"
         :key="getItemKey(item, index)"
         @click="selectItem(item)"
-        class="item-card"
+        class="rl-item"
         tabindex="0"
         @keydown.enter="selectItem(item)"
         role="button"
       >
-        <div>
-          <p>
-            {{ item.name }}<span class="p2"> ({{ item.source }})</span>
-          </p>
-          <p class="item-meta">{{ getItemMeta(item) }}</p>
+        <div class="rl-item__body">
+          <span class="rl-item__name">{{ item.name }}</span>
+          <div class="rl-item__tags">
+            <span v-if="item.source" class="rl-tag rl-tag--source">{{ item.source }}</span>
+            <span v-if="item.rarity && item.rarity !== 'none'" class="rl-tag" :class="rarityTagClass(item.rarity)">{{ capitalizeRarity(item.rarity) }}</span>
+            <span v-if="item.type" class="rl-tag">{{ getPrettyItemType(item.type) }}</span>
+            <span v-if="item.reqAttune" class="rl-tag rl-tag--primary">Attunement</span>
+          </div>
         </div>
         <img
           :src="bagIcon"
-          alt="add to backpack icon"
-          class="icon"
+          alt="add to backpack"
+          class="rl-item__icon"
           @click.stop="addToBackpack(item)"
         />
       </div>
@@ -317,13 +320,19 @@
     selectedItem.value = null;
   }
 
-  function getItemMeta(item: Item): string {
-    const parts = [item.rarity, item.type ? getPrettyItemType(item.type) : undefined].filter(
-      (value): value is string => Boolean(value)
-    );
-    return parts.join(' • ');
+  function capitalizeRarity(rarity: string): string {
+    return rarity.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   }
 
+  function rarityTagClass(rarity: string): string {
+    const r = rarity.toLowerCase();
+    if (r === 'uncommon') return 'rl-tag--uncommon';
+    if (r === 'rare') return 'rl-tag--rare';
+    if (r === 'very rare') return 'rl-tag--very-rare';
+    if (r === 'legendary') return 'rl-tag--legendary';
+    if (r === 'artifact') return 'rl-tag--legendary';
+    return '';
+  }
   function getItemKey(item: Item, index: number): string {
     return [
       item.name,

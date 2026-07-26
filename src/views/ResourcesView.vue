@@ -23,17 +23,21 @@
     </div>
 
     <div v-else class="content-under-header">
-      <div v-if="!dataSelected" class="button-list">
-        <button @click="showData('races')">Races</button>
-        <button @click="showData('backgrounds')">Backgrounds</button>
-        <button @click="showData('classes')">Classes</button>
-        <button @click="showData('feats')">Feats</button>
-        <button @click="showData('eInvocations')">Eldritch Invocations</button>
-        <button @click="showData('aInfusions')">Artificer Infusions</button>
-        <button @click="showData('spells')">Spells</button>
-        <button @click="showData('items')">Items</button>
-        <button @click="showData('monsters')">Monsters</button>
-        <button @click="showData('rules')">Rules</button>
+      <div v-if="!dataSelected" class="resource-grid">
+        <button class="resource-tile" @click="showData('spells')">📜 Spells</button>
+        <button class="resource-tile" @click="showData('monsters')">🐉 Monsters</button>
+        <button class="resource-tile" @click="showData('items')">⚔️ Items</button>
+        <button class="resource-tile" @click="showData('classes')">🏛️ Classes</button>
+        <button class="resource-tile" @click="showData('races')">🧝 Races</button>
+        <button class="resource-tile" @click="showData('backgrounds')">📖 Backgrounds</button>
+        <button class="resource-tile" @click="showData('feats')">⭐ Feats</button>
+        <button class="resource-tile" @click="showData('eInvocations')">
+          👁️ Eldritch Invocations
+        </button>
+        <button class="resource-tile" @click="showData('aInfusions')">
+          ⚙️ Artificer Infusions
+        </button>
+        <button class="resource-tile" @click="showData('rules')">📋 Rules</button>
       </div>
       <AllFeats v-if="show_feats" :feats="dataStore.filteredFeats" />
       <AllRaces
@@ -275,5 +279,55 @@
 
   .content-under-header {
     margin-top: 72px;
+  }
+
+  .resource-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+    padding: 0.5rem 0;
+  }
+
+  .resource-tile {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1rem;
+    border-radius: var(--radius);
+    border: 1px solid rgba(107, 46, 46, 0.15);
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.14s ease, box-shadow 0.14s ease, border-color 0.14s ease;
+    box-shadow: var(--color-card-shadow);
+    min-height: 52px;
+    text-align: left;
+    font-family: inherit;
+  }
+
+  .resource-tile:hover,
+  .resource-tile:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(31, 27, 22, 0.1);
+    border-color: var(--color-primary);
+    outline: none;
+  }
+
+  .resource-tile:active {
+    transform: translateY(0);
+  }
+
+  @media (min-width: 600px) {
+    .resource-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 900px) {
+    .resource-grid {
+      grid-template-columns: repeat(5, 1fr);
+    }
   }
 </style>

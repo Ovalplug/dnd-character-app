@@ -101,7 +101,7 @@
   import usersIcon from '../assets/icons/users.svg?url';
   import plusIcon from '../assets/icons/plus.svg?url';
   import settingsIcon from '../assets/icons/settings.svg?url';
-  import trainIcon from '../assets/icons/train.svg?url';
+  import swordIcon from '../assets/icons/sword.svg?url';
 
   // `expanded` controls whether the sidebar shows labels and takes more screen.
   // When false, the sidebar is a narrow icon-only strip for quick navigation.
@@ -117,10 +117,10 @@
   const navOptions = [
     { label: 'Home', icon: homeIcon, path: '/' },
     { label: 'Characters', icon: usersIcon, path: '/characters' },
+    { label: 'Encounters', icon: swordIcon, path: '/encounters' },
     { label: 'Create', icon: plusIcon, path: '/create' },
-    { label: 'Settings', icon: settingsIcon, path: '/settings' },
     { label: 'Resources', icon: bookIcon, path: '/resources' },
-    { label: 'Training', icon: trainIcon, path: '/training' },
+    { label: 'Settings', icon: settingsIcon, path: '/settings' },
   ];
 
   function toggle() {

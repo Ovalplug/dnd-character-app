@@ -4,14 +4,18 @@
       v-for="bg in sortedBackgrounds"
       :key="bg.name"
       @click="selectBackground(bg)"
-      class="background-item"
+      class="rl-item"
       tabindex="0"
       @keydown.enter="selectBackground(bg)"
       role="button"
     >
-      <p>
-        {{ bg.name }}<span class="p2"> ({{ bg.source }})</span>
-      </p>
+      <div class="rl-item__body">
+        <span class="rl-item__name">{{ bg.name }}</span>
+        <div class="rl-item__tags">
+          <span v-if="bg.source" class="rl-tag rl-tag--source">{{ bg.source }}</span>
+          <span v-if="getSkillSummary(bg)" class="rl-tag">{{ getSkillSummary(bg) }}</span>
+        </div>
+      </div>
     </div>
   </ul>
   <PopOut :title="backgroundTitle" v-if="selectedBackground" :onClose="deselectBackground">
@@ -67,6 +71,28 @@
 
   function deselectBackground() {
     selectedBackground.value = null;
+  }
+
+  function getSkillSummary(bg: Background): string {
+    const profs = bg.skillProficiencies;
+    if (!profs) return '';
+    const skills: string[] = [];
+    if (Array.isArray(profs)) {
+      for (const item of profs) {
+        if (typeof item === 'string') {
+          skills.push(item.charAt(0).toUpperCase() + item.slice(1));
+        } else if (typeof item === 'object' && item !== null) {
+          Object.entries(item).forEach(([k, v]) => {
+            if (v === true) skills.push(k.charAt(0).toUpperCase() + k.slice(1));
+          });
+        }
+      }
+    } else if (typeof profs === 'object') {
+      Object.entries(profs as Record<string, boolean>).forEach(([k, v]) => {
+        if (v === true) skills.push(k.charAt(0).toUpperCase() + k.slice(1));
+      });
+    }
+    return skills.slice(0, 3).join(', ');
   }
 
   onMounted(async () => {

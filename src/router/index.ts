@@ -14,6 +14,7 @@ import RandomCreation from '../components/creation/RandomCreation.vue';
 import EncounterCreation from '../components/encounters/EncounterCreation.vue';
 import EditEncounter from '../components/encounters/EditEncounter.vue';
 import EncounterMain from '../components/encounters/EncounterMain.vue';
+import EncounterListView from '../views/EncounterListView.vue';
 import LevelUpView from '../views/LevelUpView.vue';
 import TrainingGround from '../views/TrainingGround.vue';
 import CreateSpellbook from '../components/spellBooks/CreateSpellbook.vue';
@@ -52,6 +53,7 @@ const routes: Array<RouteRecordRaw> = [
   { path: '/items/:id', name: 'itemDetail', component: ItemsView },
   { path: '/encounter/edit', name: 'EditEncounter', component: EditEncounter },
   { path: '/encounter/run', name: 'RunEncounter', component: EncounterMain },
+  { path: '/encounters', name: 'encounters', component: EncounterListView },
   { path: '/training', name: 'trainingGround', component: TrainingGround },
   { path: '/:pathMatch(.*)*', redirect: '/' }, // catch-all route to redirect to home
 ];

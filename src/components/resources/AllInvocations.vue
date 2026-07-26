@@ -7,15 +7,19 @@
       <div
         v-for="invocation in orderedInvocations"
         :key="invocation.name"
-        class="invocation-item"
+        class="rl-item"
         @click="selectInvocation(invocation)"
         tabindex="0"
         @keydown.enter="selectInvocation(invocation)"
         role="button"
       >
-        <p>
-          {{ invocation.name }}<span class="p2"> ({{ invocation.source }})</span>
-        </p>
+        <div class="rl-item__body">
+          <span class="rl-item__name">{{ invocation.name }}</span>
+          <div class="rl-item__tags">
+            <span v-if="invocation.source" class="rl-tag rl-tag--source">{{ invocation.source }}</span>
+            <span v-if="getInvocationPrereq(invocation)" class="rl-tag">{{ getInvocationPrereq(invocation) }}</span>
+          </div>
+        </div>
       </div>
     </ul>
     <PopOut :title="invocationTitle" v-if="selectedInvocation" :onClose="deselectInvocation">
@@ -60,6 +64,24 @@
 
   function deselectInvocation() {
     selectedInvocation.value = null;
+  }
+
+  function getInvocationPrereq(invocation: Invocations[number]): string {
+    const prereq = invocation.prerequisite;
+    if (!prereq) return '';
+    if (typeof prereq === 'string') return prereq;
+    if (Array.isArray(prereq)) {
+      const parts: string[] = [];
+      for (const p of prereq) {
+        if (typeof p === 'string') parts.push(p);
+        else if (p.level) parts.push(`Lvl ${p.level}`);
+        else if (p.feat) parts.push(`Feat`);
+        else if (p.spellcasting) parts.push('Spellcasting');
+        else if (p.pact) parts.push(`Pact of ${p.pact}`);
+      }
+      return parts.length ? parts.join(', ') : 'Has prerequisites';
+    }
+    return '';
   }
 
   onMounted(async () => {

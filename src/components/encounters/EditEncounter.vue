@@ -231,19 +231,21 @@
 
   .run-encounter-btn {
     padding: 10px 20px;
-    background-color: #0066cc;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-primary-600));
     color: white;
-    border: none;
-    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
     cursor: pointer;
     font-weight: 600;
     font-size: 15px;
-    transition: background-color 0.2s, transform 0.15s;
+    min-height: 44px;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 4px 12px rgba(107, 46, 46, 0.15);
   }
 
   .run-encounter-btn:hover {
-    background-color: #0052a3;
     transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(107, 46, 46, 0.2);
   }
 
   .run-encounter-btn:active {
@@ -256,31 +258,35 @@
   }
 
   .styled-table th {
-    background-color: #f0f0f0;
-    padding: 12px;
+    background: rgba(107, 46, 46, 0.06);
+    padding: 10px 12px;
     text-align: left;
-    font-weight: bold;
-    border-bottom: 2px solid #333;
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-primary);
+    border-bottom: 2px solid rgba(107, 46, 46, 0.15);
   }
 
   .styled-table td {
     padding: 10px 12px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid rgba(107, 46, 46, 0.08);
   }
 
   .styled-table tbody tr:hover {
-    background-color: #f9f9f9;
+    background: rgba(201, 164, 75, 0.08);
   }
 
   .clickable {
     cursor: pointer;
-    color: #0066cc;
+    color: var(--color-primary);
     font-weight: 500;
-    transition: background-color 0.2s;
+    transition: background-color 0.15s;
   }
 
   .clickable:hover {
-    background-color: #e6f2ff;
+    background: rgba(107, 46, 46, 0.06);
     text-decoration: underline;
   }
 
@@ -297,32 +303,39 @@
   }
 
   .input-group label {
-    font-weight: 500;
-    font-size: 14px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-primary);
   }
 
   .input-group input {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
+    padding: 8px 10px;
+    border: 1px solid rgba(107, 46, 46, 0.25);
+    border-radius: 8px;
+    font-size: 1rem;
+    background: var(--color-surface);
+    color: var(--color-text);
+    min-height: 44px;
   }
 
   .edit-container button,
   .hp-edit-container button {
-    padding: 8px 16px;
-    background-color: #0066cc;
+    padding: 0.55rem 1rem;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-primary-600));
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.2s;
+    font-weight: 600;
+    min-height: 44px;
+    transition: transform 0.15s;
   }
 
   .edit-container button:hover,
   .hp-edit-container button:hover {
-    background-color: #0052a3;
+    transform: translateY(-1px);
   }
 
   .hp-edit-container {
@@ -342,25 +355,28 @@
 
   .button-group button {
     flex: 1;
-    padding: 8px 16px;
-    background-color: #0066cc;
+    padding: 0.55rem 1rem;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-primary-600));
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.2s;
+    font-weight: 600;
+    min-height: 44px;
+    transition: transform 0.15s;
   }
 
   .button-group button:hover {
-    background-color: #0052a3;
+    transform: translateY(-1px);
   }
 
   .button-group button.secondary {
-    background-color: #6c757d;
+    background: var(--color-surface);
+    color: var(--color-primary);
+    border: 1px solid rgba(107, 46, 46, 0.25);
   }
 
   .button-group button.secondary:hover {
-    background-color: #5a6268;
+    background: rgba(107, 46, 46, 0.06);
   }
 </style>

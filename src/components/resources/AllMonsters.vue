@@ -219,19 +219,21 @@
           v-for="monster in sortedMonsters"
           :key="`${monster.name}-${monster.source}`"
           @click="selectMonster(monster)"
-          class="monster-item"
+          class="rl-item"
           tabindex="0"
           @keydown.enter="selectMonster(monster)"
           role="button"
         >
-          <p>
-            {{ monster.name
-            }}<span class="p2">
-              ({{ monster.source }}) {{ calcCR(monster) }}
-              {{ getPrettyMonsterType(monster.type ?? '') }}</span
-            >
-          </p>
-          <img :src="shieldIcon" alt="shield icon" class="icon" @click="addToEncounter(monster)" />
+          <div class="rl-item__body">
+            <span class="rl-item__name">{{ monster.name }}</span>
+            <div class="rl-item__tags">
+              <span v-if="calcCR(monster)" class="rl-tag rl-tag--primary">{{ calcCR(monster) }}</span>
+              <span v-if="monster.type" class="rl-tag">{{ getPrettyMonsterType(typeof monster.type === 'string' ? monster.type : monster.type?.type ?? '') }}</span>
+              <span v-if="monsterSize(monster)" class="rl-tag">{{ monsterSize(monster) }}</span>
+              <span v-if="monster.source" class="rl-tag rl-tag--source">{{ monster.source }}</span>
+            </div>
+          </div>
+          <img :src="shieldIcon" alt="add to encounter" class="rl-item__icon" @click.stop="addToEncounter(monster)" />
         </div>
       </ul>
     </div>
@@ -276,7 +278,7 @@
   import SingleMonster from './SingleMonster.vue';
   import PopOut from '../PopOut.vue';
   import type { Monster, MonsterFluff, Spells } from '../../types.ts';
-  import { getPrettyMonsterType, bestiaryFilter } from '../../helperFunctions.ts';
+  import { getPrettyMonsterType, bestiaryFilter, getPrettySize } from '../../helperFunctions.ts';
   import { CR_VALUES } from '../../constants.ts';
   import { useEncounterStore } from '../../stores/encounterStore.ts';
   import shieldIcon from '../../assets/icons/shield.svg';
@@ -364,6 +366,11 @@
     } else {
       return `CR ${monster.cr}`;
     }
+  }
+
+  function monsterSize(monster: Monster): string {
+    const s = Array.isArray(monster.size) ? monster.size[0] : monster.size;
+    return s ? getPrettySize(s) : '';
   }
   function selectMonster(monster: Monster) {
     selectedMonster.value = monster;

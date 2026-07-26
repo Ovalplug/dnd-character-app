@@ -621,11 +621,11 @@ textarea:focus {
 .feat-item {
   cursor: pointer;
   padding: 0.5rem;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid rgba(107, 46, 46, 0.1);
 }
 
 .feat-item:hover {
-  background-color: #f0f0f0;
+  background: rgba(201, 164, 75, 0.08);
 }
 
 .spell_p3 {
@@ -679,14 +679,18 @@ ul.arrow-list li::before {
 .button-list button {
   font-size: 1.1rem;
   padding: 12px 18px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  background: #f7f7f7;
+  border-radius: 8px;
+  border: 1px solid rgba(107, 46, 46, 0.18);
+  background: var(--color-surface);
+  color: var(--color-text);
   cursor: pointer;
-  transition: background 0.2s;
+  font-weight: 600;
+  transition: background 0.15s, transform 0.15s;
+  min-height: 44px;
 }
 .button-list button:hover {
-  background: #e0e0e0;
+  background: rgba(107, 46, 46, 0.07);
+  transform: translateY(-1px);
 }
 
 /* ==========================================
@@ -750,3 +754,108 @@ ul.arrow-list li::before {
     padding: 0.5rem 0.4rem;
   }
 }
+
+/* ==============================================
+   Resource list item — shared row layout
+   Usage: class="rl-item" on each row,
+          class="rl-item__body" for content area,
+          class="rl-tag" for pill badges.
+   ============================================== */
+.rl-item {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid rgba(107, 46, 46, 0.1);
+  min-height: 52px;
+  transition: background 0.12s, border-left-color 0.12s;
+  border-left: 3px solid transparent;
+}
+
+.rl-item:hover,
+.rl-item:focus-visible {
+  background: rgba(201, 164, 75, 0.07);
+  border-left-color: var(--color-accent);
+  outline: none;
+}
+
+.rl-item:active {
+  background: rgba(201, 164, 75, 0.12);
+}
+
+.rl-item__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.rl-item__name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.rl-item__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.rl-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.71rem;
+  font-weight: 600;
+  line-height: 1.5;
+  background: rgba(107, 46, 46, 0.07);
+  color: var(--color-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.rl-tag--primary {
+  background: rgba(107, 46, 46, 0.13);
+  color: var(--color-primary);
+}
+
+.rl-tag--accent {
+  background: rgba(201, 164, 75, 0.18);
+  color: #6b4c00;
+}
+
+.rl-tag--source {
+  background: transparent;
+  color: var(--color-muted);
+  font-size: 0.68rem;
+  font-weight: 400;
+  padding: 0 0.25rem;
+}
+
+.rl-item__icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  opacity: 0.45;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.rl-item__icon:hover {
+  opacity: 0.9;
+}
+
+/* Rarity-specific tag colors for items */
+.rl-tag--uncommon { background: rgba(30, 150, 30, 0.12); color: #1a6b1a; }
+.rl-tag--rare { background: rgba(50, 100, 200, 0.12); color: #2048a0; }
+.rl-tag--very-rare { background: rgba(130, 40, 180, 0.12); color: #7a2090; }
+.rl-tag--legendary { background: rgba(210, 130, 20, 0.15); color: #8a5200; }

@@ -89,15 +89,18 @@
         v-for="feat in refinedFeatsList"
         :key="`${feat.name}-${feat.source}`"
         @click="selectFeat(feat)"
-        class="feat-item"
+        class="rl-item"
         tabindex="0"
         @keydown.enter="selectFeat(feat)"
         role="button"
       >
-        <p>
-          {{ feat.name }}<span class="p2"> ({{ feat.source }})</span>
-        </p>
-        <p v-if="getFeatMeta(feat)" class="feat-meta">{{ getFeatMeta(feat) }}</p>
+        <div class="rl-item__body">
+          <span class="rl-item__name">{{ feat.name }}</span>
+          <div class="rl-item__tags">
+            <span v-if="feat.source" class="rl-tag rl-tag--source">{{ feat.source }}</span>
+            <span v-for="part in getFeatMetaParts(feat)" :key="part" class="rl-tag">{{ part }}</span>
+          </div>
+        </div>
       </div>
     </ul>
   </div>
@@ -241,6 +244,11 @@
     }
 
     return parts.join(' • ');
+  }
+
+  function getFeatMetaParts(feat: Feat): string[] {
+    const meta = getFeatMeta(feat);
+    return meta ? meta.split(' \u2022 ') : [];
   }
 
   function selectFeat(feat: Feat) {

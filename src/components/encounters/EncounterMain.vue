@@ -1,9 +1,17 @@
 <template>
   <div class="encounterHeader">
-    <button @click="resetEncounter">Reset Encounter</button>
-    <p>Current Initiative: {{ encounterParticipants[activeParticipantIndex]?.initiative }}</p>
-    <p>Current Round: {{ combatRound }}</p>
-    <button @click="nextInitiative">Next</button>
+    <button class="enc-header-btn enc-header-btn--secondary" @click="resetEncounter">Reset</button>
+    <div class="enc-header-center">
+      <span class="enc-active-name">
+        {{ encounterParticipants[activeParticipantIndex]?.name ?? '—' }}
+      </span>
+      <span class="enc-initiative-label">
+        Initiative
+        {{ encounterParticipants[activeParticipantIndex]?.initiative ?? '—' }} &nbsp;·&nbsp; Round
+        {{ combatRound }}
+      </span>
+    </div>
+    <button class="enc-header-btn enc-header-btn--primary" @click="nextInitiative">Next ›</button>
   </div>
 
   <div class="encounterHolder">
@@ -198,7 +206,63 @@
     justify-content: space-between;
     align-items: center;
     border: 1px solid rgba(107, 46, 46, 0.12);
+    border-bottom: 2px solid rgba(107, 46, 46, 0.18);
     height: 10%;
+    padding: 0 0.75rem;
+    gap: 0.5rem;
+    background: var(--color-surface);
+  }
+
+  .enc-header-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .enc-active-name {
+    font-weight: 700;
+    font-size: clamp(0.95rem, 3vw, 1.25rem);
+    color: var(--color-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  .enc-initiative-label {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    white-space: nowrap;
+  }
+
+  .enc-header-btn {
+    padding: 0.4rem 0.75rem;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    min-height: 40px;
+    min-width: 64px;
+    flex-shrink: 0;
+    transition: transform 0.14s;
+  }
+
+  .enc-header-btn:hover {
+    transform: translateY(-1px);
+  }
+
+  .enc-header-btn--primary {
+    background: linear-gradient(90deg, var(--color-primary), var(--color-primary-600));
+    color: #fff;
+    border: none;
+  }
+
+  .enc-header-btn--secondary {
+    background: var(--color-bg);
+    color: var(--color-primary);
+    border: 1px solid rgba(107, 46, 46, 0.22);
   }
 
   .encounterHolder {

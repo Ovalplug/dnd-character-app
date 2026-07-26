@@ -26,8 +26,9 @@
 </script>
 
 <style>
+  /* sidebar collapsed width = 45px; main content offset matches */
   .app-container {
-    margin-left: 12%;
+    margin-left: 45px;
     flex: 1 1 0;
     min-height: 0;
   }

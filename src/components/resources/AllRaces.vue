@@ -4,14 +4,20 @@
       v-for="race in races"
       :key="race.name"
       @click="selectRace(race)"
-      class="race-item"
+      class="rl-item"
       tabindex="0"
       @keydown.enter="selectRace(race)"
       role="button"
     >
-      <p>
-        {{ race.name }}<span class="p2"> ({{ race.source }})</span>
-      </p>
+      <div class="rl-item__body">
+        <span class="rl-item__name">{{ race.name }}</span>
+        <div class="rl-item__tags">
+          <span v-if="race.source" class="rl-tag rl-tag--source">{{ race.source }}</span>
+          <span v-if="getRaceSpeed(race)" class="rl-tag">{{ getRaceSpeed(race) }} ft.</span>
+          <span v-if="race.ability" class="rl-tag rl-tag--primary">{{ getRaceAbilitySummary(race) }}</span>
+          <span v-if="race.subraces?.length" class="rl-tag rl-tag--accent">{{ race.subraces.length }} subrace{{ race.subraces.length > 1 ? 's' : '' }}</span>
+        </div>
+      </div>
     </div>
   </ul>
   <PopOut :title="raceTitle" v-if="selectedRace" :onClose="deselectRace">
@@ -52,6 +58,58 @@
   function deselectRace() {
     selectedRace.value = null;
     selectedFluff.value = undefined;
+  }
+
+  function getRaceSpeed(race: Race): number | null {
+    if (typeof race.speed === 'number') return race.speed;
+    if (typeof race.speed === 'object' && race.speed !== null) {
+      return (race.speed as any).walk ?? null;
+    }
+    return null;
+  }
+
+  const ALL_SIX = ['str', 'dex', 'con', 'int', 'wis', 'cha'];
+
+  function abilityAbbr(score: string): string {
+    return score.toUpperCase().slice(0, 3);
+  }
+
+  function isChooseFromAny(from: any): boolean {
+    if (from === 'asi') return true;
+    if (!Array.isArray(from)) return false;
+    return from.length >= 6 && ALL_SIX.every(s => from.includes(s));
+  }
+
+  function getRaceAbilitySummary(race: Race): string {
+    if (!race.ability) return '';
+    const arr: any[] = Array.isArray(race.ability) ? race.ability : [race.ability];
+
+    const parts: string[] = [];
+    let hasAnyChoice = false;
+
+    for (const entry of arr) {
+      if (entry.choose) {
+        const { from, count = 1, amount = 1 } = entry.choose;
+        if (isChooseFromAny(from)) {
+          hasAnyChoice = true;
+          parts.push(count > 1 ? `+${amount} \xd7${count}` : `+${amount}`);
+        } else {
+          const fromArr: string[] = Array.isArray(from) ? from : [from];
+          const abbrs = fromArr.map(abilityAbbr).join('/');
+          parts.push(count > 1 ? `+${amount} \xd7${count} (${abbrs})` : `+${amount} (${abbrs})`);
+        }
+      } else {
+        // Fixed bonuses
+        Object.entries(entry)
+          .filter(([, v]) => typeof v === 'number' && (v as number) !== 0)
+          .forEach(([k, v]) => {
+            parts.push(`${(v as number) > 0 ? '+' : ''}${v} ${abilityAbbr(k)}`);
+          });
+      }
+    }
+
+    const base = parts.join(', ');
+    return hasAnyChoice ? `${base}, any (max +2 each)` : base;
   }
 
   onMounted(async () => {
