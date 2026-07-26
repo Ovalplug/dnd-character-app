@@ -144,6 +144,47 @@
         </tr>
       </tbody>
     </table>
+    <br />
+    <table class="characterTable">
+      <caption>
+        Custom Items
+      </caption>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Source</th>
+          <th>Rarity</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in itemStore.customItems" :key="item.id">
+          <td>{{ item.displayName || item.name }}</td>
+          <td>{{ item.source }}</td>
+          <td>{{ item.rarity || '—' }}</td>
+          <td>
+            <img
+              :src="icons.editIcon"
+              alt="Edit"
+              @click="openCustomItemPopout(item)"
+              class="reloadCharIcon"
+            />
+          </td>
+          <td>
+            <img
+              :src="icons.binIcon"
+              alt="Delete"
+              @click="handleDeleteCustomItem(item.id)"
+              class="deleteCharIcon"
+            />
+          </td>
+        </tr>
+        <tr v-if="itemStore.customItems.length === 0">
+          <td colspan="5" class="empty-row">No custom items yet</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
   <PopOut v-if="selectedChar" :title="selectedChar.name" @close="closeCharPopout">
@@ -193,6 +234,48 @@
       </div>
     </div>
   </PopOut>
+
+  <PopOut
+    v-if="selectedCustomItem"
+    :title="selectedCustomItem.displayName || selectedCustomItem.name"
+    @close="closeCustomItemPopout"
+  >
+    <div class="char-popout-actions">
+      <p v-if="selectedCustomItem.source"><strong>Source:</strong> {{ selectedCustomItem.source }}</p>
+      <p v-if="selectedCustomItem.rarity"><strong>Rarity:</strong> {{ selectedCustomItem.rarity }}</p>
+      <p v-if="selectedCustomItem.type"><strong>Type:</strong> {{ selectedCustomItem.type }}</p>
+      <p v-if="selectedCustomItem.entries?.length">{{ selectedCustomItem.entries[0] }}</p>
+      <p><strong>Created:</strong> {{ new Date(selectedCustomItem.createdAt).toLocaleString() }}</p>
+      <button class="popout-action-btn" @click="router.push('/items')">
+        <img :src="icons.editIcon" alt="Edit" />
+        Manage Items
+      </button>
+      <button
+        class="popout-action-btn popout-action-btn--danger"
+        @click="confirmingCustomItemDelete = true"
+      >
+        <img :src="icons.binIcon" alt="Delete" />
+        Delete
+      </button>
+      <div v-if="confirmingCustomItemDelete" class="delete-confirm">
+        <p>
+          Delete <strong>{{ selectedCustomItem.name }}</strong>?
+        </p>
+        <p class="p2">This cannot be undone.</p>
+        <div class="delete-confirm-actions">
+          <button
+            class="popout-action-btn popout-action-btn--danger"
+            @click="handleDeleteCustomItem(selectedCustomItem!.id)"
+          >
+            Yes, delete
+          </button>
+          <button class="popout-action-btn" @click="confirmingCustomItemDelete = false">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </PopOut>
 </template>
 
 <script setup lang="ts">
@@ -225,6 +308,7 @@
   encounterStore.loadEncounters();
   spellBookStore.loadSpellbooks();
   itemStore.loadBackpacks();
+  itemStore.loadCustomItems();
 
   const loaded = computed(
     () => charStore.loaded && encounterStore.loaded && spellBookStore.loaded && itemStore.loaded
@@ -287,6 +371,25 @@
   async function deleteBackpack(id: string) {
     await itemStore.deleteBackpack(id);
     await itemStore.loadBackpacks();
+  }
+
+  const selectedCustomItem = ref<(typeof itemStore.customItems)[0] | null>(null);
+  const confirmingCustomItemDelete = ref(false);
+
+  function openCustomItemPopout(item: (typeof itemStore.customItems)[0]) {
+    selectedCustomItem.value = item;
+    confirmingCustomItemDelete.value = false;
+  }
+
+  function closeCustomItemPopout() {
+    selectedCustomItem.value = null;
+    confirmingCustomItemDelete.value = false;
+  }
+
+  async function handleDeleteCustomItem(id: string) {
+    await itemStore.deleteCustomItem(id);
+    await itemStore.loadCustomItems();
+    closeCustomItemPopout();
   }
 </script>
 
@@ -474,5 +577,13 @@
     white-space: nowrap;
     flex-shrink: 0;
     width: auto;
+  }
+
+  .empty-row {
+    text-align: center;
+    color: var(--color-muted);
+    font-style: italic;
+    padding: 1rem 0.75rem;
+    font-size: 0.9rem;
   }
 </style>
