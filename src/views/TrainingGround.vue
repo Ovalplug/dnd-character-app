@@ -1,14 +1,15 @@
 <template>
-  <!-- <EncounterMain :participants="participants" :spells="spells" /> -->
+  <p>dice roll: {{ rollValue }}</p>
+  <button @click="doDiceRoll">Roll 6d6</button>
 </template>
 
 <script lang="ts" setup>
-  // import EncounterMain from '../components/encounters/EncounterMain.vue';
+  import { ref } from 'vue';
+  import { rollDice } from '../components/encounterSimulator/diceRollFunctions';
 
-  // import { useDataStore } from '../stores/dataStore';
+  const rollValue = ref<number>(0);
 
-  // const dataStore = useDataStore();
-
-  // const participants = dataStore.monsters.slice(0, 3); // Get the first three monsters for the encounter
-  // const spells = dataStore.spells;
+  function doDiceRoll() {
+    rollValue.value = rollDice([{ dice: 'd6', number: 6 }]);
+  }
 </script>

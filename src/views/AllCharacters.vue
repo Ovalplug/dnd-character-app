@@ -241,8 +241,12 @@
     @close="closeCustomItemPopout"
   >
     <div class="char-popout-actions">
-      <p v-if="selectedCustomItem.source"><strong>Source:</strong> {{ selectedCustomItem.source }}</p>
-      <p v-if="selectedCustomItem.rarity"><strong>Rarity:</strong> {{ selectedCustomItem.rarity }}</p>
+      <p v-if="selectedCustomItem.source">
+        <strong>Source:</strong> {{ selectedCustomItem.source }}
+      </p>
+      <p v-if="selectedCustomItem.rarity">
+        <strong>Rarity:</strong> {{ selectedCustomItem.rarity }}
+      </p>
       <p v-if="selectedCustomItem.type"><strong>Type:</strong> {{ selectedCustomItem.type }}</p>
       <p v-if="selectedCustomItem.entries?.length">{{ selectedCustomItem.entries[0] }}</p>
       <p><strong>Created:</strong> {{ new Date(selectedCustomItem.createdAt).toLocaleString() }}</p>
@@ -259,7 +263,8 @@
       </button>
       <div v-if="confirmingCustomItemDelete" class="delete-confirm">
         <p>
-          Delete <strong>{{ selectedCustomItem.name }}</strong>?
+          Delete <strong>{{ selectedCustomItem.name }}</strong
+          >?
         </p>
         <p class="p2">This cannot be undone.</p>
         <div class="delete-confirm-actions">

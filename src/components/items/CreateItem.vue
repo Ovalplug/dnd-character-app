@@ -294,13 +294,11 @@
     }
 
     try {
-      const entries = formData.value.entries
-        .map(e => e.trim())
-        .filter(e => e.length > 0);
+      const entries = formData.value.entries.map(e => e.trim()).filter(e => e.length > 0);
 
       // Attunement: string requirement takes priority over plain boolean
       const reqAttune = formData.value.reqAttune
-        ? (formData.value.reqAttuneBy.trim() || true)
+        ? formData.value.reqAttuneBy.trim() || true
         : undefined;
 
       const newItem: CustomItem = {
@@ -310,7 +308,9 @@
         ...(formData.value.type && { type: formData.value.type as any }),
         ...(formData.value.rarity && { rarity: formData.value.rarity }),
         // Value stored in copper pieces to match 5etools format (1 gp = 100 cp)
-        ...(formData.value.valueGp !== undefined && { value: Math.round(formData.value.valueGp * 100) }),
+        ...(formData.value.valueGp !== undefined && {
+          value: Math.round(formData.value.valueGp * 100),
+        }),
         ...(formData.value.weight !== undefined && { weight: formData.value.weight }),
         ...(formData.value.armor && { armor: true }),
         ...(formData.value.weapon && { weapon: true }),
@@ -574,4 +574,3 @@
     }
   }
 </style>
-

@@ -79,7 +79,7 @@
   function normalizeSpellName(name: string): string {
     return name
       .replace(/\s*\([^)]*\)/g, '') // strip "(at 4th level)" etc.
-      .replace(/\*/g, '')            // strip asterisks
+      .replace(/\*/g, '') // strip asterisks
       .trim()
       .toLowerCase();
   }

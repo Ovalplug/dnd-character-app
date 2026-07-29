@@ -97,7 +97,9 @@
         <p v-if="selectedItem.page"><strong>Page:</strong> {{ selectedItem.page }}</p>
         <p v-if="selectedItem.rarity"><strong>Rarity:</strong> {{ selectedItem.rarity }}</p>
         <p v-if="selectedItem.type"><strong>Type:</strong> {{ selectedItem.type }}</p>
-        <p v-if="selectedItem.value"><strong>Value:</strong> {{ formatValue(selectedItem.value) }}</p>
+        <p v-if="selectedItem.value">
+          <strong>Value:</strong> {{ formatValue(selectedItem.value) }}
+        </p>
         <p v-if="selectedItem.weight"><strong>Weight:</strong> {{ selectedItem.weight }} lb</p>
         <p v-if="selectedItem.armor"><strong>AC:</strong> {{ selectedItem.ac }}</p>
         <p v-if="selectedItem.weapon">
