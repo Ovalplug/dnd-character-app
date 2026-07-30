@@ -42,10 +42,27 @@ export function rollDice(diceType: DiceRolls): number {
   let total: number = 0;
 
   diceType.forEach(roll => {
+    console.log(
+      'rolling dice for',
+      roll,
+      ' with an average roll of ',
+      calculateAverageRoll(roll.dice, roll.number, roll.modifier ? roll.modifier : 0)
+    );
     for (let i = 0; i < roll.number; i++) {
       total += Math.floor(Math.random() * getDiceValue(roll.dice)) + 1;
       roll.modifier ? (total += roll.modifier) : null;
     }
   });
   return total;
+}
+
+export function rollDiceWithAdvantageOrDisadvantage(diceType: DiceRolls, advantage: boolean): number {
+  const roll1 = rollDice(diceType);
+  const roll2 = rollDice(diceType);
+
+  if (advantage) {
+    return Math.max(roll1, roll2);
+  } else {
+    return Math.min(roll1, roll2);
+  }
 }
