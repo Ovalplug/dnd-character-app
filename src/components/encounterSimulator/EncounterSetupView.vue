@@ -190,6 +190,127 @@
               </div>
             </div>
           </div>
+
+          <!-- Accordion: Individual Runs -->
+          <div class="encounter-setup__runs-list">
+            <h4>Individual Simulation Runs</h4>
+            <div class="encounter-setup__accordion">
+              <div
+                v-for="(run, idx) in simulationStore.batchRuns"
+                :key="`run-${idx}`"
+                class="encounter-setup__accordion-item"
+              >
+                <button
+                  class="encounter-setup__accordion-header"
+                  @click="expandedRuns.has(idx) ? expandedRuns.delete(idx) : expandedRuns.add(idx)"
+                >
+                  <span class="encounter-setup__accordion-title">
+                    Run {{ run.runIndex }}: {{ run.results.balanced.outcome }} ({{ run.results.balanced.totalRounds }} rounds, {{ run.results.balanced.totalTurns }} turns)
+                  </span>
+                  <span class="encounter-setup__accordion-icon" :class="{ 'is-expanded': expandedRuns.has(idx) }">▶</span>
+                </button>
+                <div v-if="expandedRuns.has(idx)" class="encounter-setup__accordion-content">
+                  <div class="encounter-setup__run-details">
+                    <!-- Tabs for each resource mode -->
+                    <div class="encounter-setup__mode-tabs">
+                      <div class="encounter-setup__mode-tab-buttons">
+                        <button
+                          v-for="mode in (['low', 'balanced', 'max'] as const)"
+                          :key="mode"
+                          class="encounter-setup__mode-tab-btn"
+                          :class="{ active: expandedRuns.has(idx) }"
+                        >
+                          {{ mode }}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="encounter-setup__run-meta">
+                      <div><strong>Outcome:</strong> {{ run.results.balanced.outcome }}</div>
+                      <div><strong>Rounds:</strong> {{ run.results.balanced.totalRounds }}</div>
+                      <div><strong>Turns:</strong> {{ run.results.balanced.totalTurns }}</div>
+                      <div v-if="run.results.balanced.seed"><strong>Seed:</strong> {{ run.results.balanced.seed }}</div>
+                    </div>
+
+                    <div class="encounter-setup__run-combatants">
+                      <h5>Combatant Performance (Balanced Mode)</h5>
+                      <div
+                        v-for="comb in run.results.balanced.finalCombatants"
+                        :key="`${run.results.balanced.seed}-${comb.name}`"
+                        class="encounter-setup__combatant-card"
+                      >
+                        <div class="encounter-setup__combatant-header">
+                          <strong>{{ comb.name }}</strong>
+                          <span class="encounter-setup__combatant-team" :class="`team-${comb.team}`">
+                            {{ comb.team }}
+                          </span>
+                          <span v-if="comb.died" class="encounter-setup__status-died">DIED</span>
+                          <span v-else class="encounter-setup__status-alive">Alive ({{ comb.finalHp }} HP)</span>
+                        </div>
+
+                        <div class="encounter-setup__combatant-stats-grid">
+                          <div class="encounter-setup__stat-item">
+                            <span class="label">Damage Dealt:</span>
+                            <span class="value">{{ comb.damageDealt }}</span>
+                          </div>
+                          <div class="encounter-setup__stat-item">
+                            <span class="label">Damage Taken:</span>
+                            <span class="value">{{ comb.damageTaken }}</span>
+                          </div>
+                          <div class="encounter-setup__stat-item">
+                            <span class="label">Kills:</span>
+                            <span class="value">{{ comb.kills }}</span>
+                          </div>
+                        </div>
+
+                        <!-- Attack Breakdown -->
+                        <div v-if="comb.actions.length > 0" class="encounter-setup__actions-breakdown">
+                          <div class="encounter-setup__action-header">Actions Used</div>
+                          <div class="encounter-setup__action-list">
+                            <div v-for="action in comb.actions" :key="action.type" class="encounter-setup__action-item">
+                              <span class="action-type">{{ action.type }}:</span>
+                              <span class="action-count">{{ action.count }}x</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Resource Usage -->
+                        <div
+                          v-if="
+                            Object.keys(comb.resourcesUsed.spellSlots).length > 0 ||
+                            Object.keys(comb.resourcesUsed.abilityUses).length > 0
+                          "
+                          class="encounter-setup__resources-used"
+                        >
+                          <div v-if="Object.keys(comb.resourcesUsed.spellSlots).length > 0">
+                            <strong>Spell Slots Used:</strong>
+                            <div class="encounter-setup__resource-list">
+                              <div
+                                v-for="(used, level) in comb.resourcesUsed.spellSlots"
+                                :key="`spell-${level}`"
+                              >
+                                Level {{ level }}: {{ used }}
+                              </div>
+                            </div>
+                          </div>
+                          <div v-if="Object.keys(comb.resourcesUsed.abilityUses).length > 0">
+                            <strong>Ability Uses:</strong>
+                            <div class="encounter-setup__resource-list">
+                              <div v-for="(used, ability) in comb.resourcesUsed.abilityUses" :key="`ability-${ability}`">
+                                {{ ability }}: {{ used }}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button class="btn btn--secondary" @click="activeTab = 'replay'">View Replay</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div v-else-if="splitResults" class="encounter-setup__results">
@@ -254,7 +375,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, computed } from 'vue';
+  import { ref, computed, watch } from 'vue';
   import { useSimulationStore } from '../../stores/simulationStore';
   import { useDataStore } from '../../stores/dataStore';
   import { useCharacterStore } from '../../stores/characterStore';
@@ -322,6 +443,19 @@
   const simulationStore = useSimulationStore();
   const dataStore = useDataStore();
   const characterStore = useCharacterStore();
+  const expandedRuns = ref<Set<number>>(new Set());
+
+  /**
+   * Auto-navigate to results tab when simulation completes
+   */
+  watch(
+    () => simulationStore.isRunning,
+    (isRunning) => {
+      if (!isRunning && (splitResults.value || batchStats.value?.totalRuns)) {
+        activeTab.value = 'results';
+      }
+    }
+  );
 
   const mapConfig = ref<GameMap | null>(null);
   const alliesConfig = ref<CombatantConfig[]>([]);
@@ -889,6 +1023,247 @@
     cursor: not-allowed;
   }
 
+  /* Accordion Styles */
+  .encounter-setup__runs-list {
+    margin-top: 2rem;
+    padding: 1rem;
+    background: var(--color-surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--color-muted);
+  }
+
+  .encounter-setup__runs-list h4 {
+    margin: 0 0 1rem;
+    color: var(--color-primary);
+  }
+
+  .encounter-setup__accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .encounter-setup__accordion-item {
+    border: 1px solid var(--color-muted);
+    border-radius: 4px;
+    background: var(--color-bg);
+    overflow: hidden;
+  }
+
+  .encounter-setup__accordion-header {
+    width: 100%;
+    padding: 1rem;
+    background: var(--color-surface);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 500;
+    color: var(--color-text);
+    transition: background 0.2s;
+  }
+
+  .encounter-setup__accordion-header:hover {
+    background: #e8dfc6;
+  }
+
+  .encounter-setup__accordion-title {
+    flex: 1;
+    text-align: left;
+  }
+
+  .encounter-setup__accordion-icon {
+    display: inline-block;
+    transition: transform 0.3s;
+    margin-left: 1rem;
+  }
+
+  .encounter-setup__accordion-icon.is-expanded {
+    transform: rotate(90deg);
+  }
+
+  .encounter-setup__accordion-content {
+    padding: 1rem;
+    background: var(--color-bg);
+    border-top: 1px solid var(--color-muted);
+  }
+
+  .encounter-setup__run-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .encounter-setup__run-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: var(--color-surface);
+    border-radius: 4px;
+  }
+
+  .encounter-setup__run-meta div {
+    font-size: 0.875rem;
+  }
+
+  .encounter-setup__run-combatants {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .encounter-setup__run-combatants h5 {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 0.95rem;
+  }
+
+  .encounter-setup__combatant-card {
+    padding: 1rem;
+    background: var(--color-surface);
+    border-left: 4px solid var(--color-accent);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .encounter-setup__combatant-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 500;
+  }
+
+  .encounter-setup__combatant-team {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    background: var(--color-muted);
+    border-radius: 3px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--color-surface);
+  }
+
+  .encounter-setup__combatant-team.team-allies {
+    background: #4a7c59;
+  }
+
+  .encounter-setup__combatant-team.team-enemies {
+    background: #c9533b;
+  }
+
+  .encounter-setup__status-alive {
+    margin-left: auto;
+    padding: 0.25rem 0.5rem;
+    background: #2d5a3d;
+    color: #c9d4c0;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .encounter-setup__status-died {
+    margin-left: auto;
+    padding: 0.25rem 0.5rem;
+    background: var(--color-danger);
+    color: var(--color-surface);
+    border-radius: 3px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .encounter-setup__combatant-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .encounter-setup__stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .encounter-setup__stat-item .label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .encounter-setup__stat-item .value {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-primary);
+  }
+
+  .encounter-setup__actions-breakdown {
+    padding: 0.75rem;
+    background: rgba(201, 164, 75, 0.1);
+    border-left: 3px solid var(--color-accent);
+    border-radius: 3px;
+  }
+
+  .encounter-setup__action-header {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .encounter-setup__action-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.5rem;
+  }
+
+  .encounter-setup__action-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    padding: 0.25rem 0.5rem;
+    background: var(--color-bg);
+    border-radius: 2px;
+  }
+
+  .encounter-setup__action-item .action-type {
+    font-weight: 500;
+  }
+
+  .encounter-setup__action-item .action-count {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  .encounter-setup__resources-used {
+    padding: 0.75rem;
+    background: rgba(107, 46, 46, 0.1);
+    border-left: 3px solid var(--color-primary);
+    border-radius: 3px;
+    font-size: 0.85rem;
+  }
+
+  .encounter-setup__resources-used strong {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--color-primary);
+  }
+
+  .encounter-setup__resource-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-left: 0.5rem;
+  }
+
+  .encounter-setup__resource-list div {
+    font-size: 0.8rem;
+  }
+
   @media (max-width: 640px) {
     .encounter-setup {
       padding: 1rem;
@@ -905,6 +1280,24 @@
     .btn {
       min-width: unset;
       width: 100%;
+    }
+
+    .encounter-setup__combatant-header {
+      flex-wrap: wrap;
+    }
+
+    .encounter-setup__combatant-stats-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .encounter-setup__accordion-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .encounter-setup__accordion-icon {
+      margin-top: 0.5rem;
+      margin-left: 0;
     }
   }
 </style>
