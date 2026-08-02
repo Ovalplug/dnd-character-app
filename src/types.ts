@@ -1009,3 +1009,7 @@ export {
   SimulationState,
   ROLE_DEFINITIONS,
 } from './components/encounterSimulator/emulatorTyping';
+
+export type { RoundLog, SimulationStatistics } from './components/encounterSimulator/simulationEngine';
+
+export { SimulationEngine } from './components/encounterSimulator/simulationEngine';
