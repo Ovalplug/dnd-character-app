@@ -202,6 +202,16 @@
           <p>Run simulation to see results</p>
         </div>
       </div>
+
+      <!-- Step 5: Replay -->
+      <div v-show="activeTab === 'replay'" class="encounter-setup__panel">
+        <div v-if="turnLog.length > 0" class="encounter-setup__replay">
+          <ReplayViewer :turn-log="turnLog" />
+        </div>
+        <div v-else class="encounter-setup__empty">
+          <p>Run a simulation to enable replay</p>
+        </div>
+      </div>
     </div>
 
     <!-- Action Buttons -->
@@ -222,6 +232,7 @@
   import { useDataStore } from '../../stores/dataStore';
   import SimpleMapEditor from './SimpleMapEditor.vue';
   import CombatantSelector from './CombatantSelector.vue';
+  import ReplayViewer from './ReplayViewer.vue';
   import type { GameMap, SimulationConfig, Monster, CompositeRole } from '../../types';
   import { Position } from '../../types';
 
@@ -230,20 +241,22 @@
     role: CompositeRole;
   }
 
-  const tabs = ref<Array<'map' | 'teams' | 'settings' | 'results'>>([
+  const tabs = ref<Array<'map' | 'teams' | 'settings' | 'results' | 'replay'>>([
     'map',
     'teams',
     'settings',
     'results',
+    'replay',
   ]);
   const tabLabels: Record<string, string> = {
     map: 'Map',
     teams: 'Teams',
     settings: 'Settings',
     results: 'Results',
+    replay: 'Replay',
   };
 
-  const activeTab = ref<'map' | 'teams' | 'settings' | 'results'>('map');
+  const activeTab = ref<'map' | 'teams' | 'settings' | 'results' | 'replay'>('map');
   const simulationStore = useSimulationStore();
   const dataStore = useDataStore();
 
@@ -264,6 +277,12 @@
   const simulationProgress = computed(() => simulationStore.currentProgress);
   const splitResults = computed(() => simulationStore.splitTestResults);
   const batchStats = computed(() => simulationStore.batchStatistics);
+  const turnLog = computed(() => {
+    if (splitResults.value?.balanced?.turnLog) {
+      return splitResults.value.balanced.turnLog;
+    }
+    return [];
+  });
   const simulationError = computed(() => simulationStore.error);
 
   const activeTabIndex = computed(() => {
@@ -281,6 +300,8 @@
         return true;
       case 'results':
         return !isSimulating.value;
+      case 'replay':
+        return true;
       default:
         return false;
     }

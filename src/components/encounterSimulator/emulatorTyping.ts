@@ -109,6 +109,26 @@ export interface TurnResult {
   actionExecuted: boolean;
 }
 
+export interface TurnEvent {
+  round: number;
+  turnIndex: number;
+  combatantName: string;
+  combatantTeam: Team;
+  actionTaken: {
+    type: ActionType;
+    name: string;
+    description: string;
+  };
+  outcome: {
+    success: boolean;
+    damageDealt?: number;
+    damageTaken?: number;
+    hpBefore: number;
+    hpAfter: number;
+    events: string[];
+  };
+}
+
 export interface SimulationConfig {
   map: GameMap;
   combatants: Array<{
@@ -131,6 +151,7 @@ export interface SimulationResult {
   outcome: SimulationOutcome;
   totalRounds: number;
   totalTurns: number;
+  turnLog: TurnEvent[];
   finalCombatants: Array<{
     name: string;
     team: Team;

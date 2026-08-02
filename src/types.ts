@@ -984,6 +984,7 @@ export type {
   RoleDefinition,
   ActionCandidate,
   TurnResult,
+  TurnEvent,
   SimulationConfig,
   SimulationResult,
   BatchStatistics,

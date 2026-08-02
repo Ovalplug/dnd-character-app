@@ -3,6 +3,7 @@ import type {
   SimulationResult,
   ActionCandidate,
   TurnResult,
+  TurnEvent,
 } from './emulatorTyping';
 import { SimulatorCombatant, SimulationState } from './emulatorTyping';
 import { CombatResolver } from './combatRules';
@@ -29,6 +30,7 @@ export class SimulationEngine {
   private combatResolver: CombatResolver;
   private diceRoller: DiceRoller;
   private roundLog: RoundLog[];
+  private turnEvents: TurnEvent[];
   private currentRound: number;
 
   constructor(config: SimulationConfig, prng: () => number) {
@@ -36,6 +38,7 @@ export class SimulationEngine {
     this.diceRoller = new DiceRoller(prng);
     this.combatResolver = new CombatResolver(prng);
     this.roundLog = [];
+    this.turnEvents = [];
     this.currentRound = 0;
 
     // Create simulation state - type assert combatants
@@ -86,6 +89,7 @@ export class SimulationEngine {
         outcome: this.determineOutcome() as any,
         totalRounds: this.currentRound,
         totalTurns: this.state.turnCount,
+        turnLog: this.turnEvents,
         finalCombatants
       };
     } catch (error) {
@@ -162,6 +166,28 @@ export class SimulationEngine {
       result,
     };
     this.roundLog.push(log);
+
+    // Also log as TurnEvent for replay
+    const turnEvent: TurnEvent = {
+      round: this.currentRound,
+      turnIndex: this.state.turnCount,
+      combatantName: actor.getName(),
+      combatantTeam: actor.team,
+      actionTaken: {
+        type: action.type,
+        name: action.name,
+        description: `${actor.getName()} used ${action.name}`,
+      },
+      outcome: {
+        success: result.actionExecuted,
+        hpBefore: actor.currentHp + (actor.totalDamageTaken - actor.totalDamageTaken),
+        hpAfter: actor.currentHp,
+        damageDealt: actor.totalDamageDealt,
+        damageTaken: actor.totalDamageTaken,
+        events: result.events,
+      },
+    };
+    this.turnEvents.push(turnEvent);
   }
 
   private isSimulationOver(): boolean {
