@@ -39,7 +39,6 @@
               v-model.number="simulationConfig.roundLimit"
               type="number"
               min="5"
-              max="100"
               class="encounter-setup__input"
             />
           </div>
@@ -305,7 +304,7 @@
                       </div>
                     </div>
 
-                    <button class="btn btn--secondary" @click="activeTab = 'replay'">View Replay</button>
+                    <button class="btn btn--secondary" @click="replayRunIndex = idx">View Replay</button>
                   </div>
                 </div>
               </div>
@@ -351,16 +350,16 @@
         </div>
       </div>
 
-      <!-- Step 5: Replay -->
-      <div v-show="activeTab === 'replay'" class="encounter-setup__panel">
-        <div v-if="turnLog.length > 0" class="encounter-setup__replay">
-          <ReplayViewer :turn-log="turnLog" />
-        </div>
-        <div v-else class="encounter-setup__empty">
-          <p>Run a simulation to enable replay</p>
-        </div>
-      </div>
     </div>
+
+    <!-- Replay PopOut -->
+    <PopOut
+      v-if="replayRunIndex !== null"
+      title="Turn-by-Turn Replay"
+      @close="replayRunIndex = null"
+    >
+      <ReplayViewer :turn-log="replayTurnLog" />
+    </PopOut>
 
     <!-- Action Buttons -->
     <div class="encounter-setup__actions">
@@ -382,6 +381,7 @@
   import SimpleMapEditor from './SimpleMapEditor.vue';
   import CombatantSelector from './CombatantSelector.vue';
   import ReplayViewer from './ReplayViewer.vue';
+  import PopOut from '../PopOut.vue';
   import type { GameMap, SimulationConfig, Monster, CompositeRole, playerCharacter } from '../../types';
   import { Position } from '../../types';
 
@@ -424,26 +424,25 @@
     } as Monster;
   }
 
-  const tabs = ref<Array<'map' | 'teams' | 'settings' | 'results' | 'replay'>>([
+  const tabs = ref<Array<'map' | 'teams' | 'settings' | 'results'>>([
     'map',
     'teams',
     'settings',
     'results',
-    'replay',
   ]);
   const tabLabels: Record<string, string> = {
     map: 'Map',
     teams: 'Teams',
     settings: 'Settings',
     results: 'Results',
-    replay: 'Replay',
   };
 
-  const activeTab = ref<'map' | 'teams' | 'settings' | 'results' | 'replay'>('map');
+  const activeTab = ref<'map' | 'teams' | 'settings' | 'results'>('map');
   const simulationStore = useSimulationStore();
   const dataStore = useDataStore();
   const characterStore = useCharacterStore();
   const expandedRuns = ref<Set<number>>(new Set());
+  const replayRunIndex = ref<number | null>(null);
 
   /**
    * Auto-navigate to results tab when simulation completes
@@ -461,7 +460,7 @@
   const alliesConfig = ref<CombatantConfig[]>([]);
   const enemiesConfig = ref<CombatantConfig[]>([]);
   const simulationConfig = ref<Partial<SimulationConfig>>({
-    roundLimit: 20,
+    roundLimit: 9999,
     resourceMode: 'balanced' as const,
   });
   const numberOfRuns = ref(1);
@@ -487,12 +486,6 @@
       max: batchStats.value.perMode.max,
     };
   });
-  const turnLog = computed(() => {
-    if (splitResults.value?.balanced?.turnLog) {
-      return splitResults.value.balanced.turnLog;
-    }
-    return [];
-  });
   const simulationError = computed(() => simulationStore.error);
 
   const activeTabIndex = computed(() => {
@@ -510,11 +503,15 @@
         return true;
       case 'results':
         return !isSimulating.value;
-      case 'replay':
-        return true;
       default:
         return false;
     }
+  });
+
+  const replayTurnLog = computed(() => {
+    if (replayRunIndex.value === null) return [];
+    const run = simulationStore.batchRuns[replayRunIndex.value];
+    return run?.results.balanced.turnLog || [];
   });
 
   function onMapUpdated(map: GameMap): void {
