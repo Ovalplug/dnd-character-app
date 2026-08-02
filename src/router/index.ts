@@ -23,6 +23,7 @@ import CreateBackpack from '../components/items/CreateBackpack.vue';
 import BackpackView from '../components/items/BackpackView.vue';
 import CreateItem from '../components/items/CreateItem.vue';
 import ItemsView from '../components/items/ItemsView.vue';
+import EncounterSetupView from '../components/encounterSimulator/EncounterSetupView.vue';
 import { useDataStore } from '../stores/dataStore';
 
 const routes: Array<RouteRecordRaw> = [
@@ -54,6 +55,7 @@ const routes: Array<RouteRecordRaw> = [
   { path: '/encounter/edit', name: 'EditEncounter', component: EditEncounter },
   { path: '/encounter/run', name: 'RunEncounter', component: EncounterMain },
   { path: '/encounters', name: 'encounters', component: EncounterListView },
+  { path: '/simulator', name: 'simulator', component: EncounterSetupView },
   { path: '/training', name: 'trainingGround', component: TrainingGround },
   { path: '/:pathMatch(.*)*', redirect: '/' }, // catch-all route to redirect to home
 ];

@@ -118,6 +118,7 @@
     { label: 'Home', icon: homeIcon, path: '/' },
     { label: 'Characters', icon: usersIcon, path: '/characters' },
     { label: 'Encounters', icon: swordIcon, path: '/encounters' },
+    { label: 'Simulator', icon: swordIcon, path: '/simulator' },
     { label: 'Create', icon: plusIcon, path: '/create' },
     { label: 'Resources', icon: bookIcon, path: '/resources' },
     { label: 'Settings', icon: settingsIcon, path: '/settings' },
