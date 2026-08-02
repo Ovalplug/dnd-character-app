@@ -970,3 +970,42 @@ export type CustomItem = Item & {
   createdAt: number;
   updatedAt: number;
 };
+
+// ============================================================================
+// ENCOUNTER SIMULATOR TYPES (Re-exported from emulatorTyping.ts)
+// ============================================================================
+
+export type {
+  GridPosition,
+  MapCell,
+  ConditionState,
+  SpellReference,
+  ParsedAbility,
+  RoleDefinition,
+  ActionCandidate,
+  TurnResult,
+  SimulationConfig,
+  SimulationResult,
+  BatchStatistics,
+  SimulationRun,
+  SimulationBatch,
+  CombatantRoleType,
+  CompositeRole,
+  CellType,
+  ResourceMode,
+  SimulationOutcome,
+  ActionType,
+  Team,
+  DiceType,
+  DiceRolls,
+} from './components/encounterSimulator/emulatorTyping';
+
+export {
+  Position,
+  GameMapCell,
+  GameMap,
+  Condition,
+  SimulatorCombatant,
+  SimulationState,
+  ROLE_DEFINITIONS,
+} from './components/encounterSimulator/emulatorTyping';
