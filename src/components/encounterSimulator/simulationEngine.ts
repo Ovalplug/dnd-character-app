@@ -1,4 +1,9 @@
-import type { SimulationConfig, SimulationResult, ActionCandidate, TurnResult } from './emulatorTyping';
+import type {
+  SimulationConfig,
+  SimulationResult,
+  ActionCandidate,
+  TurnResult,
+} from './emulatorTyping';
 import { SimulatorCombatant, SimulationState } from './emulatorTyping';
 import { CombatResolver } from './combatRules';
 import { DiceRoller } from './diceRollFunctions';
@@ -54,7 +59,7 @@ export class SimulationEngine {
       seed: 'sim-' + this.currentRound,
       config: this.config,
       outcome: this.determineOutcome(),
-      log: this.roundLog
+      log: this.roundLog,
     } as unknown as SimulationResult;
   }
 
@@ -100,26 +105,30 @@ export class SimulationEngine {
         ? [`${combatant.getName()} hits ${target.getName()} for ${result.finalDamage} damage`]
         : [`${combatant.getName()} misses ${target.getName()}`],
       combatantUpdates: [],
-      actionExecuted: result.isHit
+      actionExecuted: result.isHit,
     };
 
     const action: ActionCandidate = {
       type: 'attack',
       name: `Attack ${target.getName()}`,
       expectedDamage: result.finalDamage,
-      score: result.isHit ? 10 : 0
+      score: result.isHit ? 10 : 0,
     };
 
     this.recordTurnLog(combatant, action, turnResult);
   }
 
-  private recordTurnLog(actor: SimulatorCombatant, action: ActionCandidate, result: TurnResult): void {
+  private recordTurnLog(
+    actor: SimulatorCombatant,
+    action: ActionCandidate,
+    result: TurnResult
+  ): void {
     const log: RoundLog = {
       round: this.currentRound,
       turn: this.state.turnCount,
       combatantId: actor.getName(),
       action,
-      result
+      result,
     };
     this.roundLog.push(log);
   }
@@ -177,9 +186,10 @@ export class SimulationEngine {
       c => c.team === 'enemies' && this.combatResolver.isAlive(c)
     ).length;
 
-    const winningTeam: string | null = alliesAlive > 0 && enemiesAlive === 0
-      ? 'allies'
-      : enemiesAlive > 0 && alliesAlive === 0
+    const winningTeam: string | null =
+      alliesAlive > 0 && enemiesAlive === 0
+        ? 'allies'
+        : enemiesAlive > 0 && alliesAlive === 0
         ? 'enemies'
         : null;
 
@@ -187,7 +197,7 @@ export class SimulationEngine {
       roundsCompleted: this.currentRound,
       winningTeam,
       totalRounds: this.currentRound,
-      combatantsAlive: alliesAlive + enemiesAlive
+      combatantsAlive: alliesAlive + enemiesAlive,
     };
   }
 }

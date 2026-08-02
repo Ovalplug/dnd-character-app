@@ -15,7 +15,7 @@ export const useSimulationStore = defineStore('simulation', () => {
     isRunning.value = true;
     currentProgress.value = 0;
 
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       setTimeout(() => {
         // Simple seeded PRNG
         const prng: PRNG = () => Math.random();
@@ -40,6 +40,6 @@ export const useSimulationStore = defineStore('simulation', () => {
     isRunning,
     currentProgress,
     runSimulation,
-    clearCurrent
+    clearCurrent,
   };
 });

@@ -4,11 +4,7 @@
  */
 
 import type { PRNG } from './diceRollFunctions';
-import type {
-  SimulatorCombatant,
-  SimulationState,
-  ActionCandidate,
-} from './emulatorTyping';
+import type { SimulatorCombatant, SimulationState, ActionCandidate } from './emulatorTyping';
 import type { ROLE_DEFINITIONS } from './emulatorTyping';
 import { MovementResolver } from './movement';
 
@@ -53,7 +49,7 @@ export class AIDecisionMaker {
     combatant: SimulatorCombatant,
     candidates: ActionCandidate[],
     state: SimulationState,
-    roleWeights: typeof ROLE_DEFINITIONS[keyof typeof ROLE_DEFINITIONS]
+    roleWeights: (typeof ROLE_DEFINITIONS)[keyof typeof ROLE_DEFINITIONS]
   ): ActionCandidate | null {
     if (candidates.length === 0) return null;
 
@@ -83,7 +79,7 @@ export class AIDecisionMaker {
     candidate: ActionCandidate,
     combatant: SimulatorCombatant,
     state: SimulationState,
-    roleWeights: typeof ROLE_DEFINITIONS[keyof typeof ROLE_DEFINITIONS]
+    roleWeights: (typeof ROLE_DEFINITIONS)[keyof typeof ROLE_DEFINITIONS]
   ): number {
     let score = roleWeights.actionWeights[candidate.type] || 0;
 
@@ -127,7 +123,7 @@ export class AIDecisionMaker {
     target: SimulatorCombatant,
     attacker: SimulatorCombatant,
     state: SimulationState,
-    roleWeights: typeof ROLE_DEFINITIONS[keyof typeof ROLE_DEFINITIONS]
+    roleWeights: (typeof ROLE_DEFINITIONS)[keyof typeof ROLE_DEFINITIONS]
   ): number {
     let score = 0;
 
@@ -175,9 +171,7 @@ export class AIDecisionMaker {
         }
       } else if (priority === 'weakest') {
         const teamMembers = state.combatants.filter(c => c.team !== attacker.team);
-        const weakest = teamMembers.reduce((a, b) =>
-          a.currentHp < b.currentHp ? a : b
-        );
+        const weakest = teamMembers.reduce((a, b) => (a.currentHp < b.currentHp ? a : b));
         if (target === weakest) {
           score += weight;
         }
@@ -185,13 +179,15 @@ export class AIDecisionMaker {
         // High damage output to entire team
         const allyCount = state.getTeam(attacker.team).length;
         const damage = this.estimateDamageOutput(target);
-        score += (damage * allyCount) * (weight / 100);
+        score += damage * allyCount * (weight / 100);
       } else if (priority === 'escape_route') {
         // For cowards: prioritize moving away
         score -= weight * 2; // Negative for targets
       } else if (priority === 'isolated') {
         const nearbyEnemies = state.combatants.filter(
-          c => c.team !== target.team && this.movementResolver.distance(c.position, target.position) <= 2
+          c =>
+            c.team !== target.team &&
+            this.movementResolver.distance(c.position, target.position) <= 2
         );
         if (nearbyEnemies.length <= 1) {
           score += weight;
@@ -222,10 +218,7 @@ export class AIDecisionMaker {
   /**
    * Evaluate all potential targets and return threat assessment.
    */
-  assessThreats(
-    defender: SimulatorCombatant,
-    state: SimulationState
-  ): ThreatAssessment[] {
+  assessThreats(defender: SimulatorCombatant, state: SimulationState): ThreatAssessment[] {
     const enemies = state.combatants.filter(c => c.team !== defender.team);
     const assessments: ThreatAssessment[] = [];
 
@@ -328,7 +321,7 @@ export class AIDecisionMaker {
     combatant: SimulatorCombatant,
     target: SimulatorCombatant,
     _state: SimulationState,
-    roleWeights: typeof ROLE_DEFINITIONS[keyof typeof ROLE_DEFINITIONS]
+    roleWeights: (typeof ROLE_DEFINITIONS)[keyof typeof ROLE_DEFINITIONS]
   ): 'approach' | 'hold' | 'retreat' {
     const distance = this.movementResolver.distance(combatant.position, target.position);
     const combatantHpPercent = combatant.currentHp / combatant.getMaxHp();

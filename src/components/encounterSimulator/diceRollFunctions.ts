@@ -185,7 +185,9 @@ export class DiceRoller {
    * Calculate average damage for an expression (no RNG).
    * Used for AI threat assessment.
    */
-  calculateAverageDamage(diceGroups: Array<{ count: number; type: DiceType; modifier?: number }>): number {
+  calculateAverageDamage(
+    diceGroups: Array<{ count: number; type: DiceType; modifier?: number }>
+  ): number {
     let total = 0;
     for (const group of diceGroups) {
       const diceMax = this.getDiceValue(group.type);
@@ -222,16 +224,32 @@ export function calculateAverageRoll(
  * Handles old signature: rollDice([{ dice: 'd6', number: 6, modifier?: 2 }])
  * @deprecated Use DiceRoller class instead.
  */
-export function rollDice(diceRollsOrCount: unknown[], _diceType?: DiceType, _modifier?: number): number {
+export function rollDice(
+  diceRollsOrCount: unknown[],
+  _diceType?: DiceType,
+  _modifier?: number
+): number {
   // Support old signature: rollDice([{ dice: 'd6', number: 6 }])
   if (Array.isArray(diceRollsOrCount) && diceRollsOrCount.length > 0) {
     const firstItem = diceRollsOrCount[0];
     if (typeof firstItem === 'object' && firstItem !== null && 'dice' in firstItem) {
       // Old signature with array of dice roll objects
       let total = 0;
-      for (const roll of diceRollsOrCount as Array<{ dice: DiceType; number: number; modifier?: number }>) {
+      for (const roll of diceRollsOrCount as Array<{
+        dice: DiceType;
+        number: number;
+        modifier?: number;
+      }>) {
         function getDiceValue(type: DiceType): number {
-          const values: Record<DiceType, number> = { d4: 4, d6: 6, d8: 8, d10: 10, d12: 12, d20: 20, d100: 100 };
+          const values: Record<DiceType, number> = {
+            d4: 4,
+            d6: 6,
+            d8: 8,
+            d10: 10,
+            d12: 12,
+            d20: 20,
+            d100: 100,
+          };
           return values[type] || 6;
         }
         for (let i = 0; i < roll.number; i++) {

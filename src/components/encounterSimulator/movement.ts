@@ -57,7 +57,9 @@ export class MovementResolver {
     const reachable: Position[] = [];
     const visited = new Set<string>();
 
-    const queue: { pos: Position; costRemaining: number }[] = [{ pos: from, costRemaining: movementSpeed }];
+    const queue: { pos: Position; costRemaining: number }[] = [
+      { pos: from, costRemaining: movementSpeed },
+    ];
     visited.add(`${from.x},${from.y}`);
 
     while (queue.length > 0) {
@@ -150,9 +152,9 @@ export class MovementResolver {
       // Find node with lowest fScore
       let current: PathNode | null = openSet[0] ?? null;
       let currentIndex = 0;
-      
+
       if (!current) break;
-      
+
       for (let i = 1; i < openSet.length; i++) {
         const openNode = openSet[i];
         if (!openNode) continue;
@@ -165,7 +167,7 @@ export class MovementResolver {
       }
 
       if (!current) break;
-      
+
       if (current.position.equals(to)) {
         // Reconstruct path
         const path: Position[] = [];
@@ -223,12 +225,7 @@ export class MovementResolver {
    * Calculate line of sight between two positions.
    * Uses Bresenham's line algorithm.
    */
-  hasLineOfSight(
-    from: Position,
-    to: Position,
-    map: GameMap,
-    maxDistance?: number
-  ): boolean {
+  hasLineOfSight(from: Position, to: Position, map: GameMap, maxDistance?: number): boolean {
     const line = this.bresenhamLine(from, to);
 
     // Check max distance
@@ -252,7 +249,7 @@ export class MovementResolver {
     attacker: Position,
     target: Position,
     map: GameMap
-  ): typeof CoverType[keyof typeof CoverType] {
+  ): (typeof CoverType)[keyof typeof CoverType] {
     const line = this.bresenhamLine(attacker, target);
 
     let coverCount = 0;

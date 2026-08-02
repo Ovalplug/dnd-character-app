@@ -53,7 +53,10 @@ export class MonsterParser {
   /**
    * Parse an array of entries (from action/legendary/etc. fields).
    */
-  private parseEntries(entries: Entry[], type: 'action' | 'legendary' | 'reaction' | 'lair' | 'mythic'): ParsedAbility[] {
+  private parseEntries(
+    entries: Entry[],
+    type: 'action' | 'legendary' | 'reaction' | 'lair' | 'mythic'
+  ): ParsedAbility[] {
     const abilities: ParsedAbility[] = [];
 
     for (const entry of entries) {

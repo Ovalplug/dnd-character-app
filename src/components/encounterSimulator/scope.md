@@ -13,6 +13,7 @@ The encounter simulator is a tactical combat resolution engine that evaluates D&
 ### 1. Encounter Setup UI
 
 #### Map Configuration
+
 - **Variable grid system:** User-defined dimensions (e.g., 10×10, 20×15)
 - **Cell size:** Fixed 5 ft per cell (D&D standard)
 - **Map features:**
@@ -24,6 +25,7 @@ The encounter simulator is a tactical combat resolution engine that evaluates D&
 - **Grid editing:** Add/remove/modify features before sim starts
 
 #### Participant Setup
+
 - **Add combatants:** Import from character builder or bestiary
 - **Grouping:** Assign to teams (Players, Enemies, Neutral, etc.)
 - **Per-combatant config:**
@@ -38,6 +40,7 @@ The encounter simulator is a tactical combat resolution engine that evaluates D&
     - Surrender HP threshold (e.g., 30%; configurable per Coward combatant)
 
 #### Role Assignment
+
 - **Available roles:** Tank, Healer, Damage Dealer, Controller, Boss, Coward, Scout, Support (extensible)
 - **Multi-role support:** A character can have "Tank + Support"
 - **Role-driven behavior:** Roles influence action prioritization and tactics
@@ -47,6 +50,7 @@ The encounter simulator is a tactical combat resolution engine that evaluates D&
 ### 2. Simulation Engine
 
 #### Combat Rules Implementation
+
 - **Full 5e mechanics:**
   - Initiative (d20 + DEX modifier, advantage/disadvantage)
   - Attack rolls (full randomness, crits on natural 20)
@@ -57,7 +61,6 @@ The encounter simulator is a tactical combat resolution engine that evaluates D&
   - Action economy (action, bonus action, reaction, movement per turn)
   - Opportunity attacks (triggered when opponent leaves reach without Disengage or move-away action)
   - Legendary actions, mythic actions, lair actions (parsed from stat blocks, executed per JSON definitions)
-  
 - **Death Saves:**
   - Default applied to Player Characters only (toggleable per enemy if needed)
   - Natural 20 on save: regain 1 HP, conscious and active
@@ -65,21 +68,20 @@ The encounter simulator is a tactical combat resolution engine that evaluates D&
   - 3 failures: death
   - 3 successes: stable (unconscious, not dying)
   - Successful hit by ally on unconscious target: conscious, regains 1 HP
-  
 - **Resources:**
   - All combatants start with full resource pools (spell slots, ability recharges, weapon charges, etc.)
   - Resources do **not** refresh mid-encounter (no short rests)
   - Hit Dice: Only usable if combatant has ability/feat explicitly allowing it outside short rest (otherwise restricted to combat healing spells only)
   - Resource constraints scale per mode (see Split Testing section)
-  
+
 #### Movement System
+
 - **Movement allocation:**
   - Combatants can move → action → move (in any order, up to speed limit)
   - Diagonal movement costs 5 ft (PHB standard)
   - Difficult terrain doubles movement cost
   - Elevation affects ranged attack rolls and spell saving throws (high ground grants advantage on ranged attacks; elevation gap affects accuracy)
   - Pathing considers obstacles (walls, other combatants)
-  
 - **Line of Sight & Cover:**
   - All ranged attacks and spells require clear LOS to target
   - Cover provides AC bonuses:
@@ -93,6 +95,7 @@ The encounter simulator is a tactical combat resolution engine that evaluates D&
 All decisions (action selection, target selection, concentration conflicts) are resolved through a **weighted scoring system**. Each possible action or target receives a numerical score based on role-driven weights and situation factors. Highest score wins.
 
 **Decision Weights by Role:**
+
 - **Tank:** High weight for protecting allies (+10 to allies in danger), drawing enemy attention, positioning between threat and vulnerable allies. Low weight for dealing damage.
 - **Healer:** High weight for allies needing healing (scaled by role: +10 for allies <75% HP, +15 for <50%, +20 for <25%). Weight for offensive actions lower except in emergencies.
 - **Damage Dealer:** High weight for maximizing single-target damage. Boss enemies get +10 weight. Low weight for non-damage actions unless action economy demands it.
@@ -104,6 +107,7 @@ All decisions (action selection, target selection, concentration conflicts) are 
 
 **Threat Assessment (Target Selection):**
 Each potential target receives a threat score:
+
 - Base: Enemy damage output estimate (avg damage per turn)
 - Modifiers:
   - Boss enemies: +10
@@ -117,6 +121,7 @@ Each potential target receives a threat score:
 
 **Action Selection:**
 Each candidate action (attack enemy A, cast spell X on ally B, move to position C, Dodge, etc.) receives a score:
+
 - Role priority weight (Damage Dealer heavily weights Attack action, Tank weights Defensive action)
 - Expected outcome (% to-hit, damage roll estimate, healing value estimate)
 - Resource cost (penalty higher in Low Resource mode, ignored in Max Resource mode)
@@ -126,12 +131,14 @@ Each candidate action (attack enemy A, cast spell X on ally B, move to position 
 Highest-scoring action executes.
 
 **Concentration Conflicts:**
-If combatant maintains concentration spell (e.g., *Blessing of Protection*) and an action might conflict:
+If combatant maintains concentration spell (e.g., _Blessing of Protection_) and an action might conflict:
+
 - Score maintaining concentration (status quo)
 - Score breaking concentration to cast new spell (compare benefit of new spell vs loss of active buff)
 - Choose higher-scoring option
 
 **Role-Based Behavior:**
+
 - **Deep role-based behavior:**
   - **Tank:** Maximize party defense (position between allies & enemies, use defensive spells, draw enemy attention)
   - **Healer:** Monitor ally HP pools, cast healing when allies below threshold (variable by role + action economy trade-off)
@@ -141,18 +148,17 @@ If combatant maintains concentration spell (e.g., *Blessing of Protection*) and 
   - **Coward:** Prioritize self-preservation. When HP falls below threshold (togglable, default 30%), sharply increase weight for retreat/flee actions. Can Disengage and move away from threats. If surrounded or no escape path, may Surrender (ends individual participation, or removes from combat if allowed by toggle)
   - **Scout:** Prioritize mobility and positioning for advantage, focus on isolated targets
   - **Support:** Enable allies (buffs, action economy support), secondarily deal damage
-  
 - **Resource-aware decisions:**
   - In **Low Resource mode:** Heavily penalize resource-cost actions (spell slots, charges, HD usage). Prefer cantrips, melee attacks.
   - In **Balanced mode:** Scale resource penalties proportionally based on expected encounter length.
   - In **Max Resource mode:** No penalty for resource costs; optimize purely for effect/damage.
-  
 - **Adaptive tactics:**
   - Reassess priorities each turn (re-score all options)
   - Consider positioning, LOS, movement costs, cover (factors into hit probability)
   - Account for concentration and status effects (status effects reduce scoring for actions requiring dodging/positioning)
 
 #### Simulation Loop (per combatant per turn)
+
 1. Check status (unconscious? dead? can act? concentration maintained?)
 2. Assess situation (threat assessment, resource inventory, position evaluation)
 3. Generate candidate actions (scored by weighted decision system)
@@ -167,7 +173,9 @@ If combatant maintains concentration spell (e.g., *Blessing of Protection*) and 
 ## 5. Mechanics Implementation Details
 
 ### Healing Decision Logic
+
 Healers and Support combatants decide to heal based on **weighted scoring** that combines:
+
 - **Ally HP threshold:** Lower HP = higher score for healing
   - Healer: +20 for allies <25% HP, +15 for <50%, +10 for <75%
   - Support: +15 for allies <30% HP, +10 for <60%
@@ -175,21 +183,25 @@ Healers and Support combatants decide to heal based on **weighted scoring** that
   - Resource mode impact: In Low Resource mode, healing score reduced (fewer spell slots, prefer to ration). In Max Resource mode, healing score boosted (optimal output).
 - **Concentration conflict:** If breaking active concentration spell, apply penalty (compare benefit vs. loss of buff).
 
-Example: Support sees Rogue at 40% HP. Healing score = base(+10 for <60%) - penalty(foregone damage = -5) = +5. Meanwhile, casting *Fireball* at 3 enemies = +12 damage score. *Fireball* chosen.
+Example: Support sees Rogue at 40% HP. Healing score = base(+10 for <60%) - penalty(foregone damage = -5) = +5. Meanwhile, casting _Fireball_ at 3 enemies = +12 damage score. _Fireball_ chosen.
 
 ### Advantage/Disadvantage Sources
+
 - **Flanking:** Attacking enemy with ally on opposite side grants advantage on melee attack
 - **High ground:** Ranged attacker on higher elevation grants advantage on ranged attack roll
 - **Stealth/Hidden:** Hidden attacker gains advantage on first attack roll; attacking breaks hidden status
 - **Status effects:** Certain conditions grant/deny advantage (e.g., prone enemy = melee disadvantage, ranged advantage; invisible attacker has advantage)
 
 ### AoE Spell Targeting
+
 Casters evaluate AoE spell placements to maximize damage while minimizing friendly fire:
-- Generate candidate center/radius points for spell (e.g., *Fireball* 20-ft radius)
+
+- Generate candidate center/radius points for spell (e.g., _Fireball_ 20-ft radius)
 - Score each placement: damage to enemies - damage to allies (weighted heavily against friendly fire)
 - Execute highest-scoring placement or skip spell if friendlies would take significant damage
 
 ### End Conditions
+
 - One team eliminated or incapacitated (all unconscious/dead)
 - Predetermined round limit exceeded (if set)
 - All combatants of a team Surrendered (if Coward toggle enabled)
@@ -202,6 +214,7 @@ Casters evaluate AoE spell placements to maximize damage while minimizing friend
 **Three parallel simulation tracks (1/3 of runs each):**
 
 1. **Low Resource Mode (1/3 of runs):**
+
    - All participants start with reduced resources
    - Spell slots: Capped at 1/3 of available (e.g., 9 slots becomes 3)
    - Ability uses (recharges): Capped at 1/3 of available
@@ -211,6 +224,7 @@ Casters evaluate AoE spell placements to maximize damage while minimizing friend
    - **Use case:** Test encounter vs. under-prepped party
 
 2. **Balanced Mode (1/3 of runs):**
+
    - Standard resource pools as defined in stat blocks
    - Full spell slots, ability uses, weapon charges
    - **AI behavior:** Scale resource penalties based on expected encounter length estimate. Use resources proportionally across encounter.
@@ -230,18 +244,21 @@ Casters evaluate AoE spell placements to maximize damage while minimizing friend
 ### 4. Output & Reporting
 
 #### Simulation-Level Metrics
+
 - **Overall outcomes:**
   - Win rate per team (as % across all runs)
   - Average rounds to completion
   - Total runs completed
 
 #### Per-Team Metrics
+
 - Average final HP (across survivors + team)
 - Total damage dealt (aggregate)
 - Resources burned (spell slots, ability uses)
 - Casualties / survival rate
 
 #### Per-Combatant Metrics
+
 - Damage dealt (avg per run)
 - Damage taken (avg per run)
 - Actions taken (frequency breakdown: attacks, spells, movement, etc.)
@@ -251,10 +268,12 @@ Casters evaluate AoE spell placements to maximize damage while minimizing friend
 - Death rate (% of runs participant died)
 
 #### Breakdown by Resource Mode
+
 - Separate reporting per mode (Low/Balanced/Max)
 - Side-by-side comparison tables
 
 #### Raw Data Export
+
 - Per-run logs (verbose): participant turns, rolls, outcomes
 - Aggregate CSV: combatant stats across all runs
 
@@ -273,16 +292,19 @@ Casters evaluate AoE spell placements to maximize damage while minimizing friend
 ## Technical Considerations
 
 ### Performance
+
 - Target: 1000 simulations in <30 seconds (accuracy prioritized over raw speed)
 - Optimization: Pre-compute where possible (stat arrays, ability lists)
 - Bottleneck: Pathfinding, status effect resolution, resource tracking
 
 ### Data Structure
+
 - Leverage existing character/bestiary data (stat blocks, actions, spells)
 - Encapsulate simulation state per run (position, HP, resources, statuses)
 - Track turn-by-turn events for reporting/debugging
 
 ### Complexity Management
+
 - Start with core mechanics, iterate toward full depth
 - Modular AI: Role behaviors composed from decision primitives
 - Status effect system: Pluggable effect handlers
@@ -292,6 +314,7 @@ Casters evaluate AoE spell placements to maximize damage while minimizing friend
 ## MVP vs. Future
 
 ### MVP
+
 - Variable grid with walls and difficult terrain
 - 2+ teams (friendly/enemy minimum)
 - 5–8 core roles
@@ -300,6 +323,7 @@ Casters evaluate AoE spell placements to maximize damage while minimizing friend
 - Full 5e mechanics (rolls, saves, status effects, action economy)
 
 ### Future Enhancements
+
 - Additional terrain types (water, lava, hazards)
 - Side objectives with behavioral influence
 - Advanced AI meta (morale, surrender conditions)

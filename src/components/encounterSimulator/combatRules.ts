@@ -165,9 +165,7 @@ export class CombatResolver {
       }
     }
 
-    const isDead =
-      combatant.deathSaves.successes >= 3 ||
-      combatant.deathSaves.failures >= 3;
+    const isDead = combatant.deathSaves.successes >= 3 || combatant.deathSaves.failures >= 3;
 
     if (combatant.deathSaves.successes >= 3) {
       combatant.isConscious = true;
@@ -197,7 +195,9 @@ export class CombatResolver {
   ): void {
     // Remove conflicting conditions
     if (type === 'prone' || type === 'grappled' || type === 'restrained') {
-      target.conditions = target.conditions.filter(c => !['prone', 'grappled', 'restrained'].includes(c.type));
+      target.conditions = target.conditions.filter(
+        c => !['prone', 'grappled', 'restrained'].includes(c.type)
+      );
     }
 
     // Create and add condition
