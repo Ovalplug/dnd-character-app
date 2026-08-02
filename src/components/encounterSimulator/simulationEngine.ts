@@ -121,11 +121,111 @@ export class SimulationEngine {
       return;
     }
 
-    // Simple: attack first enemy in range
-    const target = enemies[0];
-    if (!target) return;
-    const strMod = (combatant.monster.str || 10) - 10;
+    // Build action candidates
+    const candidates = this.buildActionCandidates(combatant, enemies);
+    if (candidates.length === 0) {
+      return;
+    }
 
+    // Score and select best candidate
+    const selectedCandidate = this.selectBestAction(candidates);
+    if (!selectedCandidate) {
+      return;
+    }
+
+    // Execute the selected action
+    let turnResult: TurnResult;
+    if (selectedCandidate.type === 'cast_spell') {
+      turnResult = this.executeCastSpell(combatant, selectedCandidate, enemies);
+    } else {
+      turnResult = this.executeAttack(combatant, selectedCandidate);
+    }
+
+    this.recordTurnLog(combatant, selectedCandidate, turnResult);
+  }
+
+  private buildActionCandidates(combatant: SimulatorCombatant, enemies: SimulatorCombatant[]): ActionCandidate[] {
+    const candidates: ActionCandidate[] = [];
+
+    // Add attack candidates
+    for (const enemy of enemies) {
+      const strMod = (combatant.monster.str || 10) - 10;
+      const attackResult = this.combatResolver.resolveAttack(
+        combatant,
+        enemy,
+        strMod,
+        '1d8+0',
+        false,
+        false
+      );
+      
+      candidates.push({
+        type: 'attack',
+        name: `Attack ${enemy.getName()}`,
+        targetIndex: this.state.combatants.indexOf(enemy),
+        expectedDamage: attackResult.finalDamage,
+        score: attackResult.isHit ? 10 : 0,
+      });
+    }
+
+    // Add spell candidates if available
+    if (combatant.monster.spellcasting) {
+      const spellcasting = Array.isArray(combatant.monster.spellcasting)
+        ? combatant.monster.spellcasting[0]
+        : combatant.monster.spellcasting;
+
+      if (spellcasting?.spells) {
+        for (let level = 1; level <= 9; level++) {
+          const key = level as keyof typeof spellcasting.spells;
+          const spellsAtLevel = spellcasting.spells[key]?.spells;
+          
+          if (Array.isArray(spellsAtLevel) && spellsAtLevel.length > 0) {
+            const availableSlots = (combatant.spellSlots[level]?.max ?? 0) - (combatant.spellSlots[level]?.used ?? 0);
+            
+            if (availableSlots > 0) {
+              const spell = spellsAtLevel[0];
+              candidates.push({
+                type: 'cast_spell',
+                name: `Cast ${spell}`,
+                targetIndex: 0,
+                expectedDamage: level * 3, // Simple heuristic
+                resourceCost: { spellSlot: level },
+                score: level * 2 + 5,
+              });
+            }
+          }
+        }
+      }
+    }
+
+    return candidates;
+  }
+
+  private selectBestAction(candidates: ActionCandidate[]): ActionCandidate | null {
+    if (candidates.length === 0) return null;
+
+    // Prefer spells if available, otherwise attacks
+    const spells = candidates.filter(c => c.type === 'cast_spell').sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
+    if (spells.length > 0) {
+      const selected = spells[0];
+      return selected || null;
+    }
+
+    const attacks = candidates.filter(c => c.type === 'attack').sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
+    return attacks[0] || null;
+  }
+
+  private executeAttack(combatant: SimulatorCombatant, action: ActionCandidate): TurnResult {
+    if (action.targetIndex === undefined) {
+      return { events: ['No target found'], combatantUpdates: [], actionExecuted: false };
+    }
+
+    const target = this.state.combatants[action.targetIndex];
+    if (!target || !this.combatResolver.isAlive(target)) {
+      return { events: ['Target is no longer alive'], combatantUpdates: [], actionExecuted: false };
+    }
+
+    const strMod = (combatant.monster.str || 10) - 10;
     const result = this.combatResolver.resolveAttack(
       combatant,
       target,
@@ -135,22 +235,43 @@ export class SimulationEngine {
       false
     );
 
-    const turnResult: TurnResult = {
+    return {
       events: result.isHit
         ? [`${combatant.getName()} hits ${target.getName()} for ${result.finalDamage} damage`]
         : [`${combatant.getName()} misses ${target.getName()}`],
       combatantUpdates: [],
       actionExecuted: result.isHit,
     };
+  }
 
-    const action: ActionCandidate = {
-      type: 'attack',
-      name: `Attack ${target.getName()}`,
-      expectedDamage: result.finalDamage,
-      score: result.isHit ? 10 : 0,
+  private executeCastSpell(combatant: SimulatorCombatant, action: ActionCandidate, enemies: SimulatorCombatant[]): TurnResult {
+    const spellLevel = action.resourceCost?.spellSlot ?? 1;
+    
+    // Check if spell slot available
+    const slots = combatant.spellSlots[spellLevel];
+    if (!slots || slots.used >= slots.max) {
+      return { events: [`${combatant.getName()} has no spell slots of level ${spellLevel}`], combatantUpdates: [], actionExecuted: false };
+    }
+
+    // Use spell slot
+    slots.used++;
+
+    // Simple spell effect: target takes spell level * 4 damage
+    const target = enemies[0];
+    if (!target) {
+      return { events: [`No valid target for spell`], combatantUpdates: [], actionExecuted: false };
+    }
+
+    const damage = spellLevel * 4;
+    target.currentHp -= damage;
+    combatant.totalDamageDealt += damage;
+    target.totalDamageTaken += damage;
+
+    return {
+      events: [`${combatant.getName()} casts a level-${spellLevel} spell on ${target.getName()} for ${damage} damage`],
+      combatantUpdates: [],
+      actionExecuted: true,
     };
-
-    this.recordTurnLog(combatant, action, turnResult);
   }
 
   private recordTurnLog(

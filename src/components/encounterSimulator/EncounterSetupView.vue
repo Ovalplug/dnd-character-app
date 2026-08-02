@@ -425,8 +425,8 @@
   }
 
   const tabs = ref<Array<'map' | 'teams' | 'settings' | 'results'>>([
-    'map',
     'teams',
+    'map',
     'settings',
     'results',
   ]);
@@ -437,7 +437,7 @@
     results: 'Results',
   };
 
-  const activeTab = ref<'map' | 'teams' | 'settings' | 'results'>('map');
+  const activeTab = ref<'map' | 'teams' | 'settings' | 'results'>('teams');
   const simulationStore = useSimulationStore();
   const dataStore = useDataStore();
   const characterStore = useCharacterStore();
