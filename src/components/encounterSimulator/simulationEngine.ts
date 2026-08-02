@@ -40,27 +40,58 @@ export class SimulationEngine {
 
     // Create simulation state - type assert combatants
     this.state = new SimulationState(config.map, config.combatants as any);
+
+    // Apply resource scaling based on resource mode
+    for (const combatant of this.state.combatants) {
+      combatant.initializeResources(config.resourceMode);
+    }
   }
 
   executeSimulation(): SimulationResult {
-    // Roll initiative and sort
-    for (const combatant of this.state.combatants) {
-      const dexMod = (combatant.monster.dex || 10) - 10;
-      combatant.initiative = this.diceRoller.rollInitiative(dexMod);
-    }
+    try {
+      // Roll initiative and sort
+      for (const combatant of this.state.combatants) {
+        const dexMod = (combatant.monster.dex || 10) - 10;
+        combatant.initiative = this.diceRoller.rollInitiative(dexMod);
+      }
 
-    // Execute rounds
-    while (!this.isSimulationOver()) {
-      this.executeRound();
-      this.currentRound++;
-    }
+      // Execute rounds
+      while (!this.isSimulationOver()) {
+        this.executeRound();
+        this.currentRound++;
+      }
 
-    return {
-      seed: 'sim-' + this.currentRound,
-      config: this.config,
-      outcome: this.determineOutcome(),
-      log: this.roundLog,
-    } as unknown as SimulationResult;
+      // Build finalCombatants from current state
+      const finalCombatants = this.state.combatants.map(c => ({
+        name: c.getName(),
+        team: c.team,
+        finalHp: c.currentHp,
+        damageTaken: c.totalDamageTaken,
+        damageDealt: c.totalDamageDealt,
+        kills: c.killCount,
+        died: !this.combatResolver.isAlive(c),
+        actions: c.actionLog.map(a => ({ type: a.type as string, count: a.count })),
+        resourcesUsed: {
+          spellSlots: Object.fromEntries(
+            Object.entries(c.spellSlots).map(([k, v]) => [k, v.used])
+          ) as Record<number, number>,
+          abilityUses: c.abilityRecharges
+        }
+      }));
+
+      return {
+        seed: 'sim-' + Date.now(),
+        config: this.config,
+        resourceMode: this.config.resourceMode,
+        outcome: this.determineOutcome() as any,
+        totalRounds: this.currentRound,
+        totalTurns: this.state.turnCount,
+        finalCombatants
+      };
+    } catch (error) {
+      console.error('Simulation execution error:', error);
+      throw error;
+    }
   }
 
   private executeRound(): void {

@@ -31,7 +31,7 @@
           </div>
           <div class="results-export__row">
             <span class="results-export__label">Survivors:</span>
-            <span class="results-export__value">{{ result.finalCombatants.length }}</span>
+            <span class="results-export__value">{{ result?.finalCombatants?.length || 0 }}</span>
           </div>
         </div>
       </div>

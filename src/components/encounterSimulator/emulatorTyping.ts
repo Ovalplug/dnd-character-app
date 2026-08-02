@@ -127,6 +127,7 @@ export interface SimulationConfig {
 export interface SimulationResult {
   seed: string;
   config: SimulationConfig;
+  resourceMode: ResourceMode;
   outcome: SimulationOutcome;
   totalRounds: number;
   totalTurns: number;

@@ -45,12 +45,30 @@
           </div>
 
           <div class="encounter-setup__setting-group">
-            <label class="encounter-setup__label">Resource Mode</label>
-            <select v-model="simulationConfig.resourceMode" class="encounter-setup__select">
-              <option value="low">Low</option>
-              <option value="balanced">Balanced</option>
-              <option value="max">Max</option>
-            </select>
+            <label class="encounter-setup__label">Random Seed (Optional)</label>
+            <input
+              v-model="simulationSeed"
+              type="text"
+              placeholder="Leave empty for random seed"
+              class="encounter-setup__input"
+            />
+            <p class="encounter-setup__help-text">Use a seed to reproduce the same encounter. Share seeds to let others replay your battles.</p>
+          </div>
+
+          <div class="encounter-setup__setting-group">
+            <label class="encounter-setup__label">Number of Batch Runs</label>
+            <input
+              v-model.number="numberOfRuns"
+              type="number"
+              min="1"
+              max="50"
+              class="encounter-setup__input"
+            />
+            <p class="encounter-setup__help-text">Run 1 = single simulation (3 modes). Run N = batch of N simulations (3N total).</p>
+          </div>
+
+          <div class="encounter-setup__setting-info">
+            <p><strong>Note:</strong> Each run executes in all 3 resource modes (Low, Balanced, Max) for split testing analysis.</p>
           </div>
 
           <div class="encounter-setup__summary">
@@ -71,6 +89,18 @@
               <span>Rounds:</span>
               <span>{{ simulationConfig.roundLimit }}</span>
             </div>
+            <div class="encounter-setup__summary-item">
+              <span>Seed:</span>
+              <span>{{ simulationSeed || 'Random' }}</span>
+            </div>
+            <div class="encounter-setup__summary-item">
+              <span>Batch Runs:</span>
+              <span>{{ numberOfRuns }} ({{ numberOfRuns * 3 }} total with all modes)</span>
+            </div>
+            <div class="encounter-setup__summary-item">
+              <span>Test Modes:</span>
+              <span>Low, Balanced, Max (all 3)</span>
+            </div>
           </div>
         </div>
       </div>
@@ -87,23 +117,82 @@
           <p class="encounter-setup__progress-text">{{ simulationProgress }}% Complete</p>
         </div>
 
-        <div v-else-if="lastResult" class="encounter-setup__results">
-          <div class="encounter-setup__result-box">
-            <h3>Battle Result: {{ lastResult.outcome }}</h3>
-            <div class="encounter-setup__result-stats">
-              <div class="encounter-setup__stat">
-                <span class="encounter-setup__stat-label">Rounds:</span>
-                <span class="encounter-setup__stat-value">{{ lastResult.totalRounds }}</span>
+        <div v-else-if="simulationError" class="encounter-setup__error">
+          <h3>Simulation Error</h3>
+          <p>{{ simulationError }}</p>
+          <button class="btn btn--secondary" @click="clearError">Dismiss</button>
+        </div>
+
+        <div v-else-if="batchStats" class="encounter-setup__results">
+          <h3 class="encounter-setup__split-title">Batch Statistics ({{ batchStats.totalRuns }} simulations)</h3>
+          <div class="encounter-setup__batch-summary">
+            <div class="encounter-setup__batch-stat">
+              <span class="encounter-setup__batch-stat-label">Ally Win Rate:</span>
+              <span class="encounter-setup__batch-stat-value">{{ batchStats.allyWinRate.toFixed(1) }}%</span>
+            </div>
+            <div class="encounter-setup__batch-stat">
+              <span class="encounter-setup__batch-stat-label">Avg Rounds:</span>
+              <span class="encounter-setup__batch-stat-value">{{ batchStats.averageRounds }}</span>
+            </div>
+            <div class="encounter-setup__batch-stat">
+              <span class="encounter-setup__batch-stat-label">Avg Turns:</span>
+              <span class="encounter-setup__batch-stat-value">{{ batchStats.averageTurns }}</span>
+            </div>
+          </div>
+
+          <div class="encounter-setup__combatant-stats">
+            <h4>Per-Combatant Averages</h4>
+            <div class="encounter-setup__stats-table">
+              <div class="encounter-setup__stats-header">
+                <span>Name</span>
+                <span>Avg Damage Dealt</span>
+                <span>Avg Damage Taken</span>
+                <span>Kill Rate</span>
+                <span>Death Rate</span>
               </div>
-              <div class="encounter-setup__stat">
-                <span class="encounter-setup__stat-label">Turns:</span>
-                <span class="encounter-setup__stat-value">{{ lastResult.totalTurns }}</span>
+              <div
+                v-for="stat in batchStats.perCombatantStats"
+                :key="stat.name"
+                class="encounter-setup__stats-row"
+              >
+                <span>{{ stat.name }}</span>
+                <span>{{ stat.avgDamageDealt.toFixed(1) }}</span>
+                <span>{{ stat.avgDamageTaken.toFixed(1) }}</span>
+                <span>{{ (stat.killRate * 100).toFixed(1) }}%</span>
+                <span>{{ (stat.deathRate * 100).toFixed(1) }}%</span>
               </div>
-              <div class="encounter-setup__stat">
-                <span class="encounter-setup__stat-label">Survivors:</span>
-                <span class="encounter-setup__stat-value">{{
-                  lastResult.finalCombatants.length
-                }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div v-else-if="splitResults" class="encounter-setup__results">
+          <h3 class="encounter-setup__split-title">Split Test Results (3 Resource Modes)</h3>
+          <div class="encounter-setup__split-grid">
+            <div
+              v-for="(result, mode) in splitResults"
+              :key="mode"
+              class="encounter-setup__result-box"
+            >
+              <h4 class="encounter-setup__mode-label">{{ mode.toUpperCase() }}</h4>
+              <div class="encounter-setup__result-stats">
+                <div class="encounter-setup__stat">
+                  <span class="encounter-setup__stat-label">Outcome:</span>
+                  <span class="encounter-setup__stat-value">{{ result.outcome }}</span>
+                </div>
+                <div class="encounter-setup__stat">
+                  <span class="encounter-setup__stat-label">Rounds:</span>
+                  <span class="encounter-setup__stat-value">{{ result.totalRounds }}</span>
+                </div>
+                <div class="encounter-setup__stat">
+                  <span class="encounter-setup__stat-label">Turns:</span>
+                  <span class="encounter-setup__stat-value">{{ result.totalTurns }}</span>
+                </div>
+                <div class="encounter-setup__stat">
+                  <span class="encounter-setup__stat-label">Survivors:</span>
+                  <span class="encounter-setup__stat-value">{{
+                    result.finalCombatants?.length || 0
+                  }}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -134,6 +223,7 @@
   import SimpleMapEditor from './SimpleMapEditor.vue';
   import CombatantSelector from './CombatantSelector.vue';
   import type { GameMap, SimulationConfig, Monster, CompositeRole } from '../../types';
+  import { Position } from '../../types';
 
   interface CombatantConfig {
     monster: Monster;
@@ -164,13 +254,17 @@
     roundLimit: 20,
     resourceMode: 'balanced' as const,
   });
+  const numberOfRuns = ref(1);
+  const simulationSeed = ref('');
 
   const availableMonsters = computed(() => dataStore.monsters?.slice(0, 20) || []);
   const alliesCount = computed(() => alliesConfig.value.length);
   const enemiesCount = computed(() => enemiesConfig.value.length);
   const isSimulating = computed(() => simulationStore.isRunning);
   const simulationProgress = computed(() => simulationStore.currentProgress);
-  const lastResult = computed(() => simulationStore.currentSimulation);
+  const splitResults = computed(() => simulationStore.splitTestResults);
+  const batchStats = computed(() => simulationStore.batchStatistics);
+  const simulationError = computed(() => simulationStore.error);
 
   const activeTabIndex = computed(() => {
     const idx = tabs.value.indexOf(activeTab.value);
@@ -231,29 +325,38 @@
           monster: c.monster,
           team: 'allies' as const,
           role: c.role,
-          position: {
-            x: Math.floor(Math.random() * mapConfig.value!.width),
-            y: Math.floor(Math.random() * mapConfig.value!.height),
-          } as any,
+          position: new Position(
+            Math.floor(Math.random() * mapConfig.value!.width),
+            Math.floor(Math.random() * mapConfig.value!.height)
+          ),
         })),
         ...enemiesConfig.value.map(c => ({
           monster: c.monster,
           team: 'enemies' as const,
           role: c.role,
-          position: {
-            x: Math.floor(Math.random() * mapConfig.value!.width),
-            y: Math.floor(Math.random() * mapConfig.value!.height),
-          } as any,
+          position: new Position(
+            Math.floor(Math.random() * mapConfig.value!.width),
+            Math.floor(Math.random() * mapConfig.value!.height)
+          ),
         })),
       ],
-      resourceMode: (simulationConfig.value.resourceMode || 'balanced') as
-        | 'low'
-        | 'balanced'
-        | 'max',
+      resourceMode: 'balanced' as const,
       roundLimit: simulationConfig.value.roundLimit || 20,
     };
 
-    await simulationStore.runSimulation(config);
+    const seed = simulationSeed.value || undefined;
+
+    if (numberOfRuns.value > 1) {
+      // Run batch simulation
+      await simulationStore.runBatchSimulation(config, numberOfRuns.value, seed);
+    } else {
+      // Run single split test simulation
+      await simulationStore.runSimulation(config, seed);
+    }
+  }
+
+  function clearError(): void {
+    simulationStore.clearCurrent();
   }
 </script>
 
@@ -344,6 +447,19 @@
     gap: 0.5rem;
   }
 
+  .encounter-setup__setting-info {
+    padding: 1rem;
+    background: var(--color-surface);
+    border-left: 3px solid var(--color-accent);
+    border-radius: 4px;
+  }
+
+  .encounter-setup__setting-info p {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--color-text);
+  }
+
   .encounter-setup__label {
     font-size: 0.875rem;
     font-weight: 500;
@@ -411,6 +527,23 @@
     font-weight: 500;
   }
 
+  .encounter-setup__error {
+    padding: 1.5rem;
+    background: var(--color-surface);
+    border-radius: var(--radius);
+    border-left: 4px solid var(--color-danger);
+  }
+
+  .encounter-setup__error h3 {
+    margin: 0 0 0.5rem;
+    color: var(--color-danger);
+  }
+
+  .encounter-setup__error p {
+    margin: 0 0 1rem;
+    color: var(--color-text);
+  }
+
   .encounter-setup__results {
     padding: 1rem;
   }
@@ -425,6 +558,28 @@
   .encounter-setup__result-box h3 {
     margin: 0 0 1rem;
     color: var(--color-primary);
+  }
+
+  .encounter-setup__split-title {
+    margin: 0 0 1.5rem;
+    color: var(--color-primary);
+    font-size: 1.25rem;
+  }
+
+  .encounter-setup__split-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .encounter-setup__mode-label {
+    margin: 0 0 1rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
   .encounter-setup__result-stats {
@@ -449,6 +604,84 @@
     font-size: 1.5rem;
     font-weight: 600;
     color: var(--color-text);
+  }
+
+  .encounter-setup__batch-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: var(--color-surface);
+    border-radius: var(--radius);
+    border-left: 4px solid var(--color-accent);
+  }
+
+  .encounter-setup__batch-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .encounter-setup__batch-stat-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-muted);
+    text-transform: uppercase;
+  }
+
+  .encounter-setup__batch-stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .encounter-setup__combatant-stats {
+    padding: 1.5rem;
+    background: var(--color-surface);
+    border-radius: var(--radius);
+  }
+
+  .encounter-setup__combatant-stats h4 {
+    margin: 0 0 1rem;
+    color: var(--color-primary);
+  }
+
+  .encounter-setup__stats-table {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .encounter-setup__stats-header {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1.5fr 1fr 1fr;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: var(--color-bg);
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-muted);
+    text-transform: uppercase;
+  }
+
+  .encounter-setup__stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1.5fr 1fr 1fr;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    align-items: center;
+    border-radius: 4px;
+    border: 1px solid var(--color-muted);
+    font-size: 0.875rem;
+  }
+
+  .encounter-setup__help-text {
+    margin: 0.5rem 0 0;
+    font-size: 0.75rem;
+    color: var(--color-muted);
+    font-style: italic;
   }
 
   .encounter-setup__empty {
