@@ -124,7 +124,13 @@
         </div>
 
         <div v-else-if="batchStats" class="encounter-setup__results">
-          <h3 class="encounter-setup__split-title">Batch Statistics ({{ batchStats.totalRuns }} simulations)</h3>
+          <div class="encounter-setup__batch-header">
+            <h3 class="encounter-setup__split-title">Batch Statistics ({{ batchStats.totalRuns }} simulations)</h3>
+            <button class="btn btn--secondary" @click="downloadCSV" title="Download statistics as CSV">
+              ⬇ Download CSV
+            </button>
+          </div>
+
           <div class="encounter-setup__batch-summary">
             <div class="encounter-setup__batch-stat">
               <span class="encounter-setup__batch-stat-label">Ally Win Rate:</span>
@@ -140,8 +146,29 @@
             </div>
           </div>
 
+          <!-- Per-Mode Breakdown -->
+          <div class="encounter-setup__mode-breakdown">
+            <h4>Per-Mode Breakdown</h4>
+            <div class="encounter-setup__mode-table">
+              <div class="encounter-setup__mode-header">
+                <span>Mode</span>
+                <span>Runs</span>
+                <span>Win Rate</span>
+                <span>Avg Rounds</span>
+                <span>Avg Turns</span>
+              </div>
+              <div v-for="mode in (['low', 'balanced', 'max'] as const)" :key="mode" class="encounter-setup__mode-row">
+                <span>{{ mode }}</span>
+                <span>{{ modeStats[mode]?.totalRuns || 0 }}</span>
+                <span>{{ modeStats[mode]?.allyWinRate.toFixed(1) || '-' }}%</span>
+                <span>{{ modeStats[mode]?.averageRounds || '-' }}</span>
+                <span>{{ modeStats[mode]?.averageTurns || '-' }}</span>
+              </div>
+            </div>
+          </div>
+
           <div class="encounter-setup__combatant-stats">
-            <h4>Per-Combatant Averages</h4>
+            <h4>Per-Combatant Averages (Aggregate)</h4>
             <div class="encounter-setup__stats-table">
               <div class="encounter-setup__stats-header">
                 <span>Name</span>
@@ -230,15 +257,50 @@
   import { ref, computed } from 'vue';
   import { useSimulationStore } from '../../stores/simulationStore';
   import { useDataStore } from '../../stores/dataStore';
+  import { useCharacterStore } from '../../stores/characterStore';
   import SimpleMapEditor from './SimpleMapEditor.vue';
   import CombatantSelector from './CombatantSelector.vue';
   import ReplayViewer from './ReplayViewer.vue';
-  import type { GameMap, SimulationConfig, Monster, CompositeRole } from '../../types';
+  import type { GameMap, SimulationConfig, Monster, CompositeRole, playerCharacter } from '../../types';
   import { Position } from '../../types';
 
   interface CombatantConfig {
     monster: Monster;
     role: CompositeRole;
+  }
+
+  /**
+   * Convert a player character to a Monster-like format for simulator use
+   */
+  function playerCharacterToMonster(char: playerCharacter): Monster {
+    return {
+      name: char.name,
+      source: 'PC',
+      size: char.size,
+      type: { type: 'Humanoid' },
+      alignment: char.alignment ? [char.alignment] : [],
+      ac: [char.acOverride ?? char.ac],
+      hp: {
+        average: char.maxHp,
+        formula: `${char.maxHp}d1`,
+      },
+      speed: char.speed,
+      str: char.abilityScores.str,
+      dex: char.abilityScores.dex,
+      con: char.abilityScores.con,
+      int: char.abilityScores.int,
+      wis: char.abilityScores.wis,
+      cha: char.abilityScores.cha,
+      save: {},
+      skill: {} as any,
+      passive: char.passivePerception ?? 10,
+      languages: [],
+      cr: '1/8',
+      trait: [],
+      action: [],
+      reaction: [],
+      legendary: [],
+    } as Monster;
   }
 
   const tabs = ref<Array<'map' | 'teams' | 'settings' | 'results' | 'replay'>>([
@@ -259,6 +321,7 @@
   const activeTab = ref<'map' | 'teams' | 'settings' | 'results' | 'replay'>('map');
   const simulationStore = useSimulationStore();
   const dataStore = useDataStore();
+  const characterStore = useCharacterStore();
 
   const mapConfig = ref<GameMap | null>(null);
   const alliesConfig = ref<CombatantConfig[]>([]);
@@ -270,13 +333,26 @@
   const numberOfRuns = ref(1);
   const simulationSeed = ref('');
 
-  const availableMonsters = computed(() => dataStore.monsters?.slice(0, 20) || []);
+  const availableMonsters = computed(() => {
+    const monsters = dataStore.monsters || [];
+    const characters = characterStore.characters || [];
+    const convertedCharacters = characters.map(char => playerCharacterToMonster(char));
+    return [...monsters, ...convertedCharacters];
+  });
   const alliesCount = computed(() => alliesConfig.value.length);
   const enemiesCount = computed(() => enemiesConfig.value.length);
   const isSimulating = computed(() => simulationStore.isRunning);
   const simulationProgress = computed(() => simulationStore.currentProgress);
   const splitResults = computed(() => simulationStore.splitTestResults);
   const batchStats = computed(() => simulationStore.batchStatistics);
+  const modeStats = computed(() => {
+    if (!batchStats.value) return {};
+    return {
+      low: batchStats.value.perMode.low,
+      balanced: batchStats.value.perMode.balanced,
+      max: batchStats.value.perMode.max,
+    };
+  });
   const turnLog = computed(() => {
     if (splitResults.value?.balanced?.turnLog) {
       return splitResults.value.balanced.turnLog;
@@ -378,6 +454,10 @@
 
   function clearError(): void {
     simulationStore.clearCurrent();
+  }
+
+  function downloadCSV(): void {
+    simulationStore.downloadStatisticsCSV();
   }
 </script>
 
@@ -655,6 +735,65 @@
     font-size: 2rem;
     font-weight: 700;
     color: var(--color-primary);
+  }
+
+  .encounter-setup__batch-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .encounter-setup__batch-header h3 {
+    margin: 0;
+  }
+
+  .encounter-setup__batch-header .btn {
+    white-space: nowrap;
+  }
+
+  .encounter-setup__mode-breakdown {
+    padding: 1.5rem;
+    background: var(--color-surface);
+    border-radius: var(--radius);
+    margin-bottom: 2rem;
+  }
+
+  .encounter-setup__mode-breakdown h4 {
+    margin: 0 0 1rem;
+    color: var(--color-primary);
+  }
+
+  .encounter-setup__mode-table {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .encounter-setup__mode-header,
+  .encounter-setup__mode-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.5fr 1.5fr 1.5fr;
+    gap: 1rem;
+    padding: 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  .encounter-setup__mode-header {
+    font-weight: 600;
+    background: var(--color-bg);
+    border-radius: 4px;
+    color: var(--color-muted);
+    text-transform: uppercase;
+  }
+
+  .encounter-setup__mode-row {
+    padding: 1rem 0.75rem;
+    border-bottom: 1px solid var(--color-accent);
+  }
+
+  .encounter-setup__mode-row:last-child {
+    border-bottom: none;
   }
 
   .encounter-setup__combatant-stats {

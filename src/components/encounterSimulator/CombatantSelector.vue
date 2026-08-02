@@ -14,8 +14,8 @@
         </div>
         <div class="combatant-selector__list">
           <button
-            v-for="monster in filteredMonsters"
-            :key="monster.name"
+            v-for="(monster, idx) in filteredMonsters"
+            :key="`${monster.name}-${monster.source}-${idx}`"
             class="combatant-selector__item"
             @click="selectMonster(monster)"
           >

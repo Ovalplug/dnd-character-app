@@ -140,30 +140,30 @@ export const useSimulationStore = defineStore('simulation', () => {
     });
   }
 
-  const batchStatistics = computed(() => {
-    if (batchRuns.value.length === 0) return null;
-
-    // Aggregate statistics across all runs
-    const allResults: SimulationResult[] = [];
-    for (const run of batchRuns.value) {
-      allResults.push(run.results.low as SimulationResult);
-      allResults.push(run.results.balanced as SimulationResult);
-      allResults.push(run.results.max as SimulationResult);
+  /**
+   * Helper to aggregate stats for a set of results
+   */
+  function aggregateResultStats(results: SimulationResult[]) {
+    if (results.length === 0) {
+      return {
+        totalRuns: 0,
+        allyWinRate: 0,
+        averageRounds: 0,
+        averageTurns: 0,
+        perCombatantStats: [],
+      };
     }
 
-    const totalRuns = allResults.length;
-
-    // Count ally wins
-    const allyWins = allResults.filter(r => r.outcome === 'allies_win').length;
+    const totalRuns = results.length;
+    const allyWins = results.filter(r => r.outcome === 'allies_win').length;
     const allyWinRate = totalRuns > 0 ? (allyWins / totalRuns) * 100 : 0;
 
-    // Average rounds and turns
-    const avgRounds = allResults.reduce((sum, r) => sum + r.totalRounds, 0) / totalRuns;
-    const avgTurns = allResults.reduce((sum, r) => sum + r.totalTurns, 0) / totalRuns;
+    const avgRounds = results.reduce((sum, r) => sum + r.totalRounds, 0) / totalRuns;
+    const avgTurns = results.reduce((sum, r) => sum + r.totalTurns, 0) / totalRuns;
 
-    // Per-combatant stats
+    // Per-combatant stats with action tracking
     const combatantMap = new Map<string, any>();
-    for (const result of allResults) {
+    for (const result of results) {
       for (const combatant of result.finalCombatants) {
         if (!combatantMap.has(combatant.name)) {
           combatantMap.set(combatant.name, {
@@ -174,6 +174,8 @@ export const useSimulationStore = defineStore('simulation', () => {
             kills: 0,
             deaths: 0,
             runCount: 0,
+            actions: new Map<string, number>(),
+            spellSlotsUsed: new Map<number, number>(),
           });
         }
         const stats = combatantMap.get(combatant.name)!;
@@ -182,6 +184,19 @@ export const useSimulationStore = defineStore('simulation', () => {
         stats.kills += combatant.kills;
         if (combatant.died) stats.deaths++;
         stats.runCount++;
+
+        // Track actions
+        for (const action of combatant.actions || []) {
+          const count = stats.actions.get(action.type) || 0;
+          stats.actions.set(action.type, count + action.count);
+        }
+
+        // Track spell slot usage
+        for (const [level, used] of Object.entries(combatant.resourcesUsed?.spellSlots || {})) {
+          const levelNum = parseInt(level, 10);
+          const count = stats.spellSlotsUsed.get(levelNum) || 0;
+          stats.spellSlotsUsed.set(levelNum, count + (used as number));
+        }
       }
     }
 
@@ -192,6 +207,8 @@ export const useSimulationStore = defineStore('simulation', () => {
       avgDamageTaken: stat.damageTaken / stat.runCount,
       killRate: stat.kills / stat.runCount,
       deathRate: stat.deaths / stat.runCount,
+      actions: Object.fromEntries(stat.actions),
+      avgSpellSlotsUsed: Object.fromEntries(stat.spellSlotsUsed),
     }));
 
     return {
@@ -201,7 +218,111 @@ export const useSimulationStore = defineStore('simulation', () => {
       averageTurns: Math.round(avgTurns * 10) / 10,
       perCombatantStats,
     };
+  }
+
+  const batchStatistics = computed(() => {
+    if (batchRuns.value.length === 0) return null;
+
+    // Collect results by mode
+    const lowResults: SimulationResult[] = [];
+    const balancedResults: SimulationResult[] = [];
+    const maxResults: SimulationResult[] = [];
+
+    for (const run of batchRuns.value) {
+      lowResults.push(run.results.low as SimulationResult);
+      balancedResults.push(run.results.balanced as SimulationResult);
+      maxResults.push(run.results.max as SimulationResult);
+    }
+
+    const allResults = [...lowResults, ...balancedResults, ...maxResults];
+
+    // Aggregate overall stats
+    const overall = aggregateResultStats(allResults);
+
+    // Per-mode stats
+    const perMode = {
+      low: aggregateResultStats(lowResults),
+      balanced: aggregateResultStats(balancedResults),
+      max: aggregateResultStats(maxResults),
+    };
+
+    return {
+      ...overall,
+      perMode,
+    };
   });
+
+  /**
+   * Export batch statistics as CSV
+   */
+  function exportStatisticsAsCSV(): string {
+    if (!batchStatistics.value) return '';
+
+    const stats = batchStatistics.value;
+    const lines: string[] = [];
+
+    // Header: Overall stats
+    lines.push('OVERALL STATISTICS');
+    lines.push(`Total Runs,${stats.totalRuns}`);
+    lines.push(`Ally Win Rate,${stats.allyWinRate.toFixed(1)}%`);
+    lines.push(`Average Rounds,${stats.averageRounds}`);
+    lines.push(`Average Turns,${stats.averageTurns}`);
+    lines.push('');
+
+    // Per-mode breakdown
+    lines.push('PER-MODE STATISTICS');
+    lines.push('Mode,Runs,Win Rate,Avg Rounds,Avg Turns');
+    for (const mode of ['low', 'balanced', 'max'] as const) {
+      const modeStats = stats.perMode[mode];
+      lines.push(
+        `${mode},${modeStats.totalRuns},${modeStats.allyWinRate.toFixed(1)}%,${modeStats.averageRounds},${modeStats.averageTurns}`
+      );
+    }
+    lines.push('');
+
+    // Per-combatant stats
+    lines.push('PER-COMBATANT STATISTICS (Aggregate)');
+    lines.push('Name,Team,Avg Damage Dealt,Avg Damage Taken,Kill Rate,Death Rate');
+    for (const combatant of stats.perCombatantStats) {
+      lines.push(
+        `"${combatant.name}",${combatant.team},${combatant.avgDamageDealt.toFixed(2)},${combatant.avgDamageTaken.toFixed(2)},${(combatant.killRate * 100).toFixed(1)}%,${(combatant.deathRate * 100).toFixed(1)}%`
+      );
+    }
+    lines.push('');
+
+    // Per-mode combatant stats
+    for (const mode of ['low', 'balanced', 'max'] as const) {
+      lines.push(`PER-COMBATANT STATISTICS (${mode.toUpperCase()} MODE)`);
+      lines.push('Name,Team,Avg Damage Dealt,Avg Damage Taken,Kill Rate,Death Rate');
+      for (const combatant of stats.perMode[mode].perCombatantStats) {
+        lines.push(
+          `"${combatant.name}",${combatant.team},${combatant.avgDamageDealt.toFixed(2)},${combatant.avgDamageTaken.toFixed(2)},${(combatant.killRate * 100).toFixed(1)}%,${(combatant.deathRate * 100).toFixed(1)}%`
+        );
+      }
+      lines.push('');
+    }
+
+    return lines.join('\n');
+  }
+
+  /**
+   * Download statistics as CSV file
+   */
+  function downloadStatisticsCSV(): void {
+    const csv = exportStatisticsAsCSV();
+    if (!csv) return;
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `encounter-sim-stats-${timestamp}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 
   return {
     currentSimulation,
@@ -214,5 +335,7 @@ export const useSimulationStore = defineStore('simulation', () => {
     runBatchSimulation,
     batchStatistics,
     clearCurrent,
+    exportStatisticsAsCSV,
+    downloadStatisticsCSV,
   };
 });
