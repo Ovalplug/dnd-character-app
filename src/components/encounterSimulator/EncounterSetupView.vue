@@ -51,7 +51,10 @@
               placeholder="Leave empty for random seed"
               class="encounter-setup__input"
             />
-            <p class="encounter-setup__help-text">Use a seed to reproduce the same encounter. Share seeds to let others replay your battles.</p>
+            <p class="encounter-setup__help-text">
+              Use a seed to reproduce the same encounter. Share seeds to let others replay your
+              battles.
+            </p>
           </div>
 
           <div class="encounter-setup__setting-group">
@@ -63,11 +66,16 @@
               max="50"
               class="encounter-setup__input"
             />
-            <p class="encounter-setup__help-text">Run 1 = single simulation (3 modes). Run N = batch of N simulations (3N total).</p>
+            <p class="encounter-setup__help-text">
+              Run 1 = single simulation (3 modes). Run N = batch of N simulations (3N total).
+            </p>
           </div>
 
           <div class="encounter-setup__setting-info">
-            <p><strong>Note:</strong> Each run executes in all 3 resource modes (Low, Balanced, Max) for split testing analysis.</p>
+            <p>
+              <strong>Note:</strong> Each run executes in all 3 resource modes (Low, Balanced, Max)
+              for split testing analysis.
+            </p>
           </div>
 
           <div class="encounter-setup__summary">
@@ -124,8 +132,14 @@
 
         <div v-else-if="batchStats" class="encounter-setup__results">
           <div class="encounter-setup__batch-header">
-            <h3 class="encounter-setup__split-title">Batch Statistics ({{ batchStats.totalRuns }} simulations)</h3>
-            <button class="btn btn--secondary" @click="downloadCSV" title="Download statistics as CSV">
+            <h3 class="encounter-setup__split-title">
+              Batch Statistics ({{ batchStats.totalRuns }} simulations)
+            </h3>
+            <button
+              class="btn btn--secondary"
+              @click="downloadCSV"
+              title="Download statistics as CSV"
+            >
               ⬇ Download CSV
             </button>
           </div>
@@ -133,7 +147,9 @@
           <div class="encounter-setup__batch-summary">
             <div class="encounter-setup__batch-stat">
               <span class="encounter-setup__batch-stat-label">Ally Win Rate:</span>
-              <span class="encounter-setup__batch-stat-value">{{ batchStats.allyWinRate.toFixed(1) }}%</span>
+              <span class="encounter-setup__batch-stat-value"
+                >{{ batchStats.allyWinRate.toFixed(1) }}%</span
+              >
             </div>
             <div class="encounter-setup__batch-stat">
               <span class="encounter-setup__batch-stat-label">Avg Rounds:</span>
@@ -156,7 +172,11 @@
                 <span>Avg Rounds</span>
                 <span>Avg Turns</span>
               </div>
-              <div v-for="mode in (['low', 'balanced', 'max'] as const)" :key="mode" class="encounter-setup__mode-row">
+              <div
+                v-for="mode in (['low', 'balanced', 'max'] as const)"
+                :key="mode"
+                class="encounter-setup__mode-row"
+              >
                 <span>{{ mode }}</span>
                 <span>{{ modeStats[mode]?.totalRuns || 0 }}</span>
                 <span>{{ modeStats[mode]?.allyWinRate.toFixed(1) || '-' }}%</span>
@@ -204,9 +224,16 @@
                   @click="expandedRuns.has(idx) ? expandedRuns.delete(idx) : expandedRuns.add(idx)"
                 >
                   <span class="encounter-setup__accordion-title">
-                    Run {{ run.runIndex }}: {{ run.results.balanced.outcome }} ({{ run.results.balanced.totalRounds }} rounds, {{ run.results.balanced.totalTurns }} turns)
+                    Run {{ run.runIndex }}: {{ run.results.balanced.outcome }} ({{
+                      run.results.balanced.totalRounds
+                    }}
+                    rounds, {{ run.results.balanced.totalTurns }} turns)
                   </span>
-                  <span class="encounter-setup__accordion-icon" :class="{ 'is-expanded': expandedRuns.has(idx) }">▶</span>
+                  <span
+                    class="encounter-setup__accordion-icon"
+                    :class="{ 'is-expanded': expandedRuns.has(idx) }"
+                    >▶</span
+                  >
                 </button>
                 <div v-if="expandedRuns.has(idx)" class="encounter-setup__accordion-content">
                   <div class="encounter-setup__run-details">
@@ -228,7 +255,9 @@
                       <div><strong>Outcome:</strong> {{ run.results.balanced.outcome }}</div>
                       <div><strong>Rounds:</strong> {{ run.results.balanced.totalRounds }}</div>
                       <div><strong>Turns:</strong> {{ run.results.balanced.totalTurns }}</div>
-                      <div v-if="run.results.balanced.seed"><strong>Seed:</strong> {{ run.results.balanced.seed }}</div>
+                      <div v-if="run.results.balanced.seed">
+                        <strong>Seed:</strong> {{ run.results.balanced.seed }}
+                      </div>
                     </div>
 
                     <div class="encounter-setup__run-combatants">
@@ -240,11 +269,16 @@
                       >
                         <div class="encounter-setup__combatant-header">
                           <strong>{{ comb.name }}</strong>
-                          <span class="encounter-setup__combatant-team" :class="`team-${comb.team}`">
+                          <span
+                            class="encounter-setup__combatant-team"
+                            :class="`team-${comb.team}`"
+                          >
                             {{ comb.team }}
                           </span>
                           <span v-if="comb.died" class="encounter-setup__status-died">DIED</span>
-                          <span v-else class="encounter-setup__status-alive">Alive ({{ comb.finalHp }} HP)</span>
+                          <span v-else class="encounter-setup__status-alive"
+                            >Alive ({{ comb.finalHp }} HP)</span
+                          >
                         </div>
 
                         <div class="encounter-setup__combatant-stats-grid">
@@ -263,10 +297,17 @@
                         </div>
 
                         <!-- Attack Breakdown -->
-                        <div v-if="comb.actions.length > 0" class="encounter-setup__actions-breakdown">
+                        <div
+                          v-if="comb.actions.length > 0"
+                          class="encounter-setup__actions-breakdown"
+                        >
                           <div class="encounter-setup__action-header">Actions Used</div>
                           <div class="encounter-setup__action-list">
-                            <div v-for="action in comb.actions" :key="action.type" class="encounter-setup__action-item">
+                            <div
+                              v-for="action in comb.actions"
+                              :key="action.type"
+                              class="encounter-setup__action-item"
+                            >
                               <span class="action-type">{{ action.type }}:</span>
                               <span class="action-count">{{ action.count }}x</span>
                             </div>
@@ -295,7 +336,10 @@
                           <div v-if="Object.keys(comb.resourcesUsed.abilityUses).length > 0">
                             <strong>Ability Uses:</strong>
                             <div class="encounter-setup__resource-list">
-                              <div v-for="(used, ability) in comb.resourcesUsed.abilityUses" :key="`ability-${ability}`">
+                              <div
+                                v-for="(used, ability) in comb.resourcesUsed.abilityUses"
+                                :key="`ability-${ability}`"
+                              >
                                 {{ ability }}: {{ used }}
                               </div>
                             </div>
@@ -304,7 +348,9 @@
                       </div>
                     </div>
 
-                    <button class="btn btn--secondary" @click="replayRunIndex = idx">View Replay</button>
+                    <button class="btn btn--secondary" @click="replayRunIndex = idx">
+                      View Replay
+                    </button>
                   </div>
                 </div>
               </div>
@@ -349,7 +395,6 @@
           <p>Run simulation to see results</p>
         </div>
       </div>
-
     </div>
 
     <!-- Replay PopOut -->
@@ -382,7 +427,13 @@
   import CombatantSelector from './CombatantSelector.vue';
   import ReplayViewer from './ReplayViewer.vue';
   import PopOut from '../PopOut.vue';
-  import type { GameMap, SimulationConfig, Monster, CompositeRole, playerCharacter } from '../../types';
+  import type {
+    GameMap,
+    SimulationConfig,
+    Monster,
+    CompositeRole,
+    playerCharacter,
+  } from '../../types';
   import { Position } from '../../types';
 
   interface CombatantConfig {
@@ -449,7 +500,7 @@
    */
   watch(
     () => simulationStore.isRunning,
-    (isRunning) => {
+    isRunning => {
       if (!isRunning && (splitResults.value || batchStats.value?.totalRuns)) {
         activeTab.value = 'results';
       }

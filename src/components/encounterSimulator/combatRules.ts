@@ -19,6 +19,7 @@ export interface AttackResult {
   damageModifier?: number;
   finalDamage: number;
   totalDamageDealt: number;
+  resistanceApplied?: 'immune' | 'resist' | 'vulnerable' | 'normal';
 }
 
 /**
@@ -66,40 +67,93 @@ export class CombatResolver {
     weaponModifier: number = 0,
     damageExpression: string = '1d4',
     advantage: boolean = false,
-    disadvantage: boolean = false
+    disadvantage: boolean = false,
+    damageType: string = 'bludgeoning'
   ): AttackResult {
     // Attack roll
     const attackRoll = this.roller.rollD20(weaponModifier, advantage, disadvantage);
     const targetAC = target.getAc();
     const isHit = attackRoll >= targetAC;
-    const isCrit = attackRoll === 20 + weaponModifier; // d20 was 20
+    const isCrit = attackRoll === 20 + weaponModifier;
 
     // Damage calculation
-    let finalDamage = 0;
-    if (isHit || isCrit) {
+    let rawDamage = 0;
+    if (isHit) {
       if (isCrit) {
-        // Critical hit: double damage dice
-        finalDamage = this.roller.parseDamageExpression(damageExpression);
-        finalDamage += this.roller.parseDamageExpression(damageExpression);
+        rawDamage = this.roller.parseDamageExpression(damageExpression);
+        rawDamage += this.roller.parseDamageExpression(damageExpression);
       } else {
-        finalDamage = this.roller.parseDamageExpression(damageExpression);
+        rawDamage = this.roller.parseDamageExpression(damageExpression);
       }
     }
 
+    // Apply resistance / immunity / vulnerability
+    const resistance = isHit ? this.checkResistance(target.monster, damageType) : 'normal';
+    let finalDamage = rawDamage;
+    if (resistance === 'immune') finalDamage = 0;
+    else if (resistance === 'resist') finalDamage = Math.floor(rawDamage / 2);
+    else if (resistance === 'vulnerable') finalDamage = rawDamage * 2;
+
     // Apply damage
-    const totalDamageDealt = isHit ? finalDamage : 0;
-    if (totalDamageDealt > 0) {
-      target.takeDamage(totalDamageDealt);
-      attacker.totalDamageDealt += totalDamageDealt;
+    if (isHit && finalDamage > 0) {
+      target.takeDamage(finalDamage);
+      attacker.totalDamageDealt += finalDamage;
+    }
+
+    // Track hit / miss / crit on attacker
+    if (!isHit) {
+      attacker.missCount++;
+    } else if (isCrit) {
+      attacker.critCount++;
+    } else {
+      attacker.hitCount++;
     }
 
     return {
       rolled: attackRoll,
       isCrit,
       isHit,
-      finalDamage: totalDamageDealt,
+      finalDamage: isHit ? finalDamage : 0,
       totalDamageDealt: attacker.totalDamageDealt,
+      resistanceApplied: resistance,
     };
+  }
+
+  private checkResistance(
+    monster: Monster,
+    damageType: string
+  ): 'immune' | 'resist' | 'vulnerable' | 'normal' {
+    const dt = damageType.toLowerCase();
+
+    if (monster.immune) {
+      for (const entry of monster.immune) {
+        if (typeof entry === 'string' && entry.toLowerCase() === dt) return 'immune';
+        if (typeof entry === 'object' && entry !== null && 'immune' in entry) {
+          const list = (entry as any).immune;
+          if (Array.isArray(list) && list.some((i: string) => i.toLowerCase() === dt))
+            return 'immune';
+        }
+      }
+    }
+
+    if (monster.resist) {
+      for (const entry of monster.resist) {
+        if (typeof entry === 'string' && entry.toLowerCase() === dt) return 'resist';
+        if (typeof entry === 'object' && entry !== null && 'resist' in entry) {
+          const list = (entry as any).resist;
+          if (Array.isArray(list) && list.some((r: string) => r.toLowerCase() === dt))
+            return 'resist';
+        }
+      }
+    }
+
+    if (monster.vulnerable) {
+      for (const entry of monster.vulnerable) {
+        if (typeof entry === 'string' && entry.toLowerCase() === dt) return 'vulnerable';
+      }
+    }
+
+    return 'normal';
   }
 
   /**

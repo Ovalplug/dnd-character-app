@@ -85,6 +85,25 @@ export interface ParsedAbility {
   rechargeRoll?: string;
 }
 
+export interface ParsedAttack {
+  name: string;
+  attackBonus: number;
+  damageExpression: string;
+  damageType: string;
+  isRanged: boolean;
+  isMelee: boolean;
+  reach: number;
+  range?: string;
+}
+
+export interface ParsedMonsterProfile {
+  attacks: ParsedAttack[];
+  multiattackCount: number;
+  hasMultiattack: boolean;
+  proficiencyBonus: number;
+  isLegendary: boolean;
+}
+
 export interface RoleDefinition {
   type: CombatantRoleType;
   actionWeights: Record<string, number>;
@@ -99,7 +118,15 @@ export interface ActionCandidate {
   targetPosition?: GridPosition;
   expectedDamage?: number;
   expectedHealing?: number;
-  resourceCost?: { spellSlot?: number; ability?: string };
+  resourceCost?: {
+    spellSlot?: number;
+    ability?: string;
+    isAtWill?: boolean;
+    dailySpellKey?: string;
+  };
+  damageExpression?: string;
+  damageType?: string;
+  attackBonus?: number;
   score: number;
 }
 
@@ -107,6 +134,11 @@ export interface TurnResult {
   events: string[];
   combatantUpdates: Partial<SimulatorCombatant>[];
   actionExecuted: boolean;
+  damageDealt?: number;
+  targetName?: string;
+  targetHpBefore?: number;
+  targetHpAfter?: number;
+  isCrit?: boolean;
 }
 
 export interface TurnEvent {
@@ -122,7 +154,10 @@ export interface TurnEvent {
   outcome: {
     success: boolean;
     damageDealt?: number;
-    damageTaken?: number;
+    isCrit?: boolean;
+    targetName?: string;
+    targetHpBefore?: number;
+    targetHpAfter?: number;
     hpBefore: number;
     hpAfter: number;
     events: string[];
@@ -155,17 +190,23 @@ export interface SimulationResult {
   finalCombatants: Array<{
     name: string;
     team: Team;
+    maxHp: number;
     finalHp: number;
+    initiative: number;
     damageTaken: number;
     damageDealt: number;
     kills: number;
     died: boolean;
+    hitCount: number;
+    missCount: number;
+    critCount: number;
     actions: Array<{
       type: string;
       count: number;
     }>;
     resourcesUsed: {
       spellSlots: Record<number, number>;
+      dailySpellsUsed: Record<string, number>;
       abilityUses: Record<string, number>;
     };
   }>;
@@ -365,12 +406,17 @@ export class SimulatorCombatant {
   public disengage: boolean = false;
 
   public spellSlots: Record<number, { max: number; used: number }> = {};
+  public dailySpellUses: Record<string, { max: number; used: number }> = {};
   public abilityRecharges: Record<string, number> = {};
   public weaponCharges: Record<string, number> = {};
 
   public totalDamageDealt: number = 0;
   public totalDamageTaken: number = 0;
   public killCount: number = 0;
+  public hitCount: number = 0;
+  public missCount: number = 0;
+  public critCount: number = 0;
+  public profile: ParsedMonsterProfile | null = null;
   public actionLog: Array<{ type: ActionType; count: number }> = [];
 
   public monster: Monster;
@@ -433,6 +479,7 @@ export class SimulatorCombatant {
   initializeResources(resourceMode: ResourceMode): void {
     if (this.monster.spellcasting && Array.isArray(this.monster.spellcasting)) {
       for (const sc of this.monster.spellcasting) {
+        // Slot-based spellcasting
         if (sc.spells) {
           for (let level = 0; level <= 9; level++) {
             const key = level as keyof typeof sc.spells;
@@ -445,6 +492,18 @@ export class SimulatorCombatant {
                 maxSlots = slots;
               }
               this.spellSlots[level] = { max: maxSlots, used: 0 };
+            }
+          }
+        }
+        // Daily innate spells — tracked separately, not as spell slots
+        if (sc.daily) {
+          for (const [key, spellList] of Object.entries(sc.daily)) {
+            if (!Array.isArray(spellList)) continue;
+            const timesPerDay = parseInt(key, 10) || 1;
+            let maxUses = timesPerDay;
+            if (resourceMode === 'low') maxUses = Math.max(0, Math.floor(timesPerDay / 3));
+            for (const spell of spellList) {
+              this.dailySpellUses[spell] = { max: maxUses, used: 0 };
             }
           }
         }
@@ -464,6 +523,18 @@ export class SimulatorCombatant {
   hasSpellSlot(level: number): boolean {
     const slots = this.spellSlots[level];
     return slots ? slots.used < slots.max : false;
+  }
+
+  hasDailyUse(spellName: string): boolean {
+    const uses = this.dailySpellUses[spellName];
+    return uses ? uses.used < uses.max : false;
+  }
+
+  consumeDailyUse(spellName: string): boolean {
+    const uses = this.dailySpellUses[spellName];
+    if (!uses || uses.used >= uses.max) return false;
+    uses.used++;
+    return true;
   }
 
   addCondition(condition: Condition): void {
@@ -533,6 +604,7 @@ export class SimulatorCombatant {
     clone.initiative = this.initiative;
     clone.isConscious = this.isConscious;
     clone.spellSlots = JSON.parse(JSON.stringify(this.spellSlots));
+    clone.dailySpellUses = JSON.parse(JSON.stringify(this.dailySpellUses));
     clone.abilityRecharges = { ...this.abilityRecharges };
     clone.weaponCharges = { ...this.weaponCharges };
     clone.conditions = this.conditions.map(c => c.clone());
@@ -543,6 +615,10 @@ export class SimulatorCombatant {
     clone.totalDamageDealt = this.totalDamageDealt;
     clone.totalDamageTaken = this.totalDamageTaken;
     clone.killCount = this.killCount;
+    clone.hitCount = this.hitCount;
+    clone.missCount = this.missCount;
+    clone.critCount = this.critCount;
+    clone.profile = this.profile;
     clone.actionLog = JSON.parse(JSON.stringify(this.actionLog));
     return clone;
   }

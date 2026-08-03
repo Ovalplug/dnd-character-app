@@ -8,11 +8,7 @@
     </div>
 
     <div class="replay-viewer__controls">
-      <button
-        class="btn btn--secondary"
-        @click="previousTurn"
-        :disabled="currentTurnIndex <= 0"
-      >
+      <button class="btn btn--secondary" @click="previousTurn" :disabled="currentTurnIndex <= 0">
         ← Previous
       </button>
 
@@ -45,10 +41,15 @@
     <div v-if="currentTurn" class="replay-viewer__content">
       <div class="replay-viewer__turn-info">
         <div class="replay-viewer__info-section">
-          <h4 class="replay-viewer__section-title">Round {{ currentTurn.round + 1 }} / Turn {{ currentTurnIndex + 1 }}</h4>
+          <h4 class="replay-viewer__section-title">
+            Round {{ currentTurn.round + 1 }} / Turn {{ currentTurnIndex + 1 }}
+          </h4>
           <div class="replay-viewer__combatant">
             <span class="replay-viewer__combatant-name">{{ currentTurn.combatantName }}</span>
-            <span class="replay-viewer__combatant-team" :class="`team-${currentTurn.combatantTeam}`">
+            <span
+              class="replay-viewer__combatant-team"
+              :class="`team-${currentTurn.combatantTeam}`"
+            >
               {{ currentTurn.combatantTeam }}
             </span>
           </div>
@@ -76,16 +77,16 @@
               <span class="replay-viewer__stat-label">Damage Dealt:</span>
               <span class="replay-viewer__stat-value">{{ currentTurn.outcome.damageDealt }}</span>
             </div>
-            <div v-if="currentTurn.outcome.damageTaken" class="replay-viewer__stat">
-              <span class="replay-viewer__stat-label">Damage Taken:</span>
-              <span class="replay-viewer__stat-value">{{ currentTurn.outcome.damageTaken }}</span>
-            </div>
           </div>
 
           <div v-if="currentTurn.outcome.events.length > 0" class="replay-viewer__events">
             <h5 class="replay-viewer__events-title">Events</h5>
             <ul class="replay-viewer__event-list">
-              <li v-for="(event, idx) in currentTurn.outcome.events" :key="idx" class="replay-viewer__event-item">
+              <li
+                v-for="(event, idx) in currentTurn.outcome.events"
+                :key="idx"
+                class="replay-viewer__event-item"
+              >
                 {{ event }}
               </li>
             </ul>
@@ -163,7 +164,7 @@
   }
 
   // Watch isPlaying and manage playback interval
-  watch(isPlaying, (playing) => {
+  watch(isPlaying, playing => {
     if (playbackInterval !== null) {
       clearInterval(playbackInterval);
       playbackInterval = null;

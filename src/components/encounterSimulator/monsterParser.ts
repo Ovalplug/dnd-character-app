@@ -4,8 +4,8 @@
  * from monster stat block JSON text entries.
  */
 
-import type { Monster, Entry } from '../../types';
-import type { ParsedAbility } from './emulatorTyping';
+import type { Monster, Entry, MonsterCR } from '../../types';
+import type { ParsedAbility, ParsedAttack, ParsedMonsterProfile } from './emulatorTyping';
 
 /**
  * Parses monster abilities from text entries.
@@ -247,5 +247,113 @@ export class MonsterParser {
     }
 
     return Array.from(spells);
+  }
+
+  /**
+   * Parse a full combat profile from a monster stat block:
+   * real attack bonus, damage expressions, multiattack count, and proficiency bonus.
+   */
+  parseMonsterProfile(monster: Monster): ParsedMonsterProfile {
+    const attacks: ParsedAttack[] = [];
+    let multiattackCount = 1;
+    let hasMultiattack = false;
+
+    if (monster.action) {
+      for (const entry of monster.action) {
+        if (typeof entry !== 'object' || !entry || !('name' in entry)) continue;
+        const e = entry as any;
+        const name: string = e.name || '';
+        const text = this.flattenEntries(e.entries || []).join(' ');
+
+        if (/^multiattack$/i.test(name)) {
+          hasMultiattack = true;
+          const countMatch = text.match(/makes?\s+(?:up\s+to\s+)?(\w+|\d+)\s+(?:\w+\s+)?attacks?/i);
+          if (countMatch) {
+            const word = countMatch[1] ?? '2';
+            multiattackCount = isNaN(Number(word)) ? this.wordToNumber(word) : parseInt(word, 10);
+          } else {
+            multiattackCount = 2;
+          }
+          continue;
+        }
+
+        const attack = this.parseAttackFromText(name, text);
+        if (attack) attacks.push(attack);
+      }
+    }
+
+    return {
+      attacks,
+      multiattackCount,
+      hasMultiattack,
+      proficiencyBonus: MonsterParser.getProficiencyBonus(monster.cr),
+      isLegendary: !!(monster.legendary && monster.legendary.length > 0),
+    };
+  }
+
+  private parseAttackFromText(name: string, text: string): ParsedAttack | null {
+    // Match "Melee Weapon Attack: +11 to hit" / "Ranged Spell Attack: +6 to hit"
+    const attackTypeMatch = text.match(
+      /(melee\s+or\s+ranged|melee|ranged)\s+(?:weapon|spell)\s+attack:\s*([+-]\d+)\s+to\s+hit/i
+    );
+    if (!attackTypeMatch) return null;
+
+    const typeStr = (attackTypeMatch[1] ?? '').toLowerCase();
+    const isMelee = typeStr.includes('melee');
+    const isRanged = typeStr.includes('ranged');
+    const attackBonus = parseInt(attackTypeMatch[2] ?? '0', 10);
+
+    const reachMatch = text.match(/reach\s+(\d+)\s*ft/i);
+    const reach = reachMatch ? parseInt(reachMatch[1] ?? '5', 10) : 5;
+
+    const rangeMatch = text.match(/range\s+(\d+\/?(\d*))\s*ft/i);
+    const range = rangeMatch ? rangeMatch[1] : undefined;
+
+    // "Hit: 17 (2d10 + 6) piercing damage"
+    const damageMatch = text.match(/[Hh]it:\s*\d+\s*\(\s*([^)]+?)\s*\)\s*(\w+)\s*damage/);
+    const damageExpression = damageMatch ? damageMatch[1]?.trim() ?? '1d6' : '1d6';
+    const damageType = damageMatch
+      ? damageMatch[2]?.trim().toLowerCase() ?? 'bludgeoning'
+      : 'bludgeoning';
+
+    return { name, attackBonus, damageExpression, damageType, isRanged, isMelee, reach, range };
+  }
+
+  private wordToNumber(word: string): number {
+    const map: Record<string, number> = {
+      one: 1,
+      two: 2,
+      three: 3,
+      four: 4,
+      five: 5,
+      six: 6,
+      seven: 7,
+      eight: 8,
+      nine: 9,
+      ten: 10,
+    };
+    return map[word.toLowerCase()] ?? 2;
+  }
+
+  /**
+   * Derive proficiency bonus from a monster's CR.
+   */
+  static getProficiencyBonus(cr: MonsterCR): number {
+    const crStr = typeof cr === 'string' ? cr : cr.cr;
+    let crValue: number;
+    if (crStr.includes('/')) {
+      const parts = crStr.split('/');
+      crValue = parseInt(parts[0] ?? '0', 10) / parseInt(parts[1] ?? '1', 10);
+    } else {
+      crValue = parseFloat(crStr);
+    }
+    if (isNaN(crValue) || crValue < 5) return 2;
+    if (crValue < 9) return 3;
+    if (crValue < 13) return 4;
+    if (crValue < 17) return 5;
+    if (crValue < 21) return 6;
+    if (crValue < 25) return 7;
+    if (crValue < 29) return 8;
+    return 9;
   }
 }

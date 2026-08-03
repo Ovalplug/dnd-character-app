@@ -182,6 +182,35 @@ export class DiceRoller {
   }
 
   /**
+   * Calculate average damage for a string expression like "2d6 + 3" (no RNG).
+   */
+  averageDamage(expression: string): number {
+    const re = /(\d+)d(\d+)/gi;
+    let total = 0;
+    let match: RegExpExecArray | null;
+    const r = new RegExp(re.source, 'gi');
+    while ((match = r.exec(expression)) !== null) {
+      const count = parseInt(match[1] ?? '0', 10);
+      const sides = parseInt(match[2] ?? '0', 10);
+      total += (count * (sides + 1)) / 2;
+    }
+    // Sum any flat modifiers (e.g. +6 or -1) after stripping dice notation
+    const stripped = expression.replace(/\d+d\d+/gi, '');
+    const modMatches = stripped.match(/[+-]\s*\d+/g);
+    if (modMatches) {
+      for (const m of modMatches) {
+        total += parseInt(m.replace(/\s/g, ''), 10);
+      }
+    }
+    // Fallback: plain integer with no dice
+    if (total === 0) {
+      const flat = parseInt(expression.trim(), 10);
+      if (!isNaN(flat)) total = flat;
+    }
+    return Math.max(0, total);
+  }
+
+  /**
    * Calculate average damage for an expression (no RNG).
    * Used for AI threat assessment.
    */

@@ -24,7 +24,10 @@ export const useSimulationStore = defineStore('simulation', () => {
   const currentProgress = ref(0);
   const error = ref<string | null>(null);
 
-  async function runSimulation(config: SimulationConfig, seed?: string): Promise<SplitTestResults | null> {
+  async function runSimulation(
+    config: SimulationConfig,
+    seed?: string
+  ): Promise<SplitTestResults | null> {
     isRunning.value = true;
     currentProgress.value = 0;
     error.value = null;
@@ -46,7 +49,7 @@ export const useSimulationStore = defineStore('simulation', () => {
             const rng = seedrandom(modeSeed);
             const engine = new SimulationEngine(modeConfig, rng);
             const result = engine.executeSimulation();
-            
+
             // Set the seed in the result
             (result as any).seed = baseSeed;
             results[mode] = result;
@@ -108,7 +111,7 @@ export const useSimulationStore = defineStore('simulation', () => {
               const rng = seedrandom(modeSeed);
               const engine = new SimulationEngine(modeConfig, rng);
               const result = engine.executeSimulation();
-              
+
               // Set the seed in the result
               (result as any).seed = runSeed;
               results[mode] = result;
@@ -130,7 +133,8 @@ export const useSimulationStore = defineStore('simulation', () => {
 
           resolve(runs);
         } catch (err) {
-          error.value = err instanceof Error ? err.message : 'Unknown error during batch simulation';
+          error.value =
+            err instanceof Error ? err.message : 'Unknown error during batch simulation';
           console.error('Batch simulation error:', err);
           isRunning.value = false;
           currentProgress.value = 0;
@@ -275,7 +279,9 @@ export const useSimulationStore = defineStore('simulation', () => {
     for (const mode of ['low', 'balanced', 'max'] as const) {
       const modeStats = stats.perMode[mode];
       lines.push(
-        `${mode},${modeStats.totalRuns},${modeStats.allyWinRate.toFixed(1)}%,${modeStats.averageRounds},${modeStats.averageTurns}`
+        `${mode},${modeStats.totalRuns},${modeStats.allyWinRate.toFixed(1)}%,${
+          modeStats.averageRounds
+        },${modeStats.averageTurns}`
       );
     }
     lines.push('');
@@ -285,7 +291,11 @@ export const useSimulationStore = defineStore('simulation', () => {
     lines.push('Name,Team,Avg Damage Dealt,Avg Damage Taken,Kill Rate,Death Rate');
     for (const combatant of stats.perCombatantStats) {
       lines.push(
-        `"${combatant.name}",${combatant.team},${combatant.avgDamageDealt.toFixed(2)},${combatant.avgDamageTaken.toFixed(2)},${(combatant.killRate * 100).toFixed(1)}%,${(combatant.deathRate * 100).toFixed(1)}%`
+        `"${combatant.name}",${combatant.team},${combatant.avgDamageDealt.toFixed(
+          2
+        )},${combatant.avgDamageTaken.toFixed(2)},${(combatant.killRate * 100).toFixed(1)}%,${(
+          combatant.deathRate * 100
+        ).toFixed(1)}%`
       );
     }
     lines.push('');
@@ -296,7 +306,11 @@ export const useSimulationStore = defineStore('simulation', () => {
       lines.push('Name,Team,Avg Damage Dealt,Avg Damage Taken,Kill Rate,Death Rate');
       for (const combatant of stats.perMode[mode].perCombatantStats) {
         lines.push(
-          `"${combatant.name}",${combatant.team},${combatant.avgDamageDealt.toFixed(2)},${combatant.avgDamageTaken.toFixed(2)},${(combatant.killRate * 100).toFixed(1)}%,${(combatant.deathRate * 100).toFixed(1)}%`
+          `"${combatant.name}",${combatant.team},${combatant.avgDamageDealt.toFixed(
+            2
+          )},${combatant.avgDamageTaken.toFixed(2)},${(combatant.killRate * 100).toFixed(1)}%,${(
+            combatant.deathRate * 100
+          ).toFixed(1)}%`
         );
       }
       lines.push('');

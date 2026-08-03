@@ -745,11 +745,18 @@ export type Monster = {
   legendaryTags?: string[];
   senseTags?: string[];
   damageTags?: string[];
+  areaTags?: string[];
   miscTags?: string[];
   attachedItems?: string[];
   variant?: Entries;
   environment?: string[];
   hasFluff?: boolean;
+  hasFluffImages?: boolean;
+  hasToken?: boolean;
+  isNpc?: boolean;
+  languageTags?: string[];
+  spellcastingTags?: string[];
+  affectsCreatureType?: string[];
   mythicHeader?: string[];
   mythic?: Entries;
 };
@@ -981,6 +988,8 @@ export type {
   ConditionState,
   SpellReference,
   ParsedAbility,
+  ParsedAttack,
+  ParsedMonsterProfile,
   RoleDefinition,
   ActionCandidate,
   TurnResult,

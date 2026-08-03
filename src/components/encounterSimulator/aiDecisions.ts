@@ -128,12 +128,10 @@ export class AIDecisionMaker {
 
     // Find lowest HP ally to assess urgency
     const team = state.getTeam(combatant.team);
-    const lowestHpAlly = team.reduce((a, b) =>
-      a.currentHp < b.currentHp ? a : b
-    );
+    const lowestHpAlly = team.reduce((a, b) => (a.currentHp < b.currentHp ? a : b));
 
     const hpPercent = lowestHpAlly.currentHp / lowestHpAlly.getMaxHp();
-    
+
     // Critical healing urgency (< 25% HP)
     if (hpPercent < 0.25) {
       score *= 2.0;
@@ -184,7 +182,6 @@ export class AIDecisionMaker {
 
     return score;
   }
-
 
   /**
    * Score a potential target.
@@ -337,7 +334,7 @@ export class AIDecisionMaker {
     // Spellcaster threat assessment (up to 20 points)
     if (enemy.monster.spellcasting) {
       threat += 20; // Spellcasters are inherently more threatening
-      
+
       // Check if maintaining concentration on dangerous spell
       const concentrationSpells = enemy.conditions.filter(c => c.type === 'concentrating');
       if (concentrationSpells.length > 0) {
@@ -444,7 +441,7 @@ export class AIDecisionMaker {
       // Create Position object for distance calculation
       const centerPos = new Position(centerPosition.x, centerPosition.y);
       const distance = this.movementResolver.distance(centerPos, combatant.position);
-      
+
       if (distance <= radius) {
         if (combatant.team !== caster.team) {
           // Enemy in AoE: positive score based on threat level
