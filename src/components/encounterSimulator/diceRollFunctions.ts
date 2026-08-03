@@ -3,7 +3,7 @@
  * All randomness uses seeded PRNG for deterministic replay.
  */
 
-import type { DiceType } from './emulatorTyping';
+import type { DiceType, DiceGroup } from './emulatorTyping';
 
 /**
  * Seeded random number generator interface.
@@ -139,6 +139,56 @@ export class DiceRoller {
    */
   rollInitiative(dexModifier: number): number {
     return this.rollD20(dexModifier);
+  }
+
+  /**
+   * Parse and roll a damage expression, tracking every individual die result.
+   * Pass isCrit=true to double all dice (D&D 5e crit rule).
+   */
+  parseDamageExpressionDetailed(
+    expression: string,
+    isCrit: boolean = false
+  ): { total: number; groups: DiceGroup[]; modifier: number } {
+    const groups: DiceGroup[] = [];
+    let totalModifier = 0;
+
+    const regexGlobal = /(\d+)d(\d+)/gi;
+    let match: RegExpExecArray | null;
+    while ((match = regexGlobal.exec(expression)) !== null) {
+      const baseCount = parseInt(match[1] ?? '0', 10);
+      const sides = parseInt(match[2] ?? '0', 10);
+      const count = isCrit ? baseCount * 2 : baseCount;
+      const diceType = `d${sides}`;
+
+      const rolls: number[] = [];
+      for (let i = 0; i < count; i++) {
+        rolls.push(Math.floor(this.rng() * sides) + 1);
+      }
+      const subtotal = rolls.reduce((sum, r) => sum + r, 0);
+
+      groups.push({
+        expression: `${count}${diceType}${isCrit && baseCount !== count ? ' (×2 crit)' : ''}`,
+        diceType,
+        count,
+        rolls,
+        subtotal,
+      });
+    }
+
+    // Parse flat modifier (e.g. "+3" or "-1")
+    const stripped = expression.replace(/\d+d\d+/gi, '');
+    const modMatches = stripped.match(/[+-]\s*\d+/g);
+    if (modMatches) {
+      for (const m of modMatches) {
+        totalModifier += parseInt(m.replace(/\s/g, ''), 10);
+      }
+    } else {
+      const flat = parseInt(stripped.trim(), 10);
+      if (!isNaN(flat) && stripped.trim() !== '') totalModifier = flat;
+    }
+
+    const rawTotal = groups.reduce((sum, g) => sum + g.subtotal, 0) + totalModifier;
+    return { total: Math.max(0, rawTotal), groups, modifier: totalModifier };
   }
 
   /**

@@ -85,6 +85,26 @@ export interface ParsedAbility {
   rechargeRoll?: string;
 }
 
+/** One group of dice within a damage roll (e.g. the "2d8" in "2d8+3"). */
+export interface DiceGroup {
+  expression: string; // e.g. "2d8" (already doubled for crits)
+  diceType: string; // e.g. "d8"
+  count: number; // number of dice rolled
+  rolls: number[]; // individual die results
+  subtotal: number; // sum of rolls (no modifier)
+}
+
+/** Full breakdown of a single damage roll. */
+export interface DamageRoll {
+  expression: string; // original expression e.g. "2d8+3"
+  groups: DiceGroup[];
+  modifier: number; // flat bonus/penalty
+  rawTotal: number; // total before resistance/immunity adjustments
+  total: number; // final damage after adjustments
+  damageType: string;
+  isCrit: boolean;
+}
+
 export interface ParsedAttack {
   name: string;
   attackBonus: number;
@@ -139,6 +159,7 @@ export interface TurnResult {
   targetHpBefore?: number;
   targetHpAfter?: number;
   isCrit?: boolean;
+  damageBreakdown?: DamageRoll;
 }
 
 export interface TurnEvent {
@@ -161,7 +182,19 @@ export interface TurnEvent {
     hpBefore: number;
     hpAfter: number;
     events: string[];
+    damageBreakdown?: DamageRoll;
   };
+}
+
+/**
+ * Minimal spell descriptor used by the simulation engine.
+ * Only the fields needed to determine damage behaviour are included.
+ */
+export interface SimSpell {
+  name: string;
+  level: number;
+  damageInflict?: string[];
+  entries: (string | object)[];
 }
 
 export interface SimulationConfig {
@@ -177,6 +210,8 @@ export interface SimulationConfig {
   }>;
   resourceMode: ResourceMode;
   roundLimit: number;
+  /** Keyed by lowercase spell name. Populated from dataStore before running. */
+  spellMap?: Record<string, SimSpell>;
 }
 
 export interface SimulationResult {

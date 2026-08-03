@@ -4,6 +4,8 @@ import type {
   ActionCandidate,
   TurnResult,
   TurnEvent,
+  SimSpell,
+  DamageRoll,
 } from './emulatorTyping';
 import { SimulatorCombatant, SimulationState } from './emulatorTyping';
 import { CombatResolver } from './combatRules';
@@ -31,6 +33,7 @@ export class SimulationEngine {
   private combatResolver: CombatResolver;
   private diceRoller: DiceRoller;
   private parser: MonsterParser;
+  private spellMap: Record<string, SimSpell>;
   private roundLog: RoundLog[];
   private turnEvents: TurnEvent[];
   private currentRound: number;
@@ -40,6 +43,7 @@ export class SimulationEngine {
     this.diceRoller = new DiceRoller(prng);
     this.combatResolver = new CombatResolver(prng);
     this.parser = new MonsterParser();
+    this.spellMap = config.spellMap ?? {};
     this.roundLog = [];
     this.turnEvents = [];
     this.currentRound = 0;
@@ -258,13 +262,18 @@ export class SimulationEngine {
 
               if (availableSlots > 0) {
                 for (const spell of spellsAtLevel) {
+                  const dmg = this.spellDamageCandidate(spell);
+                  if (!dmg) continue; // skip non-damage spells
+                  const avgDmg = this.diceRoller.averageDamage(dmg.expression);
                   candidates.push({
                     type: 'cast_spell',
                     name: `Cast ${spell}`,
                     targetIndex: 0,
-                    expectedDamage: level * 3,
+                    expectedDamage: avgDmg,
+                    damageExpression: dmg.expression,
+                    damageType: dmg.type,
                     resourceCost: { spellSlot: level },
-                    score: level * 2 + 5,
+                    score: avgDmg + level,
                   });
                 }
               }
@@ -275,13 +284,18 @@ export class SimulationEngine {
         // Format 2: At-will innate spells (unlimited, no resource cost)
         if (spellcasting?.will && Array.isArray(spellcasting.will)) {
           for (const spell of spellcasting.will) {
+            const dmg = this.spellDamageCandidate(spell);
+            if (!dmg) continue;
+            const avgDmg = this.diceRoller.averageDamage(dmg.expression);
             candidates.push({
               type: 'cast_spell',
               name: `Cast ${spell}`,
               targetIndex: 0,
-              expectedDamage: 6,
+              expectedDamage: avgDmg,
+              damageExpression: dmg.expression,
+              damageType: dmg.type,
               resourceCost: { isAtWill: true },
-              score: 8,
+              score: avgDmg,
             });
           }
         }
@@ -291,18 +305,21 @@ export class SimulationEngine {
           for (const dailyKey in spellcasting.daily) {
             const dailySpells = (spellcasting.daily as any)[dailyKey];
             if (!Array.isArray(dailySpells)) continue;
-            const timesPerDay = parseInt(dailyKey, 10) || 1;
             for (const spell of dailySpells) {
-              if (combatant.hasDailyUse(spell)) {
-                candidates.push({
-                  type: 'cast_spell',
-                  name: `Cast ${spell}`,
-                  targetIndex: 0,
-                  expectedDamage: timesPerDay * 3,
-                  resourceCost: { dailySpellKey: spell },
-                  score: timesPerDay * 3 + 5,
-                });
-              }
+              if (!combatant.hasDailyUse(spell)) continue;
+              const dmg = this.spellDamageCandidate(spell);
+              if (!dmg) continue;
+              const avgDmg = this.diceRoller.averageDamage(dmg.expression);
+              candidates.push({
+                type: 'cast_spell',
+                name: `Cast ${spell}`,
+                targetIndex: 0,
+                expectedDamage: avgDmg,
+                damageExpression: dmg.expression,
+                damageType: dmg.type,
+                resourceCost: { dailySpellKey: spell },
+                score: avgDmg,
+              });
             }
           }
         }
@@ -310,6 +327,41 @@ export class SimulationEngine {
     }
 
     return candidates;
+  }
+
+  /**
+   * Look up a spell by name (case-insensitive, strips "Cast " prefix).
+   */
+  private lookupSpell(name: string): SimSpell | null {
+    const key = name.toLowerCase().replace(/^cast\s+/i, '');
+    return this.spellMap[key] ?? null;
+  }
+
+  /**
+   * Returns the damage expression + type for a spell, or null if the spell
+   * deals no damage (control, utility, healing, etc.).
+   */
+  private spellDamageCandidate(spellName: string): { expression: string; type: string } | null {
+    const spell = this.lookupSpell(spellName);
+    if (!spell || !spell.damageInflict || spell.damageInflict.length === 0) return null;
+
+    const damageType = spell.damageInflict[0] ?? 'untyped';
+    const text = spell.entries.map(e => (typeof e === 'string' ? e : JSON.stringify(e))).join(' ');
+
+    // 5etools inline tag: {@damage 8d6} or {@dice 1d4+1}
+    const tagMatch = text.match(/\{@(?:damage|dice)\s+([^}]+)\}/i);
+    if (tagMatch) {
+      return { expression: (tagMatch[1] ?? '1d6').replace(/\s+/g, ''), type: damageType };
+    }
+
+    // Plain text: "takes 8d6 fire damage" / "deals 1d4 + 1 force damage"
+    const plainMatch = text.match(/(\d+d\d+(?:\s*[+-]\s*\d+)?)\s+(?:\w+\s+)?damage/i);
+    if (plainMatch) {
+      return { expression: (plainMatch[1] ?? '1d6').replace(/\s+/g, ''), type: damageType };
+    }
+
+    // Has damageInflict but text unparseable — fall back to level-scaled estimate
+    return { expression: `${spell.level}d6`, type: damageType };
   }
 
   private selectBestAction(candidates: ActionCandidate[]): ActionCandidate | null {
@@ -375,6 +427,7 @@ export class SimulationEngine {
       targetHpBefore,
       targetHpAfter,
       isCrit: result.isCrit,
+      damageBreakdown: result.damageBreakdown,
     };
   }
 
@@ -415,24 +468,46 @@ export class SimulationEngine {
       return { events: [`No valid target for spell`], combatantUpdates: [], actionExecuted: false };
     }
 
-    const damage = isAtWill || dailySpellKey ? action.expectedDamage ?? 6 : spellLevel * 4;
+    const dmgType = action.damageType ?? 'untyped';
+
+    // Single roll — used for both damage application and breakdown display
+    let damage = 0;
+    let spellBreakdown: DamageRoll | undefined;
+    if (action.damageExpression) {
+      const rollResult = this.diceRoller.parseDamageExpressionDetailed(
+        action.damageExpression,
+        false
+      );
+      damage = rollResult.total;
+      spellBreakdown = {
+        expression: action.damageExpression,
+        groups: rollResult.groups,
+        modifier: rollResult.modifier,
+        rawTotal: damage,
+        total: damage,
+        damageType: dmgType,
+        isCrit: false,
+      };
+    }
     const targetHpBefore = target.currentHp;
     target.takeDamage(damage);
     combatant.totalDamageDealt += damage;
     const targetHpAfter = target.currentHp;
 
-    const spellDesc =
-      dailySpellKey ?? (isAtWill ? action.name.replace('Cast ', '') : `level-${spellLevel} spell`);
+    const spellName = action.name.replace(/^Cast\s+/i, '');
+    const eventMsg =
+      damage > 0
+        ? `${combatant.getName()} casts ${spellName} on ${target.getName()} for ${damage} ${dmgType} damage`
+        : `${combatant.getName()} casts ${spellName} [no damage effect]`;
     return {
-      events: [
-        `${combatant.getName()} casts ${spellDesc} on ${target.getName()} for ${damage} damage`,
-      ],
+      events: [eventMsg],
       combatantUpdates: [],
       actionExecuted: true,
       damageDealt: damage,
       targetName: target.getName(),
       targetHpBefore,
       targetHpAfter,
+      damageBreakdown: spellBreakdown,
     };
   }
 
@@ -471,6 +546,7 @@ export class SimulationEngine {
         hpBefore: actorHpBefore,
         hpAfter: actor.currentHp,
         events: result.events,
+        damageBreakdown: result.damageBreakdown,
       },
     };
     this.turnEvents.push(turnEvent);

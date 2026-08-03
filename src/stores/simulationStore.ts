@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import type { SimulationConfig, SimulationResult, ResourceMode } from '../types';
 import { SimulationEngine } from '../components/encounterSimulator/simulationEngine';
+import { useDataStore } from './dataStore';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 import seedrandom from 'seedrandom';
 
@@ -35,6 +36,14 @@ export const useSimulationStore = defineStore('simulation', () => {
     return new Promise(resolve => {
       setTimeout(() => {
         try {
+          const dataStore = useDataStore();
+
+          // Build lowercase-keyed spell map once for the whole batch
+          const spellMap: Record<string, any> = {};
+          for (const spell of dataStore.spells) {
+            if (spell?.name) spellMap[spell.name.toLowerCase()] = spell;
+          }
+
           const results: SplitTestResults = {} as SplitTestResults;
           const modes: ResourceMode[] = ['low', 'balanced', 'max'];
           const baseSeed = seed || `sim-${Date.now()}-${Math.random()}`;
@@ -42,7 +51,7 @@ export const useSimulationStore = defineStore('simulation', () => {
           for (let i = 0; i < modes.length; i++) {
             const mode = modes[i] as ResourceMode;
             // Create new config for this mode
-            const modeConfig: SimulationConfig = { ...config, resourceMode: mode };
+            const modeConfig: SimulationConfig = { ...config, resourceMode: mode, spellMap };
 
             // Create seeded PRNG for each mode run
             const modeSeed = `${baseSeed}-${mode}`;

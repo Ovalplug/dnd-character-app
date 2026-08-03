@@ -77,6 +77,52 @@
               <span class="replay-viewer__stat-label">Damage Dealt:</span>
               <span class="replay-viewer__stat-value">{{ currentTurn.outcome.damageDealt }}</span>
             </div>
+
+            <!-- Dice breakdown -->
+            <div v-if="currentTurn.outcome.damageBreakdown" class="replay-viewer__dice-breakdown">
+              <div class="replay-viewer__dice-expr">
+                <span class="dice-expr__label">Roll:</span>
+                <code class="dice-expr__value">{{
+                  currentTurn.outcome.damageBreakdown.expression
+                }}</code>
+                <span v-if="currentTurn.outcome.damageBreakdown.isCrit" class="dice-expr__crit"
+                  >CRIT</span
+                >
+              </div>
+              <div
+                v-for="(group, gi) in currentTurn.outcome.damageBreakdown.groups"
+                :key="gi"
+                class="replay-viewer__dice-group"
+              >
+                <span class="dice-group__notation">{{ group.expression }}</span>
+                <span class="dice-group__rolls">[{{ group.rolls.join(', ') }}]</span>
+                <span class="dice-group__subtotal">= {{ group.subtotal }}</span>
+              </div>
+              <div
+                v-if="currentTurn.outcome.damageBreakdown.modifier !== 0"
+                class="replay-viewer__dice-mod"
+              >
+                Modifier:
+                <strong
+                  >{{ currentTurn.outcome.damageBreakdown.modifier > 0 ? '+' : ''
+                  }}{{ currentTurn.outcome.damageBreakdown.modifier }}</strong
+                >
+              </div>
+              <div class="replay-viewer__dice-total">
+                Raw total: <strong>{{ currentTurn.outcome.damageBreakdown.rawTotal }}</strong>
+                <span
+                  v-if="
+                    currentTurn.outcome.damageBreakdown.total !==
+                    currentTurn.outcome.damageBreakdown.rawTotal
+                  "
+                  class="dice-total__adjusted"
+                >
+                  → {{ currentTurn.outcome.damageBreakdown.total }} ({{
+                    currentTurn.outcome.damageBreakdown.damageType
+                  }})
+                </span>
+              </div>
+            </div>
           </div>
 
           <div v-if="currentTurn.outcome.events.length > 0" class="replay-viewer__events">
@@ -98,6 +144,11 @@
     <div v-else class="replay-viewer__empty">
       <p>No turns to replay</p>
     </div>
+
+    <details v-if="currentTurn" class="replay-viewer__raw">
+      <summary class="replay-viewer__raw-summary">Raw turn data</summary>
+      <pre class="replay-viewer__raw-pre">{{ JSON.stringify(currentTurn, null, 2) }}</pre>
+    </details>
 
     <div class="replay-viewer__timeline">
       <div class="replay-viewer__timeline-track">
@@ -376,6 +427,112 @@
     padding: 2rem;
     text-align: center;
     color: var(--color-muted);
+  }
+
+  /* Dice breakdown */
+  .replay-viewer__dice-breakdown {
+    margin-top: 0.75rem;
+    padding: 0.625rem;
+    background: var(--color-bg);
+    border-radius: 6px;
+    font-size: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .replay-viewer__dice-expr {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .dice-expr__label {
+    color: var(--color-muted);
+    font-size: 0.72rem;
+  }
+  .dice-expr__value {
+    font-family: 'Courier New', monospace;
+    color: var(--color-text);
+  }
+  .dice-expr__crit {
+    padding: 0.1rem 0.4rem;
+    background: var(--color-danger);
+    color: #fff;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .replay-viewer__dice-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-left: 0.5rem;
+    border-left: 2px solid var(--color-accent);
+  }
+
+  .dice-group__notation {
+    color: var(--color-muted);
+    min-width: 48px;
+    font-size: 0.72rem;
+  }
+  .dice-group__rolls {
+    font-family: 'Courier New', monospace;
+    color: var(--color-text);
+    flex: 1;
+  }
+  .dice-group__subtotal {
+    font-weight: 600;
+    color: var(--color-accent);
+  }
+
+  .replay-viewer__dice-mod {
+    color: var(--color-muted);
+    font-size: 0.78rem;
+    padding-left: 0.5rem;
+  }
+  .replay-viewer__dice-total {
+    padding-top: 0.25rem;
+    border-top: 1px solid var(--color-muted);
+    font-size: 0.78rem;
+    color: var(--color-text);
+  }
+  .dice-total__adjusted {
+    color: var(--color-primary);
+    margin-left: 0.25rem;
+  }
+
+  .replay-viewer__raw {
+    border: 1px solid var(--color-muted);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    overflow: hidden;
+  }
+
+  .replay-viewer__raw-summary {
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-muted);
+    text-transform: uppercase;
+    user-select: none;
+  }
+
+  .replay-viewer__raw-pre {
+    margin: 0;
+    padding: 0.75rem;
+    background: var(--color-bg);
+    font-family: 'Courier New', monospace;
+    font-size: 0.72rem;
+    color: var(--color-text);
+    overflow-x: auto;
+    max-height: 320px;
+    overflow-y: auto;
+    white-space: pre;
   }
 
   .replay-viewer__timeline {

@@ -5,7 +5,7 @@
 
 import type { PRNG } from './diceRollFunctions';
 import { DiceRoller } from './diceRollFunctions';
-import type { SimulatorCombatant } from './emulatorTyping';
+import type { SimulatorCombatant, DamageRoll } from './emulatorTyping';
 import type { Monster } from '../../types';
 
 /**
@@ -20,6 +20,7 @@ export interface AttackResult {
   finalDamage: number;
   totalDamageDealt: number;
   resistanceApplied?: 'immune' | 'resist' | 'vulnerable' | 'normal';
+  damageBreakdown?: DamageRoll;
 }
 
 /**
@@ -76,15 +77,21 @@ export class CombatResolver {
     const isHit = attackRoll >= targetAC;
     const isCrit = attackRoll === 20 + weaponModifier;
 
-    // Damage calculation
+    // Damage calculation — use detailed roll to capture individual die results
     let rawDamage = 0;
+    let damageBreakdown: DamageRoll | undefined;
     if (isHit) {
-      if (isCrit) {
-        rawDamage = this.roller.parseDamageExpression(damageExpression);
-        rawDamage += this.roller.parseDamageExpression(damageExpression);
-      } else {
-        rawDamage = this.roller.parseDamageExpression(damageExpression);
-      }
+      const rollResult = this.roller.parseDamageExpressionDetailed(damageExpression, isCrit);
+      rawDamage = rollResult.total;
+      damageBreakdown = {
+        expression: isCrit ? `${damageExpression} (CRIT ×2 dice)` : damageExpression,
+        groups: rollResult.groups,
+        modifier: rollResult.modifier,
+        rawTotal: rawDamage,
+        total: rawDamage, // updated below after resistance
+        damageType,
+        isCrit,
+      };
     }
 
     // Apply resistance / immunity / vulnerability
@@ -93,6 +100,8 @@ export class CombatResolver {
     if (resistance === 'immune') finalDamage = 0;
     else if (resistance === 'resist') finalDamage = Math.floor(rawDamage / 2);
     else if (resistance === 'vulnerable') finalDamage = rawDamage * 2;
+
+    if (damageBreakdown) damageBreakdown.total = finalDamage;
 
     // Apply damage
     if (isHit && finalDamage > 0) {
@@ -116,6 +125,7 @@ export class CombatResolver {
       finalDamage: isHit ? finalDamage : 0,
       totalDamageDealt: attacker.totalDamageDealt,
       resistanceApplied: resistance,
+      damageBreakdown,
     };
   }
 
