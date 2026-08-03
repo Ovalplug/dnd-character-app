@@ -562,7 +562,8 @@
   const replayTurnLog = computed(() => {
     if (replayRunIndex.value === null) return [];
     const run = simulationStore.batchRuns[replayRunIndex.value];
-    return run?.results.balanced.turnLog || [];
+    const mode = simulationStore.preferredResourceMode;
+    return run?.results[mode]?.turnLog || run?.results.balanced.turnLog || [];
   });
 
   function onMapUpdated(map: GameMap): void {

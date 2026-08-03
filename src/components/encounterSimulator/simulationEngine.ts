@@ -152,37 +152,81 @@ export class SimulationEngine {
       const turnResult = this.executeCastSpell(combatant, selectedCandidate, liveEnemies);
       this.recordTurnLog(combatant, selectedCandidate, turnResult, actorHpBefore);
     } else {
-      // Multiattack: use profile count when available
-      const attackCount =
-        combatant.profile?.hasMultiattack && combatant.profile.multiattackCount > 1
-          ? combatant.profile.multiattackCount
-          : 1;
+      const profile = combatant.profile;
 
-      for (let i = 0; i < attackCount; i++) {
-        const liveEnemies = this.state.combatants.filter(
-          c => c.team !== combatant.team && this.combatResolver.isAlive(c)
-        );
-        if (liveEnemies.length === 0) break;
+      if (profile?.hasMultiattack && profile.multiattackSequence?.length) {
+        // Sequence-based multiattack: execute each named attack the right number of times
+        for (const seqItem of profile.multiattackSequence) {
+          const seqAttack = profile.attacks.find(
+            a => a.name.toLowerCase() === seqItem.attackName.toLowerCase()
+          );
 
-        // Re-target if original target died
-        let attackAction = selectedCandidate;
-        const origTarget =
-          selectedCandidate.targetIndex !== undefined
-            ? this.state.combatants[selectedCandidate.targetIndex] ?? null
-            : null;
-        const origTargetDead = origTarget === null || !this.combatResolver.isAlive(origTarget);
-        if (origTargetDead) {
-          const fallback = liveEnemies[0];
-          if (!fallback) break;
-          attackAction = {
-            ...selectedCandidate,
-            targetIndex: this.state.combatants.indexOf(fallback),
-          };
+          for (let i = 0; i < seqItem.count; i++) {
+            const liveEnemies = this.state.combatants.filter(
+              c => c.team !== combatant.team && this.combatResolver.isAlive(c)
+            );
+            if (liveEnemies.length === 0) break;
+
+            const origTarget =
+              selectedCandidate.targetIndex !== undefined
+                ? this.state.combatants[selectedCandidate.targetIndex] ?? null
+                : null;
+            const useTarget =
+              origTarget && this.combatResolver.isAlive(origTarget)
+                ? origTarget
+                : liveEnemies[0]!;
+
+            const attackAction: ActionCandidate = seqAttack
+              ? {
+                  type: 'attack',
+                  name: seqAttack.name,
+                  targetIndex: this.state.combatants.indexOf(useTarget),
+                  damageExpression: seqAttack.damageExpression,
+                  damageType: seqAttack.damageType,
+                  attackBonus: seqAttack.attackBonus,
+                  score: selectedCandidate.score,
+                }
+              : { ...selectedCandidate, targetIndex: this.state.combatants.indexOf(useTarget) };
+
+            const turnResult = this.executeAttack(combatant, attackAction);
+            this.recordTurnLog(combatant, attackAction, turnResult, actorHpBefore);
+            if (this.isSimulationOver()) break;
+          }
+          if (this.isSimulationOver()) break;
         }
+      } else {
+        // Count-based multiattack or single attack
+        const attackCount =
+          profile?.hasMultiattack && profile.multiattackCount > 1
+            ? profile.multiattackCount
+            : 1;
 
-        const turnResult = this.executeAttack(combatant, attackAction);
-        this.recordTurnLog(combatant, attackAction, turnResult, actorHpBefore);
-        if (this.isSimulationOver()) break;
+        for (let i = 0; i < attackCount; i++) {
+          const liveEnemies = this.state.combatants.filter(
+            c => c.team !== combatant.team && this.combatResolver.isAlive(c)
+          );
+          if (liveEnemies.length === 0) break;
+
+          // Re-target if original target died
+          let attackAction = selectedCandidate;
+          const origTarget =
+            selectedCandidate.targetIndex !== undefined
+              ? this.state.combatants[selectedCandidate.targetIndex] ?? null
+              : null;
+          const origTargetDead = origTarget === null || !this.combatResolver.isAlive(origTarget);
+          if (origTargetDead) {
+            const fallback = liveEnemies[0];
+            if (!fallback) break;
+            attackAction = {
+              ...selectedCandidate,
+              targetIndex: this.state.combatants.indexOf(fallback),
+            };
+          }
+
+          const turnResult = this.executeAttack(combatant, attackAction);
+          this.recordTurnLog(combatant, attackAction, turnResult, actorHpBefore);
+          if (this.isSimulationOver()) break;
+        }
       }
     }
   }

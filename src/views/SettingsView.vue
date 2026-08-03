@@ -3,6 +3,33 @@
     <h1 class="settings-title">Settings</h1>
 
     <section class="settings-section">
+      <h2 class="settings-section-title">Simulation Resource Profile</h2>
+      <p class="settings-hint">
+        Controls how liberally combatants spend resources (spells, abilities) during simulation.
+        Affects which mode's results are shown by default.
+      </p>
+      <div class="resource-profile">
+        <label
+          v-for="option in resourceProfileOptions"
+          :key="option.value"
+          class="resource-profile__option"
+          :class="{ 'is-active': simulationStore.preferredResourceMode === option.value }"
+        >
+          <input
+            type="radio"
+            class="resource-profile__radio"
+            name="resourceProfile"
+            :value="option.value"
+            :checked="simulationStore.preferredResourceMode === option.value"
+            @change="simulationStore.setPreferredResourceMode(option.value)"
+          />
+          <span class="resource-profile__label">{{ option.label }}</span>
+          <span class="resource-profile__desc">{{ option.description }}</span>
+        </label>
+      </div>
+    </section>
+
+    <section class="settings-section">
       <h2 class="settings-section-title">Resource Sources</h2>
       <p class="settings-hint">
         Toggle which sourcebooks are visible across the app. Disabled sources are hidden from all
@@ -58,8 +85,22 @@
 <script lang="ts" setup>
   import { computed, onMounted } from 'vue';
   import { useDataStore } from '../stores/dataStore';
+  import { useSimulationStore } from '../stores/simulationStore';
+  import type { ResourceMode } from '../types';
 
   const dataStore = useDataStore();
+  const simulationStore = useSimulationStore();
+
+  const resourceProfileOptions: Array<{ value: ResourceMode; label: string; description: string }> =
+    [
+      { value: 'low', label: 'Low', description: 'Combatants conserve resources; fewer spells used.' },
+      {
+        value: 'balanced',
+        label: 'Balanced',
+        description: 'Moderate resource use; realistic adventuring day.',
+      },
+      { value: 'max', label: 'High', description: 'Full resource spending; nova-style play.' },
+    ];
 
   onMounted(async () => {
     if (!dataStore.loaded) {
@@ -227,5 +268,56 @@
     padding: 0.1rem 0.4rem;
     letter-spacing: 0.03em;
     flex-shrink: 0;
+  }
+
+  .resource-profile {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .resource-profile__option {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.65rem 0.85rem;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition:
+      background 0.15s,
+      border-color 0.15s;
+    user-select: none;
+  }
+
+  .resource-profile__option:hover {
+    background: rgba(201, 164, 75, 0.1);
+  }
+
+  .resource-profile__option.is-active {
+    background: rgba(107, 46, 46, 0.07);
+    border-color: var(--color-primary);
+  }
+
+  .resource-profile__radio {
+    margin-top: 0.2rem;
+    accent-color: var(--color-primary);
+    flex-shrink: 0;
+  }
+
+  .resource-profile__label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--color-text);
+    min-width: 5rem;
+  }
+
+  .resource-profile__desc {
+    font-size: 0.85rem;
+    color: var(--color-muted);
+  }
+
+  .settings-section + .settings-section {
+    margin-top: 1.25rem;
   }
 </style>

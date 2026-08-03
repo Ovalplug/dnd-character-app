@@ -120,6 +120,7 @@ export interface ParsedMonsterProfile {
   attacks: ParsedAttack[];
   multiattackCount: number;
   hasMultiattack: boolean;
+  multiattackSequence?: Array<{ attackName: string; count: number }>;
   proficiencyBonus: number;
   isLegendary: boolean;
 }

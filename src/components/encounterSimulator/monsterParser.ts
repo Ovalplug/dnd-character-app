@@ -257,6 +257,11 @@ export class MonsterParser {
     const attacks: ParsedAttack[] = [];
     let multiattackCount = 1;
     let hasMultiattack = false;
+    let multiattackSequence: Array<{ attackName: string; count: number }> | undefined;
+
+    const numberWords = new Set([
+      'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
+    ]);
 
     if (monster.action) {
       for (const entry of monster.action) {
@@ -267,12 +272,39 @@ export class MonsterParser {
 
         if (/^multiattack$/i.test(name)) {
           hasMultiattack = true;
-          const countMatch = text.match(/makes?\s+(?:up\s+to\s+)?(\w+|\d+)\s+(?:\w+\s+)?attacks?/i);
-          if (countMatch) {
-            const word = countMatch[1] ?? '2';
-            multiattackCount = isNaN(Number(word)) ? this.wordToNumber(word) : parseInt(word, 10);
+
+          // Parse named attack sequence: "one Bite attack and two Claw attacks"
+          const seqPattern = /(\w+)\s+(\w+)\s+attacks?/gi;
+          const seqMatches = [...text.matchAll(seqPattern)].filter(
+            m => numberWords.has((m[1] ?? '').toLowerCase()) || /^\d+$/.test(m[1] ?? '')
+          );
+
+          if (seqMatches.length > 0) {
+            multiattackSequence = [];
+            let total = 0;
+            for (const m of seqMatches) {
+              const countWord = m[1] ?? '1';
+              const attackName = m[2] ?? '';
+              const count = isNaN(Number(countWord))
+                ? this.wordToNumber(countWord)
+                : parseInt(countWord, 10);
+              multiattackSequence.push({ attackName, count });
+              total += count;
+            }
+            multiattackCount = total;
           } else {
-            multiattackCount = 2;
+            // Fallback: simple total count
+            const countMatch = text.match(
+              /makes?\s+(?:up\s+to\s+)?(\w+|\d+)\s+(?:\w+\s+)?attacks?/i
+            );
+            if (countMatch) {
+              const word = countMatch[1] ?? '2';
+              multiattackCount = isNaN(Number(word))
+                ? this.wordToNumber(word)
+                : parseInt(word, 10);
+            } else {
+              multiattackCount = 2;
+            }
           }
           continue;
         }
@@ -286,6 +318,7 @@ export class MonsterParser {
       attacks,
       multiattackCount,
       hasMultiattack,
+      multiattackSequence,
       proficiencyBonus: MonsterParser.getProficiencyBonus(monster.cr),
       isLegendary: !!(monster.legendary && monster.legendary.length > 0),
     };
@@ -309,12 +342,44 @@ export class MonsterParser {
     const rangeMatch = text.match(/range\s+(\d+\/?(\d*))\s*ft/i);
     const range = rangeMatch ? rangeMatch[1] : undefined;
 
-    // "Hit: 17 (2d10 + 6) piercing damage"
-    const damageMatch = text.match(/[Hh]it:\s*\d+\s*\(\s*([^)]+?)\s*\)\s*(\w+)\s*damage/);
-    const damageExpression = damageMatch ? damageMatch[1]?.trim() ?? '1d6' : '1d6';
-    const damageType = damageMatch
-      ? damageMatch[2]?.trim().toLowerCase() ?? 'bludgeoning'
-      : 'bludgeoning';
+    // Collect all damage groups from the entry.
+    // Handle two formats:
+    //   1. 5etools tags:  {@damage 2d10+5} or {@dice 1d6}
+    //   2. Plain text:    "16 (2d10 + 5) piercing damage" (with or without "Hit:" prefix)
+    const damageGroups: Array<{ expr: string; type: string }> = [];
+
+    // Format 1: {@damage ...} inline tags
+    const tagPattern = /\{@(?:damage|dice)\s+([^}]+)\}/gi;
+    let tagMatch: RegExpExecArray | null;
+    while ((tagMatch = tagPattern.exec(text)) !== null) {
+      const afterTag = text.slice(tagMatch.index + tagMatch[0].length);
+      const typeMatch = afterTag.match(/^[^a-zA-Z]*([a-zA-Z]+)\s+damage/i);
+      if (typeMatch) {
+        damageGroups.push({
+          expr: (tagMatch[1] ?? '1d6').trim().replace(/\s+/g, ''),
+          type: typeMatch[1]?.toLowerCase() ?? 'bludgeoning',
+        });
+      }
+    }
+
+    // Format 2: "N (XdY + Z) type damage" — no Hit: prefix required
+    if (damageGroups.length === 0) {
+      const plainPattern = /\d+\s*\(\s*([^)]+?)\s*\)\s*(\w+)\s*damage/gi;
+      let plainMatch: RegExpExecArray | null;
+      while ((plainMatch = plainPattern.exec(text)) !== null) {
+        damageGroups.push({
+          expr: (plainMatch[1] ?? '1d6').trim().replace(/\s+/g, ''),
+          type: (plainMatch[2] ?? 'bludgeoning').toLowerCase(),
+        });
+      }
+    }
+
+    if (damageGroups.length === 0) return null;
+
+    // Combine all expressions (e.g. "2d10+5" + "2d6" → "2d10+5+2d6").
+    // Use the primary (first) damage type as the attack's type.
+    const damageExpression = damageGroups.map(g => g.expr).join('+');
+    const damageType = damageGroups[0]?.type ?? 'bludgeoning';
 
     return { name, attackBonus, damageExpression, damageType, isRanged, isMelee, reach, range };
   }

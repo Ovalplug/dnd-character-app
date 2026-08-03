@@ -17,6 +17,8 @@ interface BatchRun {
   results: SplitTestResults;
 }
 
+const RESOURCE_MODE_STORAGE_KEY = 'dnd-app-sim-resource-mode';
+
 export const useSimulationStore = defineStore('simulation', () => {
   const currentSimulation = ref<SimulationResult | null>(null);
   const splitTestResults = ref<SplitTestResults | null>(null);
@@ -24,6 +26,14 @@ export const useSimulationStore = defineStore('simulation', () => {
   const isRunning = ref(false);
   const currentProgress = ref(0);
   const error = ref<string | null>(null);
+  const preferredResourceMode = ref<ResourceMode>(
+    (localStorage.getItem(RESOURCE_MODE_STORAGE_KEY) as ResourceMode | null) ?? 'balanced'
+  );
+
+  function setPreferredResourceMode(mode: ResourceMode): void {
+    preferredResourceMode.value = mode;
+    localStorage.setItem(RESOURCE_MODE_STORAGE_KEY, mode);
+  }
 
   async function runSimulation(
     config: SimulationConfig,
@@ -68,8 +78,8 @@ export const useSimulationStore = defineStore('simulation', () => {
           }
 
           splitTestResults.value = results;
-          // Keep the first result (balanced) as currentSimulation for backwards compatibility
-          currentSimulation.value = results.balanced;
+          // Use preferred mode as the primary result
+          currentSimulation.value = results[preferredResourceMode.value];
           isRunning.value = false;
 
           resolve(results);
@@ -354,6 +364,8 @@ export const useSimulationStore = defineStore('simulation', () => {
     isRunning,
     currentProgress,
     error,
+    preferredResourceMode,
+    setPreferredResourceMode,
     runSimulation,
     runBatchSimulation,
     batchStatistics,
