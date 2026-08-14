@@ -93,7 +93,11 @@
 
   const resourceProfileOptions: Array<{ value: ResourceMode; label: string; description: string }> =
     [
-      { value: 'low', label: 'Low', description: 'Combatants conserve resources; fewer spells used.' },
+      {
+        value: 'low',
+        label: 'Low',
+        description: 'Combatants conserve resources; fewer spells used.',
+      },
       {
         value: 'balanced',
         label: 'Balanced',
@@ -284,9 +288,7 @@
     border: 1px solid transparent;
     border-radius: 8px;
     cursor: pointer;
-    transition:
-      background 0.15s,
-      border-color 0.15s;
+    transition: background 0.15s, border-color 0.15s;
     user-select: none;
   }
 

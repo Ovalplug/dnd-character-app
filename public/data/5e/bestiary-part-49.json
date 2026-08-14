@@ -1,0 +1,325 @@
+[
+  {
+    "name": "The Tortle Package",
+    "acronym": "TTP",
+    "monster": [
+      {
+        "name": "Decapus",
+        "source": "TTP",
+        "page": 21,
+        "size": "L",
+        "type": "monstrosity",
+        "alignment": ["U"],
+        "ac": [{ "ac": 14, "from": ["natural armor"] }],
+        "hp": { "average": 75, "formula": "10d10 + 20" },
+        "speed": { "walk": 15, "climb": 30 },
+        "str": 15,
+        "dex": 14,
+        "con": 14,
+        "int": 4,
+        "wis": 10,
+        "cha": 7,
+        "skill": { "athletics": "+4", "perception": "+2", "stealth": "+4" },
+        "senses": ["darkvision 60 ft."],
+        "passive": 12,
+        "cr": "4",
+        "action": [
+          {
+            "name": "Multiattack",
+            "entries": [
+              "The decapus makes two attacks: one with its bite and one with its tentacles."
+            ]
+          },
+          {
+            "name": "Bite",
+            "entries": [
+              "Melee Weapon Attack: +4 to hit, reach 5 ft., one creature grappled by the decapus. 7 (2d4 + 2) piercing damage."
+            ]
+          },
+          {
+            "name": "Tentacles",
+            "entries": [
+              "Melee Weapon Attack: +4 to hit, reach 10 ft., one target. 24 (9d4 + 2) bludgeoning damage or 14 (5d4 + 2) bludgeoning damage if the decapus is grappling a creature other than the target or if the decapus is on the ground or floor. The target is also grappled (escape DC 14) unless the decapus is already grappling a creature. Until this grapple ends, the target is restrained."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "senseTags": ["D"],
+        "actionTags": ["Multiattack", "Tentacles"],
+        "damageTags": ["B", "P"],
+        "miscTags": ["MW", "RCH"],
+        "conditionInflict": ["grappled", "restrained"]
+      },
+      {
+        "name": "Geonid",
+        "source": "TTP",
+        "page": 22,
+        "size": "S",
+        "type": "elemental",
+        "alignment": ["N"],
+        "ac": [{ "ac": 17, "from": ["natural armor"] }],
+        "hp": { "average": 26, "formula": "4d6 + 12" },
+        "speed": { "walk": 30 },
+        "str": 12,
+        "dex": 10,
+        "con": 16,
+        "int": 9,
+        "wis": 14,
+        "cha": 11,
+        "skill": { "perception": "+4", "stealth": "+2" },
+        "senses": ["darkvision 60 ft.", "tremorsense 30 ft."],
+        "passive": 14,
+        "cr": "1/4",
+        "trait": [
+          {
+            "name": "Boulder Guise",
+            "entries": [
+              "While fully withdrawn into its shell, the geonid can't see and is indistinguishable from a small boulder"
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Club",
+            "entries": [
+              "Melee Weapon Attack: +3 to hit, reach 5 ft., one target. 3 (1d4 + 1) bludgeoning damage."
+            ]
+          },
+          {
+            "name": "Stone Tell",
+            "entries": [
+              "The geonid touches a stone object or surface and knows what types of creatures have been within 10 feet of that stone in the past 24 hours. The geonid can also determine the number of creatures of each type, but not their identities."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "senseTags": ["D", "T"],
+        "damageTags": ["B"],
+        "miscTags": ["MW"]
+      },
+      {
+        "name": "Giant Slug",
+        "isNpc": true,
+        "source": "TTP",
+        "page": 18,
+        "size": "L",
+        "type": "monstrosity",
+        "alignment": ["U"],
+        "ac": [{ "ac": 13, "from": ["natural armor"] }],
+        "hp": { "average": 66, "formula": "6d10 + 18" },
+        "speed": { "walk": 10, "climb": 10 },
+        "str": 14,
+        "dex": 13,
+        "con": 16,
+        "int": 1,
+        "wis": 12,
+        "cha": 5,
+        "skill": { "perception": "+3" },
+        "senses": ["darkvision 60 ft."],
+        "passive": 13,
+        "languages": ["Abyssal", "Aquan", "Common"],
+        "cr": "3",
+        "spellcasting": [
+          {
+            "name": "Innate Spellcasting",
+            "headerEntries": [
+              "The slug's innate spellcasting ability is Wisdom (spell save DC 11, +3 to hit with spell attacks). It can innately cast the following spells, requiring no material components:"
+            ],
+            "daily": { "1e": ["guiding bolt", "sanctuary", "spiritual weapon"] },
+            "ability": "wis"
+          }
+        ],
+        "trait": [
+          {
+            "name": "Keen Smell",
+            "entries": ["The slug has advantage on Wisdom (Perception) checks that rely on smell."]
+          },
+          {
+            "name": "Spider Climb",
+            "entries": [
+              "The slug can climb difficult surfaces, including upside down on ceilings, without needing to make an ability check."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Multiattack",
+            "entries": ["The slug makes two attacks: one with its tentacles and one with its bite."]
+          },
+          {
+            "name": "Tentacles",
+            "entries": [
+              "Melee Weapon Attack: +8 to hit, reach 10 ft., one creature. 4 (1d4 + 2) poison damage, and the target must succeed on a DC 13 Constitution saving throw or be poisoned for 1 minute. Until this poison ends, the target is paralyzed. The target can repeat the saving throw at the end of each of its turns, ending the poison on itself on a success."
+            ]
+          },
+          {
+            "name": "Bite",
+            "entries": [
+              "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. 7 (2d4 + 2) piercing damage."
+            ]
+          }
+        ],
+        "reaction": [
+          {
+            "name": "Animate Tentacle",
+            "entries": [
+              "When the slug takes damage in this cave (Shrine of Umberlee), it can use its reaction to animate one of the tentacles of the kraken statue and cause it to make a melee weapon attack (+3 to hit) against one creature within 20 feet of the statue that the slug can see. The tentacle deals 8 (1d8 + 4) bludgeoning damage on a hit."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "traitTags": ["Keen Senses", "Spider Climb"],
+        "senseTags": ["D"],
+        "actionTags": ["Multiattack", "Tentacles"],
+        "languageTags": ["AB", "AQ", "C"],
+        "damageTags": ["B", "I", "P"],
+        "spellcastingTags": ["I"],
+        "miscTags": ["MW", "RCH"]
+      },
+      {
+        "name": "Topi",
+        "source": "TTP",
+        "page": 22,
+        "size": "S",
+        "type": "undead",
+        "alignment": ["C", "E"],
+        "ac": [{ "ac": 13, "from": ["natural armor"] }],
+        "hp": { "average": 13, "formula": "3d6 + 3" },
+        "speed": { "walk": 30 },
+        "str": 7,
+        "dex": 15,
+        "con": 12,
+        "int": 6,
+        "wis": 10,
+        "cha": 5,
+        "senses": ["darkvision 60 ft."],
+        "passive": 10,
+        "resist": ["bludgeoning"],
+        "immune": ["poison"],
+        "conditionImmune": ["poisoned"],
+        "languages": ["understands the languages it knew in life but can't speak"],
+        "cr": "1/2",
+        "trait": [
+          {
+            "name": "Turn Resistance",
+            "entries": [
+              "The topi has advantage on saving throws against any effect that turns undead."
+            ]
+          },
+          {
+            "name": "Undead Fortitude",
+            "entries": [
+              "If damage reduces the topi to 0 hit points, it must make a Constitution saving throw with a DC of 5+the damage taken, unless the damage is radiant or from a critical hit. On a success, the topi drops to 1 hit point instead."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Venomous Claws",
+            "entries": [
+              "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. 4 (1d4 + 2) slashing damage plus 2 (1d4) poison damage, and the target must succeed on a DC 11 Constitution saving throw or be poisoned until the end of the target's next turn."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "traitTags": ["Turn Resistance", "Undead Fortitude"],
+        "senseTags": ["D"],
+        "languageTags": ["CS", "LF"],
+        "damageTags": ["I", "S"],
+        "miscTags": ["MW"],
+        "conditionInflict": ["poisoned"]
+      }
+    ],
+    "monsterFluff": [
+      {
+        "name": "Decapus",
+        "source": "TTP",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              {
+                "type": "entries",
+                "entries": [
+                  "Decapuses are carnivorous, solitary hunters that swing through trees, scooping up prey with their 10-foot-long, suckered tentacles. Decapuses also use their tentacles to climb walls and ceilings.",
+                  "After securing a high vantage point, a decapus hangs by one tentacle and attacks with the other nine. On the ground, a decapus is slower and less dangerous. It must use half of its tentacles to support its weight upright, leaving five tentacles with which it can attack and defend itself.",
+                  {
+                    "type": "entries",
+                    "name": "Marine Decapus",
+                    "entries": [
+                      "A marine decapus is similar to its land-dwelling cousin, except that it gains a swimming speed of 30 feet and can breathe only underwater."
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "images": [
+          { "type": "image", "href": { "type": "internal", "path": "bestiary/TTP/Decapus.jpg" } }
+        ]
+      },
+      {
+        "name": "Geonid",
+        "source": "TTP",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              {
+                "type": "entries",
+                "entries": [
+                  "Also known as rocklings and rock hermits, geonids are small, intelligent cave dwellers that originated on the Elemental Plane of Earth. A geonid's arms and legs come out of a small opening in the bottom of its shell. A geonid can draw its limbs into its shell and close the opening. When it does so, the creature looks like a small boulder. In this state, the geonid can't see and relies on its tremorsense to detect other creatures nearby.",
+                  {
+                    "type": "entries",
+                    "name": "Dark Lairs",
+                    "entries": [
+                      "Geonids live in natural tunnels and caves. They feed primarily on lizards, rats, slugs, and other vermin, as well as on cave lichen and moss. Geonids like to collect coins and gemstones, and they rarely confront creatures larger than themselves except to rob them or scare them away."
+                    ]
+                  },
+                  {
+                    "type": "entries",
+                    "name": "Stone Tell",
+                    "entries": [
+                      "Geonids can attune to stone in a way that lets them discern what other creatures have been in the area recently. Geonids use this ability to track prey and to determine whether other creatures have trespassed in their territory. The information gleaned is imprecise and doesn't include the specific identities of such creatures or the precise times when they passed nearby."
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "images": [
+          { "type": "image", "href": { "type": "internal", "path": "bestiary/TTP/Geonid.jpg" } }
+        ]
+      },
+      {
+        "name": "Topi",
+        "source": "TTP",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              {
+                "type": "entries",
+                "entries": [
+                  "Topis are similar to zombies. Before a topi is animated, its corpse is shrunk until it stands only 2 feet tall, and its heart is cut out and replaced with a leather bag that contains a live poisonous snake. The snake requires neither air nor sustenance, and it magically renders the topi's claws venomous. When a topi dies, the snake inside it dies too. The process of creating a topi is known only to a handful of evil priests and necromancers.",
+                  "Topis are more difficult to turn than ordinary zombies, and their spongy bodies make them resistant to bludgeoning.",
+                  {
+                    "type": "entries",
+                    "name": "Undead Traits",
+                    "entries": ["A topi doesn't require air, food, drink, or sleep."]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "images": [
+          { "type": "image", "href": { "type": "internal", "path": "bestiary/TTP/Topi.jpg" } }
+        ]
+      }
+    ],
+    "legendaryGroups": []
+  }
+]

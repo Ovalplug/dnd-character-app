@@ -1,0 +1,3644 @@
+[
+  {
+    "name": "Candlekeep Mysteries",
+    "acronym": "CM",
+    "monster": [
+      {
+        "name": "Animated Broom",
+        "source": "CM",
+        "alignment": ["U"],
+        "page": 20,
+        "size": "S",
+        "type": "construct",
+        "ac": [{ "ac": 15, "from": ["natural armor"] }],
+        "hp": { "average": 17, "formula": "5d6" },
+        "speed": { "walk": 0, "fly": { "number": 50, "condition": "(hover)" }, "canHover": true },
+        "str": 10,
+        "dex": 17,
+        "con": 10,
+        "int": 1,
+        "wis": 5,
+        "cha": 1,
+        "senses": ["blindsight 120 ft. (blind beyond this radius)"],
+        "passive": 7,
+        "immune": ["poison", "psychic"],
+        "conditionImmune": [
+          "blinded",
+          "charmed",
+          "deafened",
+          "exhaustion",
+          "frightened",
+          "paralyzed",
+          "petrified",
+          "poisoned",
+          "prone"
+        ],
+        "cr": "1/4",
+        "trait": [
+          {
+            "name": "False Object",
+            "entries": [
+              "If the broom is motionless at the start of combat, it has advantage on its initiative roll. Moreover, if a creature hasn't observed the broom move or act, that creature must succeed on a 15 Wisdom (Perception) check to discern that the broom is animate."
+            ]
+          },
+          {
+            "name": "Flyby",
+            "entries": [
+              "The broom doesn't provoke opportunity attacks when it flies out of an enemy's reach."
+            ]
+          }
+        ],
+        "action": [
+          { "name": "Multiattack", "entries": ["The broom makes two melee attacks."] },
+          {
+            "name": "Broomstick",
+            "entries": [
+              "Melee Weapon Attack: +5 to hit, reach 5 ft., one target. 5 (1d4 + 3) bludgeoning damage."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "traitTags": ["Flyby"],
+        "senseTags": ["B"],
+        "actionTags": ["Multiattack"],
+        "damageTags": ["B"],
+        "miscTags": ["MW"]
+      },
+      {
+        "name": "Animated Chained Library",
+        "source": "CM",
+        "page": 24,
+        "size": "L",
+        "alignment": ["U"],
+        "type": "construct",
+        "ac": [{ "ac": 14, "from": ["natural armor"] }],
+        "hp": { "average": 45, "formula": "6d10 + 12" },
+        "speed": { "walk": 10 },
+        "str": 15,
+        "dex": 8,
+        "con": 14,
+        "int": 1,
+        "wis": 5,
+        "cha": 1,
+        "senses": ["blindsight 30 ft. (blind beyond this radius)"],
+        "passive": 7,
+        "immune": ["poison", "psychic"],
+        "conditionImmune": [
+          "blinded",
+          "charmed",
+          "deafened",
+          "exhaustion",
+          "frightened",
+          "paralyzed",
+          "petrified",
+          "poisoned",
+          "prone"
+        ],
+        "cr": "1",
+        "trait": [
+          {
+            "name": "False Object",
+            "entries": [
+              "If the library is motionless at the start of combat, it has advantage on its initiative roll. Moreover, if a creature hasn't observed the library move or act, that creature must succeed on a 15 Wisdom (Perception) check to discern that the library is animate."
+            ]
+          }
+        ],
+        "action": [
+          { "name": "Multiattack", "entries": ["The library makes two attacks."] },
+          {
+            "name": "Chained Book",
+            "entries": [
+              "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. 6 (1d8 + 2) bludgeoning damage, and if the target is a creature, it is grappled (escape 12)."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "senseTags": ["B"],
+        "actionTags": ["Multiattack"],
+        "damageTags": ["B"],
+        "miscTags": ["MW"],
+        "conditionInflict": ["grappled"],
+        "hasFluff": true,
+        "hasFluffImages": true
+      },
+      {
+        "name": "Arrant Quill",
+        "isNpc": true,
+        "isNamedCreature": true,
+        "source": "CM",
+        "page": 157,
+        "size": "M",
+        "type": { "type": "humanoid", "tags": ["human"] },
+        "alignment": ["N", "E"],
+        "ac": [14],
+        "hp": { "average": 135, "formula": "18d8 + 54" },
+        "speed": { "walk": 30 },
+        "str": 10,
+        "dex": 18,
+        "con": 16,
+        "int": 16,
+        "wis": 15,
+        "cha": 20,
+        "save": { "int": "+7", "wis": "+6", "cha": "+9" },
+        "skill": { "arcana": "+11", "deception": "+9", "history": "+7", "performance": "+13" },
+        "passive": 12,
+        "languages": ["Common", "Draconic", "Elvish", "Undercommon"],
+        "cr": "11",
+        "spellcasting": [
+          {
+            "name": "Innate Spellcasting",
+            "headerEntries": [
+              "Quill casts one of the following spells using Charisma as the spellcasting ability (save 17):"
+            ],
+            "will": ["light", "mage hand", "prestidigitation"],
+            "daily": {
+              "3e": ["detect magic", "dispel magic", "faerie fire", "hold monster"],
+              "1e": ["mind blank", "teleport"]
+            },
+            "ability": "cha",
+            "displayAs": "action"
+          }
+        ],
+        "action": [
+          {
+            "name": "Multiattack",
+            "entries": ["Quill makes two attacks with his dagger and uses Supreme Mockery."]
+          },
+          {
+            "name": "Dagger",
+            "entries": [
+              "Melee Weapon Attack:,rw +8 to hit, reach 5 ft. or range 20/60 ft., one target. 6 (1d4 + 4) piercing damage."
+            ]
+          },
+          {
+            "name": "Quill's Fable (Recharge 6)",
+            "entries": [
+              "Quill utters a short fable while targeting up to five creatures within 30 feet of him that he can see. Each target that can hear Quill's magical fable must make a 17 Wisdom saving throw, taking 36 (8d8) psychic damage on a failed save, or half as much damage on a successful one."
+            ]
+          },
+          {
+            "name": "Supreme Mockery",
+            "entries": [
+              "Quill hurls a string of insults laced with enchantments at a creature he can see within 60 feet of him. If the creature can hear Quill (though it need not understand him), it must succeed on a 17 Wisdom saving throw or take 66 (12d10) psychic damage and have disadvantage on the next attack roll it makes before the end of its next turn."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "actionTags": ["Multiattack"],
+        "languageTags": ["C", "DR", "E", "U"],
+        "damageTags": ["P", "Y"],
+        "miscTags": ["MW", "RW", "THW"],
+        "hasFluff": true,
+        "hasFluffImages": true
+      },
+      {
+        "name": "Bak Mei",
+        "isNpc": true,
+        "isNamedCreature": true,
+        "source": "CM",
+        "page": 168,
+        "size": "M",
+        "type": { "type": "humanoid", "tags": ["human"] },
+        "alignment": ["L", "E"],
+        "ac": [{ "ac": 17, "from": ["unarmored defense"] }],
+        "hp": { "average": 102, "formula": "12d8 + 48" },
+        "speed": { "walk": 40 },
+        "str": 10,
+        "dex": 18,
+        "con": 18,
+        "int": 13,
+        "wis": 17,
+        "cha": 16,
+        "save": { "str": "+5", "dex": "+9", "con": "+9", "int": "+6", "wis": "+8", "cha": "+8" },
+        "skill": {
+          "acrobatics": "+9",
+          "athletics": "+5",
+          "medicine": "+8",
+          "religion": "+6",
+          "stealth": "+9"
+        },
+        "passive": 13,
+        "resist": ["poison", "thunder"],
+        "conditionImmune": ["charmed", "frightened", "paralyzed"],
+        "languages": ["Auran", "Common"],
+        "cr": "13",
+        "trait": [
+          {
+            "name": "Legendary Resistance (2/Day)",
+            "entries": ["If Bak Mei fails a saving throw, he can choose to succeed instead."]
+          },
+          {
+            "name": "Special Equipment",
+            "entries": ["Bak Mei carries a staff of striking with 10 charges."]
+          },
+          {
+            "name": "Unarmored Defense",
+            "entries": [
+              "While Bak Mei is wearing no armor and wielding no shield, his AC includes his Wisdom modifier."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Multiattack",
+            "entries": [
+              "Bak Mei attacks three times: twice with Thunder Strike and once with his staff of striking."
+            ]
+          },
+          {
+            "name": "Thunder Strike",
+            "entries": [
+              "Melee Weapon Attack: +9 to hit, reach 5 ft., one target. 15 (2d10 + 4) thunder damage, and if the target is a creature, it must succeed on a 17 Constitution saving throw or be deafened and stunned until the start of Bak Mei's next turn."
+            ]
+          },
+          {
+            "name": "Staff of Striking",
+            "entries": [
+              "Melee Weapon Attack: +9 to hit, reach 5 ft., one target. 3 (1d6) bludgeoning damage, or 4 (1d8) bludgeoning damage when used with two hands, and Bak Mei can expend up to 3 of the staff's charges. For each expended charge, the target takes an extra 1d6 force damage."
+            ]
+          },
+          {
+            "name": "Heal Self (Recharges after a Long Rest)",
+            "entries": [
+              "Bak Mei regains 2d8 + 4 hit points, and all levels of exhaustion end on him."
+            ]
+          }
+        ],
+        "bonus": [
+          { "name": "Nimble Escape", "entries": ["Bak Mei takes the Disengage or Hide action."] }
+        ],
+        "reaction": [
+          {
+            "name": "Deflect Missile",
+            "entries": [
+              "In response to being hit by a ranged weapon attack, Bak Mei deflects the missile. The damage he takes from the attack is reduced by 1d10 + 12. If the damage is reduced to 0, Bak Mei catches the missile if it's small enough to hold in one hand and Bak Mei has a hand free."
+            ]
+          }
+        ],
+        "legendary": [
+          {
+            "name": "Crane Dance",
+            "entries": [
+              "Bak Mei moves up to 20 feet. This movement does not provoke opportunity attacks."
+            ]
+          },
+          {
+            "name": "Thunder Strike (Costs 2 Actions)",
+            "entries": ["Bak Mei uses Thunder Strike."]
+          }
+        ],
+        "hasToken": true,
+        "traitTags": ["Legendary Resistances"],
+        "actionTags": ["Multiattack"],
+        "languageTags": ["AU", "C"],
+        "damageTags": ["B", "T"],
+        "miscTags": ["MW"],
+        "conditionInflict": ["deafened", "stunned"],
+        "hasFluff": true,
+        "hasFluffImages": true
+      },
+      {
+        "name": "Canopic Golem",
+        "source": "CM",
+        "page": 179,
+        "size": "L",
+        "alignment": ["U"],
+        "type": "construct",
+        "ac": [{ "ac": 17, "from": ["natural armor"] }],
+        "hp": { "average": 252, "formula": "24d10 + 120" },
+        "speed": { "walk": 30 },
+        "str": 20,
+        "dex": 10,
+        "con": 20,
+        "int": 7,
+        "wis": 11,
+        "cha": 1,
+        "save": { "int": "+3", "wis": "+5", "cha": "+0" },
+        "senses": ["darkvision 120 ft."],
+        "passive": 10,
+        "immune": ["poison"],
+        "conditionImmune": [
+          "blinded",
+          "charmed",
+          "deafened",
+          "exhaustion",
+          "frightened",
+          "paralyzed",
+          "petrified",
+          "poisoned"
+        ],
+        "cr": "13",
+        "trait": [
+          {
+            "name": "Limited Spell Immunity",
+            "entries": [
+              "The golem automatically succeeds on saving throws against spells of 7th level or lower, and the attack rolls of such spells always miss it."
+            ]
+          },
+          {
+            "name": "Unusual Nature",
+            "entries": ["The golem doesn't require air, food, drink, or sleep."]
+          }
+        ],
+        "action": [
+          { "name": "Multiattack", "entries": ["The golem makes two attacks."] },
+          {
+            "name": "Slam",
+            "entries": [
+              "Melee Weapon Attack: +10 to hit, reach 5 ft., one target. 27 (4d10 + 5) force damage."
+            ]
+          },
+          {
+            "name": "Crystal Dart",
+            "entries": [
+              "Ranged Weapon Attack: +10 to hit, range 120 ft., one target. 14 (2d8 + 5) force damage."
+            ]
+          }
+        ],
+        "reaction": [
+          {
+            "name": "Spell Deflection",
+            "entries": [
+              "In response to a spell attack missing the golem, it causes that spell to hit another creature within 120 feet of it that it can see."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "senseTags": ["SD"],
+        "actionTags": ["Multiattack"],
+        "damageTags": ["O"],
+        "miscTags": ["MW", "RW", "THW"],
+        "hasFluff": true,
+        "hasFluffImages": true
+      },
+      {
+        "name": "Cloud Giant Ghost",
+        "source": "CM",
+        "page": 146,
+        "alignment": ["U"],
+        "size": "H",
+        "type": "undead",
+        "ac": [{ "ac": 15, "from": ["natural armor"] }],
+        "hp": { "average": 104, "formula": "16d12" },
+        "speed": { "walk": 0, "fly": { "number": 40, "condition": "(hover)" }, "canHover": true },
+        "str": 27,
+        "dex": 11,
+        "con": 10,
+        "int": 12,
+        "wis": 16,
+        "cha": 17,
+        "save": { "wis": "+7", "cha": "+7" },
+        "skill": { "perception": "+7" },
+        "senses": ["darkvision 120 ft."],
+        "passive": 17,
+        "resist": ["cold"],
+        "immune": ["necrotic", "poison"],
+        "conditionImmune": [
+          "charmed",
+          "exhaustion",
+          "frightened",
+          "grappled",
+          "paralyzed",
+          "petrified",
+          "poisoned",
+          "prone",
+          "restrained"
+        ],
+        "languages": ["Common", "Giant"],
+        "cr": "9",
+        "spellcasting": [
+          {
+            "name": "Innate Spellcasting",
+            "headerEntries": [
+              "The ghost casts one of the following spells, using Charisma as the spellcasting ability and requiring no material components:"
+            ],
+            "will": ["fog cloud"],
+            "daily": { "1": ["control weather"], "3": ["telekinesis"] },
+            "ability": "cha",
+            "displayAs": "action"
+          }
+        ],
+        "trait": [
+          {
+            "name": "Ethereal Sight",
+            "entries": [
+              "The ghost can see 120 feet into the Ethereal Plane when it is on the Material Plane, and vice versa."
+            ]
+          },
+          {
+            "name": "Incorporeal Movement",
+            "entries": [
+              "The ghost can move through other creatures and objects as if they were difficult terrain. It takes 5 (1d10) force damage if it ends its turn inside an object."
+            ]
+          },
+          {
+            "name": "Regeneration",
+            "entries": [
+              "The ghost regains 10 hit points at the start of its turn. If the ghost takes radiant damage or damage from a magic weapon, this trait doesn't function at the start of the ghost's next turn. The ghost dies only if it starts its turn with 0 hit points and doesn't regenerate."
+            ]
+          }
+        ],
+        "action": [
+          { "name": "Multiattack", "entries": ["The ghost makes two melee attacks."] },
+          {
+            "name": "Spectral Weapon",
+            "entries": [
+              "Melee Weapon Attack: +12 to hit, reach 10 ft., one target. 21 (3d8 + 8) force damage."
+            ]
+          },
+          {
+            "name": "Etherealness",
+            "entries": [
+              "The ghost enters the Ethereal Plane from the Material Plane, or vice versa. It is visible on the Material Plane while it is in the Border Ethereal, and vice versa, yet it can't affect or be affected by anything on the other plane."
+            ]
+          },
+          {
+            "name": "Wind Howl (Recharge 6)",
+            "entries": [
+              "The ghost emits a dreadful howl that summons a cold, biting wind. This wind engulfs up to three creatures of the ghost's choice that it can see within 60 feet of it. Each target is pulled up to 20 feet toward the ghost and must make a 15 Constitution saving throw, taking 16 (3d10) cold damage on a failed save, or half as much damage on a successful one."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "traitTags": ["Incorporeal Movement", "Regeneration"],
+        "senseTags": ["SD"],
+        "actionTags": ["Multiattack"],
+        "languageTags": ["C", "GI"],
+        "damageTags": ["C", "O"],
+        "miscTags": ["MW", "RCH"],
+        "hasFluffImages": true
+      },
+      {
+        "name": "Constructed Commoner",
+        "source": "CM",
+        "alignment": ["U"],
+        "page": 149,
+        "size": "M",
+        "type": "construct",
+        "ac": [{ "ac": 15, "from": ["natural armor"] }],
+        "hp": { "average": 6, "formula": "1d8 + 2" },
+        "speed": { "walk": 25 },
+        "str": 10,
+        "dex": 10,
+        "con": 15,
+        "int": 10,
+        "wis": 10,
+        "cha": 10,
+        "passive": 10,
+        "immune": ["poison"],
+        "conditionImmune": ["exhaustion", "poisoned"],
+        "languages": ["Common"],
+        "cr": "0",
+        "trait": [
+          {
+            "name": "Unusual Nature",
+            "entries": [
+              "The commoner doesn't require air, food, drink, or sleep, and it gains no benefit from finishing a short or long rest. When it drops to 0 hit points, it becomes a lifeless object."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Club",
+            "entries": [
+              "Melee Weapon Attack: +2 to hit, reach 5 ft., one target. 2 (1d4) bludgeoning damage."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "languageTags": ["C"],
+        "damageTags": ["B"],
+        "miscTags": ["MW"],
+        "hasFluff": true,
+        "hasFluffImages": true
+      },
+      {
+        "name": "Corrupted Avatar of Lurue",
+        "source": "CM",
+        "page": 123,
+        "alignment": ["U"],
+        "size": "L",
+        "type": "monstrosity",
+        "ac": [{ "ac": 14, "from": ["natural armor"] }],
+        "hp": { "average": 90, "formula": "12d10 + 24" },
+        "speed": { "walk": 50, "fly": { "number": 50, "condition": "(hover)" }, "canHover": true },
+        "str": 18,
+        "dex": 14,
+        "con": 15,
+        "int": 11,
+        "wis": 17,
+        "cha": 16,
+        "save": { "int": "+3", "wis": "+6", "cha": "+6" },
+        "senses": ["darkvision 60 ft."],
+        "passive": 13,
+        "immune": ["poison"],
+        "conditionImmune": ["charmed", "paralyzed", "poisoned"],
+        "languages": ["Celestial", "Elvish", "Sylvan", "telepathy 60 ft."],
+        "cr": "8",
+        "action": [
+          {
+            "name": "Multiattack",
+            "entries": ["The avatar makes two attacks: one with its hooves and one with its horn."]
+          },
+          {
+            "name": "Hooves",
+            "entries": [
+              "Melee Weapon Attack: +7 to hit, reach 5 ft., one target. 32 (8d6 + 4) necrotic damage."
+            ]
+          },
+          {
+            "name": "Horn",
+            "entries": [
+              "Melee Weapon Attack: +7 to hit, reach 5 ft., one target. 32 (8d6 + 4) necrotic damage. If the target is a humanoid, it must succeed on a 13 Wisdom saving throw or be transformed into a wolf under the avatar's control. This transformation lasts for 1 hour, or until the target drops to 0 hit points or dies. The target's game statistics are replaced by the wolf's statistics, but it retains its hit points. The target is limited in the actions it can perform by the nature of its wolf form, and it can't speak, cast spells, or take any other action that requires hands or speech. The target's gear melds into the new form, and it can't activate, use, wield, or otherwise benefit from any of its equipment."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "senseTags": ["D"],
+        "actionTags": ["Multiattack"],
+        "languageTags": ["CE", "E", "S", "TP"],
+        "damageTags": ["N"],
+        "miscTags": ["MW"],
+        "hasFluff": true,
+        "hasFluffImages": true
+      },
+      {
+        "name": "Dragon Tortoise",
+        "source": "CM",
+        "page": 205,
+        "size": "G",
+        "type": "dragon",
+        "alignment": ["N"],
+        "ac": [{ "ac": 20, "from": ["natural armor"] }],
+        "hp": { "average": 341, "formula": "22d20 + 110" },
+        "speed": { "walk": 20 },
+        "str": 25,
+        "dex": 10,
+        "con": 20,
+        "int": 10,
+        "wis": 12,
+        "cha": 12,
+        "save": { "dex": "+6", "con": "+11", "wis": "+7" },
+        "senses": ["darkvision 120 ft."],
+        "passive": 11,
+        "resist": ["fire"],
+        "languages": ["Draconic", "Terran"],
+        "cr": "17",
+        "action": [
+          {
+            "name": "Multiattack",
+            "entries": [
+              "The dragon tortoise makes three attacks: one with its bite and two with its claws. It can make one tail attack in place of its two claw attacks."
+            ]
+          },
+          {
+            "name": "Bite",
+            "entries": [
+              "Melee Weapon Attack: +13 to hit, reach 15 ft., one target. 26 (3d12 + 7) piercing damage."
+            ]
+          },
+          {
+            "name": "Claw",
+            "entries": [
+              "Melee Weapon Attack: +13 to hit, reach 10 ft., one target. 16 (2d8 + 7) slashing damage."
+            ]
+          },
+          {
+            "name": "Tail",
+            "entries": [
+              "Melee Weapon Attack: +13 to hit, reach 15 ft., one target. 26 (3d12 + 7) bludgeoning damage. If the target is a creature, it must succeed on a 20 Strength saving throw or be pushed up to 10 feet away from the dragon tortoise and knocked prone."
+            ]
+          },
+          {
+            "name": "Steam Breath (Recharge 5-6)",
+            "entries": [
+              "The dragon tortoise exhales abrasive sand in a 60-foot cone. Each creature in that area must make a 18 Constitution saving throw, taking 52 (15d6) slashing damage on a failed save, or half as much damage on a successful one."
+            ]
+          }
+        ],
+        "senseTags": ["SD"],
+        "actionTags": ["Multiattack"],
+        "languageTags": ["DR", "T"],
+        "damageTags": ["B", "P", "S"],
+        "miscTags": ["AOE", "MW", "RCH"],
+        "conditionInflict": ["prone"],
+        "hasFluff": true
+      },
+      {
+        "name": "Faerl",
+        "isNpc": true,
+        "isNamedCreature": true,
+        "source": "CM",
+        "page": 104,
+        "size": "M",
+        "type": { "type": "humanoid", "tags": ["elf"] },
+        "alignment": ["N", "E"],
+        "ac": [{ "ac": 15, "from": ["breastplate"] }],
+        "hp": { "average": 9, "formula": "2d8" },
+        "speed": { "walk": 30 },
+        "str": 11,
+        "dex": 12,
+        "con": 11,
+        "int": 12,
+        "wis": 14,
+        "cha": 16,
+        "skill": { "deception": "+5", "insight": "+4", "persuasion": "+5" },
+        "passive": 12,
+        "languages": ["Common", "Elvish"],
+        "cr": "1/8",
+        "trait": [
+          {
+            "name": "Fey Ancestry",
+            "entries": [
+              "Faerl has advantage on saving throws against being charmed, and magic can't put him to sleep."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Rapier",
+            "entries": [
+              "Melee Weapon Attack: +3 to hit, reach 5 ft., one target. 5 (1d8 + 1) piercing damage."
+            ]
+          }
+        ],
+        "reaction": [
+          {
+            "name": "Parry",
+            "entries": [
+              "Faerl adds 2 to his AC against one melee attack that would hit it. To do so, he must see the attacker and be wielding a melee weapon."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "traitTags": ["Fey Ancestry"],
+        "actionTags": ["Parry"],
+        "languageTags": ["C", "E"],
+        "damageTags": ["P"],
+        "miscTags": ["MW"],
+        "hasFluff": true,
+        "hasFluffImages": true
+      },
+      {
+        "name": "Fungal Servant",
+        "source": "CM",
+        "page": 217,
+        "size": "M",
+        "type": "undead",
+        "alignment": ["L", "E"],
+        "ac": [{ "ac": 17, "from": ["natural armor"] }],
+        "hp": { "average": 97, "formula": "13d8 + 39" },
+        "speed": { "walk": 20 },
+        "str": 18,
+        "dex": 10,
+        "con": 17,
+        "int": 11,
+        "wis": 18,
+        "cha": 16,
+        "save": { "con": "+8", "int": "+5", "wis": "+9", "cha": "+8" },
+        "skill": { "history": "+5", "religion": "+5" },
+        "senses": ["darkvision 60 ft."],
+        "passive": 14,
+        "immune": [
+          "necrotic",
+          "poison",
+          {
+            "immune": ["bludgeoning", "piercing", "slashing"],
+            "note": "from nonmagical attacks",
+            "cond": true
+          }
+        ],
+        "vulnerable": ["fire"],
+        "conditionImmune": ["charmed", "exhaustion", "frightened", "paralyzed", "poisoned"],
+        "languages": ["The languages it knew in life"],
+        "cr": "15",
+        "spellcasting": [
+          {
+            "name": "Spellcasting",
+            "headerEntries": [
+              "The fungal servant is a 10th-level spellcaster. Its spellcasting ability is Wisdom (spell save 17, +9 to hit with spell attacks). The fungal servant has the following cleric spells prepared:"
+            ],
+            "spells": {
+              "0": { "spells": ["sacred flame", "thaumaturgy"] },
+              "1": { "slots": 4, "spells": ["command", "guiding bolt", "shield of faith"] },
+              "2": { "slots": 3, "spells": ["hold person", "silence", "spiritual weapon"] },
+              "3": { "slots": 3, "spells": ["animate dead", "dispel magic"] },
+              "4": { "slots": 3, "spells": ["divination", "guardian of faith"] },
+              "5": { "slots": 2, "spells": ["contagion", "insect plague"] },
+              "6": { "slots": 1, "spells": ["harm"] }
+            },
+            "ability": "wis"
+          }
+        ],
+        "trait": [
+          {
+            "name": "Magic Resistance",
+            "entries": [
+              "The fungal servant has advantage on saving throws against spells and other magical effects."
+            ]
+          },
+          {
+            "name": "Rejuvenation",
+            "entries": [
+              "A destroyed fungal servant gains a new body in 24 hours if its heart is intact, regaining all its hit points and becoming active again. The new body appears within 5 feet of the fungal servant's heart."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Multiattack",
+            "entries": [
+              "The fungal servant can use its Dreadful Glare and makes one attack with its rotting fist."
+            ]
+          },
+          {
+            "name": "Rotting Fist",
+            "entries": [
+              "Melee Weapon Attack: +9 to hit, reach 5 ft., one target. 14 (3d6 + 4) bludgeoning damage plus 21 (6d6) necrotic damage. If the target is a creature, it must succeed on a 16 Constitution saving throw or be cursed with mummy rot. The cursed target can't regain hit points, and its hit point maximum decreases by 10 (3d6) for every 24 hours that elapse. If the curse reduces the target's hit point maximum to 0, the target dies, and its body turns to spores. The curse lasts until removed by the remove curse spell or other magic."
+            ]
+          },
+          {
+            "name": "Dreadful Glare",
+            "entries": [
+              "The fungal servant targets one creature it can see within 60 feet of it. If the target can see the fungal servant, it must succeed on a 16 Wisdom saving throw against this magic or become frightened until the end of the fungal servant's next turn. If the target fails the saving throw by 5 or more, it is also paralyzed for the same duration. A target that succeeds on the saving throw is immune to the Dreadful Glare of all fungal servants for the next 24 hours."
+            ]
+          }
+        ],
+        "legendary": [
+          {
+            "name": "Attack",
+            "entries": [
+              "The fungal servant makes one attack with its rotting fist or uses its Dreadful Glare."
+            ]
+          },
+          {
+            "name": "Blinding Spores",
+            "entries": [
+              "Blinding spores swirls magically around the fungal servant. Each creature within 5 feet of the fungal servant must succeed on a 16 Constitution saving throw or be blinded until the end of the creature's next turn."
+            ]
+          },
+          {
+            "name": "Blasphemous Word (Costs 2 Actions)",
+            "entries": [
+              "The fungal servant utters a blasphemous word. Each non-undead creature within 10 feet of the fungal servant that can hear the magical utterance must succeed on a 16 Constitution saving throw or be stunned until the end of the fungal servant's next turn."
+            ]
+          },
+          {
+            "name": "Channel Negative Energy (Costs 2 Actions)",
+            "entries": [
+              "The fungal servant magically unleashes negative energy. Creatures within 60 feet of the fungal servant, including ones behind barriers and around corners, can't regain hit points until the end of the fungal servant's next turn."
+            ]
+          },
+          {
+            "name": "Whirlwind of Spores (Costs 2 Actions)",
+            "entries": [
+              "The fungal servant magically transforms into a whirlwind of spores, moves up to 60 feet, and reverts to its normal form. While in whirlwind form, the fungal servant is immune to all damage, and it can't be grappled, petrified, knocked prone, restrained, or stunned. Equipment worn or carried by the fungal servant remain in its possession."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "traitTags": ["Magic Resistance", "Rejuvenation"],
+        "senseTags": ["D"],
+        "actionTags": ["Multiattack"],
+        "languageTags": ["LF"],
+        "damageTags": ["B", "N"],
+        "spellcastingTags": ["CC"],
+        "miscTags": ["AOE", "MW"],
+        "conditionInflict": ["blinded", "frightened", "paralyzed", "stunned"],
+        "conditionInflictSpell": [
+          "blinded",
+          "deafened",
+          "paralyzed",
+          "poisoned",
+          "prone",
+          "stunned"
+        ]
+      },
+      {
+        "name": "Gingwatzim",
+        "source": "CM",
+        "alignment": ["U"],
+        "page": 27,
+        "size": "S",
+        "type": { "type": "aberration", "tags": ["shapechanger"] },
+        "ac": [12],
+        "hp": { "average": 39, "formula": "6d6 + 18" },
+        "speed": {
+          "walk": 30,
+          "fly": { "number": 30, "condition": "(hover) in its true form only" },
+          "canHover": true
+        },
+        "str": 3,
+        "dex": 15,
+        "con": 16,
+        "int": 4,
+        "wis": 11,
+        "cha": 6,
+        "senses": ["blindsight 60 ft. (blind beyond this radius)"],
+        "passive": 10,
+        "immune": ["poison"],
+        "conditionImmune": ["poisoned"],
+        "languages": ["telepathy 60 ft."],
+        "cr": "2",
+        "trait": [
+          {
+            "name": "Alternate Forms",
+            "entries": [
+              "The gingwatzim has two alternate forms, both of which are chosen by its creator when the gingwatzim comes into being. One form is an exact duplicate of a Tiny nonmagical object (such as a book, dagger, or gemstone) that its creator is carrying or wearing when the gingwatzim is conjured. The other form can be any Tiny beast. Once these alternate forms are chosen, they can't be changed."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Energy Drain (True Form Only)",
+            "entries": [
+              "Melee Weapon Attack: +4 to hit, reach 5 ft., one creature. 16 (4d6 + 2) necrotic damage, and the target must succeed on a 12 Constitution saving throw or gain 1 level of exhaustion. When the target finishes a short or long rest, the target loses every level of exhaustion gained from this attack."
+            ]
+          },
+          {
+            "name": "Change Shape",
+            "entries": [
+              "The gingwatzim changes from its true form—a 3-foot-diameter sphere of luminous ectoplasm—into one of its two alternate forms, or from one of those forms back into its true form. In object form, it can't move or make attacks but otherwise retains its statistics, and it is indistinguishable from the thing it is imitating. In beast form, it retains its hit points but otherwise uses the stat block of the beast it is imitating. When it dies, the gingwatzim reverts to its true form and then vanishes."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "senseTags": ["B"],
+        "actionTags": ["Shapechanger"],
+        "languageTags": ["TP"],
+        "damageTags": ["N"],
+        "miscTags": ["MW"],
+        "conditionInflict": ["exhaustion"],
+        "hasFluff": true
+      },
+      {
+        "name": "Grippli Warrior",
+        "source": "CM",
+        "page": 99,
+        "alignment": ["U"],
+        "size": "S",
+        "type": { "type": "humanoid", "tags": ["grippli"] },
+        "ac": [12],
+        "hp": { "average": 13, "formula": "3d6 + 3" },
+        "speed": { "walk": 30, "climb": 30, "swim": 30 },
+        "str": 10,
+        "dex": 15,
+        "con": 12,
+        "int": 10,
+        "wis": 14,
+        "cha": 10,
+        "skill": { "athletics": "+2", "stealth": "+4", "survival": "+4" },
+        "passive": 12,
+        "languages": ["Grippli plus one other language (usually Common, Draconic, or Primordial)"],
+        "cr": "1/4",
+        "trait": [
+          { "name": "Hold Breath", "entries": ["The grippli can hold its breath for 20 minutes."] },
+          {
+            "name": "Standing Leap",
+            "entries": [
+              "The grippli can leap 30 feet horizontally or 20 feet vertically from a standing position."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Multiattack",
+            "entries": [
+              "The grippli makes one attack with its tongue. If this attack hits, the grippli can make a melee attack using its trident against the same target."
+            ]
+          },
+          {
+            "name": "Tongue",
+            "entries": [
+              "Melee Weapon Attack: +4 to hit, reach 5 ft., one Medium or smaller creature. The target is grappled (escape 12). Until this grapple ends, the target is restrained, and the grippli can't grab another creature."
+            ]
+          },
+          {
+            "name": "Trident",
+            "entries": [
+              "Melee Weapon Attack:,rw +4 to hit, reach 5 ft. or range 20/60 ft., one target. 5 (1d6 + 2) piercing damage, or 6 (1d8 + 2) piercing damage if used with two hands to make a melee attack, plus 2 (1d4) piercing damage if the grippli had advantage on the attack roll."
+            ]
+          },
+          {
+            "name": "Shortbow",
+            "entries": [
+              "Ranged Weapon Attack: +4 to hit, range 80/320 ft., one target. 5 (1d6 + 2) piercing damage, plus 2 (1d4) piercing damage if the grippli had advantage on the attack roll."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "traitTags": ["Hold Breath"],
+        "actionTags": ["Multiattack"],
+        "languageTags": ["C", "DR", "P", "X"],
+        "damageTags": ["P"],
+        "miscTags": ["MW", "RNG", "RW", "THW"],
+        "conditionInflict": ["grappled", "restrained"],
+        "hasFluff": true,
+        "hasFluffImages": true
+      },
+      {
+        "name": "Hag of the Fetid Gaze",
+        "source": "CM",
+        "page": 76,
+        "size": "M",
+        "type": "fey",
+        "alignment": ["N", "E"],
+        "ac": [{ "ac": 17, "from": ["natural armor"] }],
+        "hp": { "average": 82, "formula": "11d8 + 33" },
+        "speed": { "walk": 30 },
+        "str": 18,
+        "dex": 12,
+        "con": 16,
+        "int": 13,
+        "wis": 14,
+        "cha": 14,
+        "skill": { "arcana": "+3", "deception": "+4", "perception": "+4", "stealth": "+4" },
+        "senses": ["darkvision 60 ft."],
+        "passive": 14,
+        "languages": ["Common", "Draconic", "Sylvan"],
+        "cr": "5",
+        "spellcasting": [
+          {
+            "name": "Innate Spellcasting",
+            "headerEntries": [
+              "The hag's innate spellcasting ability is Charisma (spell save 12). She can innately cast the following spells, requiring no material components:"
+            ],
+            "will": ["dancing lights", "minor illusion", "vicious mockery"],
+            "ability": "cha"
+          },
+          {
+            "name": "Shared Spellcasting",
+            "headerEntries": [
+              "While all three members of the Fetid Gaze are within 30 feet of one another, they can each cast the following spells from the wizard's spell list but must share the spell slots among themselves:"
+            ],
+            "spells": {
+              "1": { "slots": 4, "spells": ["charm person", "witch bolt"] },
+              "2": { "slots": 3, "spells": ["alter self", "suggestion"] },
+              "3": { "slots": 3, "spells": ["dispel magic", "glyph of warding", "slow"] },
+              "4": { "slots": 3, "spells": ["blight", "polymorph"] },
+              "5": { "slots": 2, "spells": ["dominate person", "seeming"] },
+              "6": { "slots": 1, "spells": ["Otto's irresistible dance"] }
+            },
+            "footerEntries": [
+              "For casting these spells, each hag is a 12th-level spellcaster that uses Intelligence as her spellcasting ability. The spell save DC is 12 + the hag's Intelligence modifier, and the spell attack bonus is 4 + the hag's Intelligence modifier."
+            ]
+          }
+        ],
+        "trait": [
+          { "name": "Amphibious", "entries": ["The hag can breathe air and water."] },
+          {
+            "name": "Mimicry",
+            "entries": [
+              "The hag can mimic animal sounds and humanoid voices. A creature that hears the sounds can tell they are imitations with a successful 14 Wisdom (Insight) check."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Claws",
+            "entries": [
+              "Melee Weapon Attack: +6 to hit, reach 5 ft., one target. 13 (2d8 + 4) slashing damage."
+            ]
+          },
+          {
+            "name": "Illusory Appearance",
+            "entries": [
+              "The hag covers herself and anything she is wearing or carrying with a magical illusion that makes her look like another creature of her general size and humanoid shape. The illusion ends if the hag takes a bonus action to end it or if she dies.",
+              "The changes wrought by this effect fail to hold up to physical inspection. For example, the hag could appear to have smooth skin, but someone touching her would feel her rough flesh. Otherwise, a creature must take an action to visually inspect the illusion and succeed on a 20 Intelligence (Investigation) check to discern that the hag is disguised."
+            ]
+          },
+          {
+            "name": "Invisible Passage",
+            "entries": [
+              "The hag magically turns invisible until she attacks or casts a spell, or until her concentration ends (as if concentrating on a spell). While invisible, she leaves no physical evidence of her passage, so she can be tracked only by magic. Any equipment she wears or carries is invisible with her."
+            ]
+          }
+        ],
+        "traitTags": ["Amphibious"],
+        "senseTags": ["D"],
+        "languageTags": ["C", "DR", "S"],
+        "damageTags": ["S"],
+        "spellcastingTags": ["CW", "I", "S"],
+        "miscTags": ["MW"],
+        "conditionInflictSpell": ["charmed"],
+        "hasFluff": true,
+        "hasFluffImages": true
+      },
+      {
+        "name": "Immortal Lotus Monk",
+        "source": "CM",
+        "page": 165,
+        "alignment": ["U"],
+        "size": "M",
+        "type": "humanoid",
+        "ac": [{ "ac": 15, "from": ["unarmored defense"] }],
+        "hp": { "average": 65, "formula": "10d8 + 20" },
+        "speed": { "walk": 30 },
+        "str": 12,
+        "dex": 16,
+        "con": 14,
+        "int": 11,
+        "wis": 14,
+        "cha": 10,
+        "skill": { "acrobatics": "+6", "perception": "+5", "stealth": "+6" },
+        "passive": 15,
+        "languages": ["Common"],
+        "cr": "5",
+        "trait": [
+          {
+            "name": "Unarmored Defense",
+            "entries": [
+              "While the monk is wearing no armor and wielding no shield, its AC includes its Wisdom modifier."
+            ]
+          }
+        ],
+        "action": [
+          { "name": "Multiattack", "entries": ["The monk makes two attacks."] },
+          {
+            "name": "Force Strike",
+            "entries": [
+              "Melee Weapon Attack: +6 to hit, reach 5 ft., one target. 7 (1d8 + 3) force damage, and if the target is a creature, it must succeed on a 14 Dexterity saving throw or be knocked prone."
+            ]
+          },
+          {
+            "name": "Dart",
+            "entries": [
+              "Ranged Weapon Attack: +6 to hit, range 20/60 ft., one target. 5 (1d4 + 3) piercing damage."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "actionTags": ["Multiattack"],
+        "languageTags": ["C"],
+        "damageTags": ["O", "P"],
+        "miscTags": ["MW", "RW", "THW"],
+        "conditionInflict": ["prone"]
+      },
+      {
+        "name": "Jade Tigress",
+        "isNpc": true,
+        "isNamedCreature": true,
+        "source": "CM",
+        "page": 166,
+        "size": "M",
+        "type": { "type": "humanoid", "tags": ["human"] },
+        "alignment": ["L", "E"],
+        "ac": [{ "ac": 15, "from": ["unarmored defense"] }],
+        "hp": { "average": 71, "formula": "11d8 + 21" },
+        "speed": { "walk": 40 },
+        "str": 18,
+        "dex": 14,
+        "con": 15,
+        "int": 11,
+        "wis": 16,
+        "cha": 11,
+        "save": { "str": "+7", "con": "+5" },
+        "skill": { "athletics": "+7", "insight": "+6", "intimidation": "+3", "perception": "+6" },
+        "passive": 16,
+        "resist": ["poison"],
+        "conditionImmune": ["charmed", "frightened"],
+        "languages": ["Common"],
+        "cr": "8",
+        "trait": [
+          {
+            "name": "Unarmored Defense",
+            "entries": [
+              "While Jade Tigress is wearing no armor and wielding no shield, her AC includes her Wisdom modifier."
+            ]
+          }
+        ],
+        "action": [
+          { "name": "Multiattack", "entries": ["Jade Tigress makes three attacks."] },
+          {
+            "name": "Force Strike",
+            "entries": [
+              "Melee Weapon Attack: +7 to hit, reach 5 ft., one target. 13 (2d8 + 4) force damage, and if the target is a creature, it must succeed on a 15 Constitution saving throw or be stunned until the of Jade Tigress's next turn."
+            ]
+          },
+          {
+            "name": "Poisoned Dart",
+            "entries": [
+              "Ranged Weapon Attack: +5 to hit, range 20/60 ft., one target. 4 (1d4 + 2) piercing damage plus 7 (3d4) poison damage, and the target must succeed on a 15 Constitution saving throw or gain 1 level of exhaustion."
+            ]
+          },
+          {
+            "name": "Heal Self (Recharges after a Long Rest)",
+            "entries": [
+              "Jade Tigress regains 2d8 + 2 hit points, and all levels of exhaustion end on her."
+            ]
+          }
+        ],
+        "bonus": [
+          {
+            "name": "Nimble Escape",
+            "entries": ["Jade Tigress takes the Disengage or Hide action."]
+          }
+        ],
+        "reaction": [
+          {
+            "name": "Deflect Missile",
+            "entries": [
+              "In response to being hit by a ranged weapon attack, Jade Tigress deflects the missile. The damage she takes from the attack is reduced by 1d10 + 9. If the damage is reduced to 0, Jade Tigress catches the missile if it's small enough to hold in one hand and Jade Tigress has a hand free."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "actionTags": ["Multiattack"],
+        "languageTags": ["C"],
+        "damageTags": ["I", "O", "P"],
+        "miscTags": ["MW", "RW", "THW"],
+        "conditionInflict": ["exhaustion", "stunned"],
+        "hasFluff": true,
+        "hasFluffImages": true
+      },
+      {
+        "name": "K'Tulah",
+        "isNpc": true,
+        "isNamedCreature": true,
+        "source": "CM",
+        "page": 64,
+        "size": "M",
+        "type": { "type": "humanoid", "tags": ["tabaxi"] },
+        "alignment": ["N", "G"],
+        "ac": [11],
+        "hp": { "average": 27, "formula": "5d8 + 5" },
+        "speed": { "walk": 30 },
+        "str": 10,
+        "dex": 12,
+        "con": 13,
+        "int": 12,
+        "wis": 15,
+        "cha": 11,
+        "skill": { "medicine": "+4", "nature": "+3", "perception": "+4" },
+        "senses": ["darkvision 60 ft."],
+        "passive": 14,
+        "languages": ["Common", "Druidic"],
+        "cr": "2",
+        "spellcasting": [
+          {
+            "name": "Spellcasting",
+            "headerEntries": [
+              "K'Tulah is a 4th-level spellcaster. K'Tulah's spellcasting ability is Wisdom (spell save 12, +4 to hit with spell attacks). K'Tulah has the following druid spells prepared:"
+            ],
+            "spells": {
+              "0": { "spells": ["druidcraft", "produce flame", "shillelagh"] },
+              "1": {
+                "slots": 4,
+                "spells": ["entangle", "longstrider", "speak with animals", "thunderwave"]
+              },
+              "2": { "slots": 3, "spells": ["animal messenger", "barkskin"] }
+            },
+            "ability": "wis"
+          }
+        ],
+        "trait": [
+          {
+            "name": "Feline Agility",
+            "entries": [
+              "When K'Tulah moves on her turn in combat, she can double her speed until the end of the turn. Once she uses this ability, K'Tulah can't use it again until she moves 0 feet on one of her turns."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Quarterstaff",
+            "entries": [
+              "Melee Weapon Attack: +2 to hit (+4 to hit with shillelagh), reach 5 ft., one target. 3 (1d6) bludgeoning damage, 4 (1d8) bludgeoning damage if wielded with two hands, or 6 (1d8 + 2) bludgeoning damage with shillelagh."
+            ]
+          },
+          {
+            "name": "Claws",
+            "entries": [
+              "Melee Weapon Attack: +2 to hit, reach 5 ft., one target. 2 (1d4) slashing damage."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "senseTags": ["D"],
+        "languageTags": ["C", "DU"],
+        "damageTags": ["B", "S"],
+        "spellcastingTags": ["CD"],
+        "miscTags": ["MW"],
+        "conditionInflictSpell": ["restrained"],
+        "hasFluff": true
+      },
+      {
+        "name": "Kiddywidget",
+        "source": "CM",
+        "page": 136,
+        "alignment": ["U"],
+        "size": "S",
+        "type": "construct",
+        "ac": [{ "ac": 16, "from": ["natural armor"] }],
+        "hp": { "average": 15, "formula": "2d6 + 8" },
+        "speed": { "walk": 20, "climb": 20 },
+        "str": 6,
+        "dex": 14,
+        "con": 18,
+        "int": 1,
+        "wis": 10,
+        "cha": 1,
+        "senses": ["darkvision 60"],
+        "passive": 10,
+        "immune": ["lightning", "poison"],
+        "conditionImmune": [
+          "blinded",
+          "deafened",
+          "exhaustion",
+          "paralyzed",
+          "petrified",
+          "poisoned"
+        ],
+        "languages": ["Skitterwidget"],
+        "cr": "1/2",
+        "trait": [
+          {
+            "name": "Unusual Nature",
+            "entries": ["The kiddywidget doesn't require air, food, drink, or sleep."]
+          }
+        ],
+        "action": [
+          {
+            "name": "Multiattack",
+            "entries": [
+              "The kiddywidget makes two attacks: one with its bite and one with its tail."
+            ]
+          },
+          {
+            "name": "Bite",
+            "entries": [
+              "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. 4 (1d4 + 2) piercing damage. If the target is a creature, it is grappled by the kiddywidget (escape 8)."
+            ]
+          },
+          {
+            "name": "Tail",
+            "entries": [
+              "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. 4 (1d4 + 2) piercing damage plus 2 (1d4) lightning damage."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "senseTags": ["D"],
+        "actionTags": ["Multiattack"],
+        "damageTags": ["L", "P"],
+        "miscTags": ["MW"],
+        "conditionInflict": ["grappled"],
+        "hasFluff": true,
+        "hasFluffImages": true
+      },
+      {
+        "name": "Lichen Lich",
+        "source": "CM",
+        "page": 223,
+        "size": "M",
+        "alignment": ["U"],
+        "type": "undead",
+        "ac": [{ "ac": 20, "from": ["natural armor"] }],
+        "hp": { "average": 225, "formula": "30d8 + 90" },
+        "speed": { "walk": 30 },
+        "str": 11,
+        "dex": 16,
+        "con": 16,
+        "int": 14,
+        "wis": 20,
+        "cha": 16,
+        "save": { "con": "+9", "int": "+8", "wis": "+11", "cha": "+9" },
+        "skill": { "medicine": "+11", "nature": "+14", "perception": "+11", "survival": "+11" },
+        "senses": ["truesight 120 ft."],
+        "passive": 21,
+        "resist": ["cold", "necrotic"],
+        "immune": ["poison"],
+        "conditionImmune": [
+          "charmed",
+          "exhaustion",
+          "frightened",
+          "paralyzed",
+          "poisoned",
+          "stunned"
+        ],
+        "languages": ["Common", "Druidic", "Sylvan"],
+        "cr": "18",
+        "spellcasting": [
+          {
+            "name": "Innate Spellcasting",
+            "headerEntries": [
+              "The lich casts one of the following spells using Wisdom as the spellcasting ability (save 19):"
+            ],
+            "will": ["druidcraft"],
+            "daily": {
+              "3e": ["detect magic", "fog cloud", "pass without trace"],
+              "1e": [
+                "antilife shell",
+                "dispel magic",
+                "speak with plants",
+                "transport via plants",
+                "fire storm"
+              ]
+            },
+            "ability": "wis",
+            "displayAs": "action"
+          }
+        ],
+        "trait": [
+          {
+            "name": "Legendary Resistance (3/Day)",
+            "entries": ["If the lich fails a saving throw, it can choose to succeed instead."]
+          },
+          {
+            "name": "Rejuvenation",
+            "entries": [
+              "If it has a phylactery, a destroyed lich gains a new body in 1d10 days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the phylactery."
+            ]
+          }
+        ],
+        "action": [
+          { "name": "Multiattack", "entries": ["The lich makes four attacks."] },
+          {
+            "name": "Poisonous Touch",
+            "entries": [
+              "Melee Weapon Attack: +9 to hit, reach 10 ft., one creature. 17 (5d6) poison damage, and the target must succeed on a 19 Constitution saving throw or be poisoned for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
+            ]
+          },
+          {
+            "name": "Wither",
+            "entries": [
+              "Ranged Spell Attack: +9 to hit, range 60 ft., one target. 14 (4d6) necrotic damage."
+            ]
+          },
+          {
+            "name": "Fire Storm (7th-Level Spell; 1/Day)",
+            "entries": [
+              "The lich fills up to ten 10-foot cubes with fire. Every cube must be within 150 feet of the lich and occupy a space the lich can see, and each cube must have at least one face adjacent to the face of another cube. Each creature in the area must make a 19 Dexterity saving throw, taking 38 (7d10) fire damage on a failed save, or half as much damage on a successful one. The fire ignites flammable objects in the area that aren't being worn or carried. If the lich chooses, plant life in the area is unaffected by the spell."
+            ]
+          }
+        ],
+        "legendary": [
+          { "name": "Attack", "entries": ["The lich makes an attack."] },
+          {
+            "name": "Poison Prick (Cost 2 Actions)",
+            "entries": [
+              "The lich targets one poisoned creature it can see within 30 feet of it. The target must succeed on a 19 Constitution saving throw or fall unconscious until the poisoned condition ends on it."
+            ]
+          },
+          {
+            "name": "Sap Life (Costs 2 Actions)",
+            "entries": [
+              "The lich targets one creature it can see within 30 feet of it. The target must succeed on a 19 Constitution saving throw or take 11 (2d10) necrotic damage. The lich regains a number of hit points equal to the amount of damage that the creature takes."
+            ]
+          }
+        ],
+        "legendaryGroup": { "name": "Lichen Lich", "source": "CM" },
+        "hasToken": true,
+        "traitTags": ["Legendary Resistances", "Rejuvenation"],
+        "senseTags": ["U"],
+        "actionTags": ["Multiattack"],
+        "languageTags": ["C", "DU", "S"],
+        "damageTags": ["F", "I", "N"],
+        "miscTags": ["AOE", "MW", "RCH"],
+        "conditionInflict": ["poisoned", "unconscious"],
+        "hasFluff": true,
+        "hasFluffImages": true
+      },
+      {
+        "name": "Lightning Golem",
+        "source": "CM",
+        "page": 129,
+        "size": "M",
+        "type": "construct",
+        "alignment": ["N"],
+        "ac": [9],
+        "hp": { "average": 93, "formula": "11d8 + 44" },
+        "speed": { "walk": 30 },
+        "str": 19,
+        "dex": 9,
+        "con": 18,
+        "int": 6,
+        "wis": 10,
+        "cha": 5,
+        "senses": ["darkvision 60 ft."],
+        "passive": 10,
+        "immune": [
+          "lightning",
+          "poison",
+          {
+            "immune": ["bludgeoning", "piercing", "slashing"],
+            "note": "from nonmagical attacks that aren't adamantine",
+            "cond": true
+          }
+        ],
+        "conditionImmune": [
+          "charmed",
+          "exhaustion",
+          "frightened",
+          "paralyzed",
+          "petrified",
+          "poisoned"
+        ],
+        "languages": ["understands the languages of its creator but can't speak"],
+        "cr": "5",
+        "trait": [
+          {
+            "name": "Berserk",
+            "entries": [
+              "Whenever the golem starts its turn with 40 hit points or fewer, roll a d6. On a 6, the golem goes berserk. On each of its turns while berserk, the golem attacks the nearest creature it can see. If no creature is near enough to move to and attack, the golem attacks an object, with preference for an object smaller than itself. Once the golem goes berserk, it continues to do so until it is destroyed or regains all its hit points.",
+              "The golem's creator, if within 60 feet of the berserk golem, can try to calm it by speaking firmly and persuasively. The golem must be able to hear its creator, who must take an action to make a 15 Charisma (Persuasion) check. If the check succeeds, the golem ceases being berserk. If it takes damage while still at 40 hit points or fewer, the golem might go berserk again."
+            ]
+          },
+          {
+            "name": "Immutable Form",
+            "entries": ["The golem is immune to any spell or effect that would alter its form."]
+          },
+          {
+            "name": "Lightning Absorption",
+            "entries": [
+              "Whenever the golem is subjected to lightning damage, it takes no damage and instead regains a number of hit points equal to the lightning damage dealt."
+            ]
+          },
+          {
+            "name": "Magic Resistance",
+            "entries": [
+              "The golem has advantage on saving throws against spells and other magical effects."
+            ]
+          },
+          { "name": "Magic Weapons", "entries": ["The golem's weapon attacks are magical."] }
+        ],
+        "action": [
+          { "name": "Multiattack", "entries": ["The golem makes two slam attacks."] },
+          {
+            "name": "Slam",
+            "entries": [
+              "Melee Weapon Attack: +7 to hit, reach 5 ft., one target. 13 (2d8 + 4) lightning damage."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "traitTags": ["Damage Absorption", "Immutable Form", "Magic Resistance", "Magic Weapons"],
+        "senseTags": ["D"],
+        "actionTags": ["Multiattack"],
+        "languageTags": ["CS"],
+        "damageTags": ["L"],
+        "miscTags": ["MW"],
+        "hasFluff": true
+      },
+      {
+        "name": "Master Sage",
+        "source": "CM",
+        "alignment": ["U"],
+        "page": 9,
+        "size": "M",
+        "type": { "type": "humanoid", "tags": ["any race"] },
+        "ac": [10],
+        "hp": { "average": 54, "formula": "12d8" },
+        "speed": { "walk": 30 },
+        "str": 8,
+        "dex": 10,
+        "con": 10,
+        "int": 20,
+        "wis": 18,
+        "cha": 11,
+        "skill": {
+          "arcana": "+11",
+          "history": "+11",
+          "insight": "+7",
+          "investigation": "+11",
+          "medicine": "+10",
+          "nature": "+11",
+          "religion": "+11"
+        },
+        "passive": 14,
+        "languages": ["Common plus any five languages"],
+        "cr": "5",
+        "spellcasting": [
+          {
+            "name": "Innate Spellcasting",
+            "headerEntries": [
+              "The sage casts one of the following spells, using Intelligence as the spellcasting ability (save 14, +6 to hit with spell attacks):"
+            ],
+            "will": ["light", "mage hand", "mending", "prestidigitation", "shocking grasp"],
+            "daily": {
+              "3e": [
+                "comprehend languages",
+                "detect magic",
+                "dispel magic",
+                "fireball",
+                "identify",
+                "levitate",
+                "locate object",
+                "shield",
+                "Tenser's Floating Disk",
+                "unseen servant"
+              ],
+              "1e": [
+                "banishment",
+                "contact other plane",
+                "Drawmij's instant summons",
+                "legend lore",
+                "locate creature",
+                "planar binding",
+                "polymorph",
+                "protection from evil and good",
+                "scrying",
+                "sending",
+                "true seeing"
+              ]
+            },
+            "ability": "int",
+            "displayAs": "action"
+          }
+        ],
+        "action": [
+          {
+            "name": "Shocking Grasp (Cantrip)",
+            "entries": [
+              "Melee Spell Attack: +8 to hit (with advantage if the target is wearing armor made of metal), reach 5 ft., one creature. 13 (3d8) lightning damage, and the target can't take reactions until the start of its next turn."
+            ]
+          },
+          {
+            "name": "Fireball (3rd-Level Spell; 3/Day)",
+            "entries": [
+              "The sage creates a fiery explosion centered on a point it can see within 150 feet of it. Each creature in a 20-foot-radius sphere centered on that point must make a 14 Dexterity saving throw, taking 28 (8d6) fire damage on a failed save, or half as much damage on a successful one. The fire spreads around corners and ignites flammable objects in the area that aren't being worn or carried."
+            ]
+          }
+        ],
+        "reaction": [
+          {
+            "name": "Shield (1st-Level Spell; 3/Day)",
+            "entries": [
+              "When the sage is hit by an attack or targeted by a magic missile spell, it calls forth an invisible barrier of magical force that protects it. Until the start of its next turn, the sage has a +5 bonus to AC, including against the triggering attack, and it takes no damage from magic missile."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "languageTags": ["C", "X"],
+        "damageTags": ["F", "L"],
+        "miscTags": ["AOE"],
+        "hasFluff": true,
+        "hasFluffImages": true
+      },
+      {
+        "name": "Miirym",
+        "isNpc": true,
+        "isNamedCreature": true,
+        "alignment": ["U"],
+        "source": "CM",
+        "page": 16,
+        "size": "L",
+        "type": "undead",
+        "ac": [10],
+        "hp": { "average": 262, "formula": "25d10 + 125" },
+        "speed": { "walk": 0, "fly": { "number": 60, "condition": "(hover)" }, "canHover": true },
+        "str": 17,
+        "dex": 10,
+        "con": 20,
+        "int": 18,
+        "wis": 15,
+        "cha": 23,
+        "save": { "dex": "+7", "con": "+12", "int": "+11", "wis": "+9", "cha": "+13" },
+        "skill": { "arcana": "+11", "history": "+11", "perception": "+16", "stealth": "+14" },
+        "senses": ["blindsight 60 ft.", "darkvision 120 ft.; see also \"x-ray vision\" below"],
+        "passive": 26,
+        "resist": ["acid", "fire", "lightning", "thunder"],
+        "immune": ["cold", "necrotic", "poison"],
+        "conditionImmune": [
+          "charmed",
+          "exhaustion",
+          "frightened",
+          "grappled",
+          "paralyzed",
+          "poisoned",
+          "prone",
+          "restrained"
+        ],
+        "languages": ["Common", "Draconic"],
+        "cr": "22",
+        "spellcasting": [
+          {
+            "name": "Innate Spellcasting",
+            "headerEntries": [
+              "Miirym casts one of the following spells, using Charisma as the spellcasting ability (save 21) and requiring no material components:"
+            ],
+            "will": ["dancing lights", "mage hand"],
+            "daily": {
+              "3e": ["detect magic", "detect thoughts", "dispel magic", "locate creature"],
+              "1e": ["dispel evil and good", "wall of force"]
+            },
+            "ability": "cha",
+            "displayAs": "action"
+          }
+        ],
+        "trait": [
+          {
+            "name": "Bound to Candlekeep",
+            "entries": [
+              "Miirym can't leave Candlekeep and is immune to any effect that would place her in a location outside it, including an extradimensional space. If she dies, Miirym regains her form and all her hit points after 1d10 days, reappearing in the location where she died or in the nearest unoccupied space."
+            ]
+          },
+          {
+            "name": "Regeneration",
+            "entries": [
+              "Miirym regains 40 hit points at the start of her turn. If Miirym takes damage from a magic weapon or a spell, this trait doesn't function at the start of Miirym's next turn. Miirym dies only if she starts her turn with 0 hit points and doesn't regenerate."
+            ]
+          },
+          {
+            "name": "Incorporeal Movement",
+            "entries": [
+              "Miirym can move through other creatures and objects as if they were difficult terrain. She takes 5 (1d10) force damage if she ends her turn inside an object."
+            ]
+          },
+          {
+            "name": "Legendary Resistance (3/Day)",
+            "entries": ["If Miirym fails a saving throw, she can choose to succeed instead."]
+          },
+          {
+            "name": "X-Ray Vision",
+            "entries": [
+              "Miirym can see through solid matter out to a range of 60 feet. To her, opaque creatures, objects, and obstacles within that distance appear transparent and don't prevent light from passing through them. This vision can penetrate 5 feet of stone, 3 inches of common metal, and up to 10 feet of wood or dirt. Thicker substances block this vision, as does a thin sheet of lead."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Bite",
+            "entries": [
+              "Melee Weapon Attack: +10 to hit, reach 5 ft., one target. 34 (9d6 + 3) force damage."
+            ]
+          },
+          {
+            "name": "Breath Weapon (Recharge 5-6)",
+            "entries": ["Miirym uses one of the following breath weapons:"]
+          },
+          {
+            "name": "Cold Breath",
+            "entries": [
+              "Miirym exhales an icy blast in a 90-foot cone. Each creature in that area must make a 21 Constitution saving throw, taking 67 (15d8) cold damage on a failed save, or half as much damage on a successful one."
+            ]
+          },
+          {
+            "name": "Necrotic Breath",
+            "entries": [
+              "Miirym exhales a bolt of necrotic energy in a 120-foot line that is 10 feet wide. Each creature in that line must make a 21 Dexterity saving throw, taking 82 (15d10) necrotic damage on a failed save, or half as much damage on a successful one."
+            ]
+          },
+          {
+            "name": "Paralyzing Breath",
+            "entries": [
+              "Miirym exhales paralyzing gas in a 90-foot cone. Each creature in that area must succeed on a 21 Constitution saving throw or be paralyzed for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
+            ]
+          },
+          {
+            "name": "Frightful Presence",
+            "entries": [
+              "Each creature of Miirym's choice that is within 120 feet of her and aware of her must succeed on a 21 Wisdom saving throw or become frightened for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success. If a creature's saving throw is successful or the effect ends for it, the creature is immune to Miirym's Frightful Presence for the next 24 hours."
+            ]
+          }
+        ],
+        "legendary": [
+          { "name": "Bite", "entries": ["Miirym makes a bite attack."] },
+          {
+            "name": "Teleport (Costs 2 Actions)",
+            "entries": [
+              "Miirym magically teleports up to 120 feet to an unoccupied space she can see."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "traitTags": ["Incorporeal Movement", "Legendary Resistances", "Regeneration"],
+        "senseTags": ["B", "SD"],
+        "actionTags": ["Frightful Presence"],
+        "languageTags": ["C", "DR"],
+        "damageTags": ["C", "N", "O"],
+        "miscTags": ["AOE", "MW"],
+        "conditionInflict": ["frightened", "paralyzed"],
+        "hasFluff": true,
+        "hasFluffImages": true
+      },
+      {
+        "name": "Mimic Chair",
+        "source": "CM",
+        "page": 22,
+        "size": "M",
+        "type": { "type": "monstrosity", "tags": ["shapechanger"] },
+        "alignment": ["N"],
+        "ac": [{ "ac": 12, "from": ["natural armor"] }],
+        "hp": { "average": 30, "formula": "9d8 + 18" },
+        "speed": { "walk": 15 },
+        "str": 17,
+        "dex": 12,
+        "con": 15,
+        "int": 5,
+        "wis": 13,
+        "cha": 8,
+        "skill": { "stealth": "+5" },
+        "senses": ["darkvision 60 ft."],
+        "passive": 11,
+        "immune": ["acid"],
+        "conditionImmune": ["prone"],
+        "cr": "2",
+        "trait": [
+          {
+            "name": "Shapechanger",
+            "entries": [
+              "The mimic can use its action to polymorph into an object or back into its true, amorphous form. Its statistics are the same in each form. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies."
+            ]
+          },
+          {
+            "name": "Adhesive (Object Form Only)",
+            "entries": [
+              "The mimic adheres to anything that touches it. A Huge or smaller creature adhered to the mimic is also grappled by it (escape 10). Ability checks made to escape this grapple have disadvantage."
+            ]
+          },
+          {
+            "name": "False Appearance (Object Form Only)",
+            "entries": [
+              "While the mimic remains motionless, it is indistinguishable from an ordinary object."
+            ]
+          },
+          {
+            "name": "Grappler",
+            "entries": [
+              "The mimic has advantage on attack rolls against any creature grappled by it."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Pseudopod",
+            "entries": [
+              "Melee Weapon Attack: +5 to hit, reach 5 ft., one target. 7 (1d8 + 3) bludgeoning damage. If the mimic is in object form, the target is subjected to its Adhesive trait."
+            ]
+          },
+          {
+            "name": "Bite",
+            "entries": [
+              "Melee Weapon Attack: +5 to hit, reach 5 ft., one target. 7 (1d8 + 3) piercing damage plus 4 (1d8) acid damage."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "traitTags": ["False Appearance", "Shapechanger"],
+        "senseTags": ["D"],
+        "damageTags": ["A", "B", "P"],
+        "miscTags": ["MW"],
+        "conditionInflict": ["grappled"]
+      },
+      {
+        "name": "Nintra Siotta",
+        "isNpc": true,
+        "isNamedCreature": true,
+        "source": "CM",
+        "page": 197,
+        "size": "L",
+        "type": "fey",
+        "alignment": ["C", "E"],
+        "ac": [17],
+        "hp": { "average": 306, "formula": "36d10 + 108" },
+        "speed": { "walk": 40, "fly": { "number": 40, "condition": "(hover)" }, "canHover": true },
+        "str": 16,
+        "dex": 24,
+        "con": 16,
+        "int": 17,
+        "wis": 15,
+        "cha": 24,
+        "save": { "str": "+8", "dex": "+12", "wis": "+7" },
+        "skill": { "deception": "+12", "insight": "+7", "perception": "+7" },
+        "senses": ["truesight 60 ft."],
+        "passive": 17,
+        "conditionImmune": ["charmed", "exhaustion", "stunned"],
+        "languages": ["Common", "Elvish", "Sylvan"],
+        "cr": "16",
+        "spellcasting": [
+          {
+            "name": "Innate Spellcasting",
+            "headerEntries": [
+              "Nintra casts one of the following spells, using Charisma as the spellcasting ability (save 20) and requiring no material components:"
+            ],
+            "daily": { "3e": ["dispel magic", "faerie fire", "mirror image"] },
+            "ability": "cha",
+            "displayAs": "action"
+          }
+        ],
+        "trait": [
+          {
+            "name": "Legendary Resistance (3/Day)",
+            "entries": ["If Nintra fails a saving throw, she can choose to succeed instead."]
+          }
+        ],
+        "action": [
+          { "name": "Multiattack", "entries": ["Nintra makes two attacks."] },
+          {
+            "name": "Claw",
+            "entries": [
+              "Melee Weapon Attack: +12 to hit, reach 5 ft., one target. 12 (2d4 + 7) piercing damage."
+            ]
+          },
+          {
+            "name": "Shard of Shadow",
+            "entries": [
+              "Ranged Spell Attack: +12 to hit, range 120 ft., one target. 10 (1d6 + 7) necrotic damage, and if the target is a creature, it must succeed on a 20 Constitution saving throw or be poisoned until the end of its next turn."
+            ]
+          },
+          {
+            "name": "Storm of Shattered Glass (Recharge 6)",
+            "entries": [
+              "Nintra targets a point she can see within 60 feet of her and creates a 20-foot-radius sphere of swirling glass shards centered on that point. Each creature in the sphere must make a 20 Dexterity saving throw, taking 28 (8d6) slashing damage on a failed save, or half as much damage on a successful save. If Nintra is in the sphere, the shards deal no damage to her."
+            ]
+          }
+        ],
+        "legendary": [
+          { "name": "Attack", "entries": ["Nintra makes one attack."] },
+          {
+            "name": "Fey Step",
+            "entries": [
+              "Nintra teleports to an unoccupied space she can see within 30 feet of her."
+            ]
+          },
+          {
+            "name": "Shadow Strikes (Costs 2 Actions)",
+            "entries": [
+              "Provided she is in bright or dim light, Nintra causes her shadow to attack a creature within 10 feet of her. Her shadow makes two claw attacks, each attack identical to Nintra's claw attack except that it deals psychic damage instead of piercing damage."
+            ]
+          }
+        ],
+        "legendaryGroup": { "name": "Nintra Siotta", "source": "CM" },
+        "hasToken": true,
+        "traitTags": ["Legendary Resistances"],
+        "senseTags": ["U"],
+        "actionTags": ["Multiattack"],
+        "languageTags": ["C", "E", "S"],
+        "damageTags": ["N", "P", "S"],
+        "miscTags": ["AOE", "MW"],
+        "conditionInflict": ["poisoned"],
+        "hasFluff": true,
+        "hasFluffImages": true
+      },
+      {
+        "name": "Parasite-infested Behir",
+        "source": "CM",
+        "page": 220,
+        "size": "H",
+        "type": "undead",
+        "alignment": ["N", "E"],
+        "ac": [{ "ac": 17, "from": ["natural armor"] }],
+        "hp": { "average": 168, "formula": "16d12 + 64" },
+        "speed": { "walk": 50, "climb": 40 },
+        "str": 23,
+        "dex": 16,
+        "con": 18,
+        "int": 7,
+        "wis": 14,
+        "cha": 12,
+        "skill": { "perception": "+6", "stealth": "+7" },
+        "senses": ["darkvision 90 ft."],
+        "passive": 16,
+        "immune": ["lightning"],
+        "languages": ["Draconic"],
+        "cr": "11",
+        "action": [
+          {
+            "name": "Multiattack",
+            "entries": ["The behir makes two attacks: one with its bite and one to constrict."]
+          },
+          {
+            "name": "Bite",
+            "entries": [
+              "Melee Weapon Attack: +10 to hit, reach 10 ft., one target. 22 (3d10 + 6) piercing damage."
+            ]
+          },
+          {
+            "name": "Constrict",
+            "entries": [
+              "Melee Weapon Attack: +10 to hit, reach 5 ft., one Large or smaller creature. 17 (2d10 + 6) bludgeoning damage plus 17 (2d10 + 6) slashing damage. The target is grappled (escape 16) if the behir isn't already constricting a creature, and the target is restrained until this grapple ends."
+            ]
+          },
+          {
+            "name": "Lightning Breath (Recharge 5-6)",
+            "entries": [
+              "The behir exhales a line of lightning that is 20 feet long and 5 feet wide. Each creature in that line must make a 16 Dexterity saving throw, taking 66 (12d10) lightning damage on a failed save, or half as much damage on a successful one."
+            ]
+          },
+          {
+            "name": "Swallow",
+            "entries": [
+              "The behir makes one bite attack against a Medium or smaller target it is grappling. If the attack hits, the target is also swallowed, and the grapple ends. While swallowed, the target is blinded and restrained, it has total cover against attacks and other effects outside the behir, and it takes 21 (6d6) acid damage at the start of each of the behir's turns. A behir can have only one creature swallowed at a time.",
+              "Any creature swallowed by a parasite-infested behir must succeed on a 19 Constitution saving throw at the start of each of the behir's turns or be feasted upon by blood parasites, taking 36 (8d8) necrotic damage on a failed save, or half as much damage on a successful save. This damage is in addition to the damage caused by the behir's digestive acids.",
+              "If the behir takes 30 damage or more on a single turn from the swallowed creature, the behir must succeed on a 14 Constitution saving throw at the end of that turn or regurgitate the creature, which falls prone in a space within 10 feet of the behir. If the behir dies, a swallowed creature is no longer restrained by it and can escape from the corpse by using 15 feet of movement, exiting prone."
+            ]
+          }
+        ],
+        "senseTags": ["D"],
+        "actionTags": ["Multiattack", "Swallow"],
+        "languageTags": ["DR"],
+        "damageTags": ["A", "B", "L", "N", "P", "S"],
+        "miscTags": ["MW", "RCH"],
+        "conditionInflict": ["blinded", "grappled", "restrained"],
+        "hasFluff": true
+      },
+      {
+        "name": "Ram Sugar",
+        "isNpc": true,
+        "isNamedCreature": true,
+        "source": "CM",
+        "page": 132,
+        "size": "M",
+        "type": { "type": "humanoid", "tags": ["dragonborn"] },
+        "alignment": ["C", "N"],
+        "ac": [{ "ac": 13, "from": ["leather armor"] }],
+        "hp": { "average": 33, "formula": "6d8 + 6" },
+        "speed": { "walk": 30 },
+        "str": 11,
+        "dex": 14,
+        "con": 12,
+        "int": 10,
+        "wis": 13,
+        "cha": 14,
+        "skill": { "deception": "+4", "persuasion": "+4", "religion": "+2" },
+        "passive": 11,
+        "resist": ["fire"],
+        "languages": ["Common", "Draconic"],
+        "cr": "2",
+        "spellcasting": [
+          {
+            "name": "Spellcasting",
+            "headerEntries": [
+              "Ram Sugar is a 4th-level spellcaster. Its spellcasting ability is Wisdom (spell save 11, +3 to hit with spell attacks). Ram Sugar has the following cleric spells prepared:"
+            ],
+            "spells": {
+              "0": { "spells": ["light", "sacred flame", "thaumaturgy"] },
+              "1": { "slots": 4, "spells": ["command", "inflict wounds", "shield of faith"] },
+              "2": { "slots": 3, "spells": ["hold person", "spiritual weapon"] }
+            },
+            "ability": "wis"
+          }
+        ],
+        "trait": [
+          {
+            "name": "Dark Devotion",
+            "entries": [
+              "Ram Sugar has advantage on saving throws against being charmed or frightened."
+            ]
+          }
+        ],
+        "action": [
+          { "name": "Multiattack", "entries": ["Ram Sugar makes two melee attacks."] },
+          {
+            "name": "Dagger",
+            "entries": [
+              "Melee Weapon Attack:,rw +4 to hit, reach 5 ft. or range 20/60 ft., one creature. 4 (1d4 + 2) piercing damage."
+            ]
+          },
+          {
+            "name": "Breath Weapon (Recharges after a Short or Long Rest)",
+            "entries": [
+              "Ram Sugar exhales fire in a 30-foot-long line that is 5 feet wide. Any creature in the line must make a 11 Dexterity saving throw, taking 7 (2d6) fire damage on a failed save, or half as much damage on a successful one."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "actionTags": ["Multiattack"],
+        "languageTags": ["C", "DR"],
+        "damageTags": ["F", "P"],
+        "spellcastingTags": ["CC"],
+        "miscTags": ["MW", "RW", "THW"],
+        "conditionInflictSpell": ["paralyzed", "prone"],
+        "hasFluff": true
+      },
+      {
+        "name": "Sage",
+        "source": "CM",
+        "page": 9,
+        "alignment": ["U"],
+        "size": "M",
+        "type": { "type": "humanoid", "tags": ["any race"] },
+        "ac": [10],
+        "hp": { "average": 22, "formula": "5d8" },
+        "speed": { "walk": 30 },
+        "str": 8,
+        "dex": 10,
+        "con": 10,
+        "int": 18,
+        "wis": 15,
+        "cha": 11,
+        "skill": {
+          "arcana": "+8",
+          "history": "+8",
+          "insight": "+4",
+          "investigation": "+8",
+          "medicine": "+6",
+          "nature": "+8",
+          "religion": "+8"
+        },
+        "passive": 12,
+        "languages": ["Common plus any four languages"],
+        "cr": "1/2",
+        "spellcasting": [
+          {
+            "name": "Innate Spellcasting",
+            "headerEntries": [
+              "The sage casts one of the following spells, using Intelligence as the spellcasting ability (save 14, +6 to hit with spell attacks):"
+            ],
+            "will": ["light", "mage hand", "mending", "shocking grasp"],
+            "daily": {
+              "3e": ["comprehend languages", "detect magic", "identify", "shield"],
+              "1e": [
+                "dispel magic",
+                "levitate",
+                "locate object",
+                "see invisibility",
+                "sending",
+                "tongues",
+                "unseen servant"
+              ]
+            },
+            "ability": "int",
+            "displayAs": "action"
+          }
+        ],
+        "action": [
+          {
+            "name": "Shocking Grasp (Cantrip)",
+            "entries": [
+              "Melee Spell Attack: +6 to hit (with advantage if the target is wearing armor made of metal), reach 5 ft., one creature. 9 (2d8) lightning damage, and the target can't take reactions until the start of its next turn."
+            ]
+          }
+        ],
+        "reaction": [
+          {
+            "name": "Shield (1st-Level Spell; 3/Day)",
+            "entries": [
+              "When the sage is hit by an attack or targeted by a magic missile spell, it calls forth an invisible barrier of magical force that protects it. Until the start of its next turn, the sage has a +5 bonus to AC, including against the triggering attack, and it takes no damage from magic missile."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "languageTags": ["C", "X"],
+        "damageTags": ["L"],
+        "hasFluff": true,
+        "hasFluffImages": true
+      },
+      {
+        "name": "Sapphire Sentinel",
+        "source": "CM",
+        "page": 201,
+        "size": "L",
+        "type": "construct",
+        "alignment": ["U"],
+        "ac": [{ "ac": 17, "from": ["natural armor"] }],
+        "hp": { "average": 178, "formula": "17d10 + 85" },
+        "speed": { "walk": 30 },
+        "str": 22,
+        "dex": 9,
+        "con": 20,
+        "int": 3,
+        "wis": 11,
+        "cha": 1,
+        "senses": ["darkvision 120 ft."],
+        "passive": 10,
+        "immune": [
+          "poison",
+          "psychic",
+          {
+            "immune": ["bludgeoning", "piercing", "slashing"],
+            "note": "from nonmagical attacks that aren't adamantine",
+            "cond": true
+          }
+        ],
+        "conditionImmune": [
+          "charmed",
+          "exhaustion",
+          "frightened",
+          "paralyzed",
+          "petrified",
+          "poisoned"
+        ],
+        "languages": ["understands Common but can't speak"],
+        "cr": "10",
+        "trait": [
+          {
+            "name": "Immutable Form",
+            "entries": ["The golem is immune to any spell or effect that would alter its form."]
+          },
+          {
+            "name": "Magic Resistance",
+            "entries": [
+              "The golem has advantage on saving throws against spells and other magical effects."
+            ]
+          },
+          { "name": "Magic Weapons", "entries": ["The golem's weapon attacks are magical."] }
+        ],
+        "action": [
+          { "name": "Multiattack", "entries": ["The golem makes two slam attacks."] },
+          {
+            "name": "Slam",
+            "entries": [
+              "Melee Weapon Attack: +10 to hit, reach 5 ft., one target. 19 (3d8 + 6) bludgeoning damage."
+            ]
+          },
+          {
+            "name": "Slow (Recharge 5-6)",
+            "entries": [
+              "The golem targets one or more creatures it can see within 10 feet of it. Each target must make a 17 Wisdom saving throw against this magic. On a failed save, a target can't use reactions, its speed is halved, and it can't make more than one attack on its turn. In addition, the target can take either an action or a bonus action on its turn, not both. These effects last for 1 minute. A target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
+            ]
+          },
+          {
+            "name": "Sapphire",
+            "entries": [
+              "The sapphire has 3 charges. As an action, the golem can expend 1 charge to cast dispel magic (as a 9th-level spell) from the sapphire using Constitution as its spellcasting ability. The sapphire ceases to glow if all its charges are expended, but it regains 1d3 expended charges daily at dawn and glows again once it has 1 or more charges."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "traitTags": ["Immutable Form", "Magic Resistance", "Magic Weapons"],
+        "senseTags": ["SD"],
+        "actionTags": ["Multiattack"],
+        "languageTags": ["C", "CS"],
+        "damageTags": ["B"],
+        "miscTags": ["MW"],
+        "hasFluff": true,
+        "hasFluffImages": true
+      },
+      {
+        "name": "Shemshime",
+        "isNpc": true,
+        "alignment": ["U"],
+        "isNamedCreature": true,
+        "source": "CM",
+        "page": 69,
+        "size": "M",
+        "type": "undead",
+        "ac": [13],
+        "hp": { "average": 31, "formula": "7d8" },
+        "speed": { "walk": 0, "fly": { "number": 40, "condition": "(hover)" }, "canHover": true },
+        "str": 6,
+        "dex": 17,
+        "con": 10,
+        "int": 17,
+        "wis": 14,
+        "cha": 16,
+        "save": { "int": "+5", "wis": "+4" },
+        "skill": { "perception": "+4", "stealth": "+7" },
+        "senses": ["darkvision 120 ft."],
+        "passive": 14,
+        "resist": ["acid", "bludgeoning", "fire", "lightning", "piercing", "slashing", "thunder"],
+        "immune": ["cold", "necrotic", "poison"],
+        "conditionImmune": [
+          "charmed",
+          "exhaustion",
+          "frightened",
+          "grappled",
+          "paralyzed",
+          "petrified",
+          "poisoned",
+          "prone",
+          "restrained"
+        ],
+        "languages": ["telepathy 60 ft."],
+        "cr": "4",
+        "trait": [
+          {
+            "name": "Crushing End",
+            "entries": [
+              "If damage reduces Shemshime to 0 hit points, Shemshime instead drops to 1 hit point unless the damage is the result of Shemshime being crushed by an object weighing at least 1,000 pounds."
+            ]
+          },
+          {
+            "name": "Incorporeal Movement",
+            "entries": [
+              "Shemshime can move through other creatures and objects as if they were difficult terrain. It takes 5 (1d10) force damage if it ends its turn inside an object."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Maddening Touch",
+            "entries": [
+              "Melee Spell Attack: +5 to hit, reach 5 ft., one target. 17 (4d6 + 3) psychic damage."
+            ]
+          },
+          {
+            "name": "Whispers of Violence",
+            "entries": [
+              "Shemshime chooses up to two creatures it can see within 60 feet of it. Each target must succeed on a 13 Wisdom saving throw, or that target takes 7 (1d8 + 3) psychic damage and must use its reaction to make a melee weapon attack against one creature it can reach (Shemshime's choice) that Shemshime can see."
+            ]
+          },
+          {
+            "name": "Howling Babble (Recharge 6)",
+            "entries": [
+              "Shemshime targets one creature it can see within 30 feet of it. The creature must make a 13 Wisdom saving throw. On a failed save, it takes 21 (4d8 + 3) psychic damage and is stunned until the end of its next turn. On a successful save, it takes half as much damage and isn't stunned."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "traitTags": ["Incorporeal Movement"],
+        "senseTags": ["SD"],
+        "languageTags": ["TP"],
+        "damageTags": ["O", "Y"],
+        "hasFluffImages": true
+      },
+      {
+        "name": "Skitterwidget",
+        "source": "CM",
+        "page": 136,
+        "size": "M",
+        "alignment": ["U"],
+        "type": "construct",
+        "ac": [{ "ac": 18, "from": ["natural armor"] }],
+        "hp": { "average": 85, "formula": "10d8 + 40" },
+        "speed": { "walk": 30, "climb": 30 },
+        "str": 16,
+        "dex": 14,
+        "con": 18,
+        "int": 3,
+        "wis": 10,
+        "cha": 1,
+        "senses": ["darkvision 60 ft."],
+        "passive": 10,
+        "immune": ["lightning", "poison"],
+        "conditionImmune": [
+          "blinded",
+          "deafened",
+          "exhaustion",
+          "paralyzed",
+          "petrified",
+          "poisoned"
+        ],
+        "languages": ["Skitterwidget"],
+        "cr": "5",
+        "trait": [
+          {
+            "name": "Lightning Absorption",
+            "entries": [
+              "Whenever the skitterwidget is subjected to lightning damage, it takes no damage and instead regains a number of hit points equal to the lightning damage dealt."
+            ]
+          },
+          {
+            "name": "Unusual Nature",
+            "entries": ["The skitterwidget doesn't require air, food, drink, or sleep."]
+          }
+        ],
+        "action": [
+          {
+            "name": "Multiattack",
+            "entries": [
+              "The skitterwidget makes two attacks: one with its bite and one with its tail."
+            ]
+          },
+          {
+            "name": "Bite",
+            "entries": [
+              "Melee Weapon Attack: +6 to hit, reach 5 ft., one target. 10 (2d6 + 3) piercing damage. If the target is a creature, it is grappled by the skitterwidget (escape 13)."
+            ]
+          },
+          {
+            "name": "Tail",
+            "entries": [
+              "Melee Weapon Attack: +6 to hit, reach 5 ft., one target. 6 (1d6 + 3) piercing damage plus 10 (3d6) lightning damage, and if the target is a creature, it must succeed on a 15 Constitution saving throw or be stunned until the end of its next turn."
+            ]
+          }
+        ],
+        "reaction": [
+          {
+            "name": "Good Parent",
+            "entries": [
+              "The skitterwidget imposes disadvantage on one attack roll made against a kiddywidget it can see within 5 feet of it."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "traitTags": ["Damage Absorption"],
+        "senseTags": ["D"],
+        "actionTags": ["Multiattack"],
+        "damageTags": ["L", "P"],
+        "miscTags": ["MW"],
+        "conditionInflict": ["grappled", "stunned"],
+        "hasFluff": true,
+        "hasFluffImages": true
+      },
+      {
+        "name": "Steel Crane",
+        "isNpc": true,
+        "isNamedCreature": true,
+        "source": "CM",
+        "page": 164,
+        "size": "M",
+        "type": { "type": "humanoid", "tags": ["human"] },
+        "alignment": ["L", "E"],
+        "ac": [{ "ac": 17, "from": ["unarmored defense"] }],
+        "hp": { "average": 76, "formula": "9d8 + 36" },
+        "speed": { "walk": 40 },
+        "str": 13,
+        "dex": 18,
+        "con": 18,
+        "int": 13,
+        "wis": 17,
+        "cha": 14,
+        "save": { "dex": "+7", "int": "+4" },
+        "skill": { "acrobatics": "+7", "deception": "+5", "perception": "+6", "stealth": "+7" },
+        "passive": 16,
+        "resist": ["poison", "psychic"],
+        "languages": ["Common"],
+        "cr": "8",
+        "trait": [
+          {
+            "name": "Unarmored Defense",
+            "entries": [
+              "While Steel Crane is wearing no armor and wielding no shield, his AC includes his Wisdom modifier."
+            ]
+          }
+        ],
+        "action": [
+          { "name": "Multiattack", "entries": ["Steel Crane makes three attacks."] },
+          {
+            "name": "Force Strike",
+            "entries": [
+              "Melee Weapon Attack: +7 to hit, reach 5 ft., one target. 8 (1d8 + 4) force damage, and if the target is a creature, it must succeed on a 15 Constitution saving throw or be stunned until the start of Steel Crane's next turn."
+            ]
+          },
+          {
+            "name": "Whip",
+            "entries": [
+              "Melee Weapon Attack: +7 to hit, reach 10 ft., one target. 6 (1d4 + 4) slashing damage or, if the target is a creature, Steel Crane can grapple the target instead (escape 15). Steel Crane can't make attacks with the whip while using it to grapple a creature. Anytime on his turn, he can release a creature grappled by the whip (no action required)."
+            ]
+          },
+          {
+            "name": "Heal Self (Recharges after a Long Rest)",
+            "entries": [
+              "Steel Crane regains 2d8 + 4 hit points, and all levels of exhaustion end on him."
+            ]
+          }
+        ],
+        "reaction": [
+          {
+            "name": "Deflect Missile",
+            "entries": [
+              "In response to being hit by a ranged weapon attack, Steel Crane deflects the missile. The damage he takes from the attack is reduced by 1d10 + 10. If the damage is reduced to 0, Steel Crane catches the missile if it's small enough to hold in one hand and Steel Crane has a hand free."
+            ]
+          },
+          {
+            "name": "Slow Descent (3/Day)",
+            "entries": [
+              "When Steel Crane falls, he can slow his descent, taking no damage from the fall."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "actionTags": ["Multiattack"],
+        "languageTags": ["C"],
+        "damageTags": ["O", "S"],
+        "miscTags": ["MW", "RCH"],
+        "conditionInflict": ["stunned"],
+        "hasFluff": true,
+        "hasFluffImages": true
+      },
+      {
+        "name": "Storm Giant Skeleton",
+        "source": "CM",
+        "page": 208,
+        "size": "H",
+        "alignment": ["U"],
+        "type": "undead",
+        "ac": [{ "ac": 13, "from": ["armor scraps"] }],
+        "hp": { "average": 204, "formula": "24d12 + 48" },
+        "speed": { "walk": 50 },
+        "str": 29,
+        "dex": 14,
+        "con": 15,
+        "int": 3,
+        "wis": 8,
+        "cha": 1,
+        "save": { "str": "+14", "con": "+7" },
+        "skill": { "perception": "+4" },
+        "senses": ["darkvision 60 ft."],
+        "passive": 14,
+        "resist": ["cold"],
+        "immune": ["lightning", "poison", "thunder"],
+        "vulnerable": ["bludgeoning"],
+        "conditionImmune": ["exhaustion", "poisoned"],
+        "cr": "16",
+        "action": [
+          {
+            "name": "Multiattack",
+            "entries": ["The giant makes two attacks with its greatsword or hurls two rocks."]
+          },
+          {
+            "name": "Greatsword",
+            "entries": [
+              "Melee Weapon Attack: +14 to hit, reach 10 ft., one target. 30 (6d6 + 9) slashing damage plus 18 (4d8) necrotic damage."
+            ]
+          },
+          {
+            "name": "Rock",
+            "entries": [
+              "Ranged Weapon Attack: +14 to hit, reach 60/240 ft., one target. 35 (4d12 + 9) bludgeoning damage."
+            ]
+          },
+          {
+            "name": "Lightning Strike (Recharge 5-6)",
+            "entries": [
+              "The giant hurls a magical lightning bolt at a point it can see within 500 feet of it. Each creature within 10 feet of that point must make a 15 Dexterity saving throw, taking 54 (12d8) lightning damage on a failed save, or half as much damage on a successful one."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "senseTags": ["D"],
+        "actionTags": ["Multiattack"],
+        "damageTags": ["B", "L", "N", "S"],
+        "miscTags": ["AOE", "MW", "RCH", "RW"]
+      },
+      {
+        "name": "Swarm of Animated Books",
+        "source": "CM",
+        "page": 19,
+        "size": "M",
+        "alignment": ["U"],
+        "type": { "type": "construct", "swarmSize": "T" },
+        "ac": [{ "ac": 12, "from": ["natural armor"] }],
+        "hp": { "average": 22, "formula": "4d8 + 4" },
+        "speed": { "walk": 0, "fly": { "number": 30, "condition": "(hover)" }, "canHover": true },
+        "str": 10,
+        "dex": 13,
+        "con": 12,
+        "int": 1,
+        "wis": 10,
+        "cha": 1,
+        "senses": ["blindsight 60 ft. (blind beyond this radius)"],
+        "passive": 10,
+        "immune": ["poison", "psychic"],
+        "vulnerable": ["fire"],
+        "conditionImmune": [
+          "charmed",
+          "exhaustion",
+          "frightened",
+          "grappled",
+          "paralyzed",
+          "petrified",
+          "poisoned",
+          "prone",
+          "restrained",
+          "stunned"
+        ],
+        "cr": "1/4",
+        "trait": [
+          {
+            "name": "False Objects",
+            "entries": [
+              "If the swarm is motionless at the start of combat, it has advantage on its initiative roll. Moreover, if a creature hasn't observed the swarm move or act, that creature must succeed on a 15 Wisdom (Perception) check to discern that the swarm is animate."
+            ]
+          },
+          {
+            "name": "Swarm",
+            "entries": [
+              "The swarm can occupy another creature's space and vice versa, and the swarm can move through any opening large enough for a 1-foot-tall, 8-inch-wide, 2-inch-thick object. The swarm can't regain hit points or gain temporary hit points."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Book Club",
+            "entries": [
+              "Melee Weapon Attack: +3 to hit, reach 0 ft., one target in the swarm's space. 6 (2d4 + 1) bludgeoning damage, or 3 (1d4 + 1) bludgeoning damage if the swarm has half its hit points or fewer."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "senseTags": ["B"],
+        "damageTags": ["B"],
+        "miscTags": ["MW"],
+        "hasFluffImages": true
+      },
+      {
+        "name": "Valin Sarnaster",
+        "isNpc": true,
+        "isNamedCreature": true,
+        "source": "CM",
+        "page": 182,
+        "size": "M",
+        "type": "undead",
+        "alignment": ["L", "E"],
+        "ac": [{ "ac": 17, "from": ["natural armor"] }],
+        "hp": { "average": 97, "formula": "13d8 + 39" },
+        "speed": { "walk": 20 },
+        "str": 18,
+        "dex": 10,
+        "con": 17,
+        "int": 11,
+        "wis": 18,
+        "cha": 16,
+        "save": { "con": "+8", "int": "+5", "wis": "+9", "cha": "+8" },
+        "skill": { "history": "+5", "religion": "+5" },
+        "senses": ["darkvision 60 ft."],
+        "passive": 14,
+        "immune": [
+          "necrotic",
+          "poison",
+          {
+            "immune": ["bludgeoning", "piercing", "slashing"],
+            "note": "from nonmagical attacks",
+            "cond": true
+          }
+        ],
+        "vulnerable": ["fire"],
+        "conditionImmune": ["charmed", "exhaustion", "frightened", "paralyzed", "poisoned"],
+        "languages": ["The languages it knew in life"],
+        "cr": "16",
+        "spellcasting": [
+          {
+            "name": "Spellcasting",
+            "headerEntries": [
+              "Valin Sarnaster is a 10th-level spellcaster. Her spellcasting ability is Wisdom (spell save 17, +9 to hit with spell attacks). Valin has the following cleric spells prepared:"
+            ],
+            "spells": {
+              "0": { "spells": ["sacred flame", "thaumaturgy"] },
+              "1": { "slots": 4, "spells": ["command", "guiding bolt", "shield of faith"] },
+              "2": { "slots": 3, "spells": ["hold person", "silence", "spiritual weapon"] },
+              "3": { "slots": 3, "spells": ["clairvoyance", "dispel magic"] },
+              "4": { "slots": 3, "spells": ["divination", "dimension door"] },
+              "5": { "slots": 2, "spells": ["contagion", "scrying"] },
+              "6": { "slots": 1, "spells": ["harm"] }
+            },
+            "ability": "wis"
+          }
+        ],
+        "trait": [
+          {
+            "name": "Magic Resistance",
+            "entries": [
+              "Valin has advantage on saving throws against spells and other magical effects."
+            ]
+          },
+          {
+            "name": "Rejuvenation",
+            "entries": [
+              "While her heart remains in Alessia's body, Valin re-forms inside her sarcophagus, regaining all her hit points and becoming active again."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Multiattack",
+            "entries": [
+              "Valin can use her Dreadful Glare and makes one attack with her rotting fist."
+            ]
+          },
+          {
+            "name": "Rotting Fist",
+            "entries": [
+              "Melee Weapon Attack: +9 to hit, reach 5 ft., one target. 14 (3d6 + 4) bludgeoning damage plus 21 (6d6) necrotic damage. If the target is a creature, it must succeed on a 16 Constitution saving throw or be cursed with mummy rot. The cursed target can't regain hit points, and its hit point maximum decreases by 10 (3d6) for every 24 hours that elapse. If the curse reduces the target's hit point maximum to 0, the target dies, and its body turns to dust. The curse lasts until removed by the remove curse spell or other magic."
+            ]
+          },
+          {
+            "name": "Dreadful Glare",
+            "entries": [
+              "Valin targets one creature she can see within 60 feet of her. If the target can see Valin, it must succeed on a 16 Wisdom saving throw against this magic or become frightened until the end of Valin's next turn. If the target fails the saving throw by 5 or more, it is also paralyzed for the same duration. A target that succeeds on the saving throw is immune to the Dreadful Glare of all mummies and mummy lords for the next 24 hours."
+            ]
+          }
+        ],
+        "legendary": [
+          {
+            "name": "Attack",
+            "entries": ["Valin makes one attack with her rotting fist or uses her Dreadful Glare."]
+          },
+          {
+            "name": "Blinding Dust",
+            "entries": [
+              "Blinding dust and sand swirls magically around Valin. Each creature within 5 feet of Valin must succeed on a 16 Constitution saving throw or be blinded until the end of her next turn."
+            ]
+          },
+          {
+            "name": "Blasphemous Word (Costs 2 Actions)",
+            "entries": [
+              "Valin utters a blasphemous word. Each non-undead creature within 10 feet of Valin that can hear the magical utterance must succeed on a 16 Constitution saving throw or be stunned until the end of Valin's next turn."
+            ]
+          },
+          {
+            "name": "Channel Negative Energy (Costs 2 Actions)",
+            "entries": [
+              "Valin magically unleashes negative energy. Creatures within 60 feet of Valin, including ones behind barriers and around corners, can't regain hit points until the end of Valin's next turn."
+            ]
+          },
+          {
+            "name": "Whirlwind of Sand (Costs 2 Actions)",
+            "entries": [
+              "Valin magically transforms into a whirlwind of sand, moves up to 60 feet, and reverts to her normal form. While in whirlwind form, Valin is immune to all damage, and it can't be grappled, petrified, knocked prone, restrained, or stunned. Equipment worn or carried by Valin remain in her possession."
+            ]
+          }
+        ],
+        "legendaryGroup": { "name": "Valin Sarnaster", "source": "CM" },
+        "hasToken": true,
+        "traitTags": ["Magic Resistance", "Rejuvenation"],
+        "senseTags": ["D"],
+        "actionTags": ["Multiattack"],
+        "languageTags": ["LF"],
+        "damageTags": ["B", "N"],
+        "spellcastingTags": ["CC"],
+        "miscTags": ["AOE", "MW"],
+        "conditionInflict": ["blinded", "frightened", "paralyzed", "stunned"],
+        "conditionInflictSpell": [
+          "blinded",
+          "deafened",
+          "paralyzed",
+          "poisoned",
+          "prone",
+          "stunned"
+        ],
+        "hasFluff": true,
+        "hasFluffImages": true
+      },
+      {
+        "name": "Varnyr",
+        "isNpc": true,
+        "isNamedCreature": true,
+        "source": "CM",
+        "page": 63,
+        "size": "M",
+        "type": { "type": "humanoid", "tags": ["elf"] },
+        "alignment": ["C", "G"],
+        "ac": [{ "ac": 15, "from": ["breastplate"] }],
+        "hp": { "average": 9, "formula": "2d8" },
+        "speed": { "walk": 30 },
+        "str": 11,
+        "dex": 12,
+        "con": 11,
+        "int": 12,
+        "wis": 14,
+        "cha": 16,
+        "skill": { "deception": "+5", "insight": "+4", "persuasion": "+5" },
+        "senses": ["darkvision 60 ft."],
+        "passive": 12,
+        "languages": ["Common", "Elvish"],
+        "cr": "1/8",
+        "trait": [
+          {
+            "name": "Fey Ancestry",
+            "entries": [
+              "Varnyr has advantage on saving throws against being charmed, and magic can't put Varnyr to sleep."
+            ]
+          }
+        ],
+        "action": [
+          { "name": "Multiattack", "entries": ["Varnyr makes two attacks."] },
+          {
+            "name": "Cane",
+            "entries": [
+              "Melee Weapon Attack: +3 to hit, reach 5 ft., one target. 2 (1d4) bludgeoning damage."
+            ]
+          }
+        ],
+        "reaction": [
+          {
+            "name": "Parry",
+            "entries": [
+              "Varnyr adds 2 to their AC against one melee attack that would hit it. To do so, Varnyr must see the attacker and be wielding a melee weapon."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "traitTags": ["Fey Ancestry"],
+        "senseTags": ["D"],
+        "actionTags": ["Multiattack", "Parry"],
+        "languageTags": ["C", "E"],
+        "damageTags": ["B"],
+        "miscTags": ["MW"],
+        "hasFluff": true
+      },
+      {
+        "name": "Wood Elf Wizard",
+        "source": "CM",
+        "page": 187,
+        "size": "M",
+        "type": { "type": "humanoid", "tags": ["elf"] },
+        "alignment": ["N", "E"],
+        "ac": [12],
+        "hp": { "average": 45, "formula": "10d8" },
+        "speed": { "walk": 30 },
+        "str": 9,
+        "dex": 14,
+        "con": 10,
+        "int": 17,
+        "wis": 13,
+        "cha": 12,
+        "skill": { "arcana": "+6", "deception": "+5", "perception": "+4", "stealth": "+5" },
+        "senses": ["darkvision 120 ft."],
+        "passive": 14,
+        "languages": ["Elvish", "Undercommon"],
+        "cr": "7",
+        "spellcasting": [
+          {
+            "name": "Innate Spellcasting",
+            "headerEntries": [
+              "The wood elf's innate spellcasting ability is Charisma (spell save 12). It can innately cast the following spells, requiring no material components:"
+            ],
+            "will": ["dancing lights"],
+            "daily": { "1e": ["darkness", "faerie fire", "levitate (self only)"] },
+            "ability": "cha"
+          },
+          {
+            "name": "Spellcasting",
+            "headerEntries": [
+              "The wood elf is a 10th-level spellcaster. Its spellcasting ability is Intelligence (spell save 14, +6 to hit with spell attacks). The wood elf has the following wizard spells prepared:"
+            ],
+            "spells": {
+              "0": { "spells": ["mage hand", "minor illusion", "poison spray", "ray of frost"] },
+              "1": {
+                "slots": 4,
+                "spells": ["mage armor", "magic missile", "shield", "witch bolt"]
+              },
+              "2": { "slots": 3, "spells": ["alter self", "misty step", "web"] },
+              "3": { "slots": 3, "spells": ["fly", "lightning bolt"] },
+              "4": { "slots": 3, "spells": ["Evard's black tentacles", "greater invisibility"] },
+              "5": { "slots": 2, "spells": ["cloudkill"] }
+            },
+            "ability": "int"
+          }
+        ],
+        "trait": [
+          {
+            "name": "Fey Ancestry",
+            "entries": [
+              "The wood elf has advantage on saving throws against being charmed, and magic can't put the wood elf to sleep."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Staff",
+            "entries": [
+              "Melee Weapon Attack: +2 to hit, reach 5 ft., one target. 2 (1d6 - 1) bludgeoning damage, or 3 (1d8 - 1) bludgeoning damage if used with two hands, plus 3 (1d6) poison damage."
+            ]
+          },
+          {
+            "name": "Summon Demon (1/Day)",
+            "entries": [
+              "The wood elf magically summons a quasit, or attempts to summon a shadow demon with a 50 percent chance of success. The summoned demon appears in an unoccupied space within 60 feet of its summoner, acts as an ally of its summoner, and can't summon other demons. It remains for 10 minutes, until it or its summoner dies, or until its summoner dismisses it as an action."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "traitTags": ["Fey Ancestry"],
+        "senseTags": ["SD"],
+        "languageTags": ["E", "U"],
+        "damageTags": ["B", "I"],
+        "spellcastingTags": ["CW", "I"],
+        "miscTags": ["MW"],
+        "conditionInflictSpell": ["invisible", "restrained"]
+      },
+      {
+        "name": "Zikran",
+        "isNpc": true,
+        "isNamedCreature": true,
+        "source": "CM",
+        "hp": { "average": 144, "formula": "18d8 + 18" },
+        "languages": ["Aquan", "Common", "Primordial", "Sahuagin", "Undercommon"],
+        "srd": true,
+        "otherSources": [
+          { "source": "CoS" },
+          { "source": "SKT" },
+          { "source": "WDH" },
+          { "source": "WDMM" },
+          { "source": "GoS" },
+          { "source": "BGDIA" },
+          { "source": "ERLW" },
+          { "source": "IMR" },
+          { "source": "EGW" }
+        ],
+        "size": "M",
+        "type": { "type": "humanoid", "tags": ["water genasi"] },
+        "alignment": ["A"],
+        "ac": [12, { "ac": 15, "condition": "with mage armor", "braces": true }],
+        "speed": { "walk": 30, "swim": 30 },
+        "str": 10,
+        "dex": 14,
+        "con": 12,
+        "int": 20,
+        "wis": 15,
+        "cha": 16,
+        "save": { "int": "+9", "wis": "+6" },
+        "skill": { "arcana": "+13", "history": "+13" },
+        "passive": 12,
+        "resist": [
+          "acid",
+          { "special": "damage from spells" },
+          {
+            "resist": ["bludgeoning", "piercing", "slashing"],
+            "note": "(from stoneskin)",
+            "preNote": "nonmagical"
+          }
+        ],
+        "cr": "12",
+        "spellcasting": [
+          {
+            "name": "Spellcasting",
+            "headerEntries": [
+              "Zikran is an 18th-level spellcaster. Its spellcasting ability is Intelligence (spell save DC 17, +9 to hit with spell attacks). Zikran can cast disguise self and invisibility at will and has the following wizard spells prepared:"
+            ],
+            "spells": {
+              "0": {
+                "spells": ["fire bolt", "light", "mage hand", "prestidigitation", "shocking grasp"]
+              },
+              "1": {
+                "slots": 4,
+                "spells": ["detect magic", "identify", "mage armor*", "magic missile"]
+              },
+              "2": { "slots": 3, "spells": ["detect thoughts", "mirror image", "misty step"] },
+              "3": { "slots": 3, "spells": ["counterspell", "fly", "lightning bolt"] },
+              "4": { "slots": 3, "spells": ["banishment", "fire shield", "stoneskin*"] },
+              "5": {
+                "slots": 3,
+                "spells": ["cone of cold", "scrying", "wall of force", "conjure elemental"]
+              },
+              "6": { "slots": 1, "spells": ["globe of invulnerability"] },
+              "7": { "slots": 1, "spells": ["teleport"] },
+              "8": { "slots": 1, "spells": ["mind blank*"] },
+              "9": { "slots": 1, "spells": ["time stop"] }
+            },
+            "will": ["disguise self", "invisibility"],
+            "hidden": ["will"],
+            "footerEntries": ["*Zikran casts these spells on itself before combat."],
+            "ability": "int"
+          }
+        ],
+        "trait": [
+          {
+            "name": "Magic Resistance",
+            "entries": [
+              "Zikran has advantage on saving throws against spells and other magical effects."
+            ]
+          },
+          { "name": "Amphibious", "entries": ["Zikran can breathe air and water."] }
+        ],
+        "action": [
+          {
+            "name": "Dagger",
+            "entries": [
+              "Melee or Ranged Weapon Attack: +6 to hit, reach 5 ft. or range 20/60 ft., one target. Hit: 4 (1d4 + 2) piercing damage."
+            ]
+          }
+        ],
+        "variant": [
+          {
+            "type": "variant",
+            "name": "Familiars",
+            "entries": [
+              "Any spellcaster that can cast the find familiar spell (such as an archmage or mage) is likely to have a familiar. The familiar can be one of the creatures described in the spell (see the Player's Handbook) or some other Tiny monster, such as a crawling claw, imp, pseudodragon, or quasit."
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Zikzokrishka",
+        "isNpc": true,
+        "isNamedCreature": true,
+        "source": "CM",
+        "page": 209,
+        "size": "H",
+        "type": "undead",
+        "alignment": ["L", "E"],
+        "ac": [{ "ac": 19, "from": ["natural armor"] }],
+        "hp": { "average": 225, "formula": "18d12 + 108" },
+        "speed": { "walk": 40, "burrow": 30, "fly": 80 },
+        "str": 25,
+        "dex": 10,
+        "con": 23,
+        "int": 16,
+        "wis": 15,
+        "cha": 19,
+        "save": { "dex": "+6", "con": "+12", "wis": "+8", "cha": "+10" },
+        "skill": { "perception": "+14", "stealth": "+6" },
+        "senses": ["blindsight 60 ft.", "darkvision 120 ft."],
+        "passive": 24,
+        "resist": ["necrotic"],
+        "immune": ["lightning", "poison"],
+        "conditionImmune": ["charmed", "exhaustion", "frightened", "paralyzed", "poisoned"],
+        "languages": ["Common", "Draconic"],
+        "cr": "17",
+        "trait": [
+          {
+            "name": "Legendary Resistance (3/Day)",
+            "entries": ["If Zikzokrishka fails a saving throw, it can choose to succeed instead."]
+          },
+          {
+            "name": "Magic Resistance",
+            "entries": [
+              "Zikzokrishka has advantage on saving throws against spells and other magical effects."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Multiattack",
+            "entries": [
+              "Zikzokrishka can use its Frightful Presence. It then makes three attacks: one with its bite and two with its claws."
+            ]
+          },
+          {
+            "name": "Bite",
+            "entries": [
+              "Melee Weapon Attack: +13 to hit, reach 10 ft., one target. 18 (2d10 + 7) piercing damage plus 5 (1d10) lightning damage."
+            ]
+          },
+          {
+            "name": "Claw",
+            "entries": [
+              "Melee Weapon Attack: +13 to hit, reach 5 ft., one target. 14 (2d6 + 7) slashing damage."
+            ]
+          },
+          {
+            "name": "Tail",
+            "entries": [
+              "Melee Weapon Attack: +13 to hit, reach 15 ft., one target. 16 (2d8 + 7) bludgeoning damage."
+            ]
+          },
+          {
+            "name": "Frightful Presence",
+            "entries": [
+              "Each creature of Zikzokrishka's choice that is within 120 feet of the Zikzokrishka and aware of it must succeed on a 18 Wisdom saving throw or become frightened for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success. If a creature's saving throw is successful or the effect ends for it, the creature is immune to the Zikzokrishka's Frightful Presence for the next 24 hours."
+            ]
+          },
+          {
+            "name": "Lightning Breath (Recharge 5-6)",
+            "entries": [
+              "Zikzokrishka exhales lightning in a 90-foot line that is 5 feet wide. Each creature in that line must make a 20 Dexterity saving throw, taking 66 (12d10) lightning damage on a failed save, or half as much damage on a successful one."
+            ]
+          }
+        ],
+        "legendary": [
+          { "name": "Detect", "entries": ["Zikzokrishka makes a Wisdom (Perception) check."] },
+          { "name": "Tail Attack", "entries": ["Zikzokrishka makes a tail attack."] },
+          {
+            "name": "Wing Attack (Costs 2 Actions)",
+            "entries": [
+              "Zikzokrishka beats its tattered wings. Each creature within 10 feet of Zikzokrishka must succeed on a 21 Dexterity saving throw or take 14 (2d6 + 7) bludgeoning damage and be knocked prone. After beating its wings this way, Zikzokrishka can fly up to half its flying speed."
+            ]
+          }
+        ],
+        "legendaryGroup": { "name": "Zikzokrishka", "source": "CM" },
+        "traitTags": ["Legendary Resistances", "Magic Resistance"],
+        "senseTags": ["B", "SD"],
+        "actionTags": ["Frightful Presence", "Multiattack"],
+        "languageTags": ["C", "DR"],
+        "damageTags": ["B", "L", "P", "S"],
+        "miscTags": ["AOE", "MW", "RCH"],
+        "conditionInflict": ["frightened", "prone"],
+        "hasFluff": true,
+        "hasFluffImages": true
+      }
+    ],
+    "monsterFluff": [
+      {
+        "name": "Animated Chained Library",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              "The three shelves are filled with books bound in iron covers, which are attached to chains that secure them to the shelves—a chained library. The reading desk is used to support the chained books while they are being read."
+            ]
+          }
+        ],
+        "images": [
+          {
+            "type": "image",
+            "href": { "type": "internal", "path": "bestiary/CM/Animated Chained Library.jpg" }
+          }
+        ]
+      },
+      {
+        "name": "Arrant Quill",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              "Quill is a charismatic bard who carries himself with a quiet confidence that doesn't hint at the full extent of his skills or powers. His handsome features are marred by a scar that curves from the top of his left cheekbone down to his jaw, though he doesn't consider the scar disfiguring. If asked about the scar, he explains that he got it years ago when the man who burned down his home village slashed his face with a dagger. It serves as a grim reminder of his past.",
+              "Although outwardly friendly, Quill is driven by three selfish desires: to preserve his well-being, to alleviate his boredom, and to escape Wisteria Vale. He holds a grudge against the Harpers and Ryllia for imprisoning him in a place that reminds him of the people he lost in his childhood, though he also takes some comfort in being able to live out the life he could've had. His time spent alone with his thoughts in Wisteria Vale has led him to suspect that the Harpers were never going to find a cure, and that they were simply biding their time until he became complacent enough that they could kill him without his being a threat. Quill's corruption has convinced him that the Harpers have become a powerful force that must be taken down; he trusts only himself to identify and eliminate agents of tyranny.",
+              "As long as Quill remains in Wisteria Vale, he is immune to all damage and automatically succeeds on all saving throws. This feature is suppressed if Quill wills it (no action required) or while he is within 15 feet of Renekor the beholder."
+            ]
+          }
+        ],
+        "images": [
+          {
+            "type": "image",
+            "href": { "type": "internal", "path": "bestiary/CM/Arrant Quill.jpg" }
+          }
+        ]
+      },
+      {
+        "name": "Bak Mei",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              "Bak Mei was once an agile and skilled Shou monk famous for upholding justice and helping the needy in his distant homeland to the east of Faerûn. As he grew older, learned more about the world, and began to feel the weight of old age, his worldview changed dramatically. Motivated by his growing fear of death, Bak Mei became obsessed with living an unending life. He began collecting texts on the subject, consulting with practitioners of the necromantic arts, and seeking audiences with dark forces.",
+              "The abbots of his temple confronted Bak Mei about his radical pursuits and demanded that he cease his activities. In response, he tried to stage a revolt at the temple, a traitorous action that resulted in the excommunication of Bak Mei and his followers, who christened themselves the Order of the Immortal Lotus. The small group eventually settled in the forest near Baldur's Gate, where they recruit new members. Under Bak Mei's cruel tutelage and eccentric training methods, the order has grown in power and numbers, living in seclusion while he planned his revenge on his former superiors.",
+              "Bak Mei is notorious among the monks of Faerûn. Some see him as a vagabond, exiled from his order for traitorous acts and disregard for tradition. Others see him as a radical seeker of knowledge.",
+              "Bak Mei is an old man with a long white beard and bushy eyebrows. Like the other members of his order, Bak Mei is clad in snow-white robes secured by a black sash over a form-fitting black shirt and trousers."
+            ]
+          }
+        ],
+        "images": [
+          { "type": "image", "href": { "type": "internal", "path": "bestiary/CM/Bak Mei.jpg" } }
+        ]
+      },
+      {
+        "name": "Canopic Golem",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              "A mummy lord's organs, normally stored in sacred canopic jars during mummification, can be magically preserved and transplanted into living humanoids. The transplant recipients come under the control of the mummy lord, either as living supplicants or mindless golems through which the mummy lord can see and speak."
+            ]
+          }
+        ],
+        "images": [
+          {
+            "type": "image",
+            "href": { "type": "internal", "path": "bestiary/CM/Canopic Golem.jpg" }
+          }
+        ]
+      },
+      {
+        "name": "Chwinga",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              {
+                "type": "entries",
+                "entries": [
+                  "A chwinga is a tiny elemental spirit that lives in plants, rocks, and rivers far from civilization. Those found in cold climates also live in ice and snow. Painfully shy, chwingas prefer to move about unseen.",
+                  "Chwingas resemble 6-inch-tall animated dolls with mask-like faces, spindly limbs, and wild hair. Their appearance is sometimes foreshadowed by gentle breezes, the sweet smell of flowers, dancing fireflies, or snowflakes. They don't have names and cannot speak.",
+                  {
+                    "type": "entries",
+                    "entries": [
+                      {
+                        "type": "entries",
+                        "name": "Humanoid Fascination",
+                        "entries": [
+                          "Chwingas find the trappings of civilization fascinating. They puzzle over creatures that wear armor, carry weapons, use tools, and cook food. When a chwinga encounters one or more humanoids, its curiosity sometimes gets the better of it, and it follows them for a short time to observe them. If it takes a liking to a humanoid, a chwinga might use its cantrips to aid the creature, or it might bestow a magical gift before departing. The aspect that attracts a chwinga to a humanoid can take any form. In some cases, a chwinga might simply like the way a humanoid walks or the way it combs its hair. Other times, it might be smitten by a humanoid's ability to play music or to eat copious amounts of food."
+                        ]
+                      }
+                    ]
+                  },
+                  "Chwingas that live in the desert can bestow the following additional supernatural charms:",
+                  {
+                    "type": "list",
+                    "columns": 2,
+                    "items": ["Charm of the Mirage", "Charm of the Water Bearer"]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "images": [
+          { "type": "image", "href": { "type": "internal", "path": "bestiary/CM/Chwinga.png" } }
+        ]
+      },
+      {
+        "name": "Cloud Giant Ghost",
+        "source": "CM",
+        "images": [
+          {
+            "type": "image",
+            "href": { "type": "internal", "path": "bestiary/CM/Cloud Giant Ghost.png" }
+          }
+        ]
+      },
+      {
+        "name": "Constructed Commoner",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              "To populate the demiplane without endangering any innocents, the Harpers created constructs out of wooden mannequins to act as villagers. Magic makes them look like flesh-and-blood people, and the constructs conduct themselves as convincingly real humanoids who are simply living their lives in Wisteria Vale. Detect magic spells do not reveal their true nature, as each construct is shielded by a spell that makes it seem nonmagical.",
+              "Though these constructed villagers can physically interact with the environment around them and hold lengthy conversations, a few clues to their true nature exist. A character who observes one or more of the commoners closely and succeeds on a DC 15 Wisdom (Perception) check notices a faint clicking sound whenever a villager touches a hard surface. The villagers are also cold to the touch, which can be ascertained only through physical contact. A character who succeeds on a DC 15 Wisdom (Insight) check notices that if the villagers are asked about anything outside Wisteria Vale or their individual talents, they quickly change subjects to small talk about the weather or gossip, and always in Common regardless of their apparent origin.",
+              "Constructed commoners don't bleed or feel pain like flesh-and-blood humanoids. If a villager's hit points drop to 0, its true form is revealed: that of a lifeless wooden mannequin. Overnight, the mannequin disappears, and a replacement villager is generated by the demiplane to take over the \"slain\" villager's place and role in the village a few days later. If the mannequin is disintegrated or reduced to ashes, it is not replaced and the population of the village permanently decreases by one."
+            ]
+          }
+        ],
+        "images": [
+          {
+            "type": "image",
+            "href": { "type": "internal", "path": "bestiary/CM/Constructed Commoner.png" }
+          }
+        ]
+      },
+      {
+        "name": "Corrupted Avatar of Lurue",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              "In normal circumstances, the avatar of Lurue is a breathtaking sight; her silver, stardust-like mane, her shimmering hooves, and her perfectly formed spiral horn elicit awe from even the most hardened souls. As powerful and striking as she is in her true form, she's just as wicked in her alternative state. With necrotic energy twisting and dancing at the tip of her black horn, this corrupted avatar of Lurue is instead a nightmare come to life.",
+              "While tainted by the influence of Malar, the avatar of Lurue carries out the Beast Lord's will: to slaughter anything that dares to cross its path."
+            ]
+          }
+        ],
+        "images": [
+          {
+            "type": "image",
+            "href": { "type": "internal", "path": "bestiary/CM/Corrupted Avatar of Lurue.png" }
+          }
+        ]
+      },
+      {
+        "name": "Dragon Tortoise",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              "Ogruhl has been trapped here for millennia, restrained by magic chains. Ogruhl was the prisoner of a cruel Netherese wizard. When the city around the tortoise was abandoned, Ogruhl was left to die. A band of chwingas found the tortoise and brought it food and water little by little to keep it alive. Over time, the chwingas and Ogruhl developed a symbiotic relationship—it defended them and provided a home for them, and they helped it to survive."
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Faerl",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              "Faerl, a neutral evil wood elf, is proud and cruel. He believes that he must be in control at all times. He dresses in pompous finery and an oversized red hat. He speaks precisely, but in a volume so low that it forces people to pay close attention to him."
+            ]
+          }
+        ],
+        "images": [
+          { "type": "image", "href": { "type": "internal", "path": "bestiary/CM/Faerl.png" } }
+        ]
+      },
+      {
+        "name": "Gingwatzim",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              "A gingwatzim is a peculiar form of life created by a spell or a ritual. The magic that brings it into being draws on spirit energy from the Ethereal Plane to give the gingwatzim its true form—that of a luminous (but not too bright) sphere of ectoplasm roughly 3 feet in diameter. A newly formed gingwatzim appears as near to its creator as possible and follows its creator's commands without question, using telepathy to communicate.",
+              "A gingwatzim can assume two other forms that are determined by its creator at the time the gingwatzim comes into being. One is an exact duplicate of a Tiny nonmagical object that its creator is wearing or carrying. The gingwatzim's other form is that of a specific Tiny beast."
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Grippli Warrior",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              "At first glance or from a distance, a grippli looks like a large frog. Its head and body are indeed those of a frog, but its front extremities end in hands with fingers that enable it to manipulate weapons and other objects, and its rear legs have similar digits that it can use for grasping and climbing. A grippli can move as quickly on all fours as it can on two legs."
+            ]
+          }
+        ],
+        "images": [
+          {
+            "type": "image",
+            "href": { "type": "internal", "path": "bestiary/CM/Grippli Warrior.png" }
+          }
+        ]
+      },
+      {
+        "name": "Hag of the Fetid Gaze",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              "Three green hags named Dread Morgan, Vile Sazha, and Auntie Greenbones were once rivals who dwelled in an area of the Feywild coterminous with the High Forest. A decade ago, during a time when the boundaries between the planes thinned, the hags became aware of the magic spring controlled by Sylvarie—and decided to control and corrupt it for their own purposes. The covetous hags each knew part of a ritual for crafting magic paintings that could bind mortal creatures with a terrible curse. After agreeing to share their knowledge and work together, they formed a coven dedicated to claiming Sylvarie's temple and making it a base for their nefarious plans.",
+              "The hags use their powers of illusion to pose as three elf sisters named Morganna, Azirssa, and Greensong. They are typically found in the bathhouse by day and in their tower lair at night. Each hag carries a master key that opens all the doors in the bathhouse and the tower."
+            ]
+          }
+        ],
+        "images": [
+          {
+            "type": "image",
+            "href": { "type": "internal", "path": "bestiary/CM/Hag of the Fetid Gaze.jpg" }
+          }
+        ]
+      },
+      {
+        "name": "Jade Tigress",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              "Jade Tigress is a powerfully built woman whose body has been honed by intense physical training. She is rugged in appearance, with jet-black hair, hazel eyes, and a long, thin scar running across her right cheek. She matches the description of one of the thieves who infiltrated Candlekeep."
+            ]
+          }
+        ],
+        "images": [
+          {
+            "type": "image",
+            "href": { "type": "internal", "path": "bestiary/CM/Jade Tigress.jpg" }
+          }
+        ]
+      },
+      {
+        "name": "K'Tulah",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              "K'Tulah is a gregarious tabaxi, a catlike humanoid. She arrived at Candlekeep six days ago and received permission to use the library to conduct her research on regional forms of folk magic.",
+              "She is an animated talker whose exaggerated gesticulations while chatting annoy Varnyr, but the elf appreciates her academic expertise."
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Kiddywidget",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              "A skitterwidget that gives birth to a kiddywidget can't procreate for 3d6 days afterward. Still, given that skitterwidgets are constructs with no natural life span, there is no telling how many kiddywidgets a pair of skitterwidgets can produce."
+            ]
+          }
+        ],
+        "images": [
+          { "type": "image", "href": { "type": "internal", "path": "bestiary/CM/Kiddywidget.png" } }
+        ]
+      },
+      {
+        "name": "Lichen Lich",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              "Lichen liches are undead remnants of powerful druids.",
+              "A lichen lich looks like a skeleton covered with fungi and bark-like lichen. A lichen lich has vines within its chest cavity. These vines exude viscid and poisonous black fluid."
+            ]
+          }
+        ],
+        "images": [
+          { "type": "image", "href": { "type": "internal", "path": "bestiary/CM/Lichen Lich.jpg" } }
+        ]
+      },
+      {
+        "name": "Lightning Golem",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              "Lightning golems resemble humans made of crackling lightning. Powerful enchantments protect it, deflecting spells and all but the most potent weapons."
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Master Sage",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              "Candlekeep's resident lore experts are master sages and sages who dedicate themselves to scholarship above all."
+            ]
+          }
+        ],
+        "images": [
+          { "type": "image", "href": { "type": "internal", "path": "bestiary/CM/Master Sage.png" } }
+        ]
+      },
+      {
+        "name": "Miirym",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              "Well over 1,500 years ago, the silver dragon Miirym broke into Candlekeep, intent on adding its riches to her hoard. She devoured scholars and destroyed a score of irreplaceable books before she was confronted by an archmage and bound into service to protect Candlekeep as penance for her misdeeds. The wizard passed away before Miirym's sentence had been served, and other spellcasters were unable to break the enchantment that bound her.",
+              "Time passed and so did Miirym, whose corpse has long since crumbled into dust. Unfortunately for Miirym, the enchantment remains in effect on her spirit. The spectral dragon—what's left of her—dwells in the catacombs and caves under the library. Those who have visited the depths describe Miirym as a set of immense spectral jaws whose essence roils with the promise of breath weapons and spells of destruction.",
+              "Adventurers who explore the passages beneath Candlekeep might encounter Miirym, who's more interested in news of present-day Faerûn than in fighting. Indeed, Miirym is an engaging conversationalist if one has the inclination to chat with her.",
+              "Miirym doesn't have a treasure hoard. Instead, she protects the books and scrolls kept in her subterranean domain. The Sentinel Wyrm can be summoned by the Keeper of Tomes and called upon to defend Candlekeep from invaders who would plunder or destroy it. In her role as Candlekeep's defender, Miirym can move anywhere within the library fortress, passing through walls and other solid barriers. She can't enter extradimensional spaces, since they are not on the same plane of existence as Candlekeep."
+            ]
+          }
+        ],
+        "images": [
+          { "type": "image", "href": { "type": "internal", "path": "bestiary/CM/Miirym.jpg" } }
+        ]
+      },
+      {
+        "name": "Nintra Siotta",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              "Nintra Siotta, a chaotic evil archfey who was exiled from the Gloaming Court by the Queen of Air and Darkness long ago, is known in Faerûn by three titles: Princess of the Shadow Glass, Lady of Dread Omens, and Seeker of the Three Crowns. She appears as a 9-foot-tall humanoid made of smoky gray glass, wrapped in a cloak-like darkness that appears to devour the light.",
+              "Nintra's eyes burn with green fire, and she speaks in a high, musical voice. Deception comes naturally to her, but imprisonment inThe Scrivener's Talehas made her impatient and prone to telepathic outbursts that betray her cruel nature."
+            ]
+          }
+        ],
+        "images": [
+          {
+            "type": "image",
+            "href": { "type": "internal", "path": "bestiary/CM/Nintra Siotta.jpg" }
+          }
+        ]
+      },
+      {
+        "name": "Parasite-infested Behir",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              "When a parasite-infested behir roars or discharges their lightning breath, thousands of gray, parasitic blood worms can be seen writhing inside their mouths. Targeting the behir with magic that removes a disease kills off its blood parasites."
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Ram Sugar",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              "Fanatics are often part of a cult's leadership, using their charisma and dogma to influence and prey on those of weak will. Most are interested in personal power above all else."
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Sage",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              "Candlekeep's resident lore experts are master sages and sages who dedicate themselves to scholarship above all."
+            ]
+          }
+        ],
+        "images": [
+          { "type": "image", "href": { "type": "internal", "path": "bestiary/CM/Sage.png" } }
+        ]
+      },
+      {
+        "name": "Sapphire Sentinel",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              "Stone golems are magical constructs cut and chiseled from stone to appear as tall, impressive statues. Like other golems, they are nearly impervious to spells and ordinary weapons. The golem remains a noncombatant unless it is directly attacked."
+            ]
+          },
+          {
+            "type": "section",
+            "entries": [
+              {
+                "type": "entries",
+                "name": "The Sapphire",
+                "entries": [
+                  "The sapphire is inside the golem's chest, hidden behind an 9-inch-diameter stone disk. The outer surface of the disk is inscribed with a blue circle that has eight golden beams radiating from it like the rays of the sun.",
+                  "The disk can be removed to reveal the glowing sapphire only when the golem receives a command to use its power from someone whose commands it obeys. Otherwise, the sapphire remains hidden. The gemstone is 6 inches in diameter and has the following properties:",
+                  {
+                    "type": "list",
+                    "items": [
+                      "It is indestructible until the golem completes its mission.",
+                      "The sapphire has 3 charges. As an action, the golem can expend 1 charge to cast dispel magic (as a 9th-level spell) from the sapphire using Constitution as its spellcasting ability. The sapphire ceases to glow if all its charges are expended, but it regains 1d3 expended charges daily at dawn and glows again once it has 1 or more charges.",
+                      "The golem attacks anyone who tries to remove the sapphire, which is worth 25,000 gp."
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "images": [
+          {
+            "type": "image",
+            "href": { "type": "internal", "path": "bestiary/CM/Sapphire Sentinel.jpg" }
+          }
+        ]
+      },
+      {
+        "name": "Shemshime",
+        "source": "CM",
+        "images": [
+          { "type": "image", "href": { "type": "internal", "path": "bestiary/CM/Shemshime.png" } }
+        ]
+      },
+      {
+        "name": "Skitterwidget",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              "A skitterwidget is made of metal and bears a passing resemblance to a giant dog-headed cockroach. No two skitterwidgets look exactly alike, but all are surprisingly cute."
+            ]
+          }
+        ],
+        "images": [
+          {
+            "type": "image",
+            "href": { "type": "internal", "path": "bestiary/CM/Skitterwidget.png" }
+          }
+        ]
+      },
+      {
+        "name": "Steel Crane",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              "Steel Crane is tall and slender. He is exceptionally handsome, with neat silver hair and deep green eyes, and carries himself with the grace of a dancer.",
+              "A strip of cloth was torn from the left sleeve of Steel Crane's white robe during the raid on Candlekeep, and Steel Crane hasn't yet bothered to mend the garment. The robe's damage is clearly visible—evidence of Steel Crane's role in the theft."
+            ]
+          }
+        ],
+        "images": [
+          { "type": "image", "href": { "type": "internal", "path": "bestiary/CM/Steel Crane.jpg" } }
+        ]
+      },
+      {
+        "name": "Swarm of Animated Books",
+        "source": "CM",
+        "images": [
+          {
+            "type": "image",
+            "href": { "type": "internal", "path": "bestiary/CM/Swarm of Animated Books.png" }
+          }
+        ]
+      },
+      {
+        "name": "Valin Sarnaster",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              "Valin Sarnaster has been thoroughly corrupted by visions of a future in which she sees herself as the immortal heir of Savras's realm.The Canopic Beingcame into her possession years ago, and an obsession with the dark rituals therein set the oracle on her present course.",
+              "Valin has become a powerful undead as the first step on her path to godhood, and is now a mummy lord.",
+              "Valin can use her lair actions in any area of the tomb."
+            ]
+          },
+          {
+            "type": "section",
+            "entries": [
+              {
+                "type": "entries",
+                "name": "Valin Sarnaster's Lair",
+                "entries": ["Valin can use her lair actions in any area of the tomb."]
+              }
+            ]
+          }
+        ],
+        "images": [
+          {
+            "type": "image",
+            "href": { "type": "internal", "path": "bestiary/CM/Valin Sarnaster.jpg" }
+          }
+        ]
+      },
+      {
+        "name": "Varnyr",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              "Varnyr is a senior scribe who has spent centuries at Candlekeep. She loves the books, which she cares for as though they were her grandchildren. She has little ambition to rise in the ranks of the Avowed, perfectly content as a senior scribe. She is hardworking and expects others to be as well."
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Zikran",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              "Genasi have strong ties to the Inner Planes and the blood of genies flowing through their veins. Like the marids of the Elemental Plane of Water, Zikran is turbulent and unpredictable.",
+              "He carries a handheld magic device that controls the elemental cannon. This device, shown in the accompanying illustration, looks like a metal rod with a tip shaped like a bird's head."
+            ]
+          },
+          {
+            "type": "entries",
+            "entries": [
+              "On initiative count 20 (losing initiative ties), Zikran uses his handheld device to fire the cannon at one creature he can see, provided the creature is in the basement or on the staircase. Zikran's target must make a DC 17 Dexterity saving throw, taking 24 (7d6) cold damage on a failed save, or half as much damage on a successful one. The basement furnishings provide half cover, should a creature wish to hide behind them.",
+              "The cannon is a Large object with AC 16, 80 hit points, and immunity to poison and psychic damage. It is mounted atop a swivel and bolted to the dais. The cannon draws power from the crystal in the middle of the room. This crystal sparks with elemental power whenever the cannon is about to fire. If the crystal is destroyed, both Zikran's handheld device and the cannon become powerless. The crystal is a Large object with AC 13, 40 hit points, and immunity to poison and psychic damage."
+            ]
+          }
+        ],
+        "images": [
+          { "type": "image", "href": { "type": "internal", "path": "bestiary/CM/Zikran.jpg" } }
+        ]
+      },
+      {
+        "name": "Zikzokrishka",
+        "source": "CM",
+        "entries": [
+          {
+            "type": "section",
+            "entries": [
+              {
+                "type": "entries",
+                "name": "Zikzokrishka's Phylactery",
+                "entries": [
+                  "Zikzokrishka hid her phylactery deep within the Scimitar Spires, a mountain range to the east of the necropolis of Azumar. If the characters defeat her, Zikzokrishka uses her phylactery to rematerialize, having long ago prepared a dragon's corpse to house her spirit upon its return to the phylactery."
+                ]
+              }
+            ]
+          }
+        ],
+        "images": [
+          {
+            "type": "image",
+            "href": { "type": "internal", "path": "bestiary/CM/Zikzokrishka.jpg" }
+          }
+        ]
+      }
+    ],
+    "legendaryGroups": [
+      {
+        "name": "Lichen Lich",
+        "source": "CM",
+        "lairActions": [
+          "On initiative count 20 (losing initiative ties), the lichen lich can take a lair action to cause one of the following effects:",
+          {
+            "type": "list",
+            "items": [
+              "Poisonous spores fill a 10-foot cube that the lich can see within 120 feet of it. Any creature that enters the cloud for the first time on a turn or starts its turn there must succeed on a DC 19 Constitution saving throw or be poisoned until the end of its next turn. The cloud lasts for 1 minute or until it is dispersed by a strong wind.",
+              "The lich commands the might of its diseased grove, creating a shambling mound. The shambling mound appears in an unoccupied space within 30 feet of the lich, acts on its own initiative count, and obeys the lich's commands. The shambling mound dies after 1 hour or when the lich uses this lair action again.",
+              "Rotten roots and vines magically erupt in a 20-foot radius centered on a point on the ground that the lich can see within 120 feet of it. The lich is unaffected by the roots and vines. For all other creatures, the area becomes difficult terrain, and each creature in the area must succeed on a DC 19 Strength saving throw or be restrained by the roots. As an action, a creature can try to free itself or another creature within its reach, doing so with a successful DC 19 Strength (Athletics) check. The roots and vines wilt away when the lich uses this lair action again or when the lich dies."
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Nintra Siotta",
+        "source": "CM",
+        "lairActions": [
+          "On initiative count 20 (losing initiative ties) Nintra can take a lair action to cause one of the following effects; she can't use the same effect two rounds in a row:",
+          {
+            "type": "list",
+            "items": [
+              "Nintra targets one pane of shadow glass in her lair, causing it to explode into shards. Each creature within 20 feet of the exploding pane must make a DC 18 Dexterity saving throw, taking 13 (3d8) piercing damage on a failed save, or half as much damage on a successful one. The shards fade away to vapor and the pane is restored to normal at the next initiative count 20.",
+              "Nintra targets one pane of shadow glass in her lair, briefly transforming it into a swirling vortex. One creature of her choice within 20 feet of the pane must succeed on a DC 20 Strength saving throw or be drawn into the vortex, taking 11 (2d10) necrotic damage. The creature is then teleported to an unoccupied space within 5 feet of another pane of shadow glass in Nintra's lair (determined randomly)."
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Valin Sarnaster",
+        "source": "CM",
+        "lairActions": [
+          "On initiative count 20 (losing initiative ties), Valin takes a lair action to cause one of the following effects; Valin can't use the same effect two rounds in a row.",
+          {
+            "type": "list",
+            "items": [
+              "Each undead creature in the lair can pinpoint the location of each living creature within 120 feet of it until initiative count 20 on the next round.",
+              "Each undead in the lair has advantage on saving throws against effects that turn undead until initiative count 20 on the next round.",
+              "Until initiative count 20 on the next round, any non-undead creature that tries to cast a spell of 4th level or lower in Valin's lair is wracked with pain. The creature can choose another action, but if it tries to cast the spell, it must make a DC 16 Constitution saving throw. On a failed save, it takes 1d6 necrotic damage per level of the spell, and the spell has no effect and is wasted."
+            ]
+          }
+        ],
+        "regionalEffects": [
+          "Valin's tomb is warped in any of the following ways by the creature's dark presence:",
+          {
+            "type": "list",
+            "items": [
+              "Food instantly molders and water instantly evaporates when brought into the lair. Other nonmagical drinks are spoiled—wine turning to vinegar, for instance.",
+              "Divination spells cast within the lair by creatures other than Valin have a 25 percent chance to provide misleading results, as determined by the DM. If a divination spell already has a chance to fail or become unreliable when cast multiple times, that chance increases by 25 percent.",
+              "A creature that takes treasure from the lair is cursed until the treasure is returned. The cursed target has disadvantage on all saving throws. The curse lasts until removed by a remove curse spell or other magic."
+            ]
+          },
+          "If Valin is destroyed, these regional effects end immediately."
+        ]
+      },
+      {
+        "name": "Zikzokrishka",
+        "source": "CM",
+        "lairActions": [
+          "On initiative count 20 (losing initiative ties) whenever she is in the are V3, Zikzokrishka can take a lair action to cause one of the following effects. She can't use the same effect two rounds in a row:",
+          {
+            "type": "list",
+            "items": [
+              "Part of the ceiling collapses above one creature that Zikzokrishka can see. The creature must succeed on a DC 15 Dexterity saving throw or take 21 (6d6) bludgeoning damage and be knocked prone and buried under rubble. A buried creature is restrained and unable to stand up. A creature can use an action to try to pull itself or another creature out of the rubble, doing so with a successful DC 10 Strength (Athletics) check.",
+              "A cloud of sand swirls in a 20-foot-radius sphere centered on a point Zikzokrishka can see within 60 feet of it. The cloud spreads around corners. Each creature in the cloud must succeed on a DC 15 Constitution saving throw or be blinded for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success.",
+              "Zikzokrishka chooses two points that it can see, each of which must be on a solid surface, and creates a 5-foot-wide line of lightning between them. The two points must be within 60 feet of Zikzokrishka and 60 feet of each other. Each creature in the line must succeed on a DC 15 Dexterity saving throw or take 10 (3d6) lightning damage."
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

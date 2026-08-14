@@ -1,0 +1,609 @@
+[
+  {
+    "name": "The Lost Dungeon of Rickedness: Big Rick Energy",
+    "acronym": "RMBRE",
+    "monster": [
+      {
+        "name": "Billy Beaver",
+        "source": "RMBRE",
+        "page": 27,
+        "size": "L",
+        "type": "construct",
+        "alignment": ["U"],
+        "ac": [{ "ac": 13, "from": ["natural armor"] }],
+        "hp": { "average": 34, "formula": "7d10 + 21" },
+        "speed": { "walk": 40 },
+        "str": 20,
+        "dex": 12,
+        "con": 17,
+        "int": 3,
+        "wis": 12,
+        "cha": 7,
+        "skill": { "perception": "+3" },
+        "senses": ["darkvision 60 ft."],
+        "passive": 13,
+        "immune": ["poison", "psychic"],
+        "conditionImmune": [
+          "blinded",
+          "charmed",
+          "deafened",
+          "exhaustion",
+          "frightened",
+          "paralyzed",
+          "petrified",
+          "poisoned"
+        ],
+        "languages": ["Common"],
+        "cr": "3",
+        "trait": [
+          {
+            "name": "Keen Sight and Smell",
+            "entries": [
+              "Billy Beaver has advantage on Wisdom (Perception) checks that rely on sight or smell."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Beak",
+            "entries": [
+              "Melee Weapon Attack: +7 to hit, reach 5 ft., one creature. Hit: 10 (1d10 + 5) piercing damage."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "traitTags": ["Keen Senses"],
+        "senseTags": ["D"],
+        "languageTags": ["C"],
+        "damageTags": ["P"],
+        "miscTags": ["MW"]
+      },
+      {
+        "name": "Buster the Bear",
+        "source": "RMBRE",
+        "page": 27,
+        "size": "M",
+        "type": "construct",
+        "alignment": ["C", "E"],
+        "ac": [{ "ac": 16, "from": ["hide armor", "shield"] }],
+        "hp": { "average": 27, "formula": "5d8 + 5" },
+        "speed": { "walk": 30 },
+        "str": 15,
+        "dex": 14,
+        "con": 13,
+        "int": 8,
+        "wis": 11,
+        "cha": 9,
+        "skill": { "stealth": "+6", "survival": "+2" },
+        "senses": ["darkvision 60 ft."],
+        "passive": 10,
+        "immune": ["poison", "psychic"],
+        "conditionImmune": [
+          "blinded",
+          "charmed",
+          "deafened",
+          "exhaustion",
+          "frightened",
+          "paralyzed",
+          "petrified",
+          "poisoned"
+        ],
+        "languages": ["Common"],
+        "cr": "1",
+        "trait": [
+          {
+            "name": "Surprise Attack",
+            "entries": [
+              "If Buster the Bear surprises a creature and hits it with an attack during the first round of combat, the target takes an extra 7 (2d6) damage from the attack."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Bashin' Banjo",
+            "entries": [
+              "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. Hit: 6 (1d8 + 2) bludgeoning damage."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "senseTags": ["D"],
+        "languageTags": ["C"],
+        "damageTags": ["B"],
+        "miscTags": ["MW"]
+      },
+      {
+        "name": "Large Mimic",
+        "source": "RMBRE",
+        "page": 122,
+        "_copy": {
+          "name": "Mimic",
+          "source": "MM",
+          "_mod": {
+            "action": {
+              "mode": "prependArr",
+              "items": {
+                "name": "Multiattack",
+                "entries": [
+                  "The mimic makes three attacks: two with its pseudopods and one with its bite."
+                ]
+              }
+            }
+          }
+        },
+        "size": "L",
+        "hp": { "formula": "9d8 + 18", "average": 75 },
+        "speed": { "walk": 0 },
+        "cr": "3",
+        "hasToken": true,
+        "type": { "type": "monstrosity", "tags": ["shapechanger"] },
+        "alignment": ["N"],
+        "ac": [{ "ac": 12, "from": ["natural armor"] }],
+        "skill": { "stealth": "+5" },
+        "senses": ["darkvision 60 ft."],
+        "conditionImmune": ["prone"],
+        "immune": ["acid"],
+        "trait": [
+          {
+            "name": "Shapechanger",
+            "entries": [
+              "The mimic can use its action to polymorph into an object or back into its true, amorphous form. Its statistics are the same in each form. Any equipment it is wearing or carrying isn't transformed. It reverts to its true form if it dies."
+            ]
+          },
+          {
+            "name": "Adhesive (Object Form Only)",
+            "entries": [
+              "The mimic adheres to anything that touches it. A Huge or smaller creature adhered to the mimic is also grappled by it (escape DC 13). Ability checks made to escape this grapple have disadvantage."
+            ]
+          },
+          {
+            "name": "False Appearance (Object Form Only)",
+            "entries": [
+              "While the mimic remains motionless, it is indistinguishable from an ordinary object."
+            ]
+          },
+          {
+            "name": "Grappler",
+            "entries": [
+              "The mimic has advantage on attack rolls against any creature grappled by it."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Multiattack",
+            "entries": [
+              "The mimic makes three attacks: two with its pseudopods and one with its bite."
+            ]
+          },
+          {
+            "name": "Pseudopod",
+            "entries": [
+              "Melee Weapon Attack: +5 to hit, reach 5 ft., one target. Hit: 7 (1d8 + 3) bludgeoning damage. If the mimic is in object form, the target is subjected to its Adhesive trait."
+            ]
+          },
+          {
+            "name": "Bite",
+            "entries": [
+              "Melee Weapon Attack: +5 to hit, reach 5 ft., one target. Hit: 7 (1d8 + 3) piercing damage plus 4 (1d8) acid damage."
+            ]
+          }
+        ],
+        "str": 17,
+        "dex": 12,
+        "con": 15,
+        "int": 5,
+        "wis": 13,
+        "cha": 8
+      },
+      {
+        "name": "Layla the Lizard",
+        "source": "RMBRE",
+        "page": 28,
+        "size": "M",
+        "type": "construct",
+        "alignment": ["C", "E"],
+        "ac": [12],
+        "hp": { "average": 22, "formula": "5d8" },
+        "speed": { "walk": 30 },
+        "str": 13,
+        "dex": 15,
+        "con": 10,
+        "int": 7,
+        "wis": 10,
+        "cha": 6,
+        "senses": ["darkvision 60 ft."],
+        "passive": 10,
+        "immune": ["poison", "psychic"],
+        "conditionImmune": [
+          "blinded",
+          "charmed",
+          "deafened",
+          "exhaustion",
+          "frightened",
+          "paralyzed",
+          "petrified",
+          "poisoned"
+        ],
+        "languages": ["Common"],
+        "cr": "1",
+        "action": [
+          {
+            "name": "Bite",
+            "entries": [
+              "Melee Weapon Attack: +2 to hit, reach 5 ft., one creature. Hit: 9 (2d6 + 2) piercing damage."
+            ]
+          },
+          {
+            "name": "Claws",
+            "entries": [
+              "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. Hit: 7 (2d4 + 2) slashing damage."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "senseTags": ["D"],
+        "languageTags": ["C"],
+        "damageTags": ["P", "S"],
+        "miscTags": ["MW"]
+      },
+      {
+        "name": "Lycanthropickle",
+        "source": "RMBRE",
+        "page": 11,
+        "size": "S",
+        "type": "plant",
+        "alignment": ["N", "E"],
+        "ac": [{ "ac": 13, "from": ["natural armor"] }],
+        "hp": { "average": 4, "formula": "1d6 + 1" },
+        "speed": { "walk": 20 },
+        "str": 6,
+        "dex": 13,
+        "con": 12,
+        "int": 4,
+        "wis": 8,
+        "cha": 3,
+        "skill": { "stealth": "+3" },
+        "senses": ["blindsight 60 ft. (blind beyond this radius)"],
+        "passive": 9,
+        "vulnerable": ["fire"],
+        "conditionImmune": ["blinded", "deafened"],
+        "languages": ["Common understands but can't speak"],
+        "cr": "1/8",
+        "trait": [
+          {
+            "name": "False Appearance",
+            "entries": [
+              "While the lycanthropickle remains motionless, it is indistinguishable from a pickle."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Claws",
+            "entries": [
+              "Melee Weapon Attack: +3 to hit, reach 5 ft., one target. Hit: 3 (1d4 + 1) piercing damage."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "traitTags": ["False Appearance"],
+        "senseTags": ["B"],
+        "languageTags": ["C", "CS"],
+        "damageTags": ["P"],
+        "miscTags": ["MW"]
+      },
+      {
+        "name": "Meeseeks",
+        "source": "RMBRE",
+        "page": 16,
+        "_copy": { "name": "Commoner", "source": "MM" },
+        "hp": { "special": "—(immune to damage)" },
+        "hasToken": true,
+        "size": "M",
+        "type": { "type": "humanoid", "tags": ["any race"] },
+        "alignment": ["A"],
+        "ac": [10],
+        "speed": { "walk": 30 },
+        "languages": ["any one language (usually Common)"],
+        "cr": "0",
+        "action": [
+          {
+            "name": "Club",
+            "entries": [
+              "Melee Weapon Attack: +2 to hit, reach 5 ft., one target. Hit: 2 (1d4) bludgeoning damage."
+            ]
+          }
+        ],
+        "str": 10,
+        "dex": 10,
+        "con": 10,
+        "int": 10,
+        "wis": 10,
+        "cha": 10
+      },
+      {
+        "name": "Piggy Wiggle Butt",
+        "source": "RMBRE",
+        "page": 28,
+        "size": "M",
+        "type": "construct",
+        "alignment": ["C", "E"],
+        "ac": [{ "ac": 13, "from": ["hide armor"] }],
+        "hp": { "average": 15, "formula": "2d8 + 6" },
+        "speed": { "walk": 30 },
+        "str": 16,
+        "dex": 12,
+        "con": 16,
+        "int": 7,
+        "wis": 11,
+        "cha": 10,
+        "skill": { "intimidation": "+2" },
+        "senses": ["darkvision 60 ft."],
+        "passive": 10,
+        "immune": ["poison", "psychic"],
+        "conditionImmune": [
+          "blinded",
+          "charmed",
+          "deafened",
+          "exhaustion",
+          "frightened",
+          "paralyzed",
+          "petrified",
+          "poisoned"
+        ],
+        "languages": ["Common"],
+        "cr": "1/2",
+        "trait": [
+          {
+            "name": "Aggressive",
+            "entries": [
+              "As a bonus action, Piggy Wiggle Butt can move up to its speed toward a hostile creature that it can see."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Clay Jug",
+            "entries": [
+              "Melee Weapon Attack: +5 to hit, reach 5 ft., one target. Hit: 7 (1d8 + 3) bludgeoning damage."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "traitTags": ["Aggressive"],
+        "senseTags": ["D"],
+        "languageTags": ["C"],
+        "damageTags": ["B"],
+        "miscTags": ["MW"]
+      },
+      {
+        "name": "Thomas T. Toad",
+        "source": "RMBRE",
+        "page": 28,
+        "size": "L",
+        "type": "construct",
+        "alignment": ["C", "E"],
+        "ac": [{ "ac": 11, "from": ["hide armor"] }],
+        "hp": { "average": 59, "formula": "7d10 + 21" },
+        "speed": { "walk": 40 },
+        "str": 19,
+        "dex": 8,
+        "con": 16,
+        "int": 5,
+        "wis": 7,
+        "cha": 7,
+        "senses": ["darkvision 60 ft."],
+        "passive": 8,
+        "immune": ["poison", "psychic"],
+        "conditionImmune": [
+          "blinded",
+          "charmed",
+          "deafened",
+          "exhaustion",
+          "frightened",
+          "paralyzed",
+          "petrified",
+          "poisoned"
+        ],
+        "languages": ["Common"],
+        "cr": "2",
+        "action": [
+          {
+            "name": "Webby Hands",
+            "entries": [
+              "Melee Weapon Attack: +6 to hit, reach 5 ft., one target. Hit: 8 (1d8 + 4) bludgeoning damage."
+            ]
+          }
+        ],
+        "hasToken": true,
+        "senseTags": ["D"],
+        "languageTags": ["C"],
+        "damageTags": ["B"],
+        "miscTags": ["MW"]
+      },
+      {
+        "name": "Tommy Two-Butts",
+        "source": "RMBRE",
+        "page": 18,
+        "_copy": {
+          "name": "Bugbear",
+          "source": "MM",
+          "_mod": {
+            "*": { "mode": "replaceTxt", "replace": "Tommy", "with": "Tommy", "flags": "i" }
+          }
+        },
+        "int": 21,
+        "hasToken": true,
+        "size": "M",
+        "type": { "type": "humanoid", "tags": ["goblinoid"] },
+        "alignment": ["C", "E"],
+        "ac": [{ "ac": 16, "from": ["hide armor", "shield"] }],
+        "hp": { "average": 27, "formula": "5d8 + 5" },
+        "speed": { "walk": 30 },
+        "skill": { "stealth": "+6", "survival": "+2" },
+        "senses": ["darkvision 60 ft."],
+        "languages": ["Common", "Goblin"],
+        "cr": "1",
+        "trait": [
+          {
+            "name": "Brute",
+            "entries": [
+              "A melee weapon deals one extra die of its damage when Tommy hits with it (included in the attack)."
+            ]
+          },
+          {
+            "name": "Surprise Attack",
+            "entries": [
+              "If Tommy surprises a creature and hits it with an attack during the first round of combat, the target takes an extra 7 (2d6) damage from the attack."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Morningstar",
+            "entries": [
+              "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. Hit: 11 (2d8 + 2) piercing damage."
+            ]
+          },
+          {
+            "name": "Javelin",
+            "entries": [
+              "Melee or Ranged Weapon Attack: +4 to hit, reach 5 ft. or range 30/120 ft., one target. Hit: 9 (2d6 + 2) piercing damage in melee or 5 (1d6 + 2) piercing damage at range."
+            ]
+          }
+        ],
+        "str": 15,
+        "dex": 14,
+        "con": 13,
+        "wis": 11,
+        "cha": 9
+      }
+    ],
+    "monsterFluff": [
+      {
+        "name": " Layla the Lizard ",
+        "source": "RMBRE",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              {
+                "type": "entries",
+                "entries": [
+                  "Layla the Lizard has blue overalls, a guitar, and a straw hat.",
+                  "The five automatons that serve as the tavern's wait staff each have a name tag, are super friendly to the patrons, and attend to everyone's needs until it comes time for the Slaughterfest. If an automaton is attacked before the Slaughterfest, it giggles and repeats folksy homilies until it is destroyed. The next round, it magically pops back to life fully healed, then asks, \"What can I do for ya?\""
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": " Piggy Wiggle Butt ",
+        "source": "RMBRE",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              {
+                "type": "entries",
+                "entries": [
+                  "Piggy Wiggle Butt is an anthropomorphic pig with no pants and no butt. She plays a clay jug and dances.",
+                  "The five automatons that serve as the tavern's wait staff each have a name tag, are super friendly to the patrons, and attend to everyone's needs until it comes time for the Slaughterfest. If an automaton is attacked before the Slaughterfest, it giggles and repeats folksy homilies until it is destroyed. The next round, it magically pops back to life fully healed, then asks, \"What can I do for ya?\""
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Billy Beaver ",
+        "source": "RMBRE",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              {
+                "type": "entries",
+                "entries": [
+                  "Billy Beaver is a goofy, owlbear-sized beaver with a raccoon-skin cap, playing a washboard and spoons.",
+                  "The five automatons that serve as the tavern's wait staff each have a name tag, are super friendly to the patrons, and attend to everyone's needs until it comes time for the Slaughterfest. If an automaton is attacked before the Slaughterfest, it giggles and repeats folksy homilies until it is destroyed. The next round, it magically pops back to life fully healed, then asks, \"What can I do for ya?\""
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Buster the Bear",
+        "source": "RMBRE",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              {
+                "type": "entries",
+                "entries": [
+                  "Buster the Bear is a lovable, roly-poly teddy bear with a plaid shirt, torn jeans, and a banjo.",
+                  "The five automatons that serve as the tavern's wait staff each have a name tag, are super friendly to the patrons, and attend to everyone's needs until it comes time for the Slaughterfest. If an automaton is attacked before the Slaughterfest, it giggles and repeats folksy homilies until it is destroyed. The next round, it magically pops back to life fully healed, then asks, \"What can I do for ya?\""
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Lycanthropickle",
+        "source": "RMBRE",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              {
+                "type": "entries",
+                "entries": [
+                  {
+                    "type": "inset",
+                    "name": "Curse of Lycanthropickling",
+                    "entries": [
+                      "A humanoid creature has a 20 percent chance to be afflicted with the curse of lycanthropickling after being wounded by a lycanthropickle. The curse lasts for 3 days. Each long rest the creature spends in a vat or jar of pickling brine prolongs the curse by 1 day.",
+                      "A lycanthropickle can either resist its curse or embrace it. By resisting the curse, a lycanthropickle retains its normal alignment and personality while in humanoid form. It lives its boring life as it always has, burying deep its raging, murderous urges just like the rest of us.",
+                      "Some individuals see little point in fighting the curse and accept what they are. They can assume pickle form or hybrid form at will. Most lycanthropickles that embrace their briny natures succumb to bloodlust, becoming evil, opportunistic creatures that prey on the weak.",
+                      "In hybrid form, a lycanthropickle has the same statistics as a twig blight with the altered ability noted here.",
+                      "In pickle form, a lycanthropickle has no statistics and is indistinguishable from a pickle... because it's a pickle."
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "images": [
+          {
+            "type": "image",
+            "href": { "type": "internal", "path": "bestiary/RMBRE/Lycanthropickle.jpg" }
+          }
+        ]
+      },
+      {
+        "name": "Thomas T. Toad ",
+        "source": "RMBRE",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              {
+                "type": "entries",
+                "entries": [
+                  "Thomas T. Toad is a hulking, anthropomorphic toad wearing a tuxedo and spats. Thomas sings a throaty song about the moon falling in love with its reflection on a lake."
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "legendaryGroups": []
+  }
+]

@@ -172,9 +172,7 @@ export class SimulationEngine {
                 ? this.state.combatants[selectedCandidate.targetIndex] ?? null
                 : null;
             const useTarget =
-              origTarget && this.combatResolver.isAlive(origTarget)
-                ? origTarget
-                : liveEnemies[0]!;
+              origTarget && this.combatResolver.isAlive(origTarget) ? origTarget : liveEnemies[0]!;
 
             const attackAction: ActionCandidate = seqAttack
               ? {
@@ -197,9 +195,7 @@ export class SimulationEngine {
       } else {
         // Count-based multiattack or single attack
         const attackCount =
-          profile?.hasMultiattack && profile.multiattackCount > 1
-            ? profile.multiattackCount
-            : 1;
+          profile?.hasMultiattack && profile.multiattackCount > 1 ? profile.multiattackCount : 1;
 
         for (let i = 0; i < attackCount; i++) {
           const liveEnemies = this.state.combatants.filter(

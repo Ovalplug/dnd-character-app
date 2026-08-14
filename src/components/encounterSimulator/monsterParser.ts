@@ -260,7 +260,16 @@ export class MonsterParser {
     let multiattackSequence: Array<{ attackName: string; count: number }> | undefined;
 
     const numberWords = new Set([
-      'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
+      'one',
+      'two',
+      'three',
+      'four',
+      'five',
+      'six',
+      'seven',
+      'eight',
+      'nine',
+      'ten',
     ]);
 
     if (monster.action) {
@@ -299,9 +308,7 @@ export class MonsterParser {
             );
             if (countMatch) {
               const word = countMatch[1] ?? '2';
-              multiattackCount = isNaN(Number(word))
-                ? this.wordToNumber(word)
-                : parseInt(word, 10);
+              multiattackCount = isNaN(Number(word)) ? this.wordToNumber(word) : parseInt(word, 10);
             } else {
               multiattackCount = 2;
             }

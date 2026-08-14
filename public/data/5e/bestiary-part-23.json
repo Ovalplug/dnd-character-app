@@ -1,0 +1,1074 @@
+[
+  {
+    "name": "Infernal Machine Rebuild",
+    "acronym": "IMR",
+    "monster": [
+      {
+        "name": "\"The Demogorgon\"",
+        "isNpc": true,
+        "source": "IMR",
+        "page": 53,
+        "size": "L",
+        "type": "giant",
+        "alignment": ["C", "N"],
+        "ac": [{ "ac": 15, "from": ["natural armor"] }],
+        "hp": { "average": 123, "formula": "13d12 + 39" },
+        "speed": { "walk": 40 },
+        "str": 21,
+        "dex": 8,
+        "con": 17,
+        "int": 6,
+        "wis": 10,
+        "cha": 8,
+        "skill": { "perception": "+3" },
+        "senses": ["darkvision 60 ft."],
+        "passive": 13,
+        "languages": ["Giant", "Orc"],
+        "cr": "8",
+        "trait": [
+          {
+            "name": "Two Heads",
+            "entries": [
+              "The ettin has advantage on Wisdom (Perception) checks and on saving throws against being blinded, charmed, deafened, frightened, stunned, and knocked unconscious."
+            ]
+          },
+          {
+            "name": "Wakeful",
+            "entries": ["When one of the ettin's heads is asleep, its other head is awake."]
+          }
+        ],
+        "action": [
+          {
+            "name": "Multiattack",
+            "entries": [
+              "The ettin makes two attacks: one with its battleaxe and one with its morningstar."
+            ]
+          },
+          {
+            "name": "Battleaxe",
+            "entries": [
+              "Melee Weapon Attack: +8 to hit, reach 5 ft., one target. 14 (2d8 + 5) slashing damage."
+            ]
+          },
+          {
+            "name": "Morningstar",
+            "entries": [
+              "Melee Weapon Attack: +8 to hit, reach 5 ft., one target. 14 (2d8 + 5) piercing damage."
+            ]
+          },
+          {
+            "name": "Fire Breath (Recharge 5-6)",
+            "entries": [
+              "The ettin's right head exhales fire in a 30-foot cone. Each creature in that area must make a DC 14 Dexterity saving throw, taking 45 (10d8) fire damage on a failed save, or half as much damage on a successful one."
+            ]
+          },
+          {
+            "name": "Cold Breath (Recharge 5-6)",
+            "entries": [
+              "The ettin's left head exhales an icy blast in a 30-foot cone. Each creature in that area must make a DC 14 Constitution saving throw, taking 45 (10d8) cold damage on a failed save, or half as much damage on a successful one."
+            ]
+          },
+          {
+            "name": "Gaze",
+            "entries": [
+              "The ettin turns its magical gaze toward one creature that it can see within 120 feet of it. That target must make a DC 14 Wisdom saving throw. Unless the target is incapacitated, it can avert its eyes to avoid the gaze and to automatically succeed on the save. If the target does so, it can't see the ettin until the start of the ettin's next turn. If the target looks at the ettin in the meantime, it must immediately make the save.",
+              "If the target fails the save, it suffers one of the following effects of the ettin's choice or at random:"
+            ]
+          },
+          {
+            "name": "Beguiling Gaze",
+            "entries": [
+              "The target is stunned until the start of the ettin's next turn or until the ettin is no longer within line of sight."
+            ]
+          },
+          {
+            "name": "Hypnotic Gaze",
+            "entries": [
+              "The target is charmed by the ettin until the start of the ettin's next turn. The ettin chooses how the charmed target uses its actions, reactions, and movement."
+            ]
+          },
+          {
+            "name": "Insanity Gaze",
+            "entries": [
+              "The target suffers the effect of the confusion spell without making a saving throw. The effect lasts until the start of the ettin's next turn. The ettin doesn't need to concentrate on the spell."
+            ]
+          }
+        ],
+        "senseTags": ["D"],
+        "actionTags": ["Multiattack"],
+        "languageTags": ["GI", "O"],
+        "damageTags": ["C", "F", "P", "S"],
+        "miscTags": ["AOE", "MW"],
+        "conditionInflict": ["charmed", "incapacitated", "stunned"]
+      },
+      {
+        "name": "Barbatos",
+        "isNpc": true,
+        "source": "IMR",
+        "page": 52,
+        "size": "M",
+        "type": { "type": "humanoid", "tags": ["human"] },
+        "alignment": ["N", "E"],
+        "ac": [{ "ac": 15, "from": ["studded leather armor"] }],
+        "hp": { "average": 78, "formula": "12d8 + 24" },
+        "speed": { "walk": 30 },
+        "str": 11,
+        "dex": 16,
+        "con": 14,
+        "int": 13,
+        "wis": 14,
+        "cha": 10,
+        "skill": {
+          "animal handling": "+5",
+          "deception": "+3",
+          "perception": "+5",
+          "stealth": "+6"
+        },
+        "passive": 13,
+        "resist": ["poison"],
+        "languages": ["Common"],
+        "cr": "6",
+        "spellcasting": [
+          {
+            "name": "Spellcasting",
+            "headerEntries": [
+              "Barbatos is a 6th-level spellcaster. His spellcasting ability is Wisdom (spell save DC 13, +5 to hit with spell attacks). He has the following ranger spells prepared:"
+            ],
+            "spells": {
+              "1": {
+                "slots": 4,
+                "spells": ["ensnaring strike", "hail of thorns", "hunter's mark"]
+              },
+              "2": { "slots": 2, "spells": ["locate animals or plants"] }
+            },
+            "ability": "wis"
+          }
+        ],
+        "trait": [
+          {
+            "name": "Rust Monster Cloak",
+            "entries": [
+              "Any nonmagical weapon made of metal that hits Barbatos corrodes. After dealing damage, the weapon takes a permanent and cumulative -1 penalty to damage rolls. If its penalty drops to -5, the weapon is destroyed. Nonmagical ammunition made of metal that hits Barbatos is destroyed after dealing damage."
+            ]
+          },
+          {
+            "name": "Heart of the Troll",
+            "entries": [
+              "Barbatos regains 10 hit points at the start of his turn. If Barbatos takes acid or fire damage, this trait doesn't function at the start of Barbatos's next turn. Barbatos dies only if he starts his turn with 0 hit points and doesn't regenerate."
+            ]
+          }
+        ],
+        "action": [
+          { "name": "Multiattack", "entries": ["Barbatos makes two bone shortsword attacks."] },
+          {
+            "name": "Bone Shortsword",
+            "entries": [
+              "Melee Weapon Attack: +6 to hit, reach 5 ft., one target. 6 (1d6 + 3) piercing damage."
+            ]
+          },
+          {
+            "name": "Light Crossbow",
+            "entries": [
+              "Ranged Weapon Attack: +6 to hit, range 80/320 ft., one target. 7 (1d8 + 3) piercing damage, and the target must succeed on a DC 13 Constitution saving throw or be poisoned for 1 hour. If the saving throw fails by 5 or more, the target is also unconscious. The target regains consciousness if it takes damage or if another creature takes an action to shake it."
+            ]
+          },
+          {
+            "name": "Cloak Sweep",
+            "entries": [
+              "Barbatos corrodes a nonmagical ferrous metal object he can see within 5 feet of himself. If the object isn't being worn or carried, the touch destroys a 1-foot cube of it. If the object is being worn or carried by a creature, the creature can make a DC 12 Dexterity saving throw to avoid Barbatos's touch.",
+              "If the object touched is either metal armor or a metal shield being worn or carried, it takes a permanent and cumulative 1 penalty to the AC it offers. Armor reduced to an AC of 10 or a shield that drops to a +0 bonus is destroyed. If the object touched is a held metal weapon, it rusts as described in Barbatos's Rust Monster Cloak trait."
+            ]
+          }
+        ],
+        "actionTags": ["Multiattack"],
+        "languageTags": ["C"],
+        "damageTags": ["P"],
+        "spellcastingTags": ["CR"],
+        "miscTags": ["AOE", "MW", "RNG", "RW"],
+        "conditionInflict": ["poisoned", "unconscious"],
+        "conditionInflictSpell": ["restrained"]
+      },
+      {
+        "name": "Lynx Creatlach",
+        "isNpc": true,
+        "source": "IMR",
+        "page": 54,
+        "size": "M",
+        "type": { "type": "undead", "tags": ["tiefling"] },
+        "alignment": ["L", "E"],
+        "ac": [{ "ac": 13, "from": ["leather armor"] }],
+        "hp": { "average": 136, "formula": "16d8 + 64" },
+        "speed": { "walk": 30 },
+        "str": 18,
+        "dex": 14,
+        "con": 18,
+        "int": 13,
+        "wis": 16,
+        "cha": 18,
+        "save": { "str": "+7", "con": "+7", "wis": "+6", "cha": "+7" },
+        "senses": ["darkvision 60ft."],
+        "passive": 13,
+        "resist": ["necrotic", "psychic"],
+        "immune": ["poison"],
+        "conditionImmune": [
+          "charmed",
+          "exhaustion",
+          "frightened",
+          "paralyzed",
+          "poisoned",
+          "stunned"
+        ],
+        "languages": ["Common", "Infernal"],
+        "cr": "5",
+        "trait": [
+          {
+            "name": "Special Equipment",
+            "entries": [
+              "Lynx's crystal eye is a magically shrunken crystal ball of true seeing. One of her teeth is a refashioned ring of mind shielding, while another has been magicked to place her under a permanent Nystul's magic aura spell, concealing the magic of these items and hiding her true nature from magic or features that can detect undead."
+            ]
+          },
+          {
+            "name": "Aversion of Fire",
+            "entries": [
+              "If Lynx takes fire damage, she has disadvantage on attack rolls and ability checks until the end of her next turn."
+            ]
+          },
+          {
+            "name": "Immutable Form",
+            "entries": ["Lynx is immune to any spell or effect that would alter her form."]
+          },
+          {
+            "name": "Lightning Absorption",
+            "entries": [
+              "Whenever Lynx is subjected to lightning damage, she takes no damage and instead regains a number of hit points equal to the lightning damage dealt."
+            ]
+          },
+          {
+            "name": "Magic Resistance",
+            "entries": [
+              "Lynx has advantage on saving throws against spells and other magical effects."
+            ]
+          },
+          {
+            "name": "Regeneration",
+            "entries": [
+              "Lynx regains 10 hit points at the start of her turn. If she takes fire or radiant damage, this trait doesn't function at the start of her next turn. Lynx's body is destroyed only if she starts her turn with 0 hit points and doesn't regenerate."
+            ]
+          },
+          { "name": "Turn Immunity", "entries": ["Lynx is immune to effects that turn undead."] }
+        ],
+        "action": [
+          { "name": "Multiattack", "entries": ["Lynx makes two shortsword attacks."] },
+          {
+            "name": "Shortsword",
+            "entries": [
+              "Melee Weapon Attack: +7 to hit, reach 5 ft., one target. 7 (1d6 + 4) piercing damage."
+            ]
+          }
+        ],
+        "traitTags": [
+          "Damage Absorption",
+          "Immutable Form",
+          "Magic Resistance",
+          "Regeneration",
+          "Turn Immunity"
+        ],
+        "senseTags": ["D"],
+        "actionTags": ["Multiattack"],
+        "languageTags": ["C", "I"],
+        "damageTags": ["P"],
+        "miscTags": ["MW"]
+      },
+      {
+        "name": "Moghadam",
+        "isNpc": true,
+        "source": "IMR",
+        "page": 55,
+        "size": "M",
+        "type": { "type": "humanoid", "tags": ["human"] },
+        "alignment": ["N", "E"],
+        "ac": [{ "ac": 14, "from": ["breastplate"] }],
+        "hp": { "average": 104, "formula": "19d8 + 19" },
+        "speed": { "walk": 30 },
+        "str": 10,
+        "dex": 12,
+        "con": 13,
+        "int": 19,
+        "wis": 16,
+        "cha": 16,
+        "save": { "con": "+5", "int": "+8", "wis": "+7" },
+        "skill": { "arcana": "+8", "insight": "+7", "medicine": "+7" },
+        "passive": 13,
+        "languages": ["Abyssal", "Common", "Dwarvish", "Infernal", "Undercommon"],
+        "cr": "12",
+        "spellcasting": [
+          {
+            "name": "Spellcasting",
+            "headerEntries": [
+              "Moghadam is an 18th-level spellcaster. His spellcasting ability is Intelligence (spell save DC 16, +8 to hit with spell attacks). He has the following artificer spells prepared:"
+            ],
+            "spells": {
+              "0": { "spells": ["dancing lights", "light", "message", "shocking grasp"] },
+              "1": {
+                "slots": 4,
+                "spells": ["comprehend languages", "cure wounds", "grease", "identify"]
+              },
+              "2": { "slots": 3, "spells": ["detect thoughts", "invisibility", "heat metal"] },
+              "3": { "slots": 3, "spells": ["dispel magic", "flame arrows", "hypnotic pattern"] },
+              "4": { "slots": 3, "spells": ["fabricate", "stone shape", "stoneskin"] },
+              "5": { "slots": 1, "spells": ["creation"] }
+            },
+            "ability": "int"
+          }
+        ],
+        "trait": [
+          {
+            "name": "Special Equipment",
+            "entries": ["Moghadam wields Ruinblade (see appendix C)."]
+          },
+          {
+            "name": "Artificial Mind",
+            "entries": [
+              "Moghadam can manifest an artificial mind as a floating spectral image of a demilich's jeweled skull. Moghadam can communicate telepathically with this mind, send it up to 300 feet away from him, and see and hear through it."
+            ]
+          },
+          {
+            "name": "Infoportation (1/Day)",
+            "entries": [
+              "Moghadam can teleport himself into an unoccupied space next to his artificial mind."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Ruinblade",
+            "entries": [
+              "Melee Weapon Attack: +6 to hit, reach 5 ft., one target. 9 (2d6 + 2) slashing damage."
+            ]
+          },
+          {
+            "name": "Blight (1/Day)",
+            "entries": ["While wielding  Ruinblade, Moghadam can cast the blight spell (DC 15)."]
+          },
+          {
+            "name": "Disintegrate (1/7 Days)",
+            "entries": [
+              "While wielding Ruinblade, Moghadam can cast the disintegrate spell against any nonmagical object or creation of magical force."
+            ]
+          },
+          {
+            "name": "Information Overload (Recharge 5-6)",
+            "entries": [
+              "Moghadam overloads the thoughts of one creature within 5 feet of either himself or his artificial mind. The target must succeed on a DC 16 Intelligence saving throw or take 22 (4d8 + 4) psychic damage, and the next attack roll made against the target before the end of Moghadam's next turn has advantage."
+            ]
+          }
+        ],
+        "languageTags": ["AB", "C", "D", "I", "U"],
+        "damageTags": ["S", "Y"],
+        "spellcastingTags": ["CA"],
+        "miscTags": ["MW"]
+      },
+      {
+        "name": "Neo-Otyugh",
+        "source": "IMR",
+        "page": 75,
+        "size": "H",
+        "type": "aberration",
+        "alignment": ["N"],
+        "ac": [{ "ac": 16, "from": ["natural armor"] }],
+        "hp": { "average": 150, "formula": "12d12 + 72" },
+        "speed": { "walk": 30 },
+        "str": 20,
+        "dex": 11,
+        "con": 22,
+        "int": 12,
+        "wis": 13,
+        "cha": 6,
+        "save": { "con": "+9" },
+        "senses": ["darkvision 120 ft."],
+        "passive": 11,
+        "conditionImmune": ["poisoned"],
+        "languages": ["Otyugh"],
+        "cr": "7",
+        "spellcasting": [
+          {
+            "name": "Innate Spellcasting (Psionics)",
+            "headerEntries": [
+              "The neo-otyugh's innate spellcasting ability is Intelligence (spell save DC 12). It can innately cast the following spells, requiring no components:"
+            ],
+            "will": ["detect thoughts"],
+            "daily": { "1e": ["command", "hold person"] },
+            "ability": "int"
+          }
+        ],
+        "trait": [
+          {
+            "name": "Limited Telepathy",
+            "entries": [
+              "The otyugh can magically transmit simple messages and images to any creature within 120 feet of it that can understand a language. This form of telepathy doesn't allow the receiving creature to telepathically respond."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Multiattack",
+            "entries": [
+              "The neo-otyugh makes three attacks: one with its bite and two with its tentacles."
+            ]
+          },
+          {
+            "name": "Bite",
+            "entries": [
+              "Melee Weapon Attack: +8 to hit, reach 10 ft., one target. 16 (2d10 + 5) piercing damage. If the target is a creature, it must succeed on a DC 17 Constitution saving throw against disease or become poisoned until the disease is cured. Every 24 hours that elapse, the target must repeat the saving throw, reducing its hit point maximum by 5 (1d10) on a failure. The disease is cured on a success. The target dies if the disease reduces its hit point maximum to 0. This reduction to the target's hit point maximum lasts until the disease is cured."
+            ]
+          },
+          {
+            "name": "Tentacle",
+            "entries": [
+              "Melee Weapon Attack: +8 to hit, reach 15 ft., one target. 10 (1d10 + 5) bludgeoning damage. If the target is Large or smaller, it is grappled (escape DC 16) and restrained until the grapple ends. The neo-otyugh has two tentacles, each of which can grapple one target."
+            ]
+          },
+          {
+            "name": "Tentacle Slam",
+            "entries": [
+              "The neo-otyugh slams creatures grappled by it into each other or a solid surface. Each creature must succeed on a DC 16 Constitution saving throw or take 15 (3d6 + 5) bludgeoning damage and be stunned until the end of the neo-otyugh's next turn. On a successful save, the target takes half the bludgeoning damage and isn't stunned."
+            ]
+          }
+        ],
+        "senseTags": ["SD"],
+        "actionTags": ["Multiattack", "Tentacles"],
+        "languageTags": ["OTH"],
+        "damageTags": ["B", "P"],
+        "spellcastingTags": ["I", "P"],
+        "miscTags": ["MW", "RCH"],
+        "conditionInflict": ["grappled", "poisoned", "restrained", "stunned"],
+        "conditionInflictSpell": ["paralyzed", "prone"]
+      },
+      {
+        "name": "Sir Ursas",
+        "isNpc": true,
+        "source": "IMR",
+        "page": 56,
+        "size": "M",
+        "type": { "type": "humanoid", "tags": ["human"] },
+        "alignment": ["L", "E"],
+        "ac": [{ "ac": 20, "from": ["plate armor", "shield"] }],
+        "hp": { "average": 112, "formula": "15d8 + 45" },
+        "speed": { "walk": 30 },
+        "str": 18,
+        "dex": 15,
+        "con": 16,
+        "int": 10,
+        "wis": 12,
+        "cha": 15,
+        "save": { "str": "+7", "dex": "+5", "con": "+6" },
+        "skill": { "athletics": "+10", "intimidation": "+5" },
+        "passive": 11,
+        "resist": ["fire"],
+        "languages": ["Common", "Infernal"],
+        "cr": "5",
+        "trait": [
+          {
+            "name": "Special Equipment",
+            "entries": [
+              "Sir Ursas wears a ring of mind shielding and plate armor of fire resistance."
+            ]
+          },
+          {
+            "name": "Brave",
+            "entries": ["Sir Ursas has advantage on saving throws against being frightened."]
+          },
+          {
+            "name": "Brute",
+            "entries": [
+              "A melee weapon deals one extra die of its damage when Sir Ursas hits with it (included in his attack)."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Multiattack",
+            "entries": ["Sir Ursas makes three melee attacks or two ranged attacks."]
+          },
+          {
+            "name": "Claw",
+            "entries": [
+              "Melee Weapon Attack: +7 to hit, reach 5 ft., one target. 11 (2d6 + 4) slashing damage."
+            ]
+          },
+          {
+            "name": "Spear",
+            "entries": [
+              "Melee Weapon Attack:,rw +7 to hit, reach 5 ft. and range 20/60 ft., one target. 11 (2d6 + 4) piercing damage, or 13 (2d8 + 4) piercing damage if used with two hands to make a melee attack."
+            ]
+          },
+          {
+            "name": "Shield Bash",
+            "entries": [
+              "Melee Weapon Attack: +7 to hit, reach 5 ft., one target. 9 (2d4 + 4) bludgeoning damage, and if the target is a Medium or smaller creature, it must succeed on a DC 15 Strength saving throw or be knocked prone."
+            ]
+          }
+        ],
+        "reaction": [
+          {
+            "name": "Parry",
+            "entries": [
+              "Sir Ursas adds 3 to his AC against one melee attack that would hit him. To do so, he must see the attacker and be wielding a melee weapon."
+            ]
+          }
+        ],
+        "traitTags": ["Brute"],
+        "actionTags": ["Multiattack", "Parry"],
+        "languageTags": ["C", "I"],
+        "damageTags": ["B", "P", "S"],
+        "miscTags": ["MW", "RW", "THW"],
+        "conditionInflict": ["prone"]
+      },
+      {
+        "name": "Thessalar",
+        "isNpc": true,
+        "source": "IMR",
+        "page": 57,
+        "size": "M",
+        "type": { "type": "humanoid", "tags": ["human"] },
+        "alignment": ["N", "E"],
+        "ac": [{ "ac": 14, "from": ["breastplate"] }],
+        "hp": { "average": 104, "formula": "7d10 + 14" },
+        "speed": { "walk": 30 },
+        "str": 10,
+        "dex": 12,
+        "con": 13,
+        "int": 19,
+        "wis": 16,
+        "cha": 16,
+        "save": { "con": "+5", "int": "+8", "wis": "+7" },
+        "skill": { "animal handling": "+7", "arcana": "+8", "insight": "+7", "medicine": "+7" },
+        "passive": 13,
+        "immune": ["acid", "poison"],
+        "conditionImmune": ["poisoned"],
+        "languages": ["Common", "Draconic", "Elvish", "Primordial"],
+        "cr": "12",
+        "spellcasting": [
+          {
+            "name": "Spellcasting",
+            "headerEntries": [
+              "Thessalar is an 18th-level spellcaster. His spellcasting ability is Intelligence (spell save DC 16, +8 to hit with spell attacks). He has the following artificer spells prepared:"
+            ],
+            "spells": {
+              "0": { "spells": ["light", "mending", "message", "shocking grasp"] },
+              "1": {
+                "slots": 4,
+                "spells": ["alarm", "cure wounds", "identify", "ray of sickness"]
+              },
+              "2": { "slots": 3, "spells": ["invisibility", "Melf's acid arrow", "web"] },
+              "3": { "slots": 3, "spells": ["dispel magic", "haste", "stinking cloud"] },
+              "4": {
+                "slots": 3,
+                "spells": ["blight", "Mordenkainen's faithful hound", "Otiluke's resilient sphere"]
+              },
+              "5": { "slots": 1, "spells": ["cloudkill"] }
+            },
+            "ability": "int"
+          }
+        ],
+        "trait": [
+          {
+            "name": "Special Equipment",
+            "entries": [
+              "Thessalar wields a +1 dagger coated with thessaltoxin poison (see appendix C)."
+            ]
+          },
+          {
+            "name": "Alchemical Homunculus",
+            "entries": [
+              "Thessalar is accompanied by his thessalars homunculus. If the mending spell is cast on it, the homunculus regains 2d6 hit points."
+            ]
+          },
+          {
+            "name": "Healing Toxicity",
+            "entries": [
+              "Any magic item that restores hit points and can be applied to a piercing or slashing weapon (a potion, an ointment, and so forth) causes a hit with that weapon to deal extra damage to Thessalar equal to the amount the item would normally heal."
+            ]
+          },
+          {
+            "name": "Greater Restoration (1/Day)",
+            "entries": [
+              "Thessalar can cast greater restoration if he has access to alchemical supplies."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Dagger",
+            "entries": [
+              "Melee Weapon Attack:,rw +5 to hit, reach 5 ft. or range 20/60 ft., one target. 3 (1d4 + 1) piercing damage, and the target must succeed on a DC 15 Constitution saving throw. On a failed save, the target is affected as if by the polymorph spell, transforming into a random beast or a creature it has seen within the last 24 hours (as chosen by the DM). This effect lasts until the target finishes a long rest."
+            ]
+          }
+        ],
+        "languageTags": ["C", "DR", "E", "P"],
+        "damageTags": ["P"],
+        "spellcastingTags": ["CA"],
+        "miscTags": ["MW", "RW", "THW"]
+      },
+      {
+        "name": "Thessalheart Construct",
+        "source": "IMR",
+        "page": 86,
+        "size": "T",
+        "type": "construct",
+        "alignment": ["N"],
+        "ac": [{ "ac": 15, "from": ["natural armor"] }],
+        "hp": { "average": 7, "formula": "2d4 + 2" },
+        "speed": { "walk": 40, "climb": 40 },
+        "str": 4,
+        "dex": 15,
+        "con": 12,
+        "int": 10,
+        "wis": 10,
+        "cha": 7,
+        "senses": ["darkvision 60"],
+        "passive": 10,
+        "immune": ["poison"],
+        "conditionImmune": ["charmed", "poisoned"],
+        "languages": ["understands the languages of its creator but can't speak"],
+        "cr": "0",
+        "trait": [
+          {
+            "name": "Telepathic Bond",
+            "entries": [
+              "While the construct is on the same plane of existence as its master, it can magically convey what it senses to its master, and the two can communicate telepathically."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Claws",
+            "entries": [
+              "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. 1 slashing damage, and the target must succeed on a DC 10 Constitution saving throw or be poisoned for 1 minute. If the saving throw fails by 5 or more, the target is instead poisoned for 5 (1d10) minutes and unconscious while poisoned in this way."
+            ]
+          }
+        ],
+        "senseTags": ["D"],
+        "languageTags": ["CS"],
+        "damageTags": ["S"],
+        "miscTags": ["MW"],
+        "conditionInflict": ["poisoned", "unconscious"]
+      },
+      {
+        "name": "Thessalkraken",
+        "source": "IMR",
+        "page": 87,
+        "size": "G",
+        "type": { "type": "monstrosity", "tags": ["titan"] },
+        "alignment": ["C", "E"],
+        "ac": [{ "ac": 16, "from": ["natural armor"] }],
+        "hp": { "average": 207, "formula": "18d12 + 90" },
+        "speed": { "walk": 20, "swim": 60 },
+        "str": 24,
+        "dex": 11,
+        "con": 20,
+        "int": 19,
+        "wis": 15,
+        "cha": 17,
+        "save": { "str": "+12", "dex": "+5", "con": "+10", "int": "+9", "wis": "+7" },
+        "senses": ["truesight 120 ft."],
+        "passive": 12,
+        "immune": [
+          "acid",
+          {
+            "immune": ["bludgeoning", "piercing", "slashing"],
+            "note": "from nonmagical attacks",
+            "cond": true
+          }
+        ],
+        "conditionImmune": ["charmed", "frightened", "paralyzed"],
+        "languages": [
+          "understands Abyssal",
+          "Celestial",
+          "Infernal",
+          "and Primordial but can't speak",
+          "telepathy 120 ft."
+        ],
+        "cr": "14",
+        "trait": [
+          { "name": "Amphibious", "entries": ["The thessalkraken can breathe air and water."] },
+          {
+            "name": "Freedom of Movement",
+            "entries": [
+              "The thessalkraken ignores difficult terrain, and magical effects can't reduce its speed or cause it to be restrained. It can spend 5 feet of movement to escape from nonmagical restraints or being grappled."
+            ]
+          }
+        ],
+        "action": [
+          {
+            "name": "Multiattack",
+            "entries": [
+              "The thessalkraken makes one bite attack and two tentacle attacks. It can replace each tentacle attack with one use of Fling."
+            ]
+          },
+          {
+            "name": "Bite",
+            "entries": [
+              "Melee Weapon Attack: +12 to hit, reach 5 ft., one target. 20 (3d8 + 7) piercing damage plus 5 (1d10) acid damage. If the target is a Medium or smaller creature grappled by the thessalkraken, that creature is swallowed, and the grapple ends. While swallowed, the creature is blinded and restrained, it has total cover against attacks and other effects outside the thessalkraken, and it takes 21 (6d6) acid damage at the start of each of the thessalkraken's turns.",
+              "If the thessalkraken takes 35 damage or more on a single turn from a creature inside it, it must succeed on a DC 23 Constitution saving throw at the end of that turn or regurgitate all swallowed creatures, which fall prone in a space within 10 feet of the thessalkraken. If the thessalkraken dies, a swallowed creature is no longer restrained by it and can escape from the corpse using 10 feet of movement, exiting prone."
+            ]
+          },
+          {
+            "name": "Tentacle",
+            "entries": [
+              "Melee Weapon Attack: +12 to hit, reach 20 ft., one target. 17 (3d6 + 7) slashing damage, and the target is grappled (escape DC 16). Until this grapple ends, the target is restrained. The thessalkraken has ten tentacles, each of which can grapple one target."
+            ]
+          },
+          {
+            "name": "Fling",
+            "entries": [
+              "One Medium or smaller object held or creature grappled by the thessalkraken is thrown up to 40 feet in a random direction and knocked prone. If a thrown target strikes a solid surface, the target takes 3 (1d6) bludgeoning damage for every 10 feet it was thrown. If the target is thrown at another creature, that creature must succeed on a DC 16 Dexterity saving throw or take the same damage and be knocked prone."
+            ]
+          },
+          {
+            "name": "Acid Saliva (Recharge 5-6)",
+            "entries": [
+              "The thessalkraken spits a glob of acid at a point it can see within 60 feet of it. Each creature within 10 feet of that point must make a DC 18 Dexterity saving throw, taking 22 (4d10) acid damage on a failed save, or half as much damage on a successful one."
+            ]
+          }
+        ],
+        "legendary": [
+          {
+            "name": "Tentacle Attack",
+            "entries": ["The thessalkraken makes one tentacle attack."]
+          },
+          { "name": "Fling", "entries": ["The thessalkraken uses Fling."] },
+          {
+            "name": "Ink Cloud (Costs 3 Actions)",
+            "entries": [
+              "While underwater, the thessalkraken expels an ink cloud in a 60-foot radius. The cloud spreads around corners, and that area is heavily obscured to creatures other than the thessalkraken. Each creature other than the thessalkraken that ends its turn there must succeed on a DC 18 Constitution saving throw, taking 16 (3d10) poison damage on a failed save, or half as much damage on a successful one. A strong current disperses the cloud, which otherwise disappears at the end of the thessalkraken's next turn."
+            ]
+          }
+        ],
+        "legendaryGroup": { "name": "Thessalkraken", "source": "IMR" },
+        "traitTags": ["Amphibious"],
+        "senseTags": ["U"],
+        "actionTags": ["Multiattack", "Swallow", "Tentacles"],
+        "languageTags": ["AB", "CE", "CS", "I", "P", "TP"],
+        "damageTags": ["A", "B", "I", "P", "S"],
+        "miscTags": ["AOE", "MW", "RCH"],
+        "conditionInflict": ["blinded", "grappled", "prone", "restrained"]
+      },
+      {
+        "name": "Two-Headed Crocodile",
+        "source": "IMR",
+        "page": 89,
+        "size": "L",
+        "type": "beast",
+        "alignment": ["U"],
+        "ac": [{ "ac": 12, "from": ["natural armor"] }],
+        "hp": { "average": 19, "formula": "3d10 + 3" },
+        "speed": { "walk": 20, "swim": 30 },
+        "str": 15,
+        "dex": 10,
+        "con": 13,
+        "int": 2,
+        "wis": 10,
+        "cha": 5,
+        "skill": { "perception": "+2", "stealth": "+2" },
+        "passive": 12,
+        "cr": "1",
+        "trait": [
+          {
+            "name": "Hold Breath",
+            "entries": ["The two-headed crocodile can hold its breath for 15 minutes."]
+          },
+          {
+            "name": "Two Heads",
+            "entries": [
+              "The two-headed crocodile has advantage on Wisdom (Perception) checks and on saving throws against being blinded, charmed, deafened, frightened, stunned, and knocked unconscious."
+            ]
+          },
+          {
+            "name": "Wakeful",
+            "entries": ["When one of the crocodile's heads is asleep, its other head is awake."]
+          }
+        ],
+        "action": [
+          {
+            "name": "Multiattack",
+            "entries": ["The two-headed crocodile makes two attacks with its bite."]
+          },
+          {
+            "name": "Bite",
+            "entries": [
+              "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. 7 (1d10 + 2) piercing damage, and the target is grappled (escape DC 12). Until this grapple ends, the target is restrained, and that head of the crocodile can't bite another target."
+            ]
+          }
+        ],
+        "traitTags": ["Hold Breath"],
+        "actionTags": ["Multiattack"],
+        "damageTags": ["P"],
+        "miscTags": ["MW"],
+        "conditionInflict": ["grappled", "restrained"]
+      },
+      {
+        "name": "Two-Headed Owlbear",
+        "source": "IMR",
+        "page": 90,
+        "size": "L",
+        "type": "monstrosity",
+        "alignment": ["U"],
+        "ac": [{ "ac": 13, "from": ["natural armor"] }],
+        "hp": { "average": 59, "formula": "7d10 + 21" },
+        "speed": { "walk": 40 },
+        "str": 20,
+        "dex": 12,
+        "con": 17,
+        "int": 3,
+        "wis": 12,
+        "cha": 7,
+        "skill": { "perception": "+3" },
+        "senses": ["darkvision 60"],
+        "passive": 13,
+        "cr": "3",
+        "trait": [
+          {
+            "name": "Two Heads",
+            "entries": [
+              "The two-headed owlbear has advantage on Wisdom (Perception) checks and on saving throws against being blinded, charmed, deafened, frightened, stunned, and knocked unconscious."
+            ]
+          },
+          {
+            "name": "Wakeful",
+            "entries": ["When one of the owlbear's heads is asleep, its other head is awake."]
+          }
+        ],
+        "action": [
+          {
+            "name": "Multiattack",
+            "entries": [
+              "The two-headed owlbear makes three attacks: two with its beaks and one with its claws."
+            ]
+          },
+          {
+            "name": "Beak",
+            "entries": [
+              "Melee Weapon Attack: +7 to hit, reach 5 ft., one target. 10 (1d10 + 5) piercing damage."
+            ]
+          },
+          {
+            "name": "Claws",
+            "entries": [
+              "Melee Weapon Attack: +7 to hit, reach 5 ft., one target. 14 (2d8 + 5) slashing damage."
+            ]
+          }
+        ],
+        "senseTags": ["D"],
+        "actionTags": ["Multiattack"],
+        "damageTags": ["P", "S"],
+        "miscTags": ["MW"]
+      }
+    ],
+    "monsterFluff": [
+      {
+        "name": "\"The Demogorgon\"",
+        "source": "IMR",
+        "images": [
+          {
+            "type": "image",
+            "href": { "type": "internal", "path": "bestiary/IMR/The Demogorgon.jpg" }
+          }
+        ]
+      },
+      {
+        "name": "Lynx Creatlach",
+        "source": "IMR",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              {
+                "type": "entries",
+                "entries": [
+                  {
+                    "type": "entries",
+                    "entries": [
+                      {
+                        "type": "inset",
+                        "name": "Out on Loan",
+                        "entries": [
+                          "The powerful relics possessed by Lynx Creatlach and Sir Ursas (see the \"Special Equipment\" section of their stat blocks) have been granted to them by their diabolical masters, and are not meant to be claimed as treasure. If either agent is killed in the course of the adventure, their special equipment vanishes, returning to Bel or Zariel."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Moghadam",
+        "source": "IMR",
+        "images": [
+          { "type": "image", "href": { "type": "internal", "path": "bestiary/IMR/Moghadam.jpg" } }
+        ]
+      },
+      {
+        "name": "Neo-Otyugh",
+        "source": "IMR",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              {
+                "type": "entries",
+                "entries": [
+                  {
+                    "type": "entries",
+                    "entries": [
+                      "A neo-otyugh is a stronger, more intelligent version of an otyugh—a grotesque aberration sporting three legs, snake-like tentacles, and a perpetually ravenous maw. Like an otyugh, a neo-otyugh buries itself under mounds of offal and carrion to ambush prey. Their improved intellect and innate spellcasting makes them especially effective against humanoid targets, as they use their powers of control to split off a straggler from a party, then attack."
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "images": [
+          { "type": "image", "href": { "type": "internal", "path": "bestiary/IMR/Neo-Otyugh.jpg" } }
+        ]
+      },
+      {
+        "name": "Sir Ursas",
+        "source": "IMR",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              {
+                "type": "entries",
+                "entries": [
+                  {
+                    "type": "entries",
+                    "entries": [
+                      {
+                        "type": "inset",
+                        "name": "Out on Loan",
+                        "entries": [
+                          "The powerful relics possessed by Lynx Creatlach and Sir Ursas (see the \"Special Equipment\" section of their stat blocks) have been granted to them by their diabolical masters, and are not meant to be claimed as treasure. If either agent is killed in the course of the adventure, their special equipment vanishes, returning to Bel or Zariel."
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Thessalar",
+        "source": "IMR",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              {
+                "type": "entries",
+                "entries": [
+                  {
+                    "type": "entries",
+                    "entries": [
+                      "Thessalar was a master alchemist and creator of monsters, whose own blood was said to possess dire magical properties.",
+                      "He is vainglorious, egotistical, and utterly ruthless in furthering his research. His career began as a priest in the service of Moloch, where he rose through the ranks before eventually taking over the temple as a working laboratory. Most of his experiments have involved the pursuit of new forms of life, resulting in such creatures as the thessalhydra and the owlbear. In recent years, he has also researched the prolonging of life—namely his own. Thessalar hopes that by becoming a lich, his research and experiments can continue indefinitely.",
+                      "Over time, Thessalar has subjected himself to so many of his own experiments that his blood has taken on alchemical and magical properties. He regularly uses it as the basis for many of the reagents used throughout his labs."
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "images": [
+          { "type": "image", "href": { "type": "internal", "path": "bestiary/IMR/Thessalar.jpg" } }
+        ]
+      },
+      {
+        "name": "Thessalheart Construct",
+        "source": "IMR",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              {
+                "type": "entries",
+                "entries": [
+                  {
+                    "type": "entries",
+                    "entries": [
+                      "A thessalheart construct is created with a connection to the life energy of another creature, allowing that creature to regenerate back from the dead as long as the construct is not destroyed. The artificer Thessalar created this crafty construct, and uses it to imbue his greater monstrous creations with even more power."
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "images": [
+          {
+            "type": "image",
+            "href": { "type": "internal", "path": "bestiary/IMR/Thessalheart Construct.jpg" }
+          }
+        ]
+      },
+      {
+        "name": "Thessalkraken",
+        "source": "IMR",
+        "entries": [
+          {
+            "type": "entries",
+            "entries": [
+              {
+                "type": "entries",
+                "entries": [
+                  {
+                    "type": "entries",
+                    "entries": [
+                      "The alchemist Thessalar created unknown numbers of misshapen magical creatures, including his many thessalbeasts. Among the largest was the thessalkraken—a slightly smaller variant of the legendary kraken, resembling that great tentacled titan but with a jagged-toothed maw that drips constantly with acid.",
+                      "A thessalkraken lives in the dark depths, usually a sunken rift or a cavern filled with detritus, treasure, and the remains of sacrificial victims."
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Two-Headed Owlbear",
+        "source": "IMR",
+        "images": [
+          {
+            "type": "image",
+            "href": { "type": "internal", "path": "bestiary/IMR/Two-Headed Owlbear.jpg" }
+          }
+        ]
+      }
+    ],
+    "legendaryGroups": [
+      {
+        "name": "Thessalkraken",
+        "source": "IMR",
+        "lairActions": [
+          "On initiative count 20 (losing initiative ties), the thessalkraken takes a lair action to cause one of the following magical effects:",
+          {
+            "type": "list",
+            "items": [
+              "A strong current moves through the thessalkraken's lair. Each creature within 60 feet of the thessalkraken must succeed on a DC 18 Strength saving throw or be pushed up to 60 feet away from the thessalkraken. On a success, the creature is pushed 10 feet away from the thessalkraken.",
+              "Creatures in the water within 60 feet of the thessalkraken have vulnerability to acid damage until initiative count 20 on the next round.",
+              "The alluring gleam of treasure beneath the water in the thessalkraken's lair compels potential victims to draw near. Each creature within 120 feet of the thessalkraken must succeed on a DC 18 Wisdom saving throw or move 10 feet closer to the thessalkraken if able to do so."
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

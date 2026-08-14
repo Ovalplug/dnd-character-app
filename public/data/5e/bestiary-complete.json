@@ -67,25 +67,87 @@
             "name": "Multiattack",
             "entries": [
               "The ancient deep crow makes three attacks: one with its mandibles and two with its claws."
+            ],
+            "doesAttacks": [
+              {
+                "name": "Mandibles",
+                "number": 1
+              },
+              {
+                "name": "Claw",
+                "number": 2
+              }
             ]
           },
           {
             "name": "Mandibles",
             "entries": [
               "Melee Weapon Attack: +11 to hit, reach 10 ft., one target. Hit: 17 (2d10 + 6) piercing damage, and the target is grappled (escape DC 19). Until this grapple ends, the target is restrained, and the ancient deep crow can't use its mandibles on another target."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 11,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "2d10 + 6"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "restrained",
+                  "save": "none",
+                  "escape": 19
+                }
+              ]
+            }
           },
           {
             "name": "Claw",
             "entries": [
               "Melee Weapon Attack: +11 to hit, reach 5 ft., one target. Hit: 13 (2d6 + 6) slashing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 11,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "2d6 + 6"
+                }
+              ]
+            }
           },
           {
             "name": "Shadow Caw",
             "entries": [
               "The ancient deep crow releases an ear-splitting caw. Each creature within 60 feet of the crow and able to hear it must make a DC 17 Constitution saving throw. On a failure, a creature takes 10 (3d6) psychic damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ability",
+              "range": 60,
+              "save": {
+                "dc": 17,
+                "ability": "CON"
+              },
+              "targets": "all",
+              "damage": [
+                {
+                  "type": "psychic",
+                  "damage": "3d6",
+                  "when": "faiure"
+                },
+                {
+                  "type": "psychic",
+                  "damage": "0",
+                  "when": "success"
+                }
+              ]
+            }
           }
         ],
         "legendary": [
