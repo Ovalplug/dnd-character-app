@@ -19,5 +19,11 @@
         }
       }
     }
+  },
+  "skills": {
+    "caveman": {
+      "default": true,
+      "path": "/mnt/c/Users/seane/Documents/projects/dnd-character-app/.agents/skills/caveman/SKILL.md"
+    }
   }
 }
