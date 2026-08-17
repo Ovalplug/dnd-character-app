@@ -1,17 +1,16 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "ollama/qwen3-14b-64k-coder",
+  "model": "ollama/devstral-64k",
   "provider": {
     "ollama": {
       "npm": "@ai-sdk/openai-compatible",
-      "name": "Ollama qwen3 14B 64k coder (local)",
+      "name": "Ollama (local)",
       "options": {
-        "baseURL": "http://localhost:11434/v1"
+        "baseURL": "http://127.0.0.1:11434/v1"
       },
       "models": {
-        "qwen3-14b-64k-coder": {
-          "name": "Ollama qwen3 14B 64k coder (local)",
-          "tool_call": true,
+        "devstral-64k": {
+          "name": "Devstral Small 2 24B Q4_K_S 64K",
           "limit": {
             "context": 65536,
             "output": 8192
@@ -20,10 +19,17 @@
       }
     }
   },
-  "skills": {
-    "caveman": {
-      "default": true,
-      "path": "/mnt/c/Users/seane/Documents/projects/dnd-character-app/.agents/skills/caveman/SKILL.md"
-    }
+  "permission": {
+    "read": "allow",
+    "edit": "allow",
+    "glob": "allow",
+    "grep": "allow",
+    "list": "allow",
+    "bash": "ask",
+    "task": "allow",
+    "lsp": "allow",
+    "skill": "allow",
+    "webfetch": "allow",
+    "websearch": "allow"
   }
 }
