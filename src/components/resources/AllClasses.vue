@@ -1,8 +1,4 @@
 <template>
-  <div v-if="debug">
-    <!-- <pre>{{ classes }}</pre> -->
-    <pre>{{ subclasses }}</pre>
-  </div>
   <div class="class-container">
     <div class="search-row">
       <input v-model="searchVal" type="search" placeholder="Search classes…" class="search-input" />
@@ -43,13 +39,11 @@
 
 <script lang="ts" setup>
   import { computed, onMounted, ref } from 'vue';
-  import { useDebug } from '../../composables/useDebug';
   import { useDataStore } from '../../stores/dataStore';
   import type { Classes, Subclasses, CharClass } from '../../types';
   import SingleClass from './SingleClass.vue';
   import PopOut from '../PopOut.vue';
 
-  const { debug, initDebug } = useDebug();
   const dataStore = useDataStore();
 
   const props = defineProps<{
@@ -67,7 +61,6 @@
   });
 
   onMounted(async () => {
-    await initDebug();
     if (!dataStore.loaded) {
       try {
         await dataStore.init();

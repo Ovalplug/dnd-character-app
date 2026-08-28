@@ -29,9 +29,6 @@
     </ul>
   </div>
   <PopOut :title="backgroundTitle" v-if="selectedBackground" :onClose="deselectBackground">
-    <div v-if="debug">
-      <pre>{{ JSON.stringify(selectedBackground, null, 2) }}</pre>
-    </div>
     <div>
       <SingleBackground
         :background="selectedBackground"
@@ -45,11 +42,9 @@
   import type { Backgrounds, BackgroundFluffs, Background } from '../../types';
   import PopOut from '../PopOut.vue';
   import { computed, onMounted, ref } from 'vue';
-  import { useDebug } from '../../composables/useDebug';
   import { useDataStore } from '../../stores/dataStore';
   import SingleBackground from './SingleBackground.vue';
 
-  const { debug, initDebug } = useDebug();
   const dataStore = useDataStore();
 
   const props = defineProps<{ backgrounds: Backgrounds; backgroundFluffs: BackgroundFluffs }>();
@@ -114,7 +109,6 @@
   }
 
   onMounted(async () => {
-    await initDebug();
     if (!dataStore.loaded) {
       try {
         await dataStore.init();

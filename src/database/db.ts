@@ -126,16 +126,16 @@ export async function setSetting(key: string, value: any): Promise<void> {
   await db.settings.put({ key, value, updatedAt: Date.now() });
 }
 
-/**
- * Convenience helpers for a boolean `debug` flag persisted to the DB.
+/**&
+ * Convenience helpers for a theme mode flag persisted to the DB.
  */
-export async function getDebugSetting(): Promise<boolean> {
-  const v = await getSetting<boolean>('debug', false);
+export async function getThemeSetting(): Promise<boolean> {
+  const v = await getSetting<boolean>('themeMode', true);
   return !!v;
 }
 
-export async function setDebugSetting(enabled: boolean): Promise<void> {
-  await setSetting('debug', !!enabled);
+export async function setThemeSetting(enabled: boolean): Promise<void> {
+  await setSetting('themeMode', !!enabled);
 }
 
 export async function addEncounter(encounter: Encounter): Promise<void> {

@@ -2,18 +2,43 @@
   --max-width: 1200px;
   --radius: 12px;
   --gap: 1rem;
-  /* Muted, parchment-inspired D&D palette */
-  --color-bg: #f4ecd8; /* parchment */
-  --color-surface: #efe6d0; /* panels */
-  --color-muted: #7a6b57; /* muted brown/ink */
-  --color-primary: #6b2e2e; /* deep burgundy */
-  --color-primary-600: #5a2727;
-  --color-accent: #c9a44b; /* warm gold */
-  --color-danger: #b73b3b; /* muted danger */
-  --color-text: #1f1b16; /* dark ink */
-  --color-card-shadow: 0 6px 18px rgba(31, 27, 22, 0.06);
+  /* Regal D&D palette - deep royal theme */
+  --color-bg: #0a0e1a;
+  --color-surface: #121726;
+  --color-muted: #a8acbe;
+  --color-primary: #6c5ce7;
+  --color-primary-600: #5649c0;
+  --color-accent: #fd9644;
+  --color-danger: #fc5c65;
+  --color-text: #e1e5e9;
+  --color-card-shadow: 0 6px 18px rgba(124, 113, 255, 0.1);
 
-  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  --font-sans: 'Playfair Display', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial;
+}
+
+.dark-mode {
+  --color-bg: #0a0e1a;
+  --color-surface: #121726;
+  --color-muted: #a8acbe;
+  --color-primary: #6c5ce7;
+  --color-primary-600: #5649c0;
+  --color-accent: #fd9644;
+  --color-danger: #fc5c65;
+  --color-text: #e1e5e9;
+  --color-card-shadow: 0 6px 18px rgba(124, 113, 255, 0.1);
+}
+
+.light-mode {
+  --color-bg: #f8f9fa;
+  --color-surface: #ffffff;
+  --color-muted: #4a5568;
+  --color-primary: #6c5ce7;
+  --color-primary-600: #5649c0;
+  --color-accent: #fd9644;
+  --color-danger: #fc5c65;
+  --color-text: #2d3748;
+  --color-card-shadow: 0 6px 18px rgba(124, 113, 255, 0.1);
 }
 
 /* Base Reset + Accessibility */

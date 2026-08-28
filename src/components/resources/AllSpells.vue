@@ -121,9 +121,6 @@
     </ul>
 
     <PopOut :title="spellTitle" v-if="selectedSpell" :onClose="deselectSpell">
-      <div v-if="debug">
-        <pre>{{ JSON.stringify(selectedSpell, null, 2) }}</pre>
-      </div>
       <div>
         <SingleSpell :spell="selectedSpell" />
       </div>
@@ -155,7 +152,6 @@
   import type { Spell, SpellClass, SpellClasses, Spells, SpellSchools } from '../../types';
   import PopOut from '../PopOut.vue';
   import { computed, onMounted, ref } from 'vue';
-  import { useDebug } from '../../composables/useDebug';
   import { useDataStore } from '../../stores/dataStore';
   import SingleSpell from './SingleSpell.vue';
   import { useSpellBookStore } from '../../stores/spellBookStore';
@@ -166,7 +162,6 @@
   } from '../../helperFunctions';
   import bookIcon from '../../assets/icons/book.svg';
 
-  const { debug, initDebug } = useDebug();
   const dataStore = useDataStore();
   const spellBookStore = useSpellBookStore();
 
@@ -315,7 +310,6 @@
   }
 
   onMounted(async () => {
-    await initDebug();
     if (!dataStore.loaded) {
       try {
         await dataStore.init();

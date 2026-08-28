@@ -84,7 +84,6 @@
   import { onMounted, ref, computed } from 'vue';
   import { useDataStore } from '../stores/dataStore';
   import Loading from '../components/resources/Loading.vue';
-  import { useDebug } from '../composables/useDebug';
   import AllFeats from '../components/resources/AllFeats.vue';
   import AllRaces from '../components/resources/AllRaces.vue';
   import AllBackgrounds from '../components/resources/AllBackgrounds.vue';
@@ -95,7 +94,6 @@
   import AllMonsters from '../components/resources/AllMonsters.vue';
   import AllRules from '../components/resources/AllRules.vue';
   import { useItemStore } from '../stores/itemStore';
-  const { initDebug } = useDebug();
 
   const dataStore = useDataStore();
   const itemStore = useItemStore();
@@ -144,7 +142,6 @@
   }
 
   onMounted(async () => {
-    await initDebug();
     if (!dataStore.loaded) {
       try {
         await dataStore.init();

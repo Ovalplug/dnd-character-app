@@ -30,9 +30,6 @@
     </ul>
   </div>
   <PopOut :title="raceTitle" v-if="selectedRace" :onClose="deselectRace">
-    <div v-if="debug">
-      <pre>{{ JSON.stringify(selectedRace, null, 2) }}</pre>
-    </div>
     <div>
       <SingleRace :race="selectedRace" :fluff="selectedFluff" />
     </div>
@@ -43,11 +40,9 @@
   import type { Race, RaceFluff } from '../../types';
   import PopOut from '../PopOut.vue';
   import { computed, onMounted, ref } from 'vue';
-  import { useDebug } from '../../composables/useDebug';
   import { useDataStore } from '../../stores/dataStore';
   import SingleRace from './SingleRace.vue';
 
-  const { debug, initDebug } = useDebug();
   const dataStore = useDataStore();
 
   const { races, raceFluff } = defineProps<{ races: Race[]; raceFluff: RaceFluff[] }>();
@@ -131,7 +126,6 @@
   }
 
   onMounted(async () => {
-    await initDebug();
     if (!dataStore.loaded) {
       try {
         await dataStore.init();

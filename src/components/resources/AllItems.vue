@@ -119,9 +119,6 @@
   </div>
 
   <PopOut :title="itemTitle" v-if="selectedItem" :onClose="deselectItem">
-    <div v-if="debug">
-      <pre>{{ JSON.stringify(selectedItem, null, 2) }}</pre>
-    </div>
     <div>
       <SingleItem :item="selectedItem" />
     </div>
@@ -157,14 +154,12 @@
   import type { ItemFilterTag } from '../../helperFunctions';
   import PopOut from '../PopOut.vue';
   import { computed, onMounted, ref } from 'vue';
-  import { useDebug } from '../../composables/useDebug';
   import { useDataStore } from '../../stores/dataStore';
   import { useItemStore } from '../../stores/itemStore';
   import SingleItem from './SingleItem.vue';
   import { getPrettyItemType, getRefinedItemsList } from '../../helperFunctions';
   import bagIcon from '../../assets/icons/bag.svg';
 
-  const { debug, initDebug } = useDebug();
   const dataStore = useDataStore();
   const itemStore = useItemStore();
 
@@ -357,7 +352,6 @@
   }
 
   onMounted(async () => {
-    await initDebug();
     if (!dataStore.loaded) {
       try {
         await dataStore.init();

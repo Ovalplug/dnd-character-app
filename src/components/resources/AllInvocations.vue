@@ -1,7 +1,4 @@
 <template>
-  <div v-if="debug">
-    <pre>{{ props.invocations }}</pre>
-  </div>
   <div>
     <div class="search-row">
       <input
@@ -35,9 +32,6 @@
       </div>
     </ul>
     <PopOut :title="invocationTitle" v-if="selectedInvocation" :onClose="deselectInvocation">
-      <div v-if="debug">
-        <pre>{{ JSON.stringify(selectedInvocation, null, 2) }}</pre>
-      </div>
       <div>
         <SingleInvocation :invocation="selectedInvocation" />
       </div>
@@ -48,12 +42,9 @@
 <script lang="ts" setup>
   import { computed, onMounted, ref } from 'vue';
   import { useDataStore } from '../../stores/dataStore';
-  import { useDebug } from '../../composables/useDebug';
   import type { Invocations } from '../../types';
   import PopOut from '../PopOut.vue';
   import SingleInvocation from './SingleInvocation.vue';
-
-  const { debug, initDebug } = useDebug();
 
   const dataStore = useDataStore();
 
@@ -105,7 +96,6 @@
   }
 
   onMounted(async () => {
-    await initDebug();
     if (!dataStore.loaded) {
       try {
         await dataStore.init();

@@ -108,9 +108,6 @@
   </div>
 
   <PopOut :title="featTitle" v-if="selectedFeat" :onClose="deselectFeat">
-    <div v-if="debug">
-      <pre>{{ JSON.stringify(selectedFeat, null, 2) }}</pre>
-    </div>
     <div>
       <SingleFeat :feat="selectedFeat" />
     </div>
@@ -122,7 +119,6 @@
   import type { FeatPrerequisiteTag, FeatSpellTag } from '../../helperFunctions';
   import PopOut from '../PopOut.vue';
   import { computed, onMounted, ref } from 'vue';
-  import { useDebug } from '../../composables/useDebug';
   import { useDataStore } from '../../stores/dataStore';
   import SingleFeat from './SingleFeat.vue';
   import {
@@ -135,7 +131,6 @@
     getRefinedFeatsList,
   } from '../../helperFunctions';
 
-  const { debug, initDebug } = useDebug();
   const dataStore = useDataStore();
 
   const props = defineProps<{ feats: Feat[] }>();
@@ -262,7 +257,6 @@
   }
 
   onMounted(async () => {
-    await initDebug();
     if (!dataStore.loaded) {
       try {
         await dataStore.init();

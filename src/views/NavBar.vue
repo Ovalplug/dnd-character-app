@@ -3,7 +3,7 @@
     <aside
       id="sidebar"
       class="sidebar"
-      :class="{ expanded: expanded, collapsed: !expanded, 'debug-active': debug }"
+      :class="{ expanded: expanded, collapsed: !expanded }"
       @keydown.esc="collapse"
       tabindex="-1"
     >
@@ -69,18 +69,17 @@
       </nav>
 
       <footer class="sidebar-footer">
-        <slot>
-          <label class="debug-toggle" title="Toggle debug">
-            <input
-              type="checkbox"
-              :checked="debug"
-              @change="onToggleDebug($event)"
-              aria-label="Toggle debug mode"
-            />
-            <span class="label" v-if="expanded">Debug</span>
-            <span class="debug-state" v-if="expanded">{{ debug ? 'On' : 'Off' }}</span>
-          </label>
-        </slot>
+        <!-- Dark Mode Toggle -->
+        <label class="debug-toggle" title="Toggle dark mode">
+          <input
+            type="checkbox"
+            v-model="darkMode"
+            @change="toggleDarkMode"
+            aria-label="Toggle dark mode"
+          />
+          <span class="label" v-if="expanded">Dark Mode</span>
+          <span class="debug-state" v-if="expanded">{{ darkMode ? 'On' : 'Off' }}</span>
+        </label>
         <br />
         <slot name="footer">V {{ APP_VERSION }}</slot>
       </footer>
@@ -94,7 +93,6 @@
   import { APP_VERSION } from '../constants';
   import { ref, watchEffect, onMounted } from 'vue';
   import router from '../router';
-  import { useDebug } from '../composables/useDebug';
 
   import bookIcon from '../assets/icons/book.svg?url';
   import homeIcon from '../assets/icons/home.svg?url';
@@ -107,11 +105,24 @@
   // When false, the sidebar is a narrow icon-only strip for quick navigation.
   const expanded = ref(false);
 
-  const { debug, initDebug, setDebug } = useDebug();
+  // Dark Mode State
+  const darkMode = ref(true);
 
-  async function onToggleDebug(e: Event) {
-    const input = e.target as HTMLInputElement;
-    await setDebug(!!input.checked);
+  function toggleDarkMode() {
+    const html = document.documentElement;
+    const body = document.body;
+
+    if (darkMode.value) {
+      html.classList.add('dark-mode');
+      html.classList.remove('light-mode');
+      body.classList.add('dark-mode');
+      body.classList.remove('light-mode');
+    } else {
+      html.classList.add('light-mode');
+      html.classList.remove('dark-mode');
+      body.classList.add('light-mode');
+      body.classList.remove('dark-mode');
+    }
   }
 
   const navOptions = [
@@ -143,8 +154,20 @@
     else document.body.style.overflow = '';
   });
 
-  onMounted(async () => {
-    await initDebug();
+  // Initialize dark mode on mount
+  onMounted(() => {
+    // Check if user has a preference stored
+    const savedMode = localStorage.getItem('themeMode');
+    if (savedMode) {
+      darkMode.value = savedMode === 'dark';
+    }
+
+    toggleDarkMode();
+  });
+
+  // Save preference when changed
+  watchEffect(() => {
+    localStorage.setItem('themeMode', darkMode.value ? 'dark' : 'light');
   });
 </script>
 

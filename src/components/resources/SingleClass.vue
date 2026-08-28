@@ -37,14 +37,12 @@
 </template>
 <script lang="ts" setup>
   import { computed, onMounted, ref } from 'vue';
-  import { useDebug } from '../../composables/useDebug';
   import { useDataStore } from '../../stores/dataStore';
   import type { CharClass, Subclass } from '../../types';
   import ResourceEntries from './ResourceEntries.vue';
   import EntryTable from './EntryTable.vue';
   import FeatureTable from './FeatureTable.vue';
 
-  const { initDebug } = useDebug();
   const dataStore = useDataStore();
 
   const props = defineProps<{
@@ -86,7 +84,6 @@
   const classOptions = ['Info', 'Base', 'Tables', ...getSubclassNamesForClass()];
 
   onMounted(async () => {
-    await initDebug();
     if (!dataStore.loaded) {
       try {
         await dataStore.init();
