@@ -93,6 +93,7 @@
   import { APP_VERSION } from '../constants';
   import { ref, watchEffect, onMounted } from 'vue';
   import router from '../router';
+  import { getThemeSetting, setThemeSetting } from '../database/db';
 
   import bookIcon from '../assets/icons/book.svg?url';
   import homeIcon from '../assets/icons/home.svg?url';
@@ -155,19 +156,17 @@
   });
 
   // Initialize dark mode on mount
-  onMounted(() => {
-    // Check if user has a preference stored
-    const savedMode = localStorage.getItem('themeMode');
-    if (savedMode) {
-      darkMode.value = savedMode === 'dark';
-    }
+  onMounted(async () => {
+    // Check if user has a preference stored in DB
+    const savedMode = await getThemeSetting();
+    darkMode.value = savedMode;
 
     toggleDarkMode();
   });
 
   // Save preference when changed
   watchEffect(() => {
-    localStorage.setItem('themeMode', darkMode.value ? 'dark' : 'light');
+    setThemeSetting(darkMode.value);
   });
 </script>
 
