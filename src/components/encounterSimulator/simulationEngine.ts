@@ -514,9 +514,11 @@ export class SimulationEngine {
     let damage = 0;
     let spellBreakdown: DamageRoll | undefined;
     if (action.damageExpression) {
+      // Roll with crit support for spell damage
+      const shouldCrit = Math.random() < 0.05; // 5% crit chance
       const rollResult = this.diceRoller.parseDamageExpressionDetailed(
         action.damageExpression,
-        false
+        shouldCrit
       );
       damage = rollResult.total;
       spellBreakdown = {
@@ -526,7 +528,7 @@ export class SimulationEngine {
         rawTotal: damage,
         total: damage,
         damageType: dmgType,
-        isCrit: false,
+        isCrit: shouldCrit,
       };
     }
     const targetHpBefore = target.currentHp;

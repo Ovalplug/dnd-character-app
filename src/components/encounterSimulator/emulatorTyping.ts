@@ -12,7 +12,7 @@ import type { Monster } from '../../types';
 export type CombatantRoleType =
   | 'Tank'
   | 'Healer'
-  | 'DamagDealer'
+  | 'DamageDealer'
   | 'Controller'
   | 'Boss'
   | 'Coward'
@@ -767,8 +767,8 @@ export const ROLE_DEFINITIONS: Record<CombatantRoleType, RoleDefinition> = {
     targetPriorities: { ally_low_hp: 25, ally_in_danger: 15 },
     resourcePreference: 'balanced',
   },
-  DamagDealer: {
-    type: 'DamagDealer',
+  DamageDealer: {
+    type: 'DamageDealer',
     actionWeights: { attack: 20, move: 5, defend: 2 },
     targetPriorities: { boss: 15, highest_damage: 12, weak: 5 },
     resourcePreference: 'spend',

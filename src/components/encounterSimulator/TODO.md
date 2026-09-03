@@ -1,10 +1,10 @@
 # Encounter Simulator TODO List
 
 ## Phase 1: Critical Bug Fixes
-- [ ] Fix typo in emulatorTyping.ts:279 - Change 'DamagDealer' to 'DamageDealer' in ROLE_DEFINITIONS
-- [ ] Remove type assertion in simulationEngine.ts:52 - Properly type config.combatants
-- [ ] Fix damage roll handling in simulationEngine.ts:523-531 - Add crit support for spell damage
-- [ ] Implement immunity check in combatRules.ts:107 - Check for immunity before applying damage
+- [x] Fix typo in emulatorTyping.ts:279 - Change 'DamagDealer' to 'DamageDealer' in ROLE_DEFINITIONS
+- [x] Remove type assertion in simulationEngine.ts:52 - Properly type config.combatants
+- [x] Fix damage roll handling in simulationEngine.ts:523-531 - Add crit support for spell damage
+- [x] Implement immunity check in combatRules.ts:107 - Check for immunity before applying damage
 - [ ] Fix role weights property access in aiDecisions.ts:80 - Use correct property path
 - [ ] Update role type comparison in aiDecisions.ts:123 - Be consistent with Healer vs type === 'Healer'
 - [ ] Add better fallback for multiattack parsing in aiDecisions.ts:419

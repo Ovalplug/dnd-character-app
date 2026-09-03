@@ -95,11 +95,19 @@ export class CombatResolver {
     }
 
     // Apply resistance / immunity / vulnerability
-    const resistance = isHit ? this.checkResistance(target.monster, damageType) : 'normal';
     let finalDamage = rawDamage;
-    if (resistance === 'immune') finalDamage = 0;
-    else if (resistance === 'resist') finalDamage = Math.floor(rawDamage / 2);
-    else if (resistance === 'vulnerable') finalDamage = rawDamage * 2;
+    let resistance: 'immune' | 'resist' | 'vulnerable' | 'normal' = 'normal';
+    
+    if (isHit) {
+      resistance = this.checkResistance(target.monster, damageType);
+      if (resistance === 'immune') {
+        finalDamage = 0;
+      } else if (resistance === 'resist') {
+        finalDamage = Math.floor(rawDamage / 2);
+      } else if (resistance === 'vulnerable') {
+        finalDamage = rawDamage * 2;
+      }
+    }
 
     if (damageBreakdown) damageBreakdown.total = finalDamage;
 
