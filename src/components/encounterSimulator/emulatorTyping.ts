@@ -149,6 +149,9 @@ export interface ActionCandidate {
   damageType?: string;
   attackBonus?: number;
   score: number;
+  hasSave?: boolean;
+  saveDC?: number;
+  saveAbility?: 'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha';
 }
 
 export interface TurnResult {
@@ -161,6 +164,7 @@ export interface TurnResult {
   targetHpAfter?: number;
   isCrit?: boolean;
   damageBreakdown?: DamageRoll;
+  saveResult?: SpellSaveResult;
 }
 
 export interface TurnEvent {
@@ -184,6 +188,7 @@ export interface TurnEvent {
     hpAfter: number;
     events: string[];
     damageBreakdown?: DamageRoll;
+    saveResult?: SpellSaveResult;
   };
 }
 
@@ -196,6 +201,10 @@ export interface SimSpell {
   level: number;
   damageInflict?: string[];
   entries: (string | object)[];
+  /** Save DC extracted from entries (e.g., "DC 15"). Null if spell deals direct damage. */
+  saveDC?: number;
+  /** Primary save ability extracted from entries (e.g., "dex"). Null if no save. */
+  saveAbility?: 'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha';
 }
 
 export interface SimulationConfig {
@@ -275,6 +284,18 @@ export interface SimulationBatch {
   created: number;
   runs: SimulationRun[];
   aggregatedStats: BatchStatistics;
+}
+
+export interface SpellSaveResult {
+  targetName: string;
+  dc: number;
+  rolled: number;
+  ability: string;
+  succeeded: boolean;
+  halfDamageOnSuccess: boolean;
+  baseDamage: number;
+  finalDamage: number;
+  conditionApplied?: string;
 }
 
 // ============================================================================
@@ -420,6 +441,22 @@ export class Condition {
   clone(): Condition {
     return new Condition(this.type, this.duration, this.source);
   }
+}
+
+/**
+ * Describes the mechanical effect a condition has on a combatant.
+ */
+export interface ConditionEffect {
+  /** Penalty to attack rolls (-2 for poisoned, etc.) */
+  attackRollPenalty?: number;
+  /** Penalty to AC (applied on top of cover). */
+  acPenalty?: number;
+  /** Whether the combatant is incapacitated (can't take actions). */
+  incapacitated?: boolean;
+  /** Whether the combatant is stunned (can't act, auto-fails str/dex saves). */
+  stunned?: boolean;
+  /** Whether the combatant is frightened (must move away if possible). */
+  frightened?: boolean;
 }
 
 /**
@@ -657,6 +694,112 @@ export class SimulatorCombatant {
     clone.profile = this.profile;
     clone.actionLog = JSON.parse(JSON.stringify(this.actionLog));
     return clone;
+  }
+
+  /**
+   * Check if this combatant is adjacent to the given target in a flanking position
+   * relative to the attacker. A flanking position is a side-opposite position
+   * (both x and y differ from the target).
+   */
+  isAdjacentToFlanking(target: SimulatorCombatant, attacker: SimulatorCombatant): boolean {
+    const dx = target.position.x - this.position.x;
+    const dy = target.position.y - this.position.y;
+    // Flanking: on a diagonal corner relative to the target (both axes differ)
+    if (Math.abs(dx) <= 1 && Math.abs(dy) <= 1 && dx !== 0 && dy !== 0) {
+      // Verify attacker is roughly on the opposite side
+      const attackerDx = attacker.position.x - this.position.x;
+      const attackerDy = attacker.position.y - this.position.y;
+      // Flanking is confirmed when attacker and this ally are on opposite sides
+      // of the target (dot product of position vectors is negative)
+      if (attackerDx * dx < 0 || attackerDy * dy < 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Check if the target is flanked by any of this combatant's allies.
+   * Flanking grants advantage on melee attacks.
+   */
+  checkFlanking(target: SimulatorCombatant): boolean {
+    return target.conditions.some(c => c.type === 'flanked' && c.duration > 0);
+  }
+
+  /**
+   * Perform a concentration check when taking damage.
+   * DC = max(10, Math.floor(damageTaken / 2)).
+   * Returns true if concentration is maintained, false if broken.
+   */
+  checkConcentration(damageTaken: number, prng: () => number): boolean {
+    if (!this.concentratingOn) return true;
+
+    const dc = Math.max(10, Math.floor(damageTaken / 2));
+    const saveRoll = Math.floor(prng() * 20) + 1;
+    const conMod = Math.floor(((this.monster.con ?? 10) - 10) / 2);
+
+    if (saveRoll === 1) {
+      // Auto-fail
+      this.concentratingOn = null;
+      return false;
+    }
+
+    if (saveRoll + conMod >= dc) {
+      // Success - maintain concentration
+      return true;
+    }
+
+    // Failure - concentration broken
+    this.concentratingOn = null;
+    return false;
+  }
+
+  /**
+   * Get all active condition effects affecting this combatant.
+   * Returns combined modifiers from all active conditions.
+   */
+  getActiveConditionEffects(): ConditionEffect {
+    let effect: ConditionEffect = {};
+
+    for (const condition of this.conditions) {
+      if (condition.duration <= 0) continue;
+
+      switch (condition.type) {
+        case 'poisoned':
+          effect.attackRollPenalty = (effect.attackRollPenalty ?? 0) - 2;
+          break;
+        case 'frightened':
+          effect.frightened = true;
+          break;
+        case 'stunned':
+          effect.stunned = true;
+          break;
+        case 'incapacitated':
+          effect.incapacitated = true;
+          break;
+        case 'paralyzed':
+          effect.stunned = true;
+          effect.incapacitated = true;
+          break;
+        case 'blinded':
+          effect.attackRollPenalty = (effect.attackRollPenalty ?? 0) - 2;
+          break;
+        case 'deafened':
+          // No mechanical penalty in 5e for deafened
+          break;
+        case 'grappled':
+          // Movement speed reduced to 0, not attack penalty
+          break;
+        case 'restrained':
+          effect.attackRollPenalty = (effect.attackRollPenalty ?? 0) - 2;
+          break;
+        case 'invisible':
+          // Grants advantage on attacks, disadvantage on being targeted
+          break;
+      }
+    }
+
+    return effect;
   }
 }
 

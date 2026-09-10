@@ -15,7 +15,7 @@ export type PRNG = () => number;
  * Main dice rolling class with seeded RNG.
  */
 export class DiceRoller {
-  private rng: PRNG;
+  public rng: PRNG;
 
   constructor(rng: PRNG) {
     this.rng = rng;

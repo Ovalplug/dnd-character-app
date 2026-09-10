@@ -1,12 +1,15 @@
 /**
  * Combat Resolution Rules Engine (OOP)
- * Handles attack rolls, spell saves, damage resolution, death saves, and condition application.
+ * Handles attack rolls, spell saves, damage resolution, death saves,
+ * condition application, concentration conflict resolution, and cover.
  */
 
 import type { PRNG } from './diceRollFunctions';
 import { DiceRoller } from './diceRollFunctions';
-import type { SimulatorCombatant, DamageRoll } from './emulatorTyping';
+import type { SimulatorCombatant, DamageRoll, SpellSaveResult } from './emulatorTyping';
+import { Condition } from './emulatorTyping';
 import type { Monster } from '../../types';
+import { MovementResolver } from './movement';
 
 /**
  * Result of an attack roll.
@@ -21,6 +24,10 @@ export interface AttackResult {
   totalDamageDealt: number;
   resistanceApplied?: 'immune' | 'resist' | 'vulnerable' | 'normal';
   damageBreakdown?: DamageRoll;
+  /** Bonus to hit from flanking (advantage), cover, or condition penalties. */
+  hitPenalty?: number;
+  /** Bonus to hit from flanking (advantage). */
+  hitAdvantage?: boolean;
 }
 
 /**
@@ -53,9 +60,11 @@ export interface DeathSaveResult {
  */
 export class CombatResolver {
   private roller: DiceRoller;
+  private movementResolver: MovementResolver;
 
   constructor(rng: PRNG) {
     this.roller = new DiceRoller(rng);
+    this.movementResolver = new MovementResolver(rng);
   }
 
   /**
@@ -69,13 +78,39 @@ export class CombatResolver {
     damageExpression: string = '1d4',
     advantage: boolean = false,
     disadvantage: boolean = false,
-    damageType: string = 'bludgeoning'
+    damageType: string = 'bludgeoning',
+    isRanged: boolean = false,
+    map?: any
   ): AttackResult {
+    // Check for flanking advantage
+    const flankingAdvantage = attacker.checkFlanking(target);
+    const finalAdvantage = advantage || flankingAdvantage;
+
+    // Check for cover against this attacker
+    let coverAmount = 0;
+
+    if (map && isRanged) {
+      const cover = this.movementResolver.getCover(attacker.position, target.position, map);
+      if (cover !== 0) {
+        if (cover === 2) coverAmount = 2; // Half cover
+        else if (cover === 5) coverAmount = 5; // Three-quarter cover
+        else coverAmount = 0; // Total cover handled separately
+      }
+    }
+
+    // Get condition effects on attacker
+    const attackerEffects = attacker.getActiveConditionEffects();
+    const attackRollPenalty = attackerEffects.attackRollPenalty ?? 0;
+
     // Attack roll
-    const attackRoll = this.roller.rollD20(weaponModifier, advantage, disadvantage);
-    const targetAC = target.getAc();
+    const attackRoll = this.roller.rollD20(
+      weaponModifier + attackRollPenalty,
+      finalAdvantage,
+      disadvantage
+    );
+    const targetAC = this.getEffectiveAC(target, { isRanged, coverAmount });
     const isHit = attackRoll >= targetAC;
-    const isCrit = attackRoll === 20 + weaponModifier;
+    const isCrit = attackRoll === 20 + weaponModifier + attackRollPenalty;
 
     // Damage calculation — use detailed roll to capture individual die results
     let rawDamage = 0;
@@ -97,7 +132,7 @@ export class CombatResolver {
     // Apply resistance / immunity / vulnerability
     let finalDamage = rawDamage;
     let resistance: 'immune' | 'resist' | 'vulnerable' | 'normal' = 'normal';
-    
+
     if (isHit) {
       resistance = this.checkResistance(target.monster, damageType);
       if (resistance === 'immune') {
@@ -113,8 +148,15 @@ export class CombatResolver {
 
     // Apply damage
     if (isHit && finalDamage > 0) {
+      const hpBefore = target.currentHp;
       target.takeDamage(finalDamage);
       attacker.totalDamageDealt += finalDamage;
+
+      // Check concentration break if target was concentrating
+      const damageTaken = hpBefore > 0 ? hpBefore - target.currentHp : finalDamage;
+      if (damageTaken > 0 && target.concentratingOn) {
+        target.checkConcentration(damageTaken, () => this.roller.rng());
+      }
     }
 
     // Track hit / miss / crit on attacker
@@ -134,48 +176,14 @@ export class CombatResolver {
       totalDamageDealt: attacker.totalDamageDealt,
       resistanceApplied: resistance,
       damageBreakdown,
+      hitPenalty: attackRollPenalty,
+      hitAdvantage: flankingAdvantage,
     };
-  }
-
-  private checkResistance(
-    monster: Monster,
-    damageType: string
-  ): 'immune' | 'resist' | 'vulnerable' | 'normal' {
-    const dt = damageType.toLowerCase();
-
-    if (monster.immune) {
-      for (const entry of monster.immune) {
-        if (typeof entry === 'string' && entry.toLowerCase() === dt) return 'immune';
-        if (typeof entry === 'object' && entry !== null && 'immune' in entry) {
-          const list = (entry as any).immune;
-          if (Array.isArray(list) && list.some((i: string) => i.toLowerCase() === dt))
-            return 'immune';
-        }
-      }
-    }
-
-    if (monster.resist) {
-      for (const entry of monster.resist) {
-        if (typeof entry === 'string' && entry.toLowerCase() === dt) return 'resist';
-        if (typeof entry === 'object' && entry !== null && 'resist' in entry) {
-          const list = (entry as any).resist;
-          if (Array.isArray(list) && list.some((r: string) => r.toLowerCase() === dt))
-            return 'resist';
-        }
-      }
-    }
-
-    if (monster.vulnerable) {
-      for (const entry of monster.vulnerable) {
-        if (typeof entry === 'string' && entry.toLowerCase() === dt) return 'vulnerable';
-      }
-    }
-
-    return 'normal';
   }
 
   /**
    * Resolve a spell save (e.g., Fireball, Cone of Cold).
+   * Handles damage, resistance, and condition application.
    */
   resolveSave(
     caster: SimulatorCombatant,
@@ -183,30 +191,78 @@ export class CombatResolver {
     dc: number,
     damageExpression: string = '8d6',
     savingThrowAbility: 'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha' = 'dex',
-    halfDamageOnSuccess: boolean = true
-  ): SaveResult[] {
-    const results: SaveResult[] = [];
+    halfDamageOnSuccess: boolean = true,
+    conditionOnFail?: string,
+    conditionDuration?: number
+  ): SpellSaveResult[] {
+    const results: SpellSaveResult[] = [];
 
     for (const target of targets) {
       const abilityModifier = this.getAbilityModifier(target.monster, savingThrowAbility);
       const saveRoll = this.roller.rollD20(abilityModifier);
       const succeeded = saveRoll >= dc;
 
+      // Auto-fail on 1, auto-success on 20
+
+      const isAutoSuccess = saveRoll === 20;
+
       let baseDamage = this.roller.parseDamageExpression(damageExpression);
-      let finalDamage = succeeded && halfDamageOnSuccess ? Math.ceil(baseDamage / 2) : baseDamage;
+      let finalDamage = baseDamage;
+      let conditionApplied: string | undefined;
+
+      if (isAutoSuccess || (succeeded && halfDamageOnSuccess)) {
+        // Success: take half damage (or full if halfDamageOnSuccess is false)
+        if (halfDamageOnSuccess) {
+          const resistance = this.checkResistance(target.monster, 'untyped');
+          if (resistance === 'immune') {
+            finalDamage = 0;
+          } else if (resistance === 'resist') {
+            finalDamage = Math.ceil(baseDamage / 4); // half of half
+          } else {
+            finalDamage = Math.ceil(baseDamage / 2);
+          }
+        }
+      } else {
+        // Failed save: take full damage
+        const resistance = this.checkResistance(target.monster, 'untyped');
+        if (resistance === 'immune') {
+          finalDamage = 0;
+        } else if (resistance === 'resist') {
+          finalDamage = Math.floor(baseDamage / 2);
+        }
+        // Apply condition on failed save
+        if (conditionOnFail) {
+          // Remove flanking condition if target was flanked
+          const idx = target.conditions.findIndex(c => c.type === 'flanked' && c.duration > 0);
+          if (idx !== -1) {
+            target.removeCondition(idx);
+          }
+          target.addCondition(
+            new Condition(conditionOnFail, conditionDuration ?? 1, caster.getName())
+          );
+          conditionApplied = conditionOnFail;
+        }
+      }
 
       // Apply damage
       target.takeDamage(finalDamage);
       caster.totalDamageDealt += finalDamage;
 
+      // Check concentration break if target was concentrating
+      if (finalDamage > 0 && target.concentratingOn) {
+        target.checkConcentration(finalDamage, () => this.roller.rng());
+      }
+
       results.push({
         targetName: target.getName(),
         dc,
         rolled: saveRoll,
-        succeeded,
-        damageHalfOnSuccess: halfDamageOnSuccess,
+        ability: savingThrowAbility,
+        succeeded: isAutoSuccess || succeeded,
+        halfDamageOnSuccess,
         baseDamage,
         finalDamage,
+        conditionApplied,
       });
     }
 
@@ -265,7 +321,7 @@ export class CombatResolver {
     duration: number,
     sourceName?: string
   ): void {
-    // Remove conflicting conditions
+    // Remove conflicting conditions (prone/grappled/restrained don't stack)
     if (type === 'prone' || type === 'grappled' || type === 'restrained') {
       target.conditions = target.conditions.filter(
         c => !['prone', 'grappled', 'restrained'].includes(c.type)
@@ -273,12 +329,18 @@ export class CombatResolver {
     }
 
     // Create and add condition
-    const condition = {
-      type,
-      duration,
-      source: sourceName,
-    };
-    target.addCondition(condition as any);
+    const condition = new Condition(type, duration, sourceName);
+    target.addCondition(condition);
+  }
+
+  /**
+   * Remove a condition from a combatant.
+   */
+  removeCondition(target: SimulatorCombatant, type: string): void {
+    const idx = target.conditions.findIndex(c => c.type === type && c.duration > 0);
+    if (idx !== -1) {
+      target.removeCondition(idx);
+    }
   }
 
   /**
@@ -301,7 +363,7 @@ export class CombatResolver {
   }
 
   /**
-   * Get AC against a specific attack type.
+   * Get AC against a specific attack type, accounting for cover.
    */
   getEffectiveAC(
     target: SimulatorCombatant,
@@ -320,6 +382,56 @@ export class CombatResolver {
     }
 
     return ac;
+  }
+
+  /**
+   * Check resistance / immunity / vulnerability to a damage type.
+   */
+  private checkResistance(
+    monster: Monster,
+    damageType: string
+  ): 'immune' | 'resist' | 'vulnerable' | 'normal' {
+    const dt = damageType.toLowerCase();
+
+    // Handle "damage" suffix variations (e.g. "fire damage" -> "fire")
+    const cleanType = dt.replace(/\s+damage$/i, '');
+
+    if (monster.immune) {
+      for (const entry of monster.immune) {
+        if (typeof entry === 'string' && entry.toLowerCase() === dt) return 'immune';
+        if (typeof entry === 'string' && entry.toLowerCase() === cleanType) return 'immune';
+        if (typeof entry === 'object' && entry !== null && 'immune' in entry) {
+          const list = (entry as any).immune;
+          if (Array.isArray(list) && list.some((i: string) => i.toLowerCase() === dt))
+            return 'immune';
+          if (Array.isArray(list) && list.some((i: string) => i.toLowerCase() === cleanType))
+            return 'immune';
+        }
+      }
+    }
+
+    if (monster.resist) {
+      for (const entry of monster.resist) {
+        if (typeof entry === 'string' && entry.toLowerCase() === dt) return 'resist';
+        if (typeof entry === 'string' && entry.toLowerCase() === cleanType) return 'resist';
+        if (typeof entry === 'object' && entry !== null && 'resist' in entry) {
+          const list = (entry as any).resist;
+          if (Array.isArray(list) && list.some((r: string) => r.toLowerCase() === dt))
+            return 'resist';
+          if (Array.isArray(list) && list.some((r: string) => r.toLowerCase() === cleanType))
+            return 'resist';
+        }
+      }
+    }
+
+    if (monster.vulnerable) {
+      for (const entry of monster.vulnerable) {
+        if (typeof entry === 'string' && entry.toLowerCase() === dt) return 'vulnerable';
+        if (typeof entry === 'string' && entry.toLowerCase() === cleanType) return 'vulnerable';
+      }
+    }
+
+    return 'normal';
   }
 
   /**

@@ -1,16 +1,24 @@
+/**
+ * Encounter Simulator Engine
+ * Core simulation loop with support for spell saves, flanking, cover,
+ * status effects, concentration, and LOS.
+ */
+
 import type {
   SimulationConfig,
   SimulationResult,
   ActionCandidate,
   TurnResult,
-  TurnEvent,
   SimSpell,
   DamageRoll,
 } from './emulatorTyping';
-import { SimulatorCombatant, SimulationState } from './emulatorTyping';
+import type { SimulatorCombatant, TurnEvent } from './emulatorTyping';
+import { SimulationState, Condition, Position } from './emulatorTyping';
+import { CoverType } from './movement';
 import { CombatResolver } from './combatRules';
 import { DiceRoller } from './diceRollFunctions';
 import { MonsterParser } from './monsterParser';
+import { MovementResolver } from './movement';
 
 export interface RoundLog {
   round: number;
@@ -33,22 +41,23 @@ export class SimulationEngine {
   private combatResolver: CombatResolver;
   private diceRoller: DiceRoller;
   private parser: MonsterParser;
+  private movementResolver: MovementResolver;
   private spellMap: Record<string, SimSpell>;
   private roundLog: RoundLog[];
   private turnEvents: TurnEvent[];
   private currentRound: number;
-
   constructor(config: SimulationConfig, prng: () => number) {
     this.config = config;
     this.diceRoller = new DiceRoller(prng);
     this.combatResolver = new CombatResolver(prng);
     this.parser = new MonsterParser();
+    this.movementResolver = new MovementResolver(prng);
     this.spellMap = config.spellMap ?? {};
     this.roundLog = [];
     this.turnEvents = [];
     this.currentRound = 0;
 
-    // Create simulation state - type assert combatants
+    // Create simulation state
     this.state = new SimulationState(config.map, config.combatants as any);
 
     // Apply resource scaling and parse stat block profiles
@@ -154,8 +163,11 @@ export class SimulationEngine {
     } else {
       const profile = combatant.profile;
 
+      // Check for flanking: apply flanking conditions to enemies adjacent to allies
+      this.applyFlanking(combatant);
+
       if (profile?.hasMultiattack && profile.multiattackSequence?.length) {
-        // Sequence-based multiattack: execute each named attack the right number of times
+        // Sequence-based multiattack
         for (const seqItem of profile.multiattackSequence) {
           const seqAttack = profile.attacks.find(
             a => a.name.toLowerCase() === seqItem.attackName.toLowerCase()
@@ -203,7 +215,6 @@ export class SimulationEngine {
           );
           if (liveEnemies.length === 0) break;
 
-          // Re-target if original target died
           let attackAction = selectedCandidate;
           const origTarget =
             selectedCandidate.targetIndex !== undefined
@@ -227,13 +238,49 @@ export class SimulationEngine {
     }
   }
 
+  /**
+   * Apply flanking: check all enemies adjacent to this combatant's allies.
+   * If a target is on opposite sides of two friendly combatants, mark flanked.
+   */
+  private applyFlanking(friendlyCombatant: SimulatorCombatant): void {
+    const allies = this.state.combatants.filter(
+      c =>
+        c.team === friendlyCombatant.team &&
+        this.combatResolver.isAlive(c) &&
+        c !== friendlyCombatant
+    );
+
+    const enemies = this.state.combatants.filter(
+      c => c.team !== friendlyCombatant.team && this.combatResolver.isAlive(c)
+    );
+
+    for (const enemy of enemies) {
+      const adjacentAllies = allies.filter(ally =>
+        ally.isAdjacentToFlanking(enemy, friendlyCombatant)
+      );
+
+      if (adjacentAllies.length > 0) {
+        // Add flanking condition if not already present
+        if (!enemy.hasCondition('flanked')) {
+          enemy.addCondition(new Condition('flanked', 1, 'Flanking'));
+        }
+      } else {
+        // Remove flanking condition if no adjacent allies
+        const flankedIdx = enemy.conditions.findIndex(c => c.type === 'flanked' && c.duration > 0);
+        if (flankedIdx !== -1) {
+          enemy.removeCondition(flankedIdx);
+        }
+      }
+    }
+  }
+
   private buildActionCandidates(
     combatant: SimulatorCombatant,
     enemies: SimulatorCombatant[]
   ): ActionCandidate[] {
     const candidates: ActionCandidate[] = [];
 
-    // Add attack candidates — score by expected damage, do NOT roll (avoids double-apply)
+    // Add attack candidates — score by expected damage, do NOT roll
     if (combatant.profile && combatant.profile.attacks.length > 0) {
       for (const attack of combatant.profile.attacks) {
         for (const enemy of enemies) {
@@ -257,7 +304,7 @@ export class SimulationEngine {
         }
       }
     } else {
-      // Fallback: stat-based estimate when no profile attacks parsed
+      // Fallback: stat-based estimate
       for (const enemy of enemies) {
         const strMod = Math.floor(((combatant.monster.str || 10) - 10) / 2);
         const dexMod = Math.floor(((combatant.monster.dex || 10) - 10) / 2);
@@ -303,17 +350,31 @@ export class SimulationEngine {
               if (availableSlots > 0) {
                 for (const spell of spellsAtLevel) {
                   const dmg = this.spellDamageCandidate(spell);
-                  if (!dmg) continue; // skip non-damage spells
+                  if (!dmg) continue;
                   const avgDmg = this.diceRoller.averageDamage(dmg.expression);
+                  const spellData = this.lookupSpellData(spell);
+
+                  // If spell has a save DC, score higher (more reliable damage)
+                  let score = avgDmg + level;
+                  if (spellData?.saveDC) {
+                    // Estimate save success rate (rough average ~50%)
+                    const saveChance = 0.5;
+                    const halfDmgAvg = avgDmg * saveChance + avgDmg * 0.5 * (1 - saveChance);
+                    score = halfDmgAvg + level + 1;
+                  }
+
                   candidates.push({
                     type: 'cast_spell',
                     name: `Cast ${spell}`,
                     targetIndex: 0,
-                    expectedDamage: avgDmg,
+                    expectedDamage: spellData?.saveDC ? avgDmg * 0.75 : avgDmg,
                     damageExpression: dmg.expression,
                     damageType: dmg.type,
                     resourceCost: { spellSlot: level },
-                    score: avgDmg + level,
+                    score,
+                    hasSave: !!spellData?.saveDC,
+                    saveDC: spellData?.saveDC,
+                    saveAbility: spellData?.saveAbility,
                   });
                 }
               }
@@ -321,26 +382,38 @@ export class SimulationEngine {
           }
         }
 
-        // Format 2: At-will innate spells (unlimited, no resource cost)
+        // Format 2: At-will innate spells
         if (spellcasting?.will && Array.isArray(spellcasting.will)) {
           for (const spell of spellcasting.will) {
             const dmg = this.spellDamageCandidate(spell);
             if (!dmg) continue;
             const avgDmg = this.diceRoller.averageDamage(dmg.expression);
+            const spellData = this.lookupSpellData(spell);
+
+            let score = avgDmg;
+            if (spellData?.saveDC) {
+              const saveChance = 0.5;
+              const halfDmgAvg = avgDmg * saveChance + avgDmg * 0.5 * (1 - saveChance);
+              score = halfDmgAvg + 1;
+            }
+
             candidates.push({
               type: 'cast_spell',
               name: `Cast ${spell}`,
               targetIndex: 0,
-              expectedDamage: avgDmg,
+              expectedDamage: spellData?.saveDC ? avgDmg * 0.75 : avgDmg,
               damageExpression: dmg.expression,
               damageType: dmg.type,
               resourceCost: { isAtWill: true },
-              score: avgDmg,
+              score,
+              hasSave: !!spellData?.saveDC,
+              saveDC: spellData?.saveDC,
+              saveAbility: spellData?.saveAbility,
             });
           }
         }
 
-        // Format 3: Daily innate spells — check use tracker set up by initializeResources
+        // Format 3: Daily innate spells
         if (spellcasting?.daily && typeof spellcasting.daily === 'object') {
           for (const dailyKey in spellcasting.daily) {
             const dailySpells = (spellcasting.daily as any)[dailyKey];
@@ -350,15 +423,27 @@ export class SimulationEngine {
               const dmg = this.spellDamageCandidate(spell);
               if (!dmg) continue;
               const avgDmg = this.diceRoller.averageDamage(dmg.expression);
+              const spellData = this.lookupSpellData(spell);
+
+              let score = avgDmg;
+              if (spellData?.saveDC) {
+                const saveChance = 0.5;
+                const halfDmgAvg = avgDmg * saveChance + avgDmg * 0.5 * (1 - saveChance);
+                score = halfDmgAvg + 1;
+              }
+
               candidates.push({
                 type: 'cast_spell',
                 name: `Cast ${spell}`,
                 targetIndex: 0,
-                expectedDamage: avgDmg,
+                expectedDamage: spellData?.saveDC ? avgDmg * 0.75 : avgDmg,
                 damageExpression: dmg.expression,
                 damageType: dmg.type,
                 resourceCost: { dailySpellKey: spell },
-                score: avgDmg,
+                score,
+                hasSave: !!spellData?.saveDC,
+                saveDC: spellData?.saveDC,
+                saveAbility: spellData?.saveAbility,
               });
             }
           }
@@ -378,6 +463,42 @@ export class SimulationEngine {
   }
 
   /**
+   * Look up spell data including save DC and save ability.
+   */
+  private lookupSpellData(name: string): {
+    saveDC?: number;
+    saveAbility?: 'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha';
+  } | null {
+    const spell = this.lookupSpell(name);
+    if (!spell) return null;
+
+    if (spell.saveDC && spell.saveAbility) {
+      return { saveDC: spell.saveDC, saveAbility: spell.saveAbility };
+    }
+
+    const text = spell.entries.map(e => (typeof e === 'string' ? e : JSON.stringify(e))).join(' ');
+    const dcMatch = text.match(/DC (\d+)/i);
+    if (dcMatch) {
+      return { saveDC: parseInt(dcMatch[1] ?? '0', 10) };
+    }
+    const saveAbilityMatch = text.match(/(Str|Dex|Con|Int|Wis|Cha) Save/i);
+    if (saveAbilityMatch) {
+      const abilityMap: Record<string, 'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha'> = {
+        Str: 'str',
+        Dex: 'dex',
+        Con: 'con',
+        Int: 'int',
+        Wis: 'wis',
+        Cha: 'cha',
+      };
+      const ability = saveAbilityMatch[1] ? saveAbilityMatch[1].toLowerCase() : 'dex';
+      return { saveAbility: abilityMap[ability] ?? 'dex' };
+    }
+
+    return null;
+  }
+
+  /**
    * Returns the damage expression + type for a spell, or null if the spell
    * deals no damage (control, utility, healing, etc.).
    */
@@ -388,19 +509,16 @@ export class SimulationEngine {
     const damageType = spell.damageInflict[0] ?? 'untyped';
     const text = spell.entries.map(e => (typeof e === 'string' ? e : JSON.stringify(e))).join(' ');
 
-    // 5etools inline tag: {@damage 8d6} or {@dice 1d4+1}
     const tagMatch = text.match(/\{@(?:damage|dice)\s+([^}]+)\}/i);
     if (tagMatch) {
       return { expression: (tagMatch[1] ?? '1d6').replace(/\s+/g, ''), type: damageType };
     }
 
-    // Plain text: "takes 8d6 fire damage" / "deals 1d4 + 1 force damage"
     const plainMatch = text.match(/(\d+d\d+(?:\s*[+-]\s*\d+)?)\s+(?:\w+\s+)?damage/i);
     if (plainMatch) {
       return { expression: (plainMatch[1] ?? '1d6').replace(/\s+/g, ''), type: damageType };
     }
 
-    // Has damageInflict but text unparseable — fall back to level-scaled estimate
     return { expression: `${spell.level}d6`, type: damageType };
   }
 
@@ -428,6 +546,42 @@ export class SimulationEngine {
     const damageExpr = action.damageExpression ?? '1d6';
     const damageType = action.damageType ?? 'bludgeoning';
 
+    // Determine if this is a ranged attack
+    const isRanged =
+      combatant.profile?.attacks.some(
+        a => a.name.toLowerCase() === (action.name ?? '').toLowerCase() && a.isRanged
+      ) ?? false;
+
+    // Line of sight check for ranged attacks
+    if (isRanged && this.state.map) {
+      const hasLos = this.movementResolver.hasLineOfSight(
+        new Position(combatant.position.x, combatant.position.y),
+        new Position(target.position.x, target.position.y),
+        this.state.map
+      );
+      if (!hasLos) {
+        return {
+          events: [
+            `${combatant.getName()} has no line of sight to ${target.getName()} (ranged attack blocked)`,
+          ],
+          combatantUpdates: [],
+          actionExecuted: false,
+        };
+      }
+    }
+
+    // Apply cover to target AC for ranged attacks
+    let coverACBonus = 0;
+    if (isRanged && this.state.map) {
+      const cover = this.movementResolver.getCover(
+        new Position(combatant.position.x, combatant.position.y),
+        new Position(target.position.x, target.position.y),
+        this.state.map
+      );
+      if (cover === CoverType.Half) coverACBonus = 2;
+      else if (cover === CoverType.ThreeQuarters) coverACBonus = 5;
+    }
+
     const targetHpBefore = target.currentHp;
     const result = this.combatResolver.resolveAttack(
       combatant,
@@ -436,13 +590,18 @@ export class SimulationEngine {
       damageExpr,
       false,
       false,
-      damageType
+      damageType,
+      isRanged,
+      this.state.map
     );
     const targetHpAfter = target.currentHp;
 
     let eventMsg: string;
     if (!result.isHit) {
       eventMsg = `${combatant.getName()} misses ${target.getName()}`;
+      if (coverACBonus > 0 && this.state.map) {
+        eventMsg += ' [blocked by cover]';
+      }
     } else {
       const critStr = result.isCrit ? ' (CRIT!)' : '';
       const resistStr =
@@ -453,9 +612,10 @@ export class SimulationEngine {
           : result.resistanceApplied === 'vulnerable'
           ? ' [VULNERABLE]'
           : '';
+      const flankingStr = result.hitAdvantage ? ' [flanking]' : '';
       eventMsg = `${combatant.getName()} hits ${target.getName()} for ${
         result.finalDamage
-      } ${damageType} damage${critStr}${resistStr}`;
+      } ${damageType} damage${critStr}${resistStr}${flankingStr}`;
     }
 
     return {
@@ -480,7 +640,7 @@ export class SimulationEngine {
     const dailySpellKey = action.resourceCost?.dailySpellKey;
     const spellLevel = action.resourceCost?.spellSlot ?? 0;
 
-    // Consume the appropriate resource (or none for at-will)
+    // Consume the appropriate resource
     if (!isAtWill) {
       if (dailySpellKey) {
         if (!combatant.consumeDailyUse(dailySpellKey)) {
@@ -503,26 +663,94 @@ export class SimulationEngine {
       }
     }
 
+    const dmgType = action.damageType ?? 'untyped';
+    const damageExpr = action.damageExpression;
+    const spellName = action.name.replace(/^Cast\s+/i, '');
+
+    // PHASE 2: Spell save mechanics
+    const hasSave = action.hasSave === true;
+
+    if (hasSave && dmgType) {
+      // Spell requires a saving throw — apply to all living enemies
+      const saveDC =
+        action.saveDC ??
+        Math.max(
+          8,
+          spellLevel +
+            Math.floor(combatant.monster.wis || 10) +
+            (combatant.profile?.proficiencyBonus ?? 2)
+        );
+      const saveAbility = action.saveAbility ?? 'dex';
+
+      const validTargets = enemies;
+
+      if (validTargets.length === 0) {
+        return {
+          events: [`No valid target for ${spellName}`],
+          combatantUpdates: [],
+          actionExecuted: false,
+        };
+      }
+
+      const saveResults = this.combatResolver.resolveSave(
+        combatant,
+        validTargets,
+        saveDC,
+        damageExpr || '1d6',
+        saveAbility as 'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha',
+        true,
+        undefined,
+        undefined
+      );
+
+      const totalDamage = saveResults.reduce((sum, r) => sum + r.finalDamage, 0);
+      combatant.totalDamageDealt += totalDamage;
+
+      const events = saveResults.map(
+        r =>
+          `${combatant.getName()} casts ${spellName} on ${r.targetName}` +
+          (r.succeeded ? ` [save succeeded]` : ` [save failed]`) +
+          (r.conditionApplied ? ` [${r.conditionApplied}]` : '') +
+          ` (${r.finalDamage} damage)`
+      );
+
+      // Use the first save result for single-target reporting
+      const firstSaveResult = saveResults[0];
+      return {
+        events,
+        combatantUpdates: [],
+        actionExecuted: true,
+        damageDealt: totalDamage,
+        saveResult: firstSaveResult
+          ? {
+              targetName: firstSaveResult.targetName,
+              dc: firstSaveResult.dc,
+              rolled: firstSaveResult.rolled,
+              ability: firstSaveResult.ability,
+              succeeded: firstSaveResult.succeeded,
+              halfDamageOnSuccess: firstSaveResult.halfDamageOnSuccess,
+              baseDamage: firstSaveResult.baseDamage,
+              finalDamage: firstSaveResult.finalDamage,
+              conditionApplied: firstSaveResult.conditionApplied,
+            }
+          : undefined,
+      };
+    }
+
+    // No save — direct damage to single target
     const target = enemies[0];
     if (!target) {
       return { events: [`No valid target for spell`], combatantUpdates: [], actionExecuted: false };
     }
 
-    const dmgType = action.damageType ?? 'untyped';
-
-    // Single roll — used for both damage application and breakdown display
     let damage = 0;
     let spellBreakdown: DamageRoll | undefined;
-    if (action.damageExpression) {
-      // Roll with crit support for spell damage
-      const shouldCrit = Math.random() < 0.05; // 5% crit chance
-      const rollResult = this.diceRoller.parseDamageExpressionDetailed(
-        action.damageExpression,
-        shouldCrit
-      );
+    if (damageExpr) {
+      const shouldCrit = Math.random() < 0.05;
+      const rollResult = this.diceRoller.parseDamageExpressionDetailed(damageExpr, shouldCrit);
       damage = rollResult.total;
       spellBreakdown = {
-        expression: action.damageExpression,
+        expression: damageExpr,
         groups: rollResult.groups,
         modifier: rollResult.modifier,
         rawTotal: damage,
@@ -536,7 +764,6 @@ export class SimulationEngine {
     combatant.totalDamageDealt += damage;
     const targetHpAfter = target.currentHp;
 
-    const spellName = action.name.replace(/^Cast\s+/i, '');
     const eventMsg =
       damage > 0
         ? `${combatant.getName()} casts ${spellName} on ${target.getName()} for ${damage} ${dmgType} damage`
@@ -589,6 +816,7 @@ export class SimulationEngine {
         hpAfter: actor.currentHp,
         events: result.events,
         damageBreakdown: result.damageBreakdown,
+        saveResult: result.saveResult,
       },
     };
     this.turnEvents.push(turnEvent);

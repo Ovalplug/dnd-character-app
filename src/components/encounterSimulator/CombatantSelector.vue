@@ -109,10 +109,10 @@
   const availableRoles: CompositeRole[] = [
     'Tank' as const,
     'Healer' as const,
-    'DamagDealer' as const,
+    'DamageDealer' as const,
     'Controller' as const,
     'Tank+Healer' as const,
-    'DamagDealer+Tank' as const,
+    'DamageDealer+Tank' as const,
   ];
 
   const filteredMonsters = computed(() => {
