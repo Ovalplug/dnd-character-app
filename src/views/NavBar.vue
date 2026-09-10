@@ -124,6 +124,11 @@
       body.classList.add('light-mode');
       body.classList.remove('dark-mode');
     }
+
+    // Save preference when user toggles
+    setThemeSetting(darkMode.value).catch(err => {
+      console.error('Failed to save theme preference:', err);
+    });
   }
 
   const navOptions = [
@@ -160,14 +165,10 @@
     // Check if user has a preference stored in DB
     const savedMode = await getThemeSetting();
     darkMode.value = savedMode;
-
     toggleDarkMode();
   });
 
-  // Save preference when changed
-  watchEffect(() => {
-    setThemeSetting(darkMode.value);
-  });
+  // Save preference when changed (called from toggleDarkMode)
 </script>
 
 <style scoped>
