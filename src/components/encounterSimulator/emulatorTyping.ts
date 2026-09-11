@@ -124,6 +124,31 @@ export interface ParsedAttack {
   isMelee: boolean;
   reach: number;
   range?: string;
+  /** Structured attack data from bestiary JSON attackDetails field. */
+  attackDetails?: AttackDetails;
+  /** All damage options (e.g. greatsword: longsword & shortsword variants). */
+  damageOptions?: Array<{ expression: string; type: string }>;
+}
+
+/**
+ * Structured attack data from bestiary JSON attackDetails field.
+ * Represents a single attack action with full mechanical detail.
+ */
+export interface AttackDetails {
+  /** Attack type: melee, ranged, spell, or ability. */
+  type: 'melee' | 'ranged' | 'spell' | 'ability';
+  /** Range in feet. 0 = touch/unspecified. */
+  range: number;
+  /** Attack bonus to hit, or null for save-based attacks. */
+  toHit: number | null;
+  /** Number of targets: 1=single, -1=all in area, 'all'=entire enemy team. */
+  targets: number | -1 | 'all';
+  /** Damage expressions with type and when (failure/success). */
+  damage: Array<{ type: string; damage: string; when?: string }>;
+  /** Saving throw for save-based attacks. */
+  save?: { dc: number; ability: string };
+  /** Conditions inflicted on failed save. */
+  inflictsConditions?: Array<{ condition: string; save?: string; escape?: number | null }>;
 }
 
 export interface ParsedMonsterProfile {
@@ -133,6 +158,10 @@ export interface ParsedMonsterProfile {
   multiattackSequence?: Array<{ attackName: string; count: number }>;
   proficiencyBonus: number;
   isLegendary: boolean;
+  /** All attackDetails extracted from monster actions. */
+  attackDetails: AttackDetails[];
+  /** Primary save DC from spellcasting or actions. */
+  primarySaveDC?: number;
 }
 
 export interface RoleDefinition {
@@ -162,6 +191,16 @@ export interface ActionCandidate {
   hasSave?: boolean;
   saveDC?: number;
   saveAbility?: 'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha';
+  /** Attack type from attackDetails. */
+  attackType?: 'melee' | 'ranged' | 'spell' | 'ability';
+  /** Whether this is an area-of-effect attack. */
+  isAreaAttack?: boolean;
+  /** Number of targets for this attack. */
+  targetCount?: number;
+  /** Conditions this attack inflicts on target. */
+  inflictsConditions?: Array<{ condition: string; save?: string; escape?: number | null }>;
+  /** Damage options for attacks with multiple expressions. */
+  damageOptions?: Array<{ expression: string; type: string }>;
 }
 
 export interface TurnResult {

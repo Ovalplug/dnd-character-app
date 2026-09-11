@@ -5,7 +5,12 @@
  */
 
 import type { Monster, Entry, MonsterCR } from '../../types';
-import type { ParsedAbility, ParsedAttack, ParsedMonsterProfile } from './emulatorTyping';
+import type {
+  ParsedAbility,
+  ParsedAttack,
+  ParsedMonsterProfile,
+  AttackDetails,
+} from './emulatorTyping';
 
 /**
  * Parses monster abilities from text entries.
@@ -258,6 +263,7 @@ export class MonsterParser {
     let multiattackCount = 1;
     let hasMultiattack = false;
     let multiattackSequence: Array<{ attackName: string; count: number }> | undefined;
+    const allAttackDetails: AttackDetails[] = [];
 
     const numberWords = new Set([
       'one',
@@ -278,6 +284,12 @@ export class MonsterParser {
         const e = entry as any;
         const name: string = e.name || '';
         const text = this.flattenEntries(e.entries || []).join(' ');
+
+        // Extract structured attackDetails if present
+        const ad = this.parseAttackDetails(e);
+        if (ad) {
+          allAttackDetails.push(ad);
+        }
 
         if (/^multiattack$/i.test(name)) {
           hasMultiattack = true;
@@ -316,8 +328,18 @@ export class MonsterParser {
           continue;
         }
 
-        const attack = this.parseAttackFromText(name, text);
+        const attack = this.parseAttackFromText(name, text, ad);
         if (attack) attacks.push(attack);
+      }
+    }
+
+    // Extract primary save DC from all attackDetails
+    let primarySaveDC: number | undefined;
+    for (const ad of allAttackDetails) {
+      if (ad.save && ad.save.dc > 0) {
+        if (!primarySaveDC || ad.save.dc > primarySaveDC) {
+          primarySaveDC = ad.save.dc;
+        }
       }
     }
 
@@ -328,10 +350,65 @@ export class MonsterParser {
       multiattackSequence,
       proficiencyBonus: MonsterParser.getProficiencyBonus(monster.cr),
       isLegendary: !!(monster.legendary && monster.legendary.length > 0),
+      attackDetails: allAttackDetails,
+      primarySaveDC,
     };
   }
 
-  private parseAttackFromText(name: string, text: string): ParsedAttack | null {
+  /**
+   * Extract structured AttackDetails from a monster action entry.
+   * Returns null if no attackDetails field is present.
+   */
+  private parseAttackDetails(entry: any): AttackDetails | null {
+    if (!entry || !entry.attackDetails) return null;
+    const ad = entry.attackDetails;
+    const abilityRaw = (ad.save?.ability || 'dex').toString().toLowerCase();
+    const abilityMap: Record<string, 'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha'> = {
+      str: 'str',
+      dex: 'dex',
+      con: 'con',
+      int: 'int',
+      wis: 'wis',
+      cha: 'cha',
+      strength: 'str',
+      dexterity: 'dex',
+      constitution: 'con',
+      intelligence: 'int',
+      wisdom: 'wis',
+      charisma: 'cha',
+    };
+    const ability = abilityMap[abilityRaw] || 'dex';
+    return {
+      type: ad.type || 'ability',
+      range: ad.range || 0,
+      toHit: ad.toHit !== undefined ? ad.toHit : null,
+      targets: ad.targets !== undefined ? ad.targets : 1,
+      damage: Array.isArray(ad.damage)
+        ? ad.damage.map(
+            (d: { type?: string; damage?: string; when?: string }): { type: string; damage: string; when?: string } => ({
+              type: d.type || 'untyped',
+              damage: d.damage || '1d6',
+              when: d.when || 'failure',
+            })
+          )
+        : [],
+      save: ad.save ? { dc: ad.save.dc || 0, ability } : undefined,
+      inflictsConditions: ad.inflictsConditions
+        ? ad.inflictsConditions.map(
+            (c: { condition?: string; save?: string; escape?: number | null }): { condition: string; save?: string; escape: number | null } => ({
+              condition: c.condition || '',
+              save: c.save || undefined,
+              escape: c.escape !== undefined ? c.escape : null,
+            })
+          )
+        : undefined,
+    };
+  }
+  private parseAttackFromText(
+    name: string,
+    text: string,
+    attackDetails?: AttackDetails | null
+  ): ParsedAttack | null {
     // Match "Melee Weapon Attack: +11 to hit" / "Ranged Spell Attack: +6 to hit"
     const attackTypeMatch = text.match(
       /(melee\s+or\s+ranged|melee|ranged)\s+(?:weapon|spell)\s+attack:\s*([+-]\d+)\s+to\s+hit/i
@@ -388,7 +465,23 @@ export class MonsterParser {
     const damageExpression = damageGroups.map(g => g.expr).join('+');
     const damageType = damageGroups[0]?.type ?? 'bludgeoning';
 
-    return { name, attackBonus, damageExpression, damageType, isRanged, isMelee, reach, range };
+    const damageOptions: Array<{ expression: string; type: string }> | undefined =
+      damageGroups.length > 1
+        ? damageGroups.map(g => ({ expression: g.expr, type: g.type }))
+        : undefined;
+
+    return {
+      name,
+      attackBonus,
+      damageExpression,
+      damageType,
+      isRanged,
+      isMelee,
+      reach,
+      range,
+      attackDetails: attackDetails || undefined,
+      damageOptions,
+    };
   }
 
   private wordToNumber(word: string): number {

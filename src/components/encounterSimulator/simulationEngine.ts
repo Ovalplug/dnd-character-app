@@ -314,6 +314,7 @@ export class SimulationEngine {
           );
           const avgDmg = this.diceRoller.averageDamage(attack.damageExpression);
           const expectedDmg = hitChance * avgDmg;
+          const ad = attack.attackDetails;
           candidates.push({
             type: 'attack',
             name: attack.name,
@@ -323,6 +324,16 @@ export class SimulationEngine {
             damageType: attack.damageType,
             attackBonus: attack.attackBonus,
             score: expectedDmg,
+            attackType: ad ? ad.type : undefined,
+            isAreaAttack: ad && (ad.targets === -1 || ad.targets === 'all'),
+            targetCount: ad
+              ? ad.targets === -1 || ad.targets === 'all'
+                ? -1
+                : ad.targets
+              : undefined,
+            inflictsConditions: ad?.inflictsConditions,
+            saveDC: ad?.save?.dc,
+            saveAbility: ad?.save?.ability as 'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha' | undefined,
           });
         }
       }
@@ -349,6 +360,8 @@ export class SimulationEngine {
           damageType: 'bludgeoning',
           attackBonus,
           score: expectedDmg,
+          attackType: 'melee',
+          targetCount: 1,
         });
       }
     }
@@ -398,6 +411,9 @@ export class SimulationEngine {
                     hasSave: !!spellData?.saveDC,
                     saveDC: spellData?.saveDC,
                     saveAbility: spellData?.saveAbility,
+                    attackType: 'spell',
+                    isAreaAttack: undefined,
+                    targetCount: undefined,
                   });
                 }
               }
@@ -432,6 +448,9 @@ export class SimulationEngine {
               hasSave: !!spellData?.saveDC,
               saveDC: spellData?.saveDC,
               saveAbility: spellData?.saveAbility,
+              attackType: 'spell',
+              isAreaAttack: undefined,
+              targetCount: undefined,
             });
           }
         }
@@ -467,6 +486,9 @@ export class SimulationEngine {
                 hasSave: !!spellData?.saveDC,
                 saveDC: spellData?.saveDC,
                 saveAbility: spellData?.saveAbility,
+                attackType: 'spell',
+                isAreaAttack: undefined,
+                targetCount: undefined,
               });
             }
           }
@@ -550,6 +572,95 @@ export class SimulationEngine {
     return [...candidates].sort((a, b) => (b.score ?? 0) - (a.score ?? 0))[0] ?? null;
   }
 
+  /**
+   * Execute a save-based attack (e.g., breath weapon, gaze, cone).
+   * Applies to all targets specified in attackDetails.
+   */
+  private executeSaveAttack(
+    combatant: SimulatorCombatant,
+    action: ActionCandidate,
+    enemies: SimulatorCombatant[]
+  ): TurnResult {
+    if (!action.saveDC || !action.saveAbility) {
+      return {
+        events: ['Save attack missing DC or save ability'],
+        combatantUpdates: [],
+        actionExecuted: false,
+      };
+    }
+
+    const saveDC = action.saveDC;
+    const saveAbility = action.saveAbility;
+    const damageExpr = action.damageExpression ?? '1d6';
+    const damageType = action.damageType ?? 'untyped';
+
+    // Determine which targets to apply to
+    let targets: SimulatorCombatant[];
+    if (action.isAreaAttack) {
+      targets = enemies.filter(e => this.combatResolver.isAlive(e));
+    } else if (action.targetIndex !== undefined) {
+      const target = this.state.combatants[action.targetIndex];
+      targets = target && this.combatResolver.isAlive(target) ? [target] : [];
+    } else {
+      targets = enemies.filter(e => this.combatResolver.isAlive(e));
+    }
+
+    if (targets.length === 0) {
+      return {
+        events: ['No valid targets for save attack'],
+        combatantUpdates: [],
+        actionExecuted: false,
+      };
+    }
+
+    // Resolve save for each target
+    const saveResults = this.combatResolver.resolveSave(
+      combatant,
+      targets,
+      saveDC,
+      damageExpr,
+      saveAbility,
+      true,
+      undefined,
+      action.damageType
+    );
+
+    const totalDamage = saveResults.reduce((sum, r) => sum + r.finalDamage, 0);
+    combatant.totalDamageDealt += totalDamage;
+
+    // Build event messages
+    const events = saveResults.map(r => {
+      const status = r.succeeded ? 'save succeeded' : 'save failed';
+      const condStr = r.conditionApplied ? ` [${r.conditionApplied}]` : '';
+      return `${combatant.getName()} hits ${r.targetName} with ${action.name} [${status}] (${
+        r.finalDamage
+      } damage)${condStr}`;
+    });
+
+    // Extract first condition for reporting
+    const firstCondition = saveResults[0]?.conditionApplied;
+
+    return {
+      events,
+      combatantUpdates: [],
+      actionExecuted: true,
+      damageDealt: totalDamage,
+      saveResult: firstCondition
+        ? {
+            targetName: saveResults[0]?.targetName ?? '',
+            dc: saveDC,
+            rolled: saveResults[0]?.rolled ?? 0,
+            ability: saveAbility,
+            succeeded: saveResults[0]?.succeeded ?? false,
+            halfDamageOnSuccess: false,
+            baseDamage: 0,
+            finalDamage: saveResults[0]?.finalDamage ?? 0,
+            conditionApplied: firstCondition,
+          }
+        : undefined,
+    };
+  }
+
   private executeAttack(combatant: SimulatorCombatant, action: ActionCandidate): TurnResult {
     if (action.targetIndex === undefined) {
       return { events: ['No target found'], combatantUpdates: [], actionExecuted: false };
@@ -569,11 +680,13 @@ export class SimulationEngine {
     const damageExpr = action.damageExpression ?? '1d6';
     const damageType = action.damageType ?? 'bludgeoning';
 
-    // Determine if this is a ranged attack
+    // Determine if this is a ranged attack — prefer attackDetails type
     const isRanged =
-      combatant.profile?.attacks.some(
-        a => a.name.toLowerCase() === (action.name ?? '').toLowerCase() && a.isRanged
-      ) ?? false;
+      (action.attackType === 'ranged' ||
+        combatant.profile?.attacks.some(
+          a => a.name.toLowerCase() === (action.name ?? '').toLowerCase() && a.isRanged
+        )) ??
+      false;
 
     // Line of sight check for ranged attacks
     if (isRanged && this.state.map) {
@@ -705,7 +818,12 @@ export class SimulationEngine {
         );
       const saveAbility = action.saveAbility ?? 'dex';
 
-      const validTargets = enemies;
+      // NEW: Prefer attackDetails for target determination
+      const validTargets = action.isAreaAttack
+        ? enemies
+        : action.targetIndex !== undefined
+        ? [this.state.combatants[action.targetIndex]].filter(Boolean)
+        : enemies;
 
       if (validTargets.length === 0) {
         return {
