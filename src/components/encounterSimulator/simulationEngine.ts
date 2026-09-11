@@ -35,6 +35,49 @@ export interface SimulationStatistics {
   combatantsAlive: number;
 }
 
+/**
+ * Lightweight performance profiler for hot code paths.
+ */
+export interface ProfilingData {
+  totalMs: number;
+  initMs: number;
+  roundsMs: number;
+  actionCandidatesMs: number;
+  attackResolveMs: number;
+  spellResolveMs: number;
+  roundCount: number;
+  turnCount: number;
+  hotPaths: { name: string; totalMs: number; callCount: number }[];
+}
+
+interface InternalProfiler {
+  marks: Record<string, number>;
+  phaseStarts: Record<string, number>;
+  phaseEnds: Record<string, number>;
+  callCounts: Record<string, number>;
+  phaseDurations: Record<string, number>;
+}
+
+const createProfiler = (): InternalProfiler => ({
+  marks: {},
+  phaseStarts: {},
+  phaseEnds: {},
+  callCounts: {},
+  phaseDurations: {},
+});
+
+const beginPhase = (p: InternalProfiler, name: string) => {
+  p.phaseStarts[name] = performance.now();
+};
+
+const endPhase = (p: InternalProfiler, name: string): number => {
+  if (p.phaseStarts[name] === undefined) return 0;
+  const dur = performance.now() - p.phaseStarts[name];
+  p.phaseEnds[name] = dur;
+  p.phaseDurations[name] = (p.phaseDurations[name] || 0) + dur;
+  return dur;
+};
+
 export class SimulationEngine {
   private state: SimulationState;
   private config: SimulationConfig;
@@ -43,6 +86,7 @@ export class SimulationEngine {
   private parser: MonsterParser;
   private movementResolver: MovementResolver;
   private spellMap: Record<string, SimSpell>;
+  private profiling: InternalProfiler | null = null;
   private roundLog: RoundLog[];
   private turnEvents: TurnEvent[];
   private currentRound: number;
@@ -68,6 +112,11 @@ export class SimulationEngine {
   }
 
   executeSimulation(): SimulationResult {
+    const startTime = performance.now();
+    if (this.profiling) {
+      this.profiling.marks['sim_start'] = startTime;
+      beginPhase(this.profiling, 'init');
+    }
     try {
       // Roll initiative and sort descending
       for (const combatant of this.state.combatants) {
@@ -77,10 +126,13 @@ export class SimulationEngine {
       this.state.combatants.sort((a, b) => b.initiative - a.initiative);
 
       // Execute rounds
+      if (this.profiling) endPhase(this.profiling, 'init');
+      if (this.profiling) beginPhase(this.profiling, 'rounds');
       while (!this.isSimulationOver()) {
         this.executeRound();
         this.currentRound++;
       }
+      if (this.profiling) endPhase(this.profiling, 'rounds');
 
       // Build finalCombatants from current state
       const finalCombatants = this.state.combatants.map(c => ({
@@ -897,6 +949,62 @@ export class SimulationEngine {
       return true;
     }
 
+    // Early termination: if one team has 0% HP remaining, the battle is decided
+    // Skip further rounds when a team is fully wiped out and can't act
+    const alliesMaxHp = this.state.combatants
+      .filter(c => c.team === 'allies')
+      .reduce((sum, c) => sum + c.getMaxHp(), 0);
+    const enemiesMaxHp = this.state.combatants
+      .filter(c => c.team === 'enemies')
+      .reduce((sum, c) => sum + c.getMaxHp(), 0);
+
+    const alliesCurrentHp = alliesAlive.reduce((sum, c) => sum + c.currentHp, 0);
+    const enemiesCurrentHp = enemiesAlive.reduce((sum, c) => sum + c.currentHp, 0);
+
+    // If allies have 0% HP and enemies still have members alive, allies are dead
+    if (alliesMaxHp > 0 && alliesCurrentHp === 0 && enemiesAlive.length > 0) {
+      return true;
+    }
+    // If enemies have 0% HP and allies still have members alive, enemies are dead
+    if (enemiesMaxHp > 0 && enemiesCurrentHp === 0 && alliesAlive.length > 0) {
+      return true;
+    }
+
+    // Additional early termination: if one team is reduced to a single combatant
+    // with very low HP (< 10% of max) and the opposing team has 2+ combatants
+    // with combined HP > 50% of opposing max, the likely outcome is inevitable loss.
+    // This cuts off "torture rounds" that drain remaining HP one by one.
+    if (this.currentRound >= 2) {
+      // Wait at least 2 rounds to avoid premature exit
+      const allyCombatants = this.state.combatants.filter(
+        c => c.team === 'allies' && this.combatResolver.isAlive(c)
+      );
+      const enemyCombatants = this.state.combatants.filter(
+        c => c.team === 'enemies' && this.combatResolver.isAlive(c)
+      );
+
+      if (allyCombatants.length <= 1 && enemyCombatants.length >= 2) {
+        const allyTotalMax = allyCombatants.reduce((sum, c) => sum + c.getMaxHp(), 0);
+        const allyTotalCurrent = allyCombatants.reduce((sum, c) => sum + c.currentHp, 0);
+        const enemyTotalMax = enemyCombatants.reduce((sum, c) => sum + c.getMaxHp(), 0);
+
+        if (allyTotalMax > 0 && allyTotalCurrent / allyTotalMax < 0.1 && enemyTotalMax > 0) {
+          // Single low-HP ally vs 2+ enemies with HP — likely dead end
+          return true;
+        }
+      }
+
+      if (enemyCombatants.length <= 1 && allyCombatants.length >= 2) {
+        const enemyTotalMax = enemyCombatants.reduce((sum, c) => sum + c.getMaxHp(), 0);
+        const enemyTotalCurrent = enemyCombatants.reduce((sum, c) => sum + c.currentHp, 0);
+        const allyTotalMax = allyCombatants.reduce((sum, c) => sum + c.getMaxHp(), 0);
+
+        if (enemyTotalMax > 0 && enemyTotalCurrent / enemyTotalMax < 0.1 && allyTotalMax > 0) {
+          return true;
+        }
+      }
+    }
+
     return false;
   }
 
@@ -924,6 +1032,42 @@ export class SimulationEngine {
 
   getCurrentRound(): number {
     return this.currentRound;
+  }
+
+  /**
+   * Enable profiling for the next simulation run.
+   * Call this before executeSimulation() to collect timing data.
+   */
+  enableProfiling(): void {
+    this.profiling = createProfiler();
+  }
+
+  /**
+   * Get profiling data after a simulation run.
+   * Returns null if profiling was not enabled.
+   */
+  getProfilingData(): ProfilingData | null {
+    if (!this.profiling) return null;
+    const totalMs = performance.now() - this.profiling.marks['sim_start']!;
+
+    return {
+      totalMs: Math.round(totalMs * 100) / 100,
+      initMs: this.profiling.phaseDurations['init'] || 0,
+      roundsMs: this.profiling.phaseDurations['rounds'] || 0,
+      actionCandidatesMs: this.profiling.phaseDurations['buildActionCandidates'] || 0,
+      attackResolveMs: this.profiling.phaseDurations['resolveAttack'] || 0,
+      spellResolveMs: this.profiling.phaseDurations['executeCastSpell'] || 0,
+      roundCount: this.currentRound,
+      turnCount: this.state.turnCount,
+      hotPaths: Object.entries(this.profiling.phaseDurations)
+        .sort(([, a], [, b]) => b - a)
+        .map(([name, totalMs]) => ({
+          name,
+          totalMs: Math.round(totalMs * 100) / 100,
+          callCount: this.profiling!.callCounts[name] || 0,
+        }))
+        .filter(p => p.totalMs > 0),
+    };
   }
 
   getStatistics(): SimulationStatistics {

@@ -17,6 +17,13 @@ export type PRNG = () => number;
 export class DiceRoller {
   public rng: PRNG;
 
+  /** Damage average cache — key = expression string, value = computed average */
+  private damageAvgCache = new Map<string, number>();
+  /** Max cache size to prevent unbounded growth during long simulations */
+  private static readonly MAX_CACHE_SIZE = 512;
+  /** Cache access order for LRU eviction */
+  private damageAvgCacheOrder: string[] = [];
+
   constructor(rng: PRNG) {
     this.rng = rng;
   }
@@ -233,8 +240,13 @@ export class DiceRoller {
 
   /**
    * Calculate average damage for a string expression like "2d6 + 3" (no RNG).
+   * Results are cached to avoid recomputation across attack scoring.
    */
   averageDamage(expression: string): number {
+    // Check cache first
+    const cached = this.damageAvgCache.get(expression);
+    if (cached !== undefined) return cached;
+
     const re = /(\d+)d(\d+)/gi;
     let total = 0;
     let match: RegExpExecArray | null;
@@ -257,7 +269,18 @@ export class DiceRoller {
       const flat = parseInt(expression.trim(), 10);
       if (!isNaN(flat)) total = flat;
     }
-    return Math.max(0, total);
+    const result = Math.max(0, total);
+
+    // Cache with LRU eviction
+    this.damageAvgCache.set(expression, result);
+    this.damageAvgCacheOrder.push(expression);
+
+    if (this.damageAvgCacheOrder.length > DiceRoller.MAX_CACHE_SIZE) {
+      const oldest = this.damageAvgCacheOrder.shift();
+      if (oldest) this.damageAvgCache.delete(oldest);
+    }
+
+    return result;
   }
 
   /**

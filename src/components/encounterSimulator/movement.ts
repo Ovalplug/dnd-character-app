@@ -23,7 +23,90 @@ interface PathNode {
   position: Position;
   gCost: number; // Cost from start
   hCost: number; // Heuristic cost to goal
+  fCost: number; // gCost + hCost (for priority queue ordering)
   parent: PathNode | null;
+}
+
+/**
+ * Binary min-heap for A* openSet, indexed by fScore for O(log n) extract-min.
+ */
+class MinHeap {
+  private data: PathNode[];
+
+  constructor() {
+    this.data = [];
+  }
+
+  push(node: PathNode): void {
+    this.data.push(node);
+    this.bubbleUp(this.data.length - 1);
+  }
+
+  pop(): PathNode | null {
+    if (this.data.length === 0) return null;
+    const top = this.data[0]!;
+    const last = this.data.pop()!;
+    if (this.data.length > 0) {
+      this.data[0] = last;
+      this.sinkDown(0);
+    }
+    return top;
+  }
+
+  get size(): number {
+    return this.data.length;
+  }
+
+  has(node: PathNode): boolean {
+    return this.data.some(n => n.position.equals(node.position));
+  }
+
+  private bubbleUp(i: number): void {
+    const data = this.data;
+    while (i > 0) {
+      const parent = (i - 1) >>> 1;
+      const parentNode = data[parent]!;
+      const currentNode = data[i]!;
+      if (currentNode.fCost < parentNode.fCost) {
+        const tmp = currentNode;
+        data[i] = parentNode;
+        data[parent] = tmp;
+        i = parent;
+      } else break;
+    }
+  }
+
+  private sinkDown(i: number): void {
+    const data = this.data;
+    const n = data.length;
+    while (true) {
+      let smallest = i;
+      const left = 2 * i + 1;
+      const right = 2 * i + 2;
+      const smallestNode = data[smallest]!;
+      if (left < n && data[left]!.fCost < smallestNode.fCost) smallest = left;
+      if (right < n && data[right]!.fCost < data[smallest]!.fCost) smallest = right;
+      if (smallest !== i) {
+        const tmp = data[smallest]!;
+        data[smallest] = data[i]!;
+        data[i] = tmp;
+        i = smallest;
+      } else break;
+    }
+  }
+
+  /** Remove a node from the heap if present (for re-insertion with better score). O(n). */
+  remove(node: PathNode): boolean {
+    const idx = this.data.findIndex(n => n.position.equals(node.position));
+    if (idx === -1) return false;
+    const last = this.data.pop()!;
+    if (idx < this.data.length) {
+      this.data[idx] = last;
+      this.bubbleUp(idx);
+      this.sinkDown(idx);
+    }
+    return true;
+  }
 }
 
 /**
@@ -131,41 +214,25 @@ export class MovementResolver {
       return { positions: [], movementCost: 0, reachable: false };
     }
 
-    const openSet: PathNode[] = [];
+    const openHeap = new MinHeap();
     const closedSet = new Set<string>();
     const gScore = new Map<string, number>();
-    const fScore = new Map<string, number>();
 
     const startNode: PathNode = {
       position: from,
       gCost: 0,
       hCost: this.heuristic(from, to),
+      fCost: this.heuristic(from, to),
       parent: null,
     };
 
-    openSet.push(startNode);
+    openHeap.push(startNode);
     const startKey = `${from.x},${from.y}`;
     gScore.set(startKey, 0);
-    fScore.set(startKey, startNode.hCost);
 
-    while (openSet.length > 0) {
-      // Find node with lowest fScore
-      let current: PathNode | null = openSet[0] ?? null;
-      let currentIndex = 0;
-
-      if (!current) break;
-
-      for (let i = 1; i < openSet.length; i++) {
-        const openNode = openSet[i];
-        if (!openNode) continue;
-        const currentF = fScore.get(`${openNode.position.x},${openNode.position.y}`) || Infinity;
-        const lowestF = fScore.get(`${current.position.x},${current.position.y}`) || Infinity;
-        if (currentF < lowestF) {
-          current = openNode;
-          currentIndex = i;
-        }
-      }
-
+    while (openHeap.size > 0) {
+      // Extract node with lowest fScore (O(log n) instead of O(n))
+      const current = openHeap.pop();
       if (!current) break;
 
       if (current.position.equals(to)) {
@@ -183,8 +250,8 @@ export class MovementResolver {
         };
       }
 
-      openSet.splice(currentIndex, 1);
-      closedSet.add(`${current.position.x},${current.position.y}`);
+      const currentKey = `${current.position.x},${current.position.y}`;
+      closedSet.add(currentKey);
 
       // Check neighbors
       for (const neighbor of this.getAdjacentPositions(current.position)) {
@@ -194,26 +261,26 @@ export class MovementResolver {
 
         const cell = map.getCell(neighbor);
         const moveCost = cell ? cell.getMovementCost() : 1;
-        const tentativeGScore = current!.gCost + moveCost;
+        const tentativeGScore = current.gCost + moveCost;
 
         const existingGScore = gScore.get(neighborKey) ?? Infinity;
         if (tentativeGScore >= existingGScore) continue;
 
-        // This path is better
+        // This path is better — remove old entry if exists, add improved one
         const neighborNode: PathNode = {
           position: neighbor,
           gCost: tentativeGScore,
           hCost: this.heuristic(neighbor, to),
+          fCost: tentativeGScore + this.heuristic(neighbor, to),
           parent: current,
         };
 
         gScore.set(neighborKey, tentativeGScore);
-        fScore.set(neighborKey, tentativeGScore + neighborNode.hCost);
 
-        const existingNode = openSet.find(n => n && n.position.equals(neighbor));
-        if (!existingNode) {
-          openSet.push(neighborNode);
+        if (openHeap.has(neighborNode)) {
+          openHeap.remove(neighborNode);
         }
+        openHeap.push(neighborNode);
       }
     }
 

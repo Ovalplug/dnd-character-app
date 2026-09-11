@@ -28,13 +28,41 @@
 - [x] Add morale system for AI decision making
 - [x] Enhance AoE spell targeting with multiple placement options
 
-## Phase 4: Performance & Optimization
+## Phase 4: Performance & Optimization ✅ COMPLETE
 
-- [ ] Add caching for common damage calculations
-- [ ] Optimize pathfinding algorithm
-- [ ] Implement early termination for clearly lost battles
-- [ ] Add parallel processing for batch simulations
-- [ ] Profile and optimize hot code paths
+- [x] Add caching for common damage calculations
+
+  - Added LRU damage average cache in `diceRollFunctions.ts` (DiceRoller.damageAvgCache)
+  - Cache prevents recomputation across attack scoring in `buildActionCandidates()`
+  - LRU eviction at 512 entries to prevent unbounded growth
+
+- [x] Optimize pathfinding algorithm
+
+  - Replaced O(n) linear scan in A\* openSet with binary min-heap (MinHeap class)
+  - O(log n) extract-min instead of O(n) — significant speedup on larger maps
+  - Re-implementation in `movement.ts`
+
+- [x] Implement early termination for clearly lost battles
+
+  - Added HP-based early termination in `isSimulationOver()`:
+    - If a team's total HP drops to 0%, simulation ends immediately
+    - Additional "torture round" prevention: single low-HP combatant vs 2+ enemies
+  - Cuts off meaningless rounds after one team is decisively defeated
+
+- [x] Add parallel processing for batch simulations
+
+  - Created `BatchSimulator` class in `batchSimulator.ts`
+  - Divides runs into configurable parallel chunks (default 4 workers)
+  - Uses Promise.all() for concurrent execution
+  - Built-in progress callbacks and aggregated statistics computation
+  - Includes Mulberry32 seeded PRNG for deterministic replay
+
+- [x] Profile and optimize hot code paths
+  - Added `ProfilingData` interface and `InternalProfiler` utility
+  - `enableProfiling()` / `getProfilingData()` methods on SimulationEngine
+  - Tracks timing for: init, rounds, buildActionCandidates, resolveAttack, executeCastSpell
+  - Reports hot paths sorted by total time with call counts
+  - Ready for future integration with Performance API or benchmarking
 
 ## Phase 5: Testing & Validation
 
