@@ -10,9 +10,20 @@
         "size": "T",
         "type": "construct",
         "alignment": ["U"],
-        "ac": [{ "ac": 15, "from": ["natural armor"] }],
-        "hp": { "average": 10, "formula": "4d4" },
-        "speed": { "walk": 30, "climb": 30 },
+        "ac": [
+          {
+            "ac": 15,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 10,
+          "formula": "4d4"
+        },
+        "speed": {
+          "walk": 30,
+          "climb": 30
+        },
         "str": 4,
         "dex": 16,
         "con": 10,
@@ -37,7 +48,19 @@
             "name": "Slam",
             "entries": [
               "Melee Weapon Attack: +5 to hit, reach 5 ft., one target. Hit: 5 (1d4 + 3) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d4+3"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,

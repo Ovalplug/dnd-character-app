@@ -10,9 +10,21 @@
         "size": "H",
         "alignment": ["U"],
         "type": "plant",
-        "ac": [{ "ac": 16, "from": ["natural armor"] }],
-        "hp": { "average": 92, "formula": "8d12 + 40" },
-        "speed": { "walk": 10, "climb": 10, "swim": 10 },
+        "ac": [
+          {
+            "ac": 16,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 92,
+          "formula": "8d12 + 40"
+        },
+        "speed": {
+          "walk": 10,
+          "climb": 10,
+          "swim": 10
+        },
         "str": 18,
         "dex": 8,
         "con": 20,
@@ -38,22 +50,86 @@
               "When the plant dies, it returns to life in the place where it died 1d12 months later, unless the ground where it took root is sown with salt or soaked with poison."
             ]
           },
-          { "name": "Unusual Nature", "entries": ["The plant doesn't require sleep."] }
+          {
+            "name": "Unusual Nature",
+            "entries": ["The plant doesn't require sleep."]
+          }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The plant makes three Vine Lash attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The plant makes three Vine Lash attacks."]
+          },
           {
             "name": "Vine Lash",
             "entries": [
               "Melee Weapon Attack: +7 to hit, reach 20 ft., one target. 11 (2d6 + 4) slashing damage. If the target is a creature, it is grappled (escape 15). Until the grapple ends, the target is restrained. The plant has four vines, each of which can grapple one target."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 20,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "2d6+4"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "grappled",
+                  "save": "none",
+                  "escape": null
+                },
+                {
+                  "condition": "restrained",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Entrapping Pod",
             "entries": [
               "Melee Weapon Attack: +7 to hit, reach 5 ft., one Medium or smaller creature grappled by the plant. 22 (4d8 + 4) acid damage, and the target is pulled into the plant's space and enveloped by the pod, and the grapple ends. While enveloped, the target is restrained, and it has total cover against attacks and effects originating outside the pod. The enveloped target must also immediately succeed on a 16 Constitution saving throw or be stunned by the plant's sapping enzymes until it is removed from the pod or the plant dies. The enveloped target doesn't require air and gains 1 level of exhaustion for each hour it spends in the pod. If the target dies while enveloped, it immediately emerges from the pod as a living podling, wearing or carrying all of the original creature's equipment.",
               "As an action, a creature within 5 feet of the bodytaker plant that is outside the pod can open the pod and pull the target free with a successful 15 Strength check. If the plant dies, the target is no longer restrained and can escape from the pod by spending 10 feet of movement, exiting prone. The plant has one pod, which can envelop one creature at a time."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "acid",
+                  "damage": "4d8+4"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "grappled",
+                  "save": "none",
+                  "escape": null
+                },
+                {
+                  "condition": "restrained",
+                  "save": "none",
+                  "escape": null
+                },
+                {
+                  "condition": "prone",
+                  "save": "none",
+                  "escape": null
+                },
+                {
+                  "condition": "stunned",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           }
         ],
         "traitTags": ["Rejuvenation"],
@@ -74,15 +150,22 @@
         "size": "M",
         "type": "undead",
         "ac": [12],
-        "hp": { "average": 26, "formula": "4d8 + 8" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 26,
+          "formula": "4d8 + 8"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 16,
         "dex": 14,
         "con": 15,
         "int": 1,
         "wis": 10,
         "cha": 1,
-        "skill": { "stealth": "+4" },
+        "skill": {
+          "stealth": "+4"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 10,
         "resist": ["bludgeoning", "poison"],
@@ -96,7 +179,10 @@
               "The boneless can move through any opening at least 1 inch wide without squeezing. It can also squeeze to fit into a space that a Tiny creature could fit in."
             ]
           },
-          { "name": "Unusual Nature", "entries": ["The boneless doesn't require sleep."] }
+          {
+            "name": "Unusual Nature",
+            "entries": ["The boneless doesn't require sleep."]
+          }
         ],
         "action": [
           {
@@ -109,7 +195,19 @@
             "name": "Slam",
             "entries": [
               "Melee Weapon Attack: +5 to hit, reach 5 ft., one target. 5 (1d4 + 3) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d4+3"
+                }
+              ]
+            }
           },
           {
             "name": "Crushing Embrace",
@@ -134,16 +232,29 @@
         "page": 230,
         "size": "T",
         "type": "monstrosity",
-        "ac": [{ "ac": 14, "from": ["natural armor"] }],
-        "hp": { "average": 35, "formula": "10d4 + 10" },
-        "speed": { "walk": 30, "burrow": 30 },
+        "ac": [
+          {
+            "ac": 14,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 35,
+          "formula": "10d4 + 10"
+        },
+        "speed": {
+          "walk": 30,
+          "burrow": 30
+        },
         "str": 6,
         "dex": 16,
         "con": 12,
         "int": 2,
         "wis": 13,
         "cha": 6,
-        "skill": { "stealth": "+7" },
+        "skill": {
+          "stealth": "+7"
+        },
         "senses": ["tremorsense 60 ft."],
         "passive": 11,
         "conditionImmune": ["blinded"],
@@ -160,14 +271,36 @@
             "entries": [
               "Melee Weapon Attack: +5 to hit, reach 5 ft., one creature. 5 (1d4 + 3) piercing damage, and the carrion stalker attaches to the target and pulls itself into the target's space. While attached, the carrion stalker moves with the target and has advantage on attack rolls against it.",
               "A creature can use its action to try to detach the carrion stalker and force it to move into the nearest unoccupied space, doing so with a successful 11 Strength check. On its turn, the carrion stalker can detach itself from the target by using 5 feet of movement. When it dies, the carrion stalker detaches from any creature it is attached to."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d4+3"
+                }
+              ]
+            }
           },
           {
             "name": "Larval Burst (1/Day)",
             "entries": [
               "The carrion stalker releases a burst of larvae in a 10-foot-radius sphere centered on itself. Each creature in that area must succeed on a 13 Constitution saving throw or be poisoned. A creature poisoned in this way takes 7 (2d6) poison damage at the start of each of its turns as larvae infest its body. The creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success. Any effect that cures disease or removes the poisoned condition instantly kills the larvae in the creature, ending the effect on it.",
               "If a creature is reduced to 0 hit points by the infestation, it dies. The larvae remain in the corpse, and one survives to become a fully grown carrion stalker in 1d4 weeks. Any effect that cures diseases or removes the poisoned condition that targets the corpse instantly kills the larvae."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 0,
+              "toHit": null,
+              "targets": -1,
+              "save": {
+                "dc": 12,
+                "ability": "DEX"
+              }
+            }
           }
         ],
         "senseTags": ["T"],
@@ -185,9 +318,19 @@
         "page": 231,
         "size": "S",
         "type": "construct",
-        "ac": [{ "ac": 15, "from": ["natural armor"] }],
-        "hp": { "average": 27, "formula": "6d6 + 6" },
-        "speed": { "walk": 25 },
+        "ac": [
+          {
+            "ac": 15,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 27,
+          "formula": "6d6 + 6"
+        },
+        "speed": {
+          "walk": 25
+        },
         "str": 10,
         "dex": 15,
         "con": 12,
@@ -216,7 +359,19 @@
             "name": "Silver Needle",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 5 ft., one creature. 1 piercing damage plus 3 (1d6) necrotic damage, and the target must succeed on a 12 Charisma saving throw or become cursed for 1 minute. While cursed in this way, the target's speed is reduced by 10 feet, and it must roll a 1d4 and subtract the number rolled from each ability check or attack roll it makes."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "necrotic",
+                  "damage": "1d6"
+                }
+              ]
+            }
           },
           {
             "name": "Soul Swap",
@@ -239,9 +394,24 @@
         "page": 232,
         "size": "T",
         "type": "undead",
-        "ac": [{ "ac": 16, "from": ["natural armor"] }],
-        "hp": { "average": 17, "formula": "5d4 + 5" },
-        "speed": { "walk": 0, "fly": { "number": 30, "condition": "(hover)" }, "canHover": true },
+        "ac": [
+          {
+            "ac": 16,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 17,
+          "formula": "5d4 + 5"
+        },
+        "speed": {
+          "walk": 0,
+          "fly": {
+            "number": 30,
+            "condition": "(hover)"
+          },
+          "canHover": true
+        },
         "str": 8,
         "dex": 13,
         "con": 12,
@@ -268,19 +438,75 @@
             "name": "Gnashing Bite (Gnashing Head Only)",
             "entries": [
               "Melee Weapon Attack: +3 to hit, reach 5 ft., one target. 4 (1d6 + 1) piercing damage plus 7 (2d6) necrotic damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 3,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d6+1"
+                },
+                {
+                  "type": "necrotic",
+                  "damage": "2d6"
+                }
+              ]
+            }
           },
           {
             "name": "Mind-Bending Bite (Aberrant Head Only)",
             "entries": [
               "Melee Weapon Attack: +3 to hit, reach 5 ft., one target. 4 (1d6 + 1) piercing damage plus 5 (1d10) necrotic damage, and the target must succeed on a 10 Intelligence saving throw or it can't take a reaction until the end of its next turn. Moreover, on its next turn, the target must choose whether it gets a move, an action, or a bonus action; it gets only one of the three."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 3,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d6+1"
+                },
+                {
+                  "type": "necrotic",
+                  "damage": "1d10"
+                }
+              ]
+            }
           },
           {
             "name": "Petrifying Bite (Petrifying Head Only)",
             "entries": [
               "Melee Weapon Attack: +3 to hit, reach 5 ft., one target. 3 (1d4 + 1) piercing damage, and the target must succeed on a 10 Constitution saving throw or be restrained as it begins to turn to stone. The target must repeat the saving throw at the end of its next turn. On a success, the effect ends. On a failure, the target is petrified for 10 minutes."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 3,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d4+1"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "restrained",
+                  "save": "none",
+                  "escape": null
+                },
+                {
+                  "condition": "petrified",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           }
         ],
         "damageTags": ["N", "P"],
@@ -296,17 +522,31 @@
         "page": 233,
         "size": "M",
         "type": "undead",
-        "ac": [{ "ac": 16, "from": ["breastplate"] }],
-        "hp": { "average": 135, "formula": "18d8 + 54" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 16,
+            "from": ["breastplate"]
+          }
+        ],
+        "hp": {
+          "average": 135,
+          "formula": "18d8 + 54"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 18,
         "dex": 14,
         "con": 16,
         "int": 11,
         "wis": 15,
         "cha": 16,
-        "save": { "con": "+7" },
-        "skill": { "perception": "+6" },
+        "save": {
+          "con": "+7"
+        },
+        "skill": {
+          "perception": "+6"
+        },
         "senses": ["truesight 120 ft."],
         "passive": 16,
         "resist": ["cold", "lightning", "poison"],
@@ -330,22 +570,64 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The dullahan makes two attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The dullahan makes two attacks."]
+          },
           {
             "name": "Battleaxe",
             "entries": [
               "Melee Weapon Attack: +8 to hit, reach 5 ft., one target. 8 (1d8 + 4) slashing damage, or 9 (1d10 + 4) slashing damage if used with two hands, plus 11 (2d10) necrotic damage. If the dullahan scores a critical hit against a creature, the target must succeed on a 15 Constitution saving throw or the dullahan cuts off the target's head. The target dies if it can't survive without the lost head. A creature that doesn't have or need a head, or has legendary actions, instead takes an extra 27 (6d8) slashing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 8,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d8+4"
+                },
+                {
+                  "type": "slashing",
+                  "damage": "1d10+4"
+                },
+                {
+                  "type": "necrotic",
+                  "damage": "2d10"
+                },
+                {
+                  "type": "slashing",
+                  "damage": "6d8"
+                }
+              ]
+            }
           },
           {
             "name": "Fiery Skull",
             "entries": [
               "Ranged Spell Attack: +7 to hit, range 120 ft., one target. 14 (2d10 + 3) fire damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ranged",
+              "range": 120,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "fire",
+                  "damage": "2d10+3"
+                }
+              ]
+            }
           }
         ],
         "legendary": [
-          { "name": "Attack", "entries": ["The dullahan makes one attack."] },
+          {
+            "name": "Attack",
+            "entries": ["The dullahan makes one attack."]
+          },
           {
             "name": "Frightful Presence (Costs 2 Actions)",
             "entries": [
@@ -395,8 +677,13 @@
         "type": "construct",
         "alignment": ["N"],
         "ac": [9],
-        "hp": { "average": 93, "formula": "11d8 + 44" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 93,
+          "formula": "11d8 + 44"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 19,
         "dex": 9,
         "con": 18,
@@ -442,15 +729,33 @@
               "Elise has advantage on saving throws against spells and other magical effects."
             ]
           },
-          { "name": "Magic Weapons", "entries": ["Elise's weapon attacks are magical."] }
+          {
+            "name": "Magic Weapons",
+            "entries": ["Elise's weapon attacks are magical."]
+          }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["Elise makes two slam attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["Elise makes two slam attacks."]
+          },
           {
             "name": "Slam",
             "entries": [
               "Melee Weapon Attack: +7 to hit, reach 5 ft., one target. 13 (2d8 + 4) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "2d8+4"
+                }
+              ]
+            }
           }
         ],
         "traitTags": ["Damage Absorption", "Immutable Form", "Magic Resistance", "Magic Weapons"],
@@ -470,16 +775,30 @@
         "size": "M",
         "type": "undead",
         "ac": [12],
-        "hp": { "average": 85, "formula": "19d8" },
-        "speed": { "walk": 0, "fly": { "number": 40, "condition": "(hover)" }, "canHover": true },
+        "hp": {
+          "average": 85,
+          "formula": "19d8"
+        },
+        "speed": {
+          "walk": 0,
+          "fly": {
+            "number": 40,
+            "condition": "(hover)"
+          },
+          "canHover": true
+        },
         "str": 8,
         "dex": 14,
         "con": 10,
         "int": 10,
         "wis": 12,
         "cha": 18,
-        "save": { "wis": "+4" },
-        "skill": { "perception": "+7" },
+        "save": {
+          "wis": "+4"
+        },
+        "skill": {
+          "perception": "+7"
+        },
         "senses": ["truesight 60 ft."],
         "passive": 17,
         "resist": [
@@ -526,7 +845,19 @@
             "name": "Foretelling Touch",
             "entries": [
               "Melee Spell Attack: +7 to hit, reach 5 ft., one creature. 15 (2d10 + 4) psychic damage, and the target must roll a d4 and subtract the number rolled from the next attack roll or saving throw it makes before the start of the gallows speaker's next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "psychic",
+                  "damage": "2d10+4"
+                }
+              ]
+            }
           },
           {
             "name": "Suffering Echoes",
@@ -549,17 +880,40 @@
         "page": 245,
         "size": "H",
         "type": "aberration",
-        "ac": [{ "ac": 15, "from": ["natural armor"] }],
-        "hp": { "average": 290, "formula": "20d12 + 160" },
-        "speed": { "walk": 40, "fly": { "number": 40, "condition": "(hover)" }, "canHover": true },
+        "ac": [
+          {
+            "ac": 15,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 290,
+          "formula": "20d12 + 160"
+        },
+        "speed": {
+          "walk": 40,
+          "fly": {
+            "number": 40,
+            "condition": "(hover)"
+          },
+          "canHover": true
+        },
         "str": 24,
         "dex": 13,
         "con": 26,
         "int": 27,
         "wis": 22,
         "cha": 25,
-        "save": { "con": "+15", "int": "+15", "wis": "+13", "cha": "+14" },
-        "skill": { "arcana": "+22", "perception": "+13" },
+        "save": {
+          "con": "+15",
+          "int": "+15",
+          "wis": "+13",
+          "cha": "+14"
+        },
+        "skill": {
+          "arcana": "+22",
+          "perception": "+13"
+        },
         "senses": ["truesight 120 ft."],
         "passive": 23,
         "resist": ["acid", "force", "necrotic", "psychic"],
@@ -577,24 +931,72 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The emissary makes three attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The emissary makes three attacks."]
+          },
           {
             "name": "Lashing Maw",
             "entries": [
               "Melee Weapon Attack: +14 to hit, reach 15 ft., one target. 20 (2d10 + 7) piercing damage plus 13 (3d8) acid damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 15,
+              "toHit": 14,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "2d10+7"
+                },
+                {
+                  "type": "acid",
+                  "damage": "3d8"
+                }
+              ]
+            }
           },
           {
             "name": "Psychic Orb",
             "entries": [
               "Ranged Spell Attack: +15 to hit, range 120 ft., one creature. 27 (3d12 + 8) psychic damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ranged",
+              "range": 120,
+              "toHit": 15,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "psychic",
+                  "damage": "3d12+8"
+                }
+              ]
+            }
           },
           {
             "name": "Unearthly Bile (Recharge 5-6)",
             "entries": [
               "The emissary expels bile that splashes all creatures in a 30-foot-radius sphere centered on a point within 120 feet of the emissary. Each creature in that area must make a 23 Dexterity saving throw, taking 55 (10d10) acid damage on a failed save, or half as much damage on a successful one. For each creature that fails the saving throw, a gibbering mouther (see its entry in the Monster Manual) appears in an unoccupied space on a surface that can support it within 30 feet of that creature. The gibbering mouthers act right after the emissary on the same initiative count, gaining a +7 bonus to their attack and damage rolls, and fighting until they are destroyed. They disappear when the emissary dies."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 0,
+              "toHit": null,
+              "targets": -1,
+              "damage": [
+                {
+                  "type": "acid",
+                  "damage": "9d6",
+                  "when": "failure"
+                }
+              ],
+              "save": {
+                "dc": 19,
+                "ability": "DEX"
+              }
+            }
           }
         ],
         "legendary": [
@@ -634,8 +1036,13 @@
         "size": "T",
         "type": "monstrosity",
         "ac": [12],
-        "hp": { "average": 10, "formula": "4d4" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 10,
+          "formula": "4d4"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 6,
         "dex": 14,
         "con": 10,
@@ -651,7 +1058,23 @@
             "name": "Bite",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. 3 (1d4 + 2) piercing damage plus 3 (1d6) force damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d4+2"
+                },
+                {
+                  "type": "force",
+                  "damage": "1d6"
+                }
+              ]
+            }
           }
         ],
         "reaction": [
@@ -691,17 +1114,34 @@
         "page": 248,
         "size": "M",
         "type": "humanoid",
-        "ac": [{ "ac": 16, "from": ["breastplate"] }],
-        "hp": { "average": 77, "formula": "14d8 + 14" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 16,
+            "from": ["breastplate"]
+          }
+        ],
+        "hp": {
+          "average": 77,
+          "formula": "14d8 + 14"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 10,
         "dex": 14,
         "con": 12,
         "int": 17,
         "wis": 16,
         "cha": 19,
-        "save": { "int": "+6", "wis": "+6", "cha": "+7" },
-        "skill": { "insight": "+6", "perception": "+6" },
+        "save": {
+          "int": "+6",
+          "wis": "+6",
+          "cha": "+7"
+        },
+        "skill": {
+          "insight": "+6",
+          "perception": "+6"
+        },
         "senses": ["truesight 30 ft."],
         "passive": 16,
         "conditionImmune": ["charmed", "frightened"],
@@ -722,7 +1162,9 @@
               "sending",
               "suggestion"
             ],
-            "daily": { "1e": ["mass suggestion", "modify memory"] },
+            "daily": {
+              "1e": ["mass suggestion", "modify memory"]
+            },
             "ability": "cha",
             "displayAs": "action"
           }
@@ -738,7 +1180,23 @@
             "name": "Silver Longsword",
             "entries": [
               "Melee Weapon Attack: +7 to hit, reach 5 ft., one target. 8 (1d8 + 4) slashing damage, or 9 (1d10 + 4) if used with two hands, plus 18 (4d8) force damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d8+4"
+                },
+                {
+                  "type": "force",
+                  "damage": "4d8"
+                }
+              ]
+            }
           },
           {
             "name": "Mind Fire",
@@ -750,7 +1208,17 @@
             "name": "Inquisitor's Command (Recharge 5-6)",
             "entries": [
               "Each creature of the inquisitor's choice that it can see within 60 feet of it must succeed on a 15 Wisdom saving throw or be charmed until the start of the inquisitor's next turn. On the charmed target's turn, the inquisitor can telepathically control the target's move, action, or both. When controlled in this way, the target can take only the Attack (inquisitor chooses the target) or Dash action."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 60,
+              "toHit": null,
+              "targets": -1,
+              "save": {
+                "dc": 17,
+                "ability": "CHA"
+              }
+            }
           }
         ],
         "senseTags": ["U"],
@@ -771,17 +1239,36 @@
         "page": 249,
         "size": "M",
         "type": "humanoid",
-        "ac": [{ "ac": 16, "from": ["breastplate"] }],
-        "hp": { "average": 91, "formula": "14d8 + 28" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 16,
+            "from": ["breastplate"]
+          }
+        ],
+        "hp": {
+          "average": 91,
+          "formula": "14d8 + 28"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 12,
         "dex": 14,
         "con": 14,
         "int": 15,
         "wis": 18,
         "cha": 16,
-        "save": { "int": "+5", "wis": "+7", "cha": "+6" },
-        "skill": { "acrobatics": "+5", "athletics": "+4", "insight": "+7", "perception": "+7" },
+        "save": {
+          "int": "+5",
+          "wis": "+7",
+          "cha": "+6"
+        },
+        "skill": {
+          "acrobatics": "+5",
+          "athletics": "+4",
+          "insight": "+7",
+          "perception": "+7"
+        },
         "senses": ["truesight 30 ft."],
         "passive": 17,
         "conditionImmune": ["charmed", "frightened"],
@@ -794,7 +1281,9 @@
               "The inquisitor casts one of the following spells, requiring no components and using Wisdom as the spellcasting ability (spell save 15):"
             ],
             "will": ["detect magic", "detect thoughts", "dispel magic", "sending"],
-            "daily": { "1e": ["dimension door", "fly", "greater invisibility"] },
+            "daily": {
+              "1e": ["dimension door", "fly", "greater invisibility"]
+            },
             "ability": "wis",
             "displayAs": "action"
           }
@@ -818,7 +1307,23 @@
             "name": "Silver Longsword",
             "entries": [
               "Melee Weapon Attack: +7 to hit, reach 5 ft., one target. 8 (1d8 + 4) slashing damage, or 9 (1d10 + 4) if used with two hands, plus 18 (4d8) force damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d8+4"
+                },
+                {
+                  "type": "force",
+                  "damage": "4d8"
+                }
+              ]
+            }
           }
         ],
         "bonus": [
@@ -845,16 +1350,30 @@
         "size": "M",
         "type": "humanoid",
         "ac": [11],
-        "hp": { "average": 77, "formula": "14d8 + 14" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 77,
+          "formula": "14d8 + 14"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 10,
         "dex": 12,
         "con": 12,
         "int": 19,
         "wis": 16,
         "cha": 15,
-        "save": { "int": "+7", "wis": "+6", "cha": "+5" },
-        "skill": { "arcana": "+10", "history": "+7", "nature": "+7", "religion": "+10" },
+        "save": {
+          "int": "+7",
+          "wis": "+6",
+          "cha": "+5"
+        },
+        "skill": {
+          "arcana": "+10",
+          "history": "+7",
+          "nature": "+7",
+          "religion": "+10"
+        },
         "senses": ["truesight 30 ft."],
         "passive": 13,
         "conditionImmune": ["charmed", "frightened"],
@@ -874,24 +1393,57 @@
               "mage hand",
               "sending"
             ],
-            "daily": { "1e": ["Otiluke's resilient sphere", "telekinesis"] },
+            "daily": {
+              "1e": ["Otiluke's resilient sphere", "telekinesis"]
+            },
             "ability": "int",
             "displayAs": "action"
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The inquisitor attacks twice."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The inquisitor attacks twice."]
+          },
           {
             "name": "Force Bolt",
             "entries": [
               "Ranged Spell Attack: +7 to hit, range 120 ft., one target. 22 (4d8 + 4) force damage, and if the target is a Large or smaller creature, the inquisitor can push it up to 10 feet away."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ranged",
+              "range": 120,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "force",
+                  "damage": "4d8+4"
+                }
+              ]
+            }
           },
           {
             "name": "Silver Longsword",
             "entries": [
               "Melee Weapon Attack: +7 to hit, reach 5 ft., one target. 8 (1d8 + 4) slashing damage, or 9 (1d10 + 4) if used with two hands, plus 18 (4d8) force damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d8+4"
+                },
+                {
+                  "type": "force",
+                  "damage": "4d8"
+                }
+              ]
+            }
           },
           {
             "name": "Implode (Recharge 4-6)",
@@ -925,19 +1477,43 @@
         "source": "VRGR",
         "page": 86,
         "size": "M",
-        "type": { "type": "fey", "tags": ["elf"] },
+        "type": {
+          "type": "fey",
+          "tags": ["elf"]
+        },
         "alignment": ["L", "NX", "C", "E"],
-        "ac": [{ "ac": 19, "from": ["scale mail"] }],
-        "hp": { "average": 82, "formula": "11d8 + 33" },
-        "speed": { "walk": 30, "fly": 60 },
+        "ac": [
+          {
+            "ac": 19,
+            "from": ["scale mail"]
+          }
+        ],
+        "hp": {
+          "average": 82,
+          "formula": "11d8 + 33"
+        },
+        "speed": {
+          "walk": 30,
+          "fly": 60
+        },
         "str": 18,
         "dex": 18,
         "con": 16,
         "int": 14,
         "wis": 12,
         "cha": 16,
-        "save": { "str": "+7", "con": "+6", "int": "+5", "cha": "+6" },
-        "skill": { "deception": "+6", "intimidation": "+6", "perception": "+4", "stealth": "+7" },
+        "save": {
+          "str": "+7",
+          "con": "+6",
+          "int": "+5",
+          "cha": "+6"
+        },
+        "skill": {
+          "deception": "+6",
+          "intimidation": "+6",
+          "perception": "+4",
+          "stealth": "+7"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 14,
         "resist": [
@@ -987,13 +1563,45 @@
             "name": "Nepenthe",
             "entries": [
               "Melee Weapon Attack: +10 to hit, reach 5 ft.., one target. 11 (1d8 + 7) slashing damage, or 12 (1d10 + 7) slashing damage if used with two hands to make a melee attack. If the target is a fiend or an undead, it takes an extra 11 (2d10) radiant damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 10,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d8+7"
+                },
+                {
+                  "type": "slashing",
+                  "damage": "1d10+7"
+                },
+                {
+                  "type": "radiant",
+                  "damage": "2d10"
+                }
+              ]
+            }
           },
           {
             "name": "Fire Ray",
             "entries": [
               "Ranged Spell Attack: +7 to hit, range 120 ft., one target. 10 (3d6) fire damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ranged",
+              "range": 120,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "fire",
+                  "damage": "3d6"
+                }
+              ]
+            }
           },
           {
             "name": "Fiendish Charm",
@@ -1020,23 +1628,41 @@
         "page": 236,
         "size": "M",
         "type": "undead",
-        "ac": [{ "ac": 16, "from": ["natural armor"] }],
-        "hp": { "average": 119, "formula": "14d8 + 56" },
-        "speed": { "walk": 20 },
+        "ac": [
+          {
+            "ac": 16,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 119,
+          "formula": "14d8 + 56"
+        },
+        "speed": {
+          "walk": 20
+        },
         "str": 18,
         "dex": 3,
         "con": 18,
         "int": 17,
         "wis": 14,
         "cha": 12,
-        "save": { "con": "+8", "int": "+7", "wis": "+6", "cha": "+5" },
+        "save": {
+          "con": "+8",
+          "int": "+7",
+          "wis": "+6",
+          "cha": "+5"
+        },
         "senses": ["darkvision 120 ft."],
         "passive": 12,
         "conditionImmune": ["charmed", "exhaustion", "frightened", "paralyzed", "poisoned"],
         "languages": ["any languages it knew in life"],
         "cr": "9",
         "trait": [
-          { "name": "Jiangshi Weaknesses", "entries": ["The jiangshi has the following flaws:"] },
+          {
+            "name": "Jiangshi Weaknesses",
+            "entries": ["The jiangshi has the following flaws:"]
+          },
           {
             "name": "Fear of Its Own Reflection",
             "entries": [
@@ -1049,7 +1675,10 @@
               "While the jiangshi is wearing or touching a holy symbol, it automatically fails saving throws against effects that turn Undead."
             ]
           },
-          { "name": "Unusual Nature", "entries": ["The jiangshi doesn't require air."] }
+          {
+            "name": "Unusual Nature",
+            "entries": ["The jiangshi doesn't require air."]
+          }
         ],
         "action": [
           {
@@ -1060,14 +1689,36 @@
             "name": "Slam",
             "entries": [
               "Melee Weapon Attack: +8 to hit, reach 5 ft., one target. 13 (2d8 + 4) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 8,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "2d8+4"
+                }
+              ]
+            }
           },
           {
             "name": "Consume Energy",
             "entries": [
               "The jiangshi draws energy from a creature it can see within 30 feet of it. The target makes a 16 Constitution saving throw, taking 18 (4d8) necrotic damage on a failed save, or half as much damage on a successful one. The jiangshi regains hit points equal to the amount of necrotic damage dealt. After regaining hit points from this action, the jiangshi gains the following benefits for 7 days: its walking speed increases to 40 feet, and it gains a flying speed equal to its walking speed and can hover.",
               "A Humanoid slain by this necrotic damage rises as a wight (see its entry in the Monster Manual) at the end of the jiangshi's turn. The wight acts immediately after the jiangshi in the initiative order. If this wight slays a Humanoid with its Life Drain, the wight transforms into a jiangshi 5 days later."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 30,
+              "toHit": null,
+              "targets": 1,
+              "save": {
+                "dc": 15,
+                "ability": "CON"
+              }
+            }
           },
           {
             "name": "Change Shape",
@@ -1091,17 +1742,40 @@
         "page": 245,
         "size": "M",
         "type": "aberration",
-        "ac": [{ "ac": 19, "from": ["natural armor"] }],
-        "hp": { "average": 241, "formula": "21d8 + 147" },
-        "speed": { "walk": 40, "fly": { "number": 40, "condition": "(hover)" }, "canHover": true },
+        "ac": [
+          {
+            "ac": 19,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 241,
+          "formula": "21d8 + 147"
+        },
+        "speed": {
+          "walk": 40,
+          "fly": {
+            "number": 40,
+            "condition": "(hover)"
+          },
+          "canHover": true
+        },
         "str": 21,
         "dex": 18,
         "con": 24,
         "int": 25,
         "wis": 20,
         "cha": 23,
-        "save": { "int": "+13", "wis": "+11", "cha": "+12" },
-        "skill": { "arcana": "+19", "deception": "+18", "perception": "+11" },
+        "save": {
+          "int": "+13",
+          "wis": "+11",
+          "cha": "+12"
+        },
+        "skill": {
+          "arcana": "+19",
+          "deception": "+18",
+          "perception": "+11"
+        },
         "senses": ["truesight 120 ft."],
         "passive": 21,
         "resist": ["acid", "force", "necrotic", "psychic"],
@@ -1125,18 +1799,49 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The emissary makes three attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The emissary makes three attacks."]
+          },
           {
             "name": "Lashing Maw",
             "entries": [
               "Melee Weapon Attack: +11 to hit, reach 15 ft., one target. 16 (2d10 + 5) piercing damage plus 13 (3d8) acid damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 15,
+              "toHit": 11,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "2d10+5"
+                },
+                {
+                  "type": "acid",
+                  "damage": "3d8"
+                }
+              ]
+            }
           },
           {
             "name": "Psychic Orb",
             "entries": [
               "Ranged Spell Attack: +13 to hit, range 120 ft., one creature. 18 (2d10 + 7) psychic damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ranged",
+              "range": 120,
+              "toHit": 13,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "psychic",
+                  "damage": "2d10+7"
+                }
+              ]
+            }
           },
           {
             "name": "Change Shape",
@@ -1146,7 +1851,10 @@
           }
         ],
         "legendary": [
-          { "name": "Psychic Orb", "entries": ["The emissary makes a Psychic Orb attack."] },
+          {
+            "name": "Psychic Orb",
+            "entries": ["The emissary makes a Psychic Orb attack."]
+          },
           {
             "name": "Teleportation Maw (Costs 2 Actions)",
             "entries": [
@@ -1175,18 +1883,41 @@
         "alignment": ["U"],
         "page": 237,
         "size": "M",
-        "type": { "type": "monstrosity", "tags": ["shapechanger"] },
-        "ac": [{ "ac": 16, "from": ["natural armor"] }],
-        "hp": { "average": 170, "formula": "20d8 + 80" },
-        "speed": { "walk": { "number": 50, "condition": "in dire wolf form" } },
+        "type": {
+          "type": "monstrosity",
+          "tags": ["shapechanger"]
+        },
+        "ac": [
+          {
+            "ac": 16,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 170,
+          "formula": "20d8 + 80"
+        },
+        "speed": {
+          "walk": {
+            "number": 50,
+            "condition": "in dire wolf form"
+          }
+        },
         "str": 18,
         "dex": 18,
         "con": 18,
         "int": 14,
         "wis": 16,
         "cha": 16,
-        "save": { "dex": "+9", "con": "+9", "cha": "+8" },
-        "skill": { "perception": "+13", "stealth": "+9" },
+        "save": {
+          "dex": "+9",
+          "con": "+9",
+          "cha": "+8"
+        },
+        "skill": {
+          "perception": "+13",
+          "stealth": "+9"
+        },
         "senses": ["darkvision 120 ft."],
         "passive": 23,
         "conditionImmune": ["charmed", "frightened"],
@@ -1223,19 +1954,70 @@
             "name": "Bite (Dire Wolf or Hybrid Form Only)",
             "entries": [
               "Melee Weapon Attack: +9 to hit, reach 5 ft., one target. 13 (2d8 + 4) piercing damage plus 14 (4d6) necrotic damage. If the target is a Humanoid, it must succeed on a 17 Constitution saving throw or be cursed with loup garou lycanthropy."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 9,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "2d8+4"
+                },
+                {
+                  "type": "necrotic",
+                  "damage": "4d6"
+                }
+              ]
+            }
           },
           {
             "name": "Claws (Dire Wolf or Hybrid Form Only)",
             "entries": [
               "Melee Weapon Attack: +9 to hit, reach 5 ft., one target. 11 (2d6 + 4) slashing damage. If the target is a creature, it must succeed on a 17 Strength saving throw or be knocked prone."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 9,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "2d6+4"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "prone",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Longsword (Humanoid Form Only)",
             "entries": [
               "Melee Weapon Attack: +9 to hit, reach 5 ft., one target. 13 (2d8 + 4) slashing damage, or 15 (2d10 + 4) slashing damage if used with two hands."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 9,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "2d8+4"
+                },
+                {
+                  "type": "slashing",
+                  "damage": "2d10+4"
+                }
+              ]
+            }
           }
         ],
         "bonus": [
@@ -1284,16 +2066,28 @@
         "size": "M",
         "type": "undead",
         "ac": [12],
-        "hp": { "average": 67, "formula": "9d8 + 27" },
-        "speed": { "walk": 20, "climb": 20 },
+        "hp": {
+          "average": 67,
+          "formula": "9d8 + 27"
+        },
+        "speed": {
+          "walk": 20,
+          "climb": 20
+        },
         "str": 8,
         "dex": 15,
         "con": 17,
         "int": 17,
         "wis": 13,
         "cha": 10,
-        "save": { "con": "+6", "int": "+6", "wis": "+4" },
-        "skill": { "arcana": "+9" },
+        "save": {
+          "con": "+6",
+          "int": "+6",
+          "wis": "+4"
+        },
+        "skill": {
+          "arcana": "+9"
+        },
         "senses": ["blindsight 120 ft. (blind beyond this radius)"],
         "passive": 11,
         "resist": ["acid", "necrotic"],
@@ -1334,25 +2128,69 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The necrichor makes two attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The necrichor makes two attacks."]
+          },
           {
             "name": "Pseudopod",
             "entries": [
               "Melee Weapon Attack: +5 to hit, reach 10 ft., one target. 5 (1d6 + 2) necrotic damage, and the target must succeed on a 14 Constitution saving throw or be paralyzed until the start of the necrichor's next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "necrotic",
+                  "damage": "1d6+2"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "paralyzed",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Necrotic Bolt",
             "entries": [
               "Ranged Spell Attack: +6 to hit, range 120 ft., one creature. 12 (2d8 + 3) necrotic damage, and the target can't regain hit points until the start of the necrichor's next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ranged",
+              "range": 120,
+              "toHit": 6,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "necrotic",
+                  "damage": "2d8+3"
+                }
+              ]
+            }
           },
           {
             "name": "Blood Puppeteering (Recharge 6)",
             "entries": [
               "The necrichor targets a creature it can see within 5 feet of it that is missing any of its hit points. If the target isn't a Construct or an Undead, it must succeed on a 14 Constitution saving throw or the necrichor enters the target's space and attaches itself to the target for 1 minute. While attached, the necrichor takes only half damage dealt to it (round down), and the target takes the remaining damage. The necrichor can attach to only one creature at a time.",
               "The attached necrichor can telepathically control the target's move, action, or both. When controlled this way, the target can take only the Attack action (necrichor chooses the target) or the Dash action. The attached target can repeat the saving throw at the end of each of its turns, detaching from the necrichor and forcing it to move into the nearest unoccupied space on a success."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 5,
+              "toHit": null,
+              "targets": 1,
+              "save": {
+                "dc": 16,
+                "ability": "CHA"
+              }
+            }
           }
         ],
         "traitTags": ["Legendary Resistances", "Rejuvenation", "Spider Climb"],
@@ -1372,17 +2210,34 @@
         "page": 239,
         "size": "M",
         "type": "undead",
-        "ac": [{ "ac": 17, "from": ["natural armor"] }],
-        "hp": { "average": 85, "formula": "9d8 + 45" },
-        "speed": { "walk": 40 },
+        "ac": [
+          {
+            "ac": 17,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 85,
+          "formula": "9d8 + 45"
+        },
+        "speed": {
+          "walk": 40
+        },
         "str": 20,
         "dex": 18,
         "con": 21,
         "int": 6,
         "wis": 17,
         "cha": 14,
-        "save": { "dex": "+7", "con": "+8", "wis": "+6" },
-        "skill": { "perception": "+6", "stealth": "+10" },
+        "save": {
+          "dex": "+7",
+          "con": "+8",
+          "wis": "+6"
+        },
+        "skill": {
+          "perception": "+6",
+          "stealth": "+10"
+        },
         "senses": ["darkvision 120 ft."],
         "passive": 16,
         "resist": ["necrotic"],
@@ -1408,7 +2263,10 @@
               "The nosferatu takes 20 radiant damage when it starts its turn in sunlight. While in sunlight, it has disadvantage on attack rolls and ability checks."
             ]
           },
-          { "name": "Unusual Nature", "entries": ["The nosferatu doesn't require air."] }
+          {
+            "name": "Unusual Nature",
+            "entries": ["The nosferatu doesn't require air."]
+          }
         ],
         "action": [
           {
@@ -1421,20 +2279,69 @@
             "name": "Claw",
             "entries": [
               "Melee Weapon Attack: +8 to hit, reach 5 ft., one target. 9 (1d8 + 5) slashing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 8,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d8+5"
+                }
+              ]
+            }
           },
           {
             "name": "Bite",
             "entries": [
               "Melee Weapon Attack: +8 to hit, reach 5 ft., one creature. 9 (1d8 + 5) piercing damage plus 7 (2d6) necrotic damage. If the target is missing any of its hit points, it instead takes 11 (2d10) necrotic damage.",
               "The target's hit point maximum is reduced by an amount equal to the necrotic damage taken, and the nosferatu regains hit points equal to that amount. The reduction lasts until the target finishes a long rest. The target dies if its hit point maximum is reduced to 0. A Humanoid slain in this way and then buried in the ground rises as a nosferatu after 1d10 days."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 8,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d8+5"
+                },
+                {
+                  "type": "necrotic",
+                  "damage": "2d6"
+                },
+                {
+                  "type": "necrotic",
+                  "damage": "2d10"
+                }
+              ]
+            }
           },
           {
             "name": "Blood Disgorge (Recharge 5-6)",
             "entries": [
               "The nosferatu vomits blood in a 15-foot cone. Each creature in that area must make a 16 Constitution saving throw. On a failed save, a creature takes 18 (4d8) necrotic damage, and it can't regain hit points for 1 minute. On a successful save, the creature takes half as much damage with no additional effects."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 15,
+              "toHit": null,
+              "targets": -1,
+              "damage": [
+                {
+                  "type": "necrotic",
+                  "damage": "13d6",
+                  "when": "failure"
+                }
+              ],
+              "save": {
+                "dc": 19,
+                "ability": "DEX"
+              }
+            }
           }
         ],
         "traitTags": ["Regeneration", "Spider Climb", "Sunlight Sensitivity"],
@@ -1454,8 +2361,13 @@
         "size": "M",
         "type": "plant",
         "ac": [10],
-        "hp": { "average": 26, "formula": "4d8 + 8" },
-        "speed": { "walk": 20 },
+        "hp": {
+          "average": 26,
+          "formula": "4d8 + 8"
+        },
+        "speed": {
+          "walk": 20
+        },
         "str": 15,
         "dex": 11,
         "con": 14,
@@ -1474,14 +2386,29 @@
               "The podling is a physical copy of a creature digested by a bodytaker plant. The podling has the digested creature's memories and behaves like that creature, but with occasional lapses. An observer familiar with the digested creature can recognize the discrepancies with a successful 20 Wisdom (Insight) check, or automatically if the podling does something in direct contradiction to the digested creature's established beliefs or behavior. The podling melts into a slurry when it dies, when the bodytaker plant that created it dies, or when the bodytaker plant dismisses it (no action required)."
             ]
           },
-          { "name": "Unusual Nature", "entries": ["The podling doesn't require sleep."] }
+          {
+            "name": "Unusual Nature",
+            "entries": ["The podling doesn't require sleep."]
+          }
         ],
         "action": [
           {
             "name": "Slam",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. 5 (1d6 + 2) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d6+2"
+                }
+              ]
+            }
           }
         ],
         "senseTags": ["B"],
@@ -1497,16 +2424,30 @@
         "page": 241,
         "size": "M",
         "type": "humanoid",
-        "ac": [{ "ac": 14, "from": ["natural armor"] }],
-        "hp": { "average": 60, "formula": "8d8 + 24" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 14,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 60,
+          "formula": "8d8 + 24"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 10,
         "dex": 14,
         "con": 16,
         "int": 18,
         "wis": 17,
         "cha": 11,
-        "save": { "int": "+7", "wis": "+6", "cha": "+3" },
+        "save": {
+          "int": "+7",
+          "wis": "+6",
+          "cha": "+3"
+        },
         "senses": ["darkvision 120 ft."],
         "passive": 13,
         "conditionImmune": ["frightened"],
@@ -1522,18 +2463,52 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The priest attacks twice."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The priest attacks twice."]
+          },
           {
             "name": "Soul Blade",
             "entries": [
               "Melee Weapon Attack: +5 to hit, reach 5 ft., one target. 7 (2d4 + 2) piercing damage, and if the target is a creature, it is paralyzed until the start of the priest's next turn. If this damage reduces a Medium or smaller creature to 0 hit points, the creature dies, and its soul is trapped in the priest's body, manifesting as a shadowy Soul Tattoo on the priest. The soul is freed if the priest dies."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "2d4+2"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "paralyzed",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Necrotic Bolt",
             "entries": [
               "Ranged Spell Attack: +7 to hit, range 120 ft., one target. 17 (3d8 + 4) necrotic damage, and the target can't regain hit points until the start of the priest's next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ranged",
+              "range": 120,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "necrotic",
+                  "damage": "3d8+4"
+                }
+              ]
+            }
           }
         ],
         "bonus": [
@@ -1638,17 +2613,34 @@
         "page": 243,
         "size": "L",
         "type": "fiend",
-        "ac": [{ "ac": 17, "from": ["natural armor"] }],
-        "hp": { "average": 161, "formula": "14d10 + 84" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 17,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 161,
+          "formula": "14d10 + 84"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 22,
         "dex": 12,
         "con": 22,
         "int": 8,
         "wis": 15,
         "cha": 16,
-        "save": { "dex": "+5", "wis": "+6", "cha": "+7" },
-        "skill": { "perception": "+6", "survival": "+6" },
+        "save": {
+          "dex": "+5",
+          "wis": "+6",
+          "cha": "+7"
+        },
+        "skill": {
+          "perception": "+6",
+          "survival": "+6"
+        },
         "senses": ["darkvision 120 ft."],
         "passive": 16,
         "conditionImmune": ["charmed", "exhaustion", "frightened"],
@@ -1681,13 +2673,44 @@
             "name": "Executioner's Pick",
             "entries": [
               "Melee Weapon Attack: +10 to hit, reach 5 ft., one target. 17 (2d10 + 6) piercing damage, and if the target is a creature, its speed is reduced by 10 feet until the start of the juggernaut's next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 10,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "2d10+6"
+                }
+              ]
+            }
           },
           {
             "name": "Fist",
             "entries": [
               "Melee Weapon Attack: +10 to hit, reach 5 ft., one target. 11 (1d10 + 6) bludgeoning damage, and if the target is a Large or smaller creature, it must succeed on a 18 Strength saving throw or be knocked prone."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 10,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d10+6"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "prone",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Deadly Shaping (Recharge 5-6)",
@@ -1705,7 +2728,19 @@
             "name": "Scything Shrapnel",
             "entries": [
               "The target takes 14 (4d6) slashing damage, and the implement vanishes. At the start of each of its turns, the target takes 10 (3d6) necrotic damage from the wound left by the shrapnel. The wound ends if the target regains any hit points or if a creature uses an action to stanch the wound, which requires a successful 15 Wisdom (Medicine) check."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": null,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "14 (4d6)"
+                }
+              ]
+            }
           }
         ],
         "legendary": [
@@ -1737,17 +2772,36 @@
         "page": 242,
         "size": "M",
         "type": "fiend",
-        "ac": [{ "ac": 15, "from": ["natural armor"] }],
-        "hp": { "average": 84, "formula": "13d8 + 26" },
-        "speed": { "walk": 40 },
+        "ac": [
+          {
+            "ac": 15,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 84,
+          "formula": "13d8 + 26"
+        },
+        "speed": {
+          "walk": 40
+        },
         "str": 12,
         "dex": 18,
         "con": 14,
         "int": 14,
         "wis": 15,
         "cha": 16,
-        "save": { "str": "+4", "dex": "+7", "con": "+5", "wis": "+5" },
-        "skill": { "athletics": "+7", "perception": "+5", "survival": "+5" },
+        "save": {
+          "str": "+4",
+          "dex": "+7",
+          "con": "+5",
+          "wis": "+5"
+        },
+        "skill": {
+          "athletics": "+7",
+          "perception": "+5",
+          "survival": "+5"
+        },
         "senses": ["darkvision 120 ft."],
         "passive": 15,
         "conditionImmune": ["charmed", "frightened"],
@@ -1766,12 +2820,35 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The slasher makes two Slasher's Knife attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The slasher makes two Slasher's Knife attacks."]
+          },
           {
             "name": "Slasher's Knife",
             "entries": [
               "Melee Weapon Attack:,rw +7 to hit, reach 5 ft. or range 30/60 ft., one target. 6 (1d4 + 4) slashing damage plus 21 (6d6) necrotic damage. If the target is a creature, it suffers a lingering wound that causes it to take 7 (2d6) necrotic damage at the start of each of its turns. Each time the slasher hits the wounded target with this attack, the damage dealt by the wound increases by 3 (1d6). The wound ends if the target regains hit points or if a creature uses an action to stanch the wound, which requires a successful 15 Wisdom (Medicine) check."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d4+4"
+                },
+                {
+                  "type": "necrotic",
+                  "damage": "6d6"
+                },
+                {
+                  "type": "necrotic",
+                  "damage": "2d6"
+                }
+              ]
+            }
           }
         ],
         "legendary": [
@@ -1779,7 +2856,19 @@
             "name": "Slice",
             "entries": [
               "Melee Weapon Attack:,rw +7 to hit, reach 5 ft. or range 30/60 ft., one target. 7 (1d6 + 4) slashing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d6+4"
+                }
+              ]
+            }
           },
           {
             "name": "Vanishing Strike (Costs 3 Actions)",
@@ -1803,17 +2892,35 @@
         "page": 246,
         "size": "M",
         "type": "monstrosity",
-        "ac": [{ "ac": 16, "from": ["natural armor"] }],
-        "hp": { "average": 52, "formula": "7d8 + 21" },
-        "speed": { "walk": 30, "fly": 40 },
+        "ac": [
+          {
+            "ac": 16,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 52,
+          "formula": "7d8 + 21"
+        },
+        "speed": {
+          "walk": 30,
+          "fly": 40
+        },
         "str": 17,
         "dex": 14,
         "con": 16,
         "int": 11,
         "wis": 17,
         "cha": 10,
-        "save": { "str": "+5", "dex": "+4", "wis": "+5" },
-        "skill": { "perception": "+5", "stealth": "+6" },
+        "save": {
+          "str": "+5",
+          "dex": "+4",
+          "wis": "+5"
+        },
+        "skill": {
+          "perception": "+5",
+          "stealth": "+6"
+        },
         "senses": ["darkvision 120 ft."],
         "passive": 15,
         "resist": ["necrotic"],
@@ -1837,13 +2944,45 @@
             "name": "Claw",
             "entries": [
               "Melee Weapon Attack: +5 to hit, reach 5 ft., one target. 7 (1d8 + 3) slashing damage plus 6 (1d12 + 3) acid damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d8+3"
+                },
+                {
+                  "type": "acid",
+                  "damage": "1d12+3"
+                }
+              ]
+            }
           },
           {
             "name": "Proboscis",
             "entries": [
               "Melee Weapon Attack: +5 to hit, reach 5 ft., one creature. 8 (1d10 + 3) piercing damage plus 10 (3d6) necrotic damage, and the strigoi regains hit points equal to the amount of necrotic damage dealt. A creature reduced to 0 hit points from this attack dies and leaves nothing behind except its skin and its equipment."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d10+3"
+                },
+                {
+                  "type": "necrotic",
+                  "damage": "3d6"
+                }
+              ]
+            }
           },
           {
             "name": "Ravenous Children (1/Day)",
@@ -1866,17 +3005,27 @@
         "alignment": ["U"],
         "page": 235,
         "size": "M",
-        "type": { "type": "monstrosity", "swarmSize": "T" },
+        "type": {
+          "type": "monstrosity",
+          "swarmSize": "T"
+        },
         "ac": [12],
-        "hp": { "average": 24, "formula": "7d6" },
-        "speed": { "walk": 25 },
+        "hp": {
+          "average": 24,
+          "formula": "7d6"
+        },
+        "speed": {
+          "walk": 25
+        },
         "str": 12,
         "dex": 14,
         "con": 10,
         "int": 12,
         "wis": 14,
         "cha": 4,
-        "skill": { "perception": "+4" },
+        "skill": {
+          "perception": "+4"
+        },
         "senses": ["darkvision 30 ft."],
         "passive": 14,
         "resist": ["bludgeoning", "piercing", "slashing"],
@@ -1911,7 +3060,27 @@
             "name": "Bites",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 0 ft., one target in the swarm's space. 12 (3d6 + 2) piercing damage, or 5 (1d6 + 2) piercing damage if the swarm has half of its hit points or fewer, plus 7 (2d6) force damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 0,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "3d6+2"
+                },
+                {
+                  "type": "piercing",
+                  "damage": "1d6+2"
+                },
+                {
+                  "type": "force",
+                  "damage": "2d6"
+                }
+              ]
+            }
           }
         ],
         "reaction": [
@@ -1935,10 +3104,19 @@
         "page": 247,
         "alignment": ["U"],
         "size": "M",
-        "type": { "type": "beast", "swarmSize": "T" },
+        "type": {
+          "type": "beast",
+          "swarmSize": "T"
+        },
         "ac": [11],
-        "hp": { "average": 22, "formula": "5d8" },
-        "speed": { "walk": 20, "swim": 20 },
+        "hp": {
+          "average": 22,
+          "formula": "5d8"
+        },
+        "speed": {
+          "walk": 20,
+          "swim": 20
+        },
         "str": 3,
         "dex": 12,
         "con": 10,
@@ -1982,7 +3160,30 @@
                   "5-6. The creature has disadvantage on ability checks and attack rolls until it finishes its next long rest. The disease lasts until it's removed by magic or until the creature rolls the same random effect for the disease two long rests in a row."
                 ]
               }
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 0,
+              "toHit": 3,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "4d4"
+                },
+                {
+                  "type": "piercing",
+                  "damage": "2d4"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "blinded",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           }
         ],
         "senseTags": ["B"],
@@ -1998,10 +3199,25 @@
         "alignment": ["U"],
         "page": 247,
         "size": "M",
-        "type": { "type": "beast", "swarmSize": "T" },
-        "ac": [{ "ac": 13, "from": ["natural armor"] }],
-        "hp": { "average": 27, "formula": "5d8 + 5" },
-        "speed": { "walk": 30, "burrow": 30, "climb": 30 },
+        "type": {
+          "type": "beast",
+          "swarmSize": "T"
+        },
+        "ac": [
+          {
+            "ac": 13,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 27,
+          "formula": "5d8 + 5"
+        },
+        "speed": {
+          "walk": 30,
+          "burrow": 30,
+          "climb": 30
+        },
         "str": 3,
         "dex": 14,
         "con": 13,
@@ -2047,7 +3263,27 @@
             "name": "Ravenous Bites",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 0 ft., one target in the swarm's space. 14 (4d6) piercing damage, or 7 (2d6) piercing damage if the swarm has half of its hit points or fewer. If the target is a creature, scarabs burrow into its body, and the creature takes 3 (1d6) piercing damage at the start of each of its turns. Any creature can use an action to kill or remove the scarabs with fire or a weapon that deals piercing damage, causing 1 damage of the appropriate type to the target. A creature reduced to 0 hit points by the swarm's piercing damage dies."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 0,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "4d6"
+                },
+                {
+                  "type": "piercing",
+                  "damage": "2d6"
+                },
+                {
+                  "type": "piercing",
+                  "damage": "1d6"
+                }
+              ]
+            }
           }
         ],
         "traitTags": ["Spider Climb"],
@@ -2062,10 +3298,19 @@
         "page": 254,
         "alignment": ["U"],
         "size": "M",
-        "type": { "type": "undead", "swarmSize": "T" },
+        "type": {
+          "type": "undead",
+          "swarmSize": "T"
+        },
         "ac": [10],
-        "hp": { "average": 22, "formula": "5d8" },
-        "speed": { "walk": 30, "climb": 30 },
+        "hp": {
+          "average": 22,
+          "formula": "5d8"
+        },
+        "speed": {
+          "walk": 30,
+          "climb": 30
+        },
         "str": 14,
         "dex": 10,
         "con": 10,
@@ -2110,13 +3355,52 @@
             "name": "Undead Mass",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 0 ft., one target in the swarm's space. 5 (1d6 + 2) bludgeoning damage, or 4 (1d4 + 2) bludgeoning damage if the swarm has half of its hit points or fewer."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 0,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d6+2"
+                },
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d4+2"
+                }
+              ]
+            }
           },
           {
             "name": "Grasping Limbs",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 0 ft., one creature in the swarm's space. 7 (2d6) necrotic damage, and the creature must succeed on a 12 Strength saving throw or be restrained. The creature can repeat the saving throw at the end of each of its turns, taking 7 (2d6) necrotic damage on a failed save. The creature is freed if it succeeds on this saving throw, the swarm moves out of the creature's space, or the swarm dies."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 0,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "necrotic",
+                  "damage": "2d6"
+                },
+                {
+                  "type": "necrotic",
+                  "damage": "2d6"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "restrained",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           }
         ],
         "senseTags": ["B"],
@@ -2134,19 +3418,35 @@
         "size": "H",
         "type": "monstrosity",
         "ac": [
-          { "ac": 15, "from": ["natural armor"] },
-          { "ac": 17, "from": ["Aberrant Armor Only"] }
+          {
+            "ac": 15,
+            "from": ["natural armor"]
+          },
+          {
+            "ac": 17,
+            "from": ["Aberrant Armor Only"]
+          }
         ],
-        "hp": { "average": 95, "formula": "10d10 + 40" },
-        "speed": { "walk": 40 },
+        "hp": {
+          "average": 95,
+          "formula": "10d10 + 40"
+        },
+        "speed": {
+          "walk": 40
+        },
         "str": 21,
         "dex": 13,
         "con": 19,
         "int": 3,
         "wis": 14,
         "cha": 17,
-        "save": { "con": "+7", "wis": "+5" },
-        "skill": { "perception": "+5" },
+        "save": {
+          "con": "+7",
+          "wis": "+5"
+        },
+        "skill": {
+          "perception": "+5"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 15,
         "cr": "8",
@@ -2177,12 +3477,27 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The horror makes two Limbs attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The horror makes two Limbs attacks."]
+          },
           {
             "name": "Limbs",
             "entries": [
               "Melee Weapon Attack: +8 to hit, reach 5 ft., one target. 21 (3d10 + 5) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 8,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "3d10+5"
+                }
+              ]
+            }
           },
           {
             "name": "Hex Blast (Recharge 5-6)",
@@ -2367,17 +3682,36 @@
         "alignment": ["U"],
         "size": "M",
         "type": "undead",
-        "ac": [{ "ac": 15, "from": ["natural armor"] }],
-        "hp": { "average": 85, "formula": "10d8 + 40" },
-        "speed": { "walk": 30, "climb": 30 },
+        "ac": [
+          {
+            "ac": 15,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 85,
+          "formula": "10d8 + 40"
+        },
+        "speed": {
+          "walk": 30,
+          "climb": 30
+        },
         "str": 18,
         "dex": 18,
         "con": 18,
         "int": 5,
         "wis": 15,
         "cha": 18,
-        "save": { "dex": "+7", "int": "+0", "wis": "+5", "cha": "+7" },
-        "skill": { "perception": "+5", "stealth": "+7" },
+        "save": {
+          "dex": "+7",
+          "int": "+0",
+          "wis": "+5",
+          "cha": "+7"
+        },
+        "skill": {
+          "perception": "+5",
+          "stealth": "+7"
+        },
         "senses": ["darkvision 120 ft."],
         "passive": 15,
         "resist": ["necrotic", "psychic"],
@@ -2413,19 +3747,64 @@
             "name": "Claw",
             "entries": [
               "Melee Weapon Attack: +7 to hit, reach 5 ft., one target. 8 (1d8 + 4) slashing damage plus 10 (3d6) necrotic damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d8+4"
+                },
+                {
+                  "type": "necrotic",
+                  "damage": "3d6"
+                }
+              ]
+            }
           },
           {
             "name": "Tentacles",
             "entries": [
               "Melee Weapon Attack: +7 to hit, reach 5 ft., one creature. 11 (1d6 + 4) piercing damage, and if the target is a creature, it is grappled (escape 15)."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d6+4"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "grappled",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Drink Sapience",
             "entries": [
               "The mind flayer targets one creature it is grappling. The target must succeed on a 15 Wisdom saving throw or take 14 (4d6) psychic damage and gain 1 level of exhaustion. The mind flayer regains a number of hit points equal to the psychic damage dealt. A creature reduced to 0 hit points by the psychic damage dies."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 0,
+              "toHit": null,
+              "targets": 1,
+              "save": {
+                "dc": 18,
+                "ability": "CON"
+              }
+            }
           }
         ],
         "bonus": [
@@ -2453,16 +3832,28 @@
         "alignment": ["U"],
         "size": "H",
         "type": "undead",
-        "ac": [{ "ac": 12, "from": ["natural armor"] }],
-        "hp": { "average": 104, "formula": "11d12 + 33" },
-        "speed": { "walk": 40 },
+        "ac": [
+          {
+            "ac": 12,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 104,
+          "formula": "11d12 + 33"
+        },
+        "speed": {
+          "walk": 40
+        },
         "str": 20,
         "dex": 10,
         "con": 16,
         "int": 3,
         "wis": 8,
         "cha": 10,
-        "save": { "con": "+6" },
+        "save": {
+          "con": "+6"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 9,
         "immune": ["poison"],
@@ -2495,19 +3886,44 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The zombie makes two Slam attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The zombie makes two Slam attacks."]
+          },
           {
             "name": "Slam",
             "entries": [
               "Melee Weapon Attack: +8 to hit, reach 10 ft., one target. 18 (3d8 + 5) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 8,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "3d8+5"
+                }
+              ]
+            }
           },
           {
             "name": "Flesh Entomb (Recharge 5-6)",
             "entries": [
               "The zombie flings a detached clump of corpses at a creature it can see within 30 feet of it. The target must succeed on a 16 Strength saving throw or take 16 (3d10) bludgeoning damage, and if the target is a Large or smaller creature, it becomes entombed in dead flesh.",
               "A creature entombed in the dead flesh is restrained, has total cover against attacks and other effects outside the dead flesh, and takes 10 (3d6) necrotic damage at the start of each of its turns. The creature can be freed if the dead flesh is destroyed. The dead flesh is a Large object with AC 10, 25 hit points, and immunity to poison and psychic damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 30,
+              "toHit": null,
+              "targets": 1,
+              "save": {
+                "dc": 17,
+                "ability": "STR"
+              }
+            }
           }
         ],
         "traitTags": ["Undead Fortitude"],
@@ -2528,8 +3944,13 @@
         "size": "M",
         "type": "undead",
         "ac": [10],
-        "hp": { "average": 78, "formula": "12d8 + 24" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 78,
+          "formula": "12d8 + 24"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 16,
         "dex": 10,
         "con": 15,
@@ -2562,18 +3983,54 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The plague spreader makes two Slam attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The plague spreader makes two Slam attacks."]
+          },
           {
             "name": "Slam",
             "entries": [
               "Melee Weapon Attack: +5 to hit, reach 5 ft., one target. 6 (1d6 + 3) bludgeoning damage plus 9 (2d8) necrotic damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d6+3"
+                },
+                {
+                  "type": "necrotic",
+                  "damage": "2d8"
+                }
+              ]
+            }
           },
           {
             "name": "Virulent Miasma (1/Day)",
             "entries": [
               "The plague spreader releases toxic gas in a 30-foot-radius sphere centered on itself. Each creature in that area must make a 12 Constitution saving throw, taking 14 (4d6) poison damage on a failed save, or half as much damage on a successful one. A Humanoid reduced to 0 hit points by this damage dies and rises as a zombie (see its stat block in the Monster Manual) 1 minute later. The zombie acts immediately after the plague spreader in the initiative count."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 0,
+              "toHit": null,
+              "targets": -1,
+              "damage": [
+                {
+                  "type": "poison",
+                  "damage": "7d6",
+                  "when": "failure"
+                }
+              ],
+              "save": {
+                "dc": 15,
+                "ability": "CON"
+              }
+            }
           }
         ],
         "traitTags": ["Undead Fortitude"],
@@ -2602,7 +4059,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/VRGR/Bodytaker Plant.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/VRGR/Bodytaker Plant.jpg"
+            }
           }
         ]
       },
@@ -2620,7 +4080,13 @@
           }
         ],
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/VRGR/Boneless.jpg" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/VRGR/Boneless.jpg"
+            }
+          }
         ]
       },
       {
@@ -2639,7 +4105,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/VRGR/Carrion Stalker.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/VRGR/Carrion Stalker.jpg"
+            }
           }
         ]
       },
@@ -2659,7 +4128,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/VRGR/Carrionette.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/VRGR/Carrionette.jpg"
+            }
           }
         ]
       },
@@ -2689,7 +4161,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/VRGR/Deaths Head.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/VRGR/Deaths Head.jpg"
+            }
           }
         ]
       },
@@ -2742,7 +4217,13 @@
           }
         ],
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/VRGR/Dullahan.jpg" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/VRGR/Dullahan.jpg"
+            }
+          }
         ]
       },
       {
@@ -2758,7 +4239,13 @@
           }
         ],
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/VRGR/Elise.jpg" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/VRGR/Elise.jpg"
+            }
+          }
         ]
       },
       {
@@ -2776,7 +4263,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/VRGR/Gallows Speaker.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/VRGR/Gallows Speaker.jpg"
+            }
           }
         ]
       },
@@ -2814,7 +4304,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/VRGR/Greater Star Spawn Emissary.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/VRGR/Greater Star Spawn Emissary.jpg"
+            }
           }
         ]
       },
@@ -2832,7 +4325,13 @@
           }
         ],
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/VRGR/Gremishka.jpg" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/VRGR/Gremishka.jpg"
+            }
+          }
         ]
       },
       {
@@ -2852,7 +4351,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/VRGR/Inquisitor of the Mind Fire.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/VRGR/Inquisitor of the Mind Fire.jpg"
+            }
           }
         ]
       },
@@ -2873,7 +4375,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/VRGR/Inquisitor of the Sword.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/VRGR/Inquisitor of the Sword.jpg"
+            }
           }
         ]
       },
@@ -2894,7 +4399,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/VRGR/Inquisitor of the Tome.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/VRGR/Inquisitor of the Tome.jpg"
+            }
           }
         ]
       },
@@ -2913,7 +4421,13 @@
           }
         ],
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/VRGR/Isolde.jpg" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/VRGR/Isolde.jpg"
+            }
+          }
         ]
       },
       {
@@ -2929,7 +4443,13 @@
           }
         ],
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/VRGR/Jiangshi.jpg" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/VRGR/Jiangshi.jpg"
+            }
+          }
         ]
       },
       {
@@ -2991,7 +4511,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/VRGR/Loup Garou.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/VRGR/Loup Garou.jpg"
+            }
           }
         ]
       },
@@ -3008,7 +4531,13 @@
           }
         ],
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/VRGR/Necrichor.jpg" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/VRGR/Necrichor.jpg"
+            }
+          }
         ]
       },
       {
@@ -3025,7 +4554,13 @@
           }
         ],
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/VRGR/Nosferatu.jpg" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/VRGR/Nosferatu.jpg"
+            }
+          }
         ]
       },
       {
@@ -3134,7 +4669,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/VRGR/Priest of Osybus.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/VRGR/Priest of Osybus.jpg"
+            }
           }
         ]
       },
@@ -3231,7 +4769,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/VRGR/Relentless Juggernaut.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/VRGR/Relentless Juggernaut.jpg"
+            }
           }
         ]
       },
@@ -3340,7 +4881,13 @@
           }
         ],
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/VRGR/Strigoi.jpg" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/VRGR/Strigoi.jpg"
+            }
+          }
         ]
       },
       {
@@ -3359,7 +4906,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/VRGR/Swarm of Gremishkas.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/VRGR/Swarm of Gremishkas.jpg"
+            }
           }
         ]
       },
@@ -3392,7 +4942,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/VRGR/Swarm of Maggots.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/VRGR/Swarm of Maggots.jpg"
+            }
           }
         ]
       },
@@ -3586,7 +5139,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/VRGR/Unspeakable Horror.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/VRGR/Unspeakable Horror.jpg"
+            }
           }
         ]
       },
@@ -3605,7 +5161,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/VRGR/Vampiric Mind Flayer.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/VRGR/Vampiric Mind Flayer.jpg"
+            }
           }
         ]
       },
@@ -3655,7 +5214,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/VRGR/Zombie Clot.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/VRGR/Zombie Clot.jpg"
+            }
           }
         ]
       },

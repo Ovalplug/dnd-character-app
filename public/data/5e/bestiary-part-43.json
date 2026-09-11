@@ -9,9 +9,20 @@
         "size": "M",
         "type": "construct",
         "alignment": ["U"],
-        "ac": [{ "ac": 16, "from": ["natural armor"] }],
-        "hp": { "average": 24, "formula": "3d8" },
-        "speed": { "walk": 10, "fly": 50 },
+        "ac": [
+          {
+            "ac": 16,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 24,
+          "formula": "3d8"
+        },
+        "speed": {
+          "walk": 10,
+          "fly": 50
+        },
         "str": 10,
         "dex": 14,
         "con": 10,
@@ -28,7 +39,51 @@
             "name": "Sting",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 5 ft., one creature. Hit: 5 (1d6 + 2) piercing damage, and the target must make a DC 11 Constitution saving throw, taking 10 (3d6) poison damage on a failed save, or half as much damage on a successful one. If the poison damage reduces the target to 0 hit points, the target is stable but poisoned for 1 hour, even after regaining hit points, and is paralyzed while poisoned in this way."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ability",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d6+2",
+                  "when": "failure"
+                },
+                {
+                  "type": "piercing",
+                  "damage": "0",
+                  "when": "success"
+                },
+                {
+                  "type": "poison",
+                  "damage": "3d6",
+                  "when": "failure"
+                },
+                {
+                  "type": "poison",
+                  "damage": "0",
+                  "when": "success"
+                }
+              ],
+              "save": {
+                "dc": 11,
+                "ability": "CON"
+              },
+              "inflictsConditions": [
+                {
+                  "condition": "paralyzed",
+                  "save": "none",
+                  "escape": null
+                },
+                {
+                  "condition": "poisoned",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -43,17 +98,32 @@
         "size": "L",
         "type": "elemental",
         "alignment": ["C", "E"],
-        "ac": [{ "ac": 17, "from": ["natural armor"] }],
-        "hp": { "average": 147, "formula": "14d10 + 70" },
-        "speed": { "walk": 30, "fly": 60 },
+        "ac": [
+          {
+            "ac": 17,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 147,
+          "formula": "14d10 + 70"
+        },
+        "speed": {
+          "walk": 30,
+          "fly": 60
+        },
         "str": 19,
         "dex": 11,
         "con": 20,
         "int": 6,
         "wis": 11,
         "cha": 9,
-        "save": { "wis": "+4" },
-        "skill": { "perception": "+4" },
+        "save": {
+          "wis": "+4"
+        },
+        "skill": {
+          "perception": "+4"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 14,
         "resist": [
@@ -85,13 +155,37 @@
             "name": "Headbutt",
             "entries": [
               "Melee Weapon Attack: +8 to hit, reach 5 ft., one target. Hit: 11 (2d6 + 4) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 8,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "2d6+4"
+                }
+              ]
+            }
           },
           {
             "name": "Lightning Bolt Blades",
             "entries": [
               "Melee Weapon Attack: +8 to hit, reach 5 ft., one target. Hit: 9 (2d4 + 4) slashing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 8,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "2d4+4"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -109,16 +203,28 @@
         "size": "M",
         "type": "fiend",
         "alignment": ["L", "E"],
-        "ac": [{ "ac": 15, "from": ["natural armor"] }],
-        "hp": { "average": 45, "formula": "7d8 + 14" },
-        "speed": { "walk": 50 },
+        "ac": [
+          {
+            "ac": 15,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 45,
+          "formula": "7d8 + 14"
+        },
+        "speed": {
+          "walk": 50
+        },
         "str": 17,
         "dex": 12,
         "con": 14,
         "int": 6,
         "wis": 13,
         "cha": 6,
-        "skill": { "perception": "+5" },
+        "skill": {
+          "perception": "+5"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 15,
         "immune": ["cold"],
@@ -143,7 +249,23 @@
             "name": "Bite",
             "entries": [
               "Melee Weapon Attack: +5 to hit, reach 5 ft., one target. Hit: 7 (1d8 + 3) piercing damage plus 7 (2d6) cold damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d8+3"
+                },
+                {
+                  "type": "cold",
+                  "damage": "2d6"
+                }
+              ]
+            }
           },
           {
             "name": "Freezing Breath (Recharge 5-6)",

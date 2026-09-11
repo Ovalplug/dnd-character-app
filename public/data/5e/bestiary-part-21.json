@@ -10,16 +10,29 @@
         "size": "M",
         "type": "monstrosity",
         "alignment": ["U"],
-        "ac": [{ "ac": 15, "from": ["natural armor"] }],
-        "hp": { "average": 60, "formula": "8d8 + 24" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 15,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 60,
+          "formula": "8d8 + 24"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 16,
         "dex": 12,
         "con": 16,
         "int": 3,
         "wis": 12,
         "cha": 5,
-        "skill": { "perception": "+3", "stealth": "+5" },
+        "skill": {
+          "perception": "+3",
+          "stealth": "+5"
+        },
         "senses": ["blindsight 60 ft."],
         "passive": 13,
         "cr": "4",
@@ -54,13 +67,37 @@
             "name": "Bite",
             "entries": [
               "Melee Weapon Attack: +5 to hit, reach 5 ft., one target. Hit: 7 (1d8 + 3) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d8+3"
+                }
+              ]
+            }
           },
           {
             "name": "Claw",
             "entries": [
               "Melee Weapon Attack: +5 to hit, reach 5 ft., one target. Hit: 12 (2d8 + 3) slashing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "2d8+3"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -74,20 +111,37 @@
         "name": "Thessalhydra",
         "source": "HftT",
         "page": 41,
-        "otherSources": [{ "source": "IMR" }],
+        "otherSources": [
+          {
+            "source": "IMR"
+          }
+        ],
         "size": "H",
         "type": "monstrosity",
         "alignment": ["U"],
-        "ac": [{ "ac": 14, "from": ["natural armor"] }],
-        "hp": { "average": 69, "formula": "6d12 + 30" },
-        "speed": { "walk": 30, "swim": 30 },
+        "ac": [
+          {
+            "ac": 14,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 69,
+          "formula": "6d12 + 30"
+        },
+        "speed": {
+          "walk": 30,
+          "swim": 30
+        },
         "str": 19,
         "dex": 12,
         "con": 20,
         "int": 5,
         "wis": 10,
         "cha": 7,
-        "skill": { "perception": "+4" },
+        "skill": {
+          "perception": "+4"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 14,
         "immune": ["acid"],
@@ -102,25 +156,93 @@
             "name": "Flurry of Bites",
             "entries": [
               "Melee Weapon Attack: +7 to hit, reach 10 ft., one target. Hit: 7 (1d6 + 4) piercing damage plus 10 (4d4) poison damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d6+4"
+                },
+                {
+                  "type": "poison",
+                  "damage": "4d4"
+                }
+              ]
+            }
           },
           {
             "name": "Maw",
             "entries": [
               "Melee Weapon Attack: +7 to hit, reach 5 ft., one target. Hit: 9 (1d10 + 4) piercing damage plus 5 (1d10) acid damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d10+4"
+                },
+                {
+                  "type": "acid",
+                  "damage": "1d10"
+                }
+              ]
+            }
           },
           {
             "name": "Tail Pincer",
             "entries": [
               "Melee Weapon Attack: +7 to hit, reach 10 ft., one target. Hit: 10 (1d12 + 4) slashing damage, and the target is grappled. As an action, the target can escape the grapple by succeeding on a DC 14 Strength (Athletics) or Dexterity (Acrobatics) check (its choice). Until this grapple ends, the thessalhydra can't use its tail pincer."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d12+4"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "grappled",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Acid Saliva (Recharge 5-6)",
             "entries": [
               "The thessalhydra spits a glob of acid at a point it can see within 30 feet of it. Each creature within 10 feet of that point must make a DC 15 Dexterity saving throw, taking 18 (4d8) acid damage on a failed save, or half as much damage on a successful one."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 0,
+              "toHit": null,
+              "targets": 1,
+              "save": {
+                "dc": 15,
+                "ability": "DEXTERITY"
+              },
+              "damage": [
+                {
+                  "type": "acid",
+                  "damage": "1d6",
+                  "when": "failure"
+                }
+              ]
+            }
           }
         ],
         "legendaryActions": 2,
@@ -129,7 +251,10 @@
             "name": "Detect",
             "entries": ["The thessalhydra makes a Wisdom (Perception) check with advantage."]
           },
-          { "name": "Tail Swipe", "entries": ["The thessalhydra makes a tail pincer attack."] }
+          {
+            "name": "Tail Swipe",
+            "entries": ["The thessalhydra makes a tail pincer attack."]
+          }
         ],
         "hasToken": true,
         "senseTags": ["D"],
@@ -159,7 +284,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/HftT/Demogorgon.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/HftT/Demogorgon.jpg"
+            }
           }
         ]
       },
@@ -182,7 +310,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/HftT/Thessalhydra.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/HftT/Thessalhydra.jpg"
+            }
           }
         ]
       }

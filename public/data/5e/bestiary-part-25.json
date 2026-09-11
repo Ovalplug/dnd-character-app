@@ -9,20 +9,41 @@
         "isNamedCreature": true,
         "source": "KftGV",
         "page": 159,
-        "size": ["M"],
-        "type": { "type": "elemental", "tags": ["wizard"] },
+        "size": "M",
+        "type": {
+          "type": "elemental",
+          "tags": ["wizard"]
+        },
         "alignment": ["N", "E"],
         "ac": [12],
-        "hp": { "average": 123, "formula": "19d8 + 38" },
-        "speed": { "walk": 30, "fly": { "number": 30, "condition": "(hover)" }, "canHover": true },
+        "hp": {
+          "average": 123,
+          "formula": "19d8 + 38"
+        },
+        "speed": {
+          "walk": 30,
+          "fly": {
+            "number": 30,
+            "condition": "(hover)"
+          },
+          "canHover": true
+        },
         "str": 8,
         "dex": 14,
         "con": 15,
         "int": 20,
         "wis": 14,
         "cha": 16,
-        "save": { "int": "+9", "wis": "+6", "cha": "+7" },
-        "skill": { "arcana": "+9", "deception": "+7", "perception": "+6" },
+        "save": {
+          "int": "+9",
+          "wis": "+6",
+          "cha": "+7"
+        },
+        "skill": {
+          "arcana": "+9",
+          "deception": "+7",
+          "perception": "+6"
+        },
         "passive": 16,
         "immune": ["fire"],
         "languages": ["Common", "Draconic", "Elvish", "Ignan"],
@@ -34,9 +55,13 @@
               "Charmayne casts one of the following spells, using Intelligence as the spellcasting ability (spell save DC 17):"
             ],
             "will": ["dancing lights", "mage hand"],
-            "daily": { "3": ["mage armor"], "1e": ["dispel magic", "invisibility", "polymorph"] },
+            "daily": {
+              "3": ["mage armor"],
+              "1e": ["dispel magic", "invisibility", "polymorph"]
+            },
             "ability": "int",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 17
           }
         ],
         "trait": [
@@ -56,13 +81,47 @@
             "name": "Ashen Burst",
             "entries": [
               "Melee or Ranged Spell Attack: +9 to hit, reach 5 ft. or range 60 ft., one target. 17 (5d6) fire damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 60,
+              "toHit": 9,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "fire",
+                  "damage": "5d6"
+                }
+              ]
+            }
           },
           {
             "name": "Cinder Spite (Recharge 5-6)",
             "entries": [
               "Charmayne creates a magical explosion of fire centered on a point she can see within 120 feet of herself. Each creature in a 20-foot-radius sphere centered on that point must make a DC 17 Dexterity saving throw, taking 35 (10d6) fire damage on a failed save, or half as much damage on a successful one. A Humanoid reduced to 0 hit points by this damage dies and is transformed into a Tiny charcoal figurine."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 60,
+              "toHit": null,
+              "targets": -1,
+              "damage": [
+                {
+                  "type": "fire",
+                  "damage": "4d8",
+                  "when": "failure"
+                },
+                {
+                  "type": "fire",
+                  "damage": "2d4",
+                  "when": "success"
+                }
+              ],
+              "save": {
+                "dc": 20,
+                "ability": "DEX"
+              }
+            }
           }
         ],
         "reaction": [
@@ -99,19 +158,32 @@
         "name": "Clockwork Defender",
         "source": "KftGV",
         "page": 85,
-        "size": ["M"],
+        "size": "M",
         "type": "construct",
         "alignment": ["U"],
-        "ac": [{ "ac": 17, "from": ["natural armor"] }],
-        "hp": { "average": 42, "formula": "5d8 + 20" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 17,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 42,
+          "formula": "5d8 + 20"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 16,
         "dex": 15,
         "con": 18,
         "int": 3,
         "wis": 14,
         "cha": 1,
-        "skill": { "perception": "+6", "stealth": "+4" },
+        "skill": {
+          "perception": "+6",
+          "stealth": "+4"
+        },
         "passive": 16,
         "immune": ["poison"],
         "conditionImmune": [
@@ -135,7 +207,30 @@
             "name": "Electrified Bite",
             "entries": [
               "Melee Weapon Attack: +5 to hit, reach 5 ft., one target. 7 (1d8 + 3) piercing damage plus 7 (2d6) lightning damage. If the target is a creature, it must succeed on a DC 13 Strength saving throw or be grappled (escape DC 13). A creature grappled by the defender takes the damage again at the start of each of the defender's turns. The defender can have only one creature grappled in this way at a time, and the defender can't make Electrified Bite attacks while grappling."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d8+3"
+                },
+                {
+                  "type": "lightning",
+                  "damage": "2d6"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "grappled",
+                  "save": "none",
+                  "escape": 13
+                }
+              ]
+            }
           }
         ],
         "bonus": [
@@ -159,19 +254,36 @@
         "name": "Clockwork Observer",
         "source": "KftGV",
         "page": 85,
-        "size": ["T"],
+        "size": "T",
         "type": "construct",
         "alignment": ["U"],
-        "ac": [{ "ac": 14, "from": ["natural armor"] }],
-        "hp": { "average": 7, "formula": "2d4 + 2" },
-        "speed": { "walk": 0, "fly": { "number": 30, "condition": "(hover)" }, "canHover": true },
+        "ac": [
+          {
+            "ac": 14,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 7,
+          "formula": "2d4 + 2"
+        },
+        "speed": {
+          "walk": 0,
+          "fly": {
+            "number": 30,
+            "condition": "(hover)"
+          },
+          "canHover": true
+        },
         "str": 1,
         "dex": 16,
         "con": 13,
         "int": 3,
         "wis": 15,
         "cha": 1,
-        "skill": { "perception": "+6" },
+        "skill": {
+          "perception": "+6"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 16,
         "immune": ["poison"],
@@ -223,19 +335,29 @@
         "isNamedCreature": true,
         "source": "KftGV",
         "page": 53,
-        "size": ["T"],
+        "size": "T",
         "type": "aberration",
         "alignment": ["C", "E"],
         "ac": [13],
-        "hp": { "average": 10, "formula": "3d4 + 3" },
-        "speed": { "walk": 0 },
+        "hp": {
+          "average": 10,
+          "formula": "3d4 + 3"
+        },
+        "speed": {
+          "walk": 0
+        },
         "str": 4,
         "dex": 16,
         "con": 12,
         "int": 16,
         "wis": 16,
         "cha": 16,
-        "skill": { "arcana": "+7", "history": "+7", "persuasion": "+7", "stealth": "+7" },
+        "skill": {
+          "arcana": "+7",
+          "history": "+7",
+          "persuasion": "+7",
+          "stealth": "+7"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 13,
         "immune": ["psychic"],
@@ -268,20 +390,35 @@
         "isNamedCreature": true,
         "source": "KftGV",
         "page": 53,
-        "size": ["M"],
-        "type": { "type": "humanoid", "tags": ["human", "warlock"] },
+        "size": "M",
+        "type": {
+          "type": "humanoid",
+          "tags": ["human", "warlock"]
+        },
         "alignment": ["C", "N"],
         "ac": [12],
-        "hp": { "average": 44, "formula": "8d8 + 8" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 44,
+          "formula": "8d8 + 8"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 8,
         "dex": 15,
         "con": 12,
         "int": 17,
         "wis": 13,
         "cha": 16,
-        "save": { "wis": "+3", "cha": "+5" },
-        "skill": { "arcana": "+7", "history": "+7", "perception": "+3" },
+        "save": {
+          "wis": "+3",
+          "cha": "+5"
+        },
+        "skill": {
+          "arcana": "+7",
+          "history": "+7",
+          "perception": "+3"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 13,
         "immune": ["psychic"],
@@ -293,9 +430,12 @@
             "headerEntries": [
               "Markos casts one of the following spells, requiring no material components and using Charisma as the spellcasting ability (spell save DC 13):"
             ],
-            "daily": { "1e": ["arms of Hadar", "charm person", "mage armor"] },
+            "daily": {
+              "1e": ["arms of Hadar", "charm person", "mage armor"]
+            },
             "ability": "cha",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 13
           }
         ],
         "action": [
@@ -309,13 +449,48 @@
             "name": "Ceremonial Blade",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. 5 (1d6 + 2) piercing damage plus 3 (1d6) poison damage. If the target is a creature, it must succeed on a DC 13 Constitution saving throw or become poisoned for 1 minute. The creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d6+2"
+                },
+                {
+                  "type": "poison",
+                  "damage": "1d6"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "poisoned",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Psychic Orb",
             "entries": [
               "Ranged Spell Attack: +5 to hit, range 60 ft., one creature. 10 (2d6 + 3) psychic damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ranged",
+              "range": 60,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "psychic",
+                  "damage": "2d6+3"
+                }
+              ]
+            }
           }
         ],
         "bonus": [
@@ -347,19 +522,35 @@
         "isNamedCreature": true,
         "source": "KftGV",
         "page": 68,
-        "size": ["M"],
-        "type": { "type": "humanoid", "tags": ["dwarf", "monk"] },
+        "size": "M",
+        "type": {
+          "type": "humanoid",
+          "tags": ["dwarf", "monk"]
+        },
         "alignment": ["N", "E"],
-        "ac": [{ "ac": 17, "from": ["mountain tattoo"] }],
-        "hp": { "average": 102, "formula": "12d8 + 48" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 17,
+            "from": ["mountain tattoo"]
+          }
+        ],
+        "hp": {
+          "average": 102,
+          "formula": "12d8 + 48"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 15,
         "dex": 17,
         "con": 18,
         "int": 16,
         "wis": 14,
         "cha": 16,
-        "save": { "con": "+7", "wis": "+5" },
+        "save": {
+          "con": "+7",
+          "wis": "+5"
+        },
         "skill": {
           "athletics": "+5",
           "deception": "+9",
@@ -399,18 +590,50 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["Prisoner 13 makes two Tattooed Strike attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["Prisoner 13 makes two Tattooed Strike attacks."]
+          },
           {
             "name": "Tattooed Strike",
             "entries": [
               "Melee or Ranged Weapon Attack: +6 to hit, reach 5 ft. or range 60 ft., one target. 12 (2d8 + 3) force damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 60,
+              "toHit": 6,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "force",
+                  "damage": "2d8+3"
+                }
+              ]
+            }
           },
           {
             "name": "Firestorm Tattoo (Recharge 5-6)",
             "entries": [
               "Prisoner 13 magically unleashes flame from the tattoo across her back, filling a 20-foot-radius sphere centered on her. Each other creature in that area must make a DC 15 Dexterity saving throw. On a failed save, the creature takes 13 (3d8) fire damage and is knocked prone. On a successful save, it takes half as much damage and isn't knocked prone."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 20,
+              "toHit": null,
+              "targets": -1,
+              "save": {
+                "dc": 15,
+                "ability": "DEXTERITY"
+              },
+              "damage": [
+                {
+                  "type": "fire",
+                  "damage": "1d6",
+                  "when": "failure"
+                }
+              ]
+            }
           },
           {
             "name": "River Tattoo",
@@ -445,20 +668,40 @@
         "isNamedCreature": true,
         "source": "KftGV",
         "page": 117,
-        "size": ["M"],
-        "type": { "type": "humanoid", "tags": ["bard", "tiefling"] },
+        "size": "M",
+        "type": {
+          "type": "humanoid",
+          "tags": ["bard", "tiefling"]
+        },
         "alignment": ["C", "E"],
-        "ac": [{ "ac": 15, "from": ["Graz'zt's gift"] }],
-        "hp": { "average": 99, "formula": "18d8 + 18" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 15,
+            "from": ["Graz'zt's gift"]
+          }
+        ],
+        "hp": {
+          "average": 99,
+          "formula": "18d8 + 18"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 10,
         "dex": 15,
         "con": 13,
         "int": 14,
         "wis": 11,
         "cha": 16,
-        "save": { "dex": "+5", "wis": "+3" },
-        "skill": { "arcana": "+5", "deception": "+6", "performance": "+6" },
+        "save": {
+          "dex": "+5",
+          "wis": "+3"
+        },
+        "skill": {
+          "arcana": "+5",
+          "deception": "+6",
+          "performance": "+6"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 10,
         "resist": ["fire"],
@@ -471,9 +714,12 @@
               "Sythian casts one of the following spells, using Charisma as the spellcasting ability (spell save DC 14):"
             ],
             "will": ["mage hand", "prestidigitation"],
-            "daily": { "1e": ["charm person", "faerie fire", "unseen servant"] },
+            "daily": {
+              "1e": ["charm person", "faerie fire", "unseen servant"]
+            },
             "ability": "cha",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 14
           }
         ],
         "trait": [
@@ -483,7 +729,10 @@
               "Sythian is frightened while he is within 20 feet of a frog or a toad (of any size) that he can see."
             ]
           },
-          { "name": "Graz'zt's Gift", "entries": ["Sythian's AC includes his Charisma modifier."] }
+          {
+            "name": "Graz'zt's Gift",
+            "entries": ["Sythian's AC includes his Charisma modifier."]
+          }
         ],
         "action": [
           {
@@ -496,19 +745,68 @@
             "name": "Poisoned Shortsword",
             "entries": [
               "Melee Weapon Attack: +5 to hit, reach 5 ft., one target. 5 (1d6 + 2) piercing damage plus 5 (1d10) poison damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d6+2"
+                },
+                {
+                  "type": "poison",
+                  "damage": "1d10"
+                }
+              ]
+            }
           },
           {
             "name": "Poisoned Dart",
             "entries": [
               "Ranged Weapon Attack: +5 to hit, range 20/60 ft., one target. 4 (1d4 + 2) piercing damage plus 5 (1d10) poison damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ranged",
+              "range": 20,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d4+2"
+                },
+                {
+                  "type": "poison",
+                  "damage": "1d10"
+                }
+              ]
+            }
           },
           {
             "name": "Whispers of Azzagrat",
             "entries": [
               "Each creature in a 15-foot cube originating from Sythian must make a DC 14 Wisdom saving throw. On a failed save, a creature takes 18 (4d8) psychic damage and is incapacitated until the end of its next turn. On a successful save, the creature takes half as much damage and isn't incapacitated."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 15,
+              "toHit": null,
+              "targets": 1,
+              "save": {
+                "dc": 14,
+                "ability": "WISDOM"
+              },
+              "damage": [
+                {
+                  "type": "psychic",
+                  "damage": "1d6",
+                  "when": "failure"
+                }
+              ]
+            }
           }
         ],
         "reaction": [
@@ -539,20 +837,39 @@
         "isNamedCreature": true,
         "source": "KftGV",
         "page": 85,
-        "size": ["S"],
-        "type": { "type": "humanoid", "tags": ["gnome"] },
+        "size": "S",
+        "type": {
+          "type": "humanoid",
+          "tags": ["gnome"]
+        },
         "alignment": ["C", "E"],
-        "ac": [{ "ac": 17, "from": ["natural armor", "shield"] }],
-        "hp": { "average": 75, "formula": "10d6 + 40" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 17,
+            "from": ["natural armor", "shield"]
+          }
+        ],
+        "hp": {
+          "average": 75,
+          "formula": "10d6 + 40"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 16,
         "dex": 13,
         "con": 18,
         "int": 17,
         "wis": 9,
         "cha": 10,
-        "save": { "int": "+6", "wis": "+2" },
-        "skill": { "arcana": "+9", "perception": "+2" },
+        "save": {
+          "int": "+6",
+          "wis": "+2"
+        },
+        "skill": {
+          "arcana": "+9",
+          "perception": "+2"
+        },
         "senses": ["truesight 60 ft."],
         "passive": 12,
         "languages": ["Common", "Gnomish", "Terran", "Undercommon"],
@@ -564,9 +881,13 @@
               "Tockworth casts one of the following spells, requiring no material components and using Intelligence as the spellcasting ability (spell save DC 14):"
             ],
             "will": ["nondetection (self only)"],
-            "daily": { "2": ["dimension door"], "1e": ["blindness/deafness", "blur"] },
+            "daily": {
+              "2": ["dimension door"],
+              "1e": ["blindness/deafness", "blur"]
+            },
             "ability": "int",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 14
           }
         ],
         "trait": [
@@ -586,13 +907,41 @@
             "name": "Shortsword",
             "entries": [
               "Melee Weapon Attack: +6 to hit, reach 5 ft., one target. 6 (1d6 + 3) piercing damage plus 10 (3d6) force damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 6,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d6+3"
+                },
+                {
+                  "type": "force",
+                  "damage": "3d6"
+                }
+              ]
+            }
           },
           {
             "name": "Lightning Discharge",
             "entries": [
               "Ranged Spell Attack: +6 to hit, range 60 ft., one creature. 16 (3d10) lightning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ranged",
+              "range": 60,
+              "toHit": 6,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "lightning",
+                  "damage": "3d10"
+                }
+              ]
+            }
           }
         ],
         "bonus": [
@@ -663,7 +1012,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/KftGV/Fragment of Krokulmar.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/KftGV/Fragment of Krokulmar.webp"
+            }
           }
         ]
       },
@@ -682,7 +1034,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/KftGV/Markos Delphi.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/KftGV/Markos Delphi.webp"
+            }
           }
         ]
       },
@@ -757,7 +1112,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/KftGV/Prisoner 13.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/KftGV/Prisoner 13.webp"
+            }
           }
         ]
       },
@@ -779,7 +1137,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/KftGV/Sythian Skalderang.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/KftGV/Sythian Skalderang.webp"
+            }
           }
         ]
       },
@@ -798,7 +1159,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/KftGV/Tixie Tockworth.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/KftGV/Tixie Tockworth.webp"
+            }
           }
         ]
       }

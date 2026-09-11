@@ -10,17 +10,40 @@
         "size": "H",
         "type": "dragon",
         "alignment": ["L", "N"],
-        "ac": [{ "ac": 19, "from": ["natural armor"] }],
-        "hp": { "average": 207, "formula": "18d12 + 60" },
-        "speed": { "walk": 40, "climb": 40, "fly": 80, "burrow": 40 },
+        "ac": [
+          {
+            "ac": 19,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 207,
+          "formula": "18d12 + 60"
+        },
+        "speed": {
+          "walk": 40,
+          "climb": 40,
+          "fly": 80,
+          "burrow": 40
+        },
         "str": 23,
         "dex": 16,
         "con": 21,
         "int": 18,
         "wis": 17,
         "cha": 18,
-        "save": { "dex": "+8", "con": "+10", "wis": "+8", "cha": "+9" },
-        "skill": { "history": "+9", "perception": "+13", "persuasion": "+14", "stealth": "+8" },
+        "save": {
+          "dex": "+8",
+          "con": "+10",
+          "wis": "+8",
+          "cha": "+9"
+        },
+        "skill": {
+          "history": "+9",
+          "perception": "+13",
+          "persuasion": "+14",
+          "stealth": "+8"
+        },
         "senses": ["blindsight 60 ft.", "darkvision 120 ft."],
         "passive": 23,
         "immune": ["thunder"],
@@ -33,8 +56,11 @@
             "headerEntries": [
               "The dragon's innate spellcasting ability is Intelligence (spell save DC 17). It can innately cast the following spells, requiring no components:"
             ],
-            "daily": { "1e": ["scrying", "telekinesis", "teleportation circle"] },
-            "ability": "int"
+            "daily": {
+              "1e": ["scrying", "telekinesis", "teleportation circle"]
+            },
+            "ability": "int",
+            "saveDC": 17
           }
         ],
         "trait": [
@@ -66,35 +92,106 @@
             "name": "Bite",
             "entries": [
               "Melee Weapon Attack: +11 to hit, reach 10 ft., one target. 17 (2d10 + 6) piercing damage plus 3 (1d6) thunder damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 11,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "2d10+6"
+                },
+                {
+                  "type": "thunder",
+                  "damage": "1d6"
+                }
+              ]
+            }
           },
           {
             "name": "Claws",
             "entries": [
               "Melee Weapon Attack: +11 to hit, reach 10 ft., one target. 19 (3d8 + 6) slashing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 11,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "3d8+6"
+                }
+              ]
+            }
           },
           {
             "name": "Tail",
             "entries": [
               "Melee Weapon Attack: +11 to hit, reach 10 ft., one target. 15 (2d8 + 6) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 11,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "2d8+6"
+                }
+              ]
+            }
           },
           {
             "name": "Frightful Presence",
             "entries": [
               "Each creature of the dragon's choice that is within 120 feet of the dragon and aware of it must succeed on a DC 17 Wisdom saving throw or become frightened for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success. If a creature's saving throw is successful or the effect ends for it, the creature is immune to the dragon's Frightful Presence for the next 24 hours."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 0,
+              "toHit": null,
+              "targets": 1,
+              "save": {
+                "dc": 17,
+                "ability": "WISDOM"
+              },
+              "damage": []
+            }
           },
           {
             "name": "Debilitating Breath (Recharge 5-6)",
             "entries": [
               "The dragon exhales a pulse of high-pitched, nearly inaudible sound in a 60-foot-cone. Each creature in that cone must make a DC 18 Constitution saving throw. On a failed save, the creature takes 45 (13d6) thunder damage and is incapacitated until the end of its next turn. On a successful save, the creature takes half as much damage and isn't incapacitated."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 0,
+              "toHit": null,
+              "targets": -1,
+              "save": {
+                "dc": 18,
+                "ability": "CONSTITUTION"
+              },
+              "damage": [
+                {
+                  "type": "thunder",
+                  "damage": "1d6",
+                  "when": "failure"
+                }
+              ]
+            }
           }
         ],
         "legendary": [
-          { "name": "Tail Attack", "entries": ["The dragon makes a tail attack."] },
+          {
+            "name": "Tail Attack",
+            "entries": ["The dragon makes a tail attack."]
+          },
           {
             "name": "Telekinetic Fling",
             "entries": [
@@ -108,7 +205,10 @@
             ]
           }
         ],
-        "legendaryGroup": { "name": "Sapphire Dragon", "source": "SADS" },
+        "legendaryGroup": {
+          "name": "Sapphire Dragon",
+          "source": "SADS"
+        },
         "hasToken": true,
         "traitTags": ["Legendary Resistances"],
         "senseTags": ["B", "SD"],

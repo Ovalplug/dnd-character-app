@@ -11,17 +11,37 @@
         "type": "celestial",
         "alignment": ["N"],
         "alignmentPrefix": "typically ",
-        "ac": [{ "ac": 20, "from": ["natural armor"] }],
-        "hp": { "average": 245, "formula": "14d20 + 98" },
-        "speed": { "walk": 40 },
+        "ac": [
+          {
+            "ac": 20,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 245,
+          "formula": "14d20 + 98"
+        },
+        "speed": {
+          "walk": 40
+        },
         "str": 25,
         "dex": 10,
         "con": 24,
         "int": 27,
         "wis": 24,
         "cha": 20,
-        "save": { "dex": "+6", "int": "+14", "wis": "+13", "cha": "+11" },
-        "skill": { "arcana": "+20", "deception": "+11", "history": "+20", "perception": "+13" },
+        "save": {
+          "dex": "+6",
+          "int": "+14",
+          "wis": "+13",
+          "cha": "+11"
+        },
+        "skill": {
+          "arcana": "+20",
+          "deception": "+11",
+          "history": "+20",
+          "perception": "+13"
+        },
         "senses": ["truesight 120 ft."],
         "passive": 23,
         "resist": ["force"],
@@ -44,9 +64,12 @@
               "The archaic casts one of the following spells, requiring no material components and using Intelligence as the spellcasting ability (spell save DC 22):"
             ],
             "will": ["detect magic", "divination", "sending"],
-            "daily": { "1e": ["banishment", "forcecage"] },
+            "daily": {
+              "1e": ["banishment", "forcecage"]
+            },
             "ability": "int",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 22
           }
         ],
         "trait": [
@@ -76,7 +99,19 @@
             "name": "Force Strike",
             "entries": [
               "Ranged or Melee Spell Attack:  +14 to hit, reach 15 ft. or range 120 ft., one target. 19 (2d10 + 8) force damage, and the target is pulled up to 10 feet toward the archaic or pushed 10 feet away from it, as the archaic chooses."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 15,
+              "toHit": 14,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "force",
+                  "damage": "2d10+8"
+                }
+              ]
+            }
           },
           {
             "name": "Gravity Shift (Recharge 5-6)",
@@ -100,8 +135,14 @@
           }
         ],
         "legendary": [
-          { "name": "Strike", "entries": ["The archaic makes one Force Strike attack."] },
-          { "name": "Teleport", "entries": ["The archaic uses Teleport."] },
+          {
+            "name": "Strike",
+            "entries": ["The archaic makes one Force Strike attack."]
+          },
+          {
+            "name": "Teleport",
+            "entries": ["The archaic uses Teleport."]
+          },
           {
             "name": "Unravel Magic (Costs 2 Actions)",
             "entries": [
@@ -129,15 +170,22 @@
         "alignment": ["N"],
         "alignmentPrefix": "typically ",
         "ac": [11],
-        "hp": { "average": 18, "formula": "4d6 + 4" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 18,
+          "formula": "4d6 + 4"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 6,
         "dex": 13,
         "con": 12,
         "int": 8,
         "wis": 11,
         "cha": 15,
-        "skill": { "performance": "+4" },
+        "skill": {
+          "performance": "+4"
+        },
         "passive": 10,
         "resist": ["cold", "fire"],
         "immune": ["poison"],
@@ -157,13 +205,37 @@
             "name": "Joyful Flare",
             "entries": [
               "Melee Weapon Attack:  +3 to hit, reach 5 ft., one target. 6 (2d4 + 1) fire damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 3,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "fire",
+                  "damage": "2d4+1"
+                }
+              ]
+            }
           },
           {
             "name": "Melancholic Bolt",
             "entries": [
               "Ranged Weapon Attack:  +3 to hit, range 30 ft., one target. 6 (2d4 + 1) cold damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ranged",
+              "range": 30,
+              "toHit": 3,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "cold",
+                  "damage": "2d4+1"
+                }
+              ]
+            }
           },
           {
             "name": "Captivating Artistry (1/Day)",
@@ -187,19 +259,44 @@
         "source": "SCC",
         "page": 186,
         "size": "G",
-        "type": { "type": "dragon", "tags": ["druid"] },
+        "type": {
+          "type": "dragon",
+          "tags": ["druid"]
+        },
         "alignment": ["N", "G"],
-        "ac": [{ "ac": 22, "from": ["natural armor"] }],
-        "hp": { "average": 444, "formula": "24d20 + 192" },
-        "speed": { "walk": 40, "fly": 80, "swim": 40 },
+        "ac": [
+          {
+            "ac": 22,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 444,
+          "formula": "24d20 + 192"
+        },
+        "speed": {
+          "walk": 40,
+          "fly": 80,
+          "swim": 40
+        },
         "str": 28,
         "dex": 14,
         "con": 27,
         "int": 18,
         "wis": 28,
         "cha": 17,
-        "save": { "dex": "+9", "con": "+15", "wis": "+16", "cha": "+10" },
-        "skill": { "arcana": "+18", "medicine": "+16", "nature": "+18", "perception": "+16" },
+        "save": {
+          "dex": "+9",
+          "con": "+15",
+          "wis": "+16",
+          "cha": "+10"
+        },
+        "skill": {
+          "arcana": "+18",
+          "medicine": "+16",
+          "nature": "+18",
+          "perception": "+16"
+        },
         "senses": ["blindsight 120 ft."],
         "passive": 26,
         "immune": ["necrotic", "poison"],
@@ -230,7 +327,10 @@
             "name": "Legendary Resistance (3/Day)",
             "entries": ["If Beledros fails a saving throw, she can choose to succeed instead."]
           },
-          { "name": "Unusual Nature", "entries": ["Beledros doesn't require air, food, or drink."] }
+          {
+            "name": "Unusual Nature",
+            "entries": ["Beledros doesn't require air, food, or drink."]
+          }
         ],
         "action": [
           {
@@ -241,30 +341,105 @@
             "name": "Bite",
             "entries": [
               "Melee Weapon Attack:  +16 to hit, reach 15 ft., one target. 14 (1d10 + 9) piercing damage plus 6 (1d12) necrotic damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 15,
+              "toHit": 16,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d10+9"
+                },
+                {
+                  "type": "necrotic",
+                  "damage": "1d12"
+                }
+              ]
+            }
           },
           {
             "name": "Claw",
             "entries": [
               "Melee Weapon Attack:  +16 to hit, reach 10 ft., one target. 12 (1d6 + 9) slashing damage. If the target is a Huge or smaller creature, it is knocked prone."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 16,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d6+9"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "prone",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Decaying Breath (Recharge 5-6)",
             "entries": [
               "Beledros exhales decaying energy in a 90-foot cone. Each creature in that area must make a DC 23 Constitution saving throw, taking 39 (6d12) necrotic damage and 39 (6d12) poison damage on a failed save, or half as much damage on a successful one. A creature that takes damage from the breath can't regain hit points until the start of Beledros's next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 90,
+              "toHit": null,
+              "targets": -1,
+              "damage": [
+                {
+                  "type": "necrotic",
+                  "damage": "22d6",
+                  "when": "failure"
+                }
+              ],
+              "save": {
+                "dc": 22,
+                "ability": "CON"
+              }
+            }
           },
           {
             "name": "Miasmal Flow",
             "entries": [
               "Beledros becomes a swirling cloud of green mist and can move up to half her flying speed without provoking opportunity attacks, then resumes her true form. During this movement, she can move through creatures and objects as if they were difficult terrain. If she moves through a creature, it must succeed on a DC 23 Constitution saving throw or become poisoned until the end of its next turn. If Beledros ends this move inside an object, she takes 5 (1d10) force damage and is shunted to the nearest unoccupied space."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 0,
+              "toHit": null,
+              "targets": 1,
+              "save": {
+                "dc": 23,
+                "ability": "CONSTITUTION"
+              },
+              "damage": [
+                {
+                  "type": "poison",
+                  "damage": "1d6",
+                  "when": "failure"
+                }
+              ]
+            }
           }
         ],
         "legendary": [
-          { "name": "Claw", "entries": ["Beledros makes one Claw attack."] },
-          { "name": "Miasmal Flow (Costs 2 Actions)", "entries": ["Beledros uses Miasmal Flow."] },
+          {
+            "name": "Claw",
+            "entries": ["Beledros makes one Claw attack."]
+          },
+          {
+            "name": "Miasmal Flow (Costs 2 Actions)",
+            "entries": ["Beledros uses Miasmal Flow."]
+          },
           {
             "name": "Teeming with Life (Costs 3 Actions)",
             "entries": [
@@ -290,16 +465,29 @@
         "size": "L",
         "type": "plant",
         "alignment": ["U"],
-        "ac": [{ "ac": 12, "from": ["natural armor"] }],
-        "hp": { "average": 68, "formula": "8d10 + 24" },
-        "speed": { "walk": 30, "swim": 30 },
+        "ac": [
+          {
+            "ac": 12,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 68,
+          "formula": "8d10 + 24"
+        },
+        "speed": {
+          "walk": 30,
+          "swim": 30
+        },
         "str": 20,
         "dex": 10,
         "con": 17,
         "int": 4,
         "wis": 14,
         "cha": 4,
-        "skill": { "perception": "+4" },
+        "skill": {
+          "perception": "+4"
+        },
         "senses": ["blindsight 10 ft."],
         "passive": 14,
         "resist": ["fire"],
@@ -317,7 +505,30 @@
             "name": "Tusk",
             "entries": [
               "Melee Weapon Attack:  +7 to hit, reach 10 ft., one target. 16 (2d10 + 5) piercing damage plus 3 (1d6) poison damage. If the target is a creature, it must succeed on a DC 15 Strength saving throw or be knocked prone."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "2d10+5"
+                },
+                {
+                  "type": "poison",
+                  "damage": "1d6"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "prone",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           }
         ],
         "senseTags": ["B"],
@@ -336,9 +547,19 @@
         "type": "construct",
         "alignment": ["L", "N"],
         "alignmentPrefix": "typically ",
-        "ac": [{ "ac": 17, "from": ["natural armor"] }],
-        "hp": { "average": 90, "formula": "12d10 + 24" },
-        "speed": { "walk": 40 },
+        "ac": [
+          {
+            "ac": 17,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 90,
+          "formula": "12d10 + 24"
+        },
+        "speed": {
+          "walk": 40
+        },
         "str": 18,
         "dex": 10,
         "con": 15,
@@ -365,7 +586,9 @@
               "The archivist casts one of the following spells, requiring no material components and using Intelligence as the spellcasting ability:"
             ],
             "will": ["dancing lights", "prestidigitation"],
-            "daily": { "2": ["silence"] },
+            "daily": {
+              "2": ["silence"]
+            },
             "ability": "int",
             "displayAs": "action"
           }
@@ -379,12 +602,34 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The archivist makes two Grasping Limb attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The archivist makes two Grasping Limb attacks."]
+          },
           {
             "name": "Grasping Limb",
             "entries": [
               "Melee Weapon Attack:  +6 to hit, reach 15 ft., one target. 13 (2d8 + 4) bludgeoning damage, and the target is grappled (escape DC 14). The archivist can have no more than two targets grappled at a time."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 15,
+              "toHit": 6,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "2d8+4"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "grappled",
+                  "save": "none",
+                  "escape": 14
+                }
+              ]
+            }
           }
         ],
         "traitTags": ["Magic Resistance"],
@@ -407,17 +652,37 @@
         "type": "fiend",
         "alignment": ["L", "E"],
         "alignmentPrefix": "typically ",
-        "ac": [{ "ac": 16, "from": ["natural armor"] }],
-        "hp": { "average": 157, "formula": "15d12 + 60" },
-        "speed": { "walk": 40, "climb": 40 },
+        "ac": [
+          {
+            "ac": 16,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 157,
+          "formula": "15d12 + 60"
+        },
+        "speed": {
+          "walk": 40,
+          "climb": 40
+        },
         "str": 19,
         "dex": 15,
         "con": 19,
         "int": 21,
         "wis": 14,
         "cha": 18,
-        "save": { "int": "+9", "wis": "+6", "cha": "+8" },
-        "skill": { "arcana": "+13", "deception": "+12", "history": "+9", "perception": "+6" },
+        "save": {
+          "int": "+9",
+          "wis": "+6",
+          "cha": "+8"
+        },
+        "skill": {
+          "arcana": "+13",
+          "deception": "+12",
+          "history": "+9",
+          "perception": "+6"
+        },
         "senses": ["truesight 120 ft."],
         "passive": 16,
         "immune": ["psychic"],
@@ -444,13 +709,35 @@
             "name": "Agonizing Burst",
             "entries": [
               "Ranged or Melee Spell Attack:  +9 to hit, reach 10 ft. or range 120 ft., one target. 11 (2d10) force damage. If the target is a creature, the daemogoth regains 5 hit points."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 9,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "force",
+                  "damage": "2d10"
+                }
+              ]
+            }
           },
           {
             "name": "Terrify (Recharge 4-6)",
             "entries": [
               "The daemogoth targets one creature it can see within 120 feet of itself. The target must make a DC 17 Wisdom saving throw. On a failed save, the target takes 33 (6d10) psychic damage and is frightened of the daemogoth until the end of the daemogoth's next turn, and the daemogoth regains 5 hit points. On a successful save, the target takes half as much damage and isn't frightened, and the daemogoth doesn't heal."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 120,
+              "toHit": null,
+              "targets": 1,
+              "save": {
+                "dc": 15,
+                "ability": "WIS"
+              }
+            }
           }
         ],
         "senseTags": ["U"],
@@ -471,17 +758,36 @@
         "type": "fiend",
         "alignment": ["C", "E"],
         "alignmentPrefix": "typically ",
-        "ac": [{ "ac": 17, "from": ["natural armor"] }],
-        "hp": { "average": 203, "formula": "11d20 + 88" },
-        "speed": { "walk": 40 },
+        "ac": [
+          {
+            "ac": 17,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 203,
+          "formula": "11d20 + 88"
+        },
+        "speed": {
+          "walk": 40
+        },
         "str": 26,
         "dex": 10,
         "con": 26,
         "int": 24,
         "wis": 18,
         "cha": 20,
-        "save": { "int": "+12", "wis": "+9", "cha": "+10" },
-        "skill": { "arcana": "+17", "deception": "+15", "history": "+12", "perception": "+9" },
+        "save": {
+          "int": "+12",
+          "wis": "+9",
+          "cha": "+10"
+        },
+        "skill": {
+          "arcana": "+17",
+          "deception": "+15",
+          "history": "+12",
+          "perception": "+9"
+        },
         "senses": ["truesight 120 ft."],
         "passive": 19,
         "immune": ["psychic"],
@@ -502,12 +808,27 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The titan makes two Agonizing Burst attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The titan makes two Agonizing Burst attacks."]
+          },
           {
             "name": "Agonizing Burst",
             "entries": [
               "Ranged or Melee Spell Attack:  +12 to hit, reach 15 ft. or range 120 ft., one target. 17 (3d6 + 7) force damage. If the target is a creature, the titan regains 5 hit points."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 15,
+              "toHit": 12,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "force",
+                  "damage": "3d6+7"
+                }
+              ]
+            }
           },
           {
             "name": "Teleport",
@@ -517,7 +838,10 @@
           }
         ],
         "legendary": [
-          { "name": "Attack", "entries": ["The titan makes one Agonizing Burst attack."] },
+          {
+            "name": "Attack",
+            "entries": ["The titan makes one Agonizing Burst attack."]
+          },
           {
             "name": "Stalking Nightmare (Costs 2 Actions)",
             "entries": [
@@ -548,11 +872,19 @@
         "page": 191,
         "size": "M",
         "sizeNote": "or small",
-        "type": { "type": "humanoid", "tags": ["wizard"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["wizard"]
+        },
         "alignment": ["A"],
         "ac": [11],
-        "hp": { "average": 33, "formula": "6d8 + 6" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 33,
+          "formula": "6d8 + 6"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 8,
         "dex": 12,
         "con": 13,
@@ -569,9 +901,12 @@
               "The student casts one of the following spells, using Intelligence as the spellcasting ability (spell save DC 11):"
             ],
             "will": ["mage hand", "prestidigitation"],
-            "daily": { "1": ["detect magic"] },
+            "daily": {
+              "1": ["detect magic"]
+            },
             "ability": "int",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 11
           }
         ],
         "trait": [
@@ -585,7 +920,19 @@
             "name": "Magic Flare",
             "entries": [
               "Ranged or Melee Spell Attack:  +3 to hit, reach 5 ft. or range 60 ft., one target. 7 (1d12 + 1) force damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 3,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "force",
+                  "damage": "1d12+1"
+                }
+              ]
+            }
           }
         ],
         "reaction": [
@@ -611,8 +958,13 @@
         "alignment": ["N"],
         "alignmentPrefix": "typically ",
         "ac": [12],
-        "hp": { "average": 27, "formula": "6d6 + 6" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 27,
+          "formula": "6d6 + 6"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 12,
         "dex": 14,
         "con": 13,
@@ -637,7 +989,23 @@
             "name": "Quantum Strike",
             "entries": [
               "Melee Weapon Attack:  +3 to hit, reach 5 ft., one target. 3 (1d4 + 1) force damage, or 6 (2d4 + 1) force damage if the fractal is Medium or bigger."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 3,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "force",
+                  "damage": "1d4+1"
+                },
+                {
+                  "type": "force",
+                  "damage": "2d4+1"
+                }
+              ]
+            }
           }
         ],
         "bonus": [
@@ -667,18 +1035,37 @@
         "source": "SCC",
         "page": 193,
         "size": "G",
-        "type": { "type": "dragon", "tags": ["sorcerer"] },
+        "type": {
+          "type": "dragon",
+          "tags": ["sorcerer"]
+        },
         "alignment": ["C", "N"],
-        "ac": [{ "ac": 21, "from": ["natural armor"] }],
-        "hp": { "average": 402, "formula": "23d20 + 161" },
-        "speed": { "walk": 40, "fly": 80 },
+        "ac": [
+          {
+            "ac": 21,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 402,
+          "formula": "23d20 + 161"
+        },
+        "speed": {
+          "walk": 40,
+          "fly": 80
+        },
         "str": 26,
         "dex": 14,
         "con": 25,
         "int": 18,
         "wis": 20,
         "cha": 26,
-        "save": { "dex": "+9", "con": "+14", "wis": "+12", "cha": "+15" },
+        "save": {
+          "dex": "+9",
+          "con": "+14",
+          "wis": "+12",
+          "cha": "+15"
+        },
         "skill": {
           "acrobatics": "+16",
           "arcana": "+18",
@@ -697,9 +1084,12 @@
             "headerEntries": [
               "Galazeth casts one of the following spells, requiring no material components and using Charisma as the spellcasting ability (spell save DC 23):"
             ],
-            "daily": { "1e": ["control water", "gust of wind", "wall of stone"] },
+            "daily": {
+              "1e": ["control water", "gust of wind", "wall of stone"]
+            },
             "ability": "cha",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 23
           }
         ],
         "trait": [
@@ -717,13 +1107,48 @@
             "name": "Bite",
             "entries": [
               "Melee Weapon Attack:  +15 to hit, reach 15 ft., one target. 13 (1d10 + 8) piercing damage plus 5 (1d10) lightning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 15,
+              "toHit": 15,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d10+8"
+                },
+                {
+                  "type": "lightning",
+                  "damage": "1d10"
+                }
+              ]
+            }
           },
           {
             "name": "Claw",
             "entries": [
               "Melee Weapon Attack:  +15 to hit, reach 10 ft., one target. 11 (1d6 + 8) slashing damage. If the target is a Large or smaller creature, it is knocked prone."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 15,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d6+8"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "prone",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Dancing Elements Breath (Recharge 5-6)",
@@ -733,7 +1158,10 @@
           }
         ],
         "legendary": [
-          { "name": "Claw", "entries": ["Galazeth makes one Claw attack."] },
+          {
+            "name": "Claw",
+            "entries": ["Galazeth makes one Claw attack."]
+          },
           {
             "name": "Lightning Flash (Costs 2 Actions)",
             "entries": [
@@ -765,16 +1193,30 @@
         "size": "L",
         "type": "plant",
         "alignment": ["U"],
-        "ac": [{ "ac": 13, "from": ["natural armor"] }],
-        "hp": { "average": 68, "formula": "8d10 + 24" },
-        "speed": { "walk": 30, "swim": 30 },
+        "ac": [
+          {
+            "ac": 13,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 68,
+          "formula": "8d10 + 24"
+        },
+        "speed": {
+          "walk": 30,
+          "swim": 30
+        },
         "str": 20,
         "dex": 10,
         "con": 17,
         "int": 4,
         "wis": 13,
         "cha": 7,
-        "skill": { "perception": "+3", "stealth": "+4" },
+        "skill": {
+          "perception": "+3",
+          "stealth": "+4"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 13,
         "cr": "4",
@@ -785,7 +1227,10 @@
               "If the groff is motionless at the start of combat, it has advantage on its initiative roll. Moreover, if a creature hasn't observed the groff move or act, that creature must succeed on a DC 18 Intelligence (Investigation) check to discern that the groff isn't an ordinary moss-covered bog patch."
             ]
           },
-          { "name": "Hold Breath", "entries": ["The groff can hold its breath for up to 1 hour."] }
+          {
+            "name": "Hold Breath",
+            "entries": ["The groff can hold its breath for up to 1 hour."]
+          }
         ],
         "action": [
           {
@@ -796,14 +1241,49 @@
             "name": "Bite",
             "entries": [
               "Melee Weapon Attack:  +7 to hit, reach 5 ft., one target. 9 (1d8 + 5) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d8+5"
+                }
+              ]
+            }
           },
           {
             "name": "Swamp Claw",
             "entries": [
               "Melee Weapon Attack:  +7 to hit, reach 5 ft., one target. 8 (1d6 + 5) slashing damage. If the target is a Medium or smaller creature, it must succeed on a DC 15 Strength saving throw or become engulfed by the groff. While engulfed, the target can't breathe, is restrained, and takes 10 (3d6) poison damage at the start of each of its turns. When the groff moves, the engulfed target moves with it. The groff can have only one target engulfed at a time.",
               "An engulfed target can repeat the saving throw at the end of its turns. On a success, the target escapes and enters the nearest unoccupied space."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d6+5"
+                },
+                {
+                  "type": "poison",
+                  "damage": "3d6"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "restrained",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           }
         ],
         "traitTags": ["False Appearance", "Hold Breath"],
@@ -824,15 +1304,27 @@
         "alignment": ["N"],
         "alignmentPrefix": "typically ",
         "ac": [13],
-        "hp": { "average": 18, "formula": "4d4 + 8" },
-        "speed": { "walk": 10, "fly": { "number": 30, "condition": "(hover)" }, "canHover": true },
+        "hp": {
+          "average": 18,
+          "formula": "4d4 + 8"
+        },
+        "speed": {
+          "walk": 10,
+          "fly": {
+            "number": 30,
+            "condition": "(hover)"
+          },
+          "canHover": true
+        },
         "str": 10,
         "dex": 16,
         "con": 14,
         "int": 6,
         "wis": 7,
         "cha": 11,
-        "skill": { "stealth": "+5" },
+        "skill": {
+          "stealth": "+5"
+        },
         "senses": ["blindsight 60 ft."],
         "passive": 8,
         "immune": ["psychic"],
@@ -852,13 +1344,36 @@
             "name": "Blot",
             "entries": [
               "Melee Weapon Attack:  +5 to hit, reach 5 ft., one target. 5 (1d4 + 3) psychic damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "psychic",
+                  "damage": "1d4+3"
+                }
+              ]
+            }
           },
           {
             "name": "Ink Spray (1/Day)",
             "entries": [
               "The inkling sprays viscous ink at one creature within 15 feet of itself. The target must succeed on a DC 12 Constitution saving throw or be blinded until the end of the inkling's next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 0,
+              "toHit": null,
+              "targets": 1,
+              "save": {
+                "dc": 12,
+                "ability": "CONSTITUTION"
+              },
+              "damage": []
+            }
           }
         ],
         "bonus": [
@@ -883,19 +1398,34 @@
         "page": 197,
         "size": "M",
         "sizeNote": "or small",
-        "type": { "type": "humanoid", "tags": ["wizard"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["wizard"]
+        },
         "alignment": ["A"],
         "ac": [12],
-        "hp": { "average": 33, "formula": "6d8 + 6" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 33,
+          "formula": "6d8 + 6"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 10,
         "dex": 14,
         "con": 13,
         "int": 15,
         "wis": 12,
         "cha": 11,
-        "save": { "con": "+3", "int": "+4" },
-        "skill": { "history": "+6", "insight": "+3", "investigation": "+6" },
+        "save": {
+          "con": "+3",
+          "int": "+4"
+        },
+        "skill": {
+          "history": "+6",
+          "insight": "+3",
+          "investigation": "+6"
+        },
         "passive": 11,
         "languages": ["Common plus any two languages"],
         "cr": "2",
@@ -906,9 +1436,12 @@
               "The apprentice casts one of the following spells, requiring no material components and using Intelligence as the spellcasting ability (spell save DC 12):"
             ],
             "will": ["guidance", "light"],
-            "daily": { "1e": ["comprehend languages", "locate object", "mage armor"] },
+            "daily": {
+              "1e": ["comprehend languages", "locate object", "mage armor"]
+            },
             "ability": "int",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 12
           }
         ],
         "action": [
@@ -916,13 +1449,46 @@
             "name": "Scroll Bash",
             "entries": [
               "Melee Spell Attack:  +4 to hit, reach 30 ft., one target. 7 (1d10 + 2) bludgeoning damage plus 9 (2d8) thunder damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 30,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d10+2"
+                },
+                {
+                  "type": "thunder",
+                  "damage": "2d8"
+                }
+              ]
+            }
           },
           {
             "name": "Reduce to Memory (Recharge 6)",
             "entries": [
               "Thundering golden energy erupts around a creature the apprentice can see within 90 feet of it. The creature must make a DC 12 Constitution saving throw, taking 33 (6d10) thunder damage on a failed save, or half as much damage on a successful one. A Construct has disadvantage on the saving throw."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 0,
+              "toHit": null,
+              "targets": 1,
+              "save": {
+                "dc": 12,
+                "ability": "CONSTITUTION"
+              },
+              "damage": [
+                {
+                  "type": "thunder",
+                  "damage": "1d6",
+                  "when": "failure"
+                }
+              ]
+            }
           }
         ],
         "reaction": [
@@ -946,19 +1512,34 @@
         "page": 197,
         "size": "M",
         "sizeNote": "or small",
-        "type": { "type": "humanoid", "tags": ["wizard"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["wizard"]
+        },
         "alignment": ["A"],
         "ac": [13],
-        "hp": { "average": 60, "formula": "11d8 + 11" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 60,
+          "formula": "11d8 + 11"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 10,
         "dex": 16,
         "con": 13,
         "int": 17,
         "wis": 12,
         "cha": 11,
-        "save": { "con": "+3", "int": "+5" },
-        "skill": { "history": "+7", "insight": "+3", "investigation": "+7" },
+        "save": {
+          "con": "+3",
+          "int": "+5"
+        },
+        "skill": {
+          "history": "+7",
+          "insight": "+3",
+          "investigation": "+7"
+        },
         "passive": 11,
         "languages": ["Common plus any two languages"],
         "cr": "4",
@@ -974,22 +1555,59 @@
               "1e": ["mage armor", "speak with dead", "stone shape"]
             },
             "ability": "int",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 13
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The pledgemage makes two Scroll Bash attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The pledgemage makes two Scroll Bash attacks."]
+          },
           {
             "name": "Scroll Bash",
             "entries": [
               "Melee Spell Attack:  +5 to hit, reach 30 ft., one target. 8 (1d10 + 3) bludgeoning damage plus 9 (2d8) thunder damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 30,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d10+3"
+                },
+                {
+                  "type": "thunder",
+                  "damage": "2d8"
+                }
+              ]
+            }
           },
           {
             "name": "Reduce to Memory (Recharge 5-6)",
             "entries": [
               "Thundering golden energy erupts around a creature the pledgemage can see within 90 feet of it. The creature must make a DC 13 Constitution saving throw, taking 44 (8d10) thunder damage on a failed save, or half as much damage on a successful one. A Construct has disadvantage on the saving throw."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 0,
+              "toHit": null,
+              "targets": 1,
+              "save": {
+                "dc": 13,
+                "ability": "CONSTITUTION"
+              },
+              "damage": [
+                {
+                  "type": "thunder",
+                  "damage": "1d6",
+                  "when": "failure"
+                }
+              ]
+            }
           }
         ],
         "bonus": [
@@ -1022,19 +1640,36 @@
         "page": 198,
         "size": "M",
         "sizeNote": "or small",
-        "type": { "type": "humanoid", "tags": ["wizard"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["wizard"]
+        },
         "alignment": ["A"],
         "ac": [12],
-        "hp": { "average": 110, "formula": "17d8 + 34" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 110,
+          "formula": "17d8 + 34"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 11,
         "dex": 14,
         "con": 14,
         "int": 19,
         "wis": 15,
         "cha": 13,
-        "save": { "con": "+5", "int": "+7", "wis": "+5", "cha": "+4" },
-        "skill": { "arcana": "+7", "history": "+7", "perception": "+5" },
+        "save": {
+          "con": "+5",
+          "int": "+7",
+          "wis": "+5",
+          "cha": "+4"
+        },
+        "skill": {
+          "arcana": "+7",
+          "history": "+7",
+          "perception": "+5"
+        },
         "passive": 15,
         "languages": ["Common plus any four languages"],
         "cr": "7",
@@ -1045,7 +1680,9 @@
               "The professor casts one of the following spells, requiring no material components and using Intelligence as the spellcasting ability:"
             ],
             "will": ["comprehend languages", "dancing lights", "guidance"],
-            "daily": { "2e": ["locate object", "mage armor", "passwall"] },
+            "daily": {
+              "2e": ["locate object", "mage armor", "passwall"]
+            },
             "ability": "int",
             "displayAs": "action"
           }
@@ -1069,7 +1706,26 @@
             "name": "Spectral Scroll",
             "entries": [
               "Melee Spell Attack:  +7 to hit, reach 30 ft., one target. 15 (2d10 + 4) force damage. If the target is a creature, it must succeed on a DC 15 Strength saving throw or be knocked prone."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 30,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "force",
+                  "damage": "2d10+4"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "prone",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Weight of History (Recharge 5-6)",
@@ -1092,19 +1748,36 @@
         "page": 198,
         "size": "M",
         "sizeNote": "or small",
-        "type": { "type": "humanoid", "tags": ["wizard"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["wizard"]
+        },
         "alignment": ["A"],
         "ac": [12],
-        "hp": { "average": 104, "formula": "16d8 + 32" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 104,
+          "formula": "16d8 + 32"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 11,
         "dex": 14,
         "con": 14,
         "int": 19,
         "wis": 15,
         "cha": 13,
-        "save": { "con": "+5", "int": "+7", "wis": "+5", "cha": "+4" },
-        "skill": { "arcana": "+7", "history": "+7", "perception": "+5" },
+        "save": {
+          "con": "+5",
+          "int": "+7",
+          "wis": "+5",
+          "cha": "+4"
+        },
+        "skill": {
+          "arcana": "+7",
+          "history": "+7",
+          "perception": "+5"
+        },
         "passive": 15,
         "resist": ["force"],
         "languages": ["Common plus any four languages"],
@@ -1116,9 +1789,12 @@
               "The professor casts one of the following spells, requiring no material components and using Intelligence as the spellcasting ability (spell save DC 15):"
             ],
             "will": ["comprehend languages", "guidance", "light"],
-            "daily": { "2e": ["dimension door", "locate object", "mage armor", "stone shape"] },
+            "daily": {
+              "2e": ["dimension door", "locate object", "mage armor", "stone shape"]
+            },
             "ability": "int",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 15
           }
         ],
         "trait": [
@@ -1140,7 +1816,26 @@
             "name": "Repelling Burst",
             "entries": [
               "Melee Spell Attack:  +7 to hit, reach 30 ft., one target. 13 (2d8 + 4) force damage. If the target is a Large or smaller creature, it must succeed on a DC 15 Strength saving throw or be pushed up to 10 feet directly away from the professor and become restrained until the start of professor's next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 30,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "force",
+                  "damage": "2d8+4"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "restrained",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Force Barrier (Recharge 5-6)",
@@ -1173,12 +1868,26 @@
         "type": "monstrosity",
         "alignment": ["L", "E"],
         "alignmentPrefix": "typically ",
-        "ac": [{ "ac": 15, "from": ["natural armor"] }],
-        "hp": { "average": 85, "formula": "10d10 + 30" },
+        "ac": [
+          {
+            "ac": 15,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 85,
+          "formula": "10d10 + 30"
+        },
         "speed": {
           "walk": 40,
-          "climb": { "number": 40, "condition": "(hunter form only)" },
-          "fly": { "number": 10, "condition": "(hover sentry form only)" },
+          "climb": {
+            "number": 40,
+            "condition": "(hunter form only)"
+          },
+          "fly": {
+            "number": 10,
+            "condition": "(hover sentry form only)"
+          },
           "canHover": true
         },
         "str": 19,
@@ -1187,8 +1896,15 @@
         "int": 11,
         "wis": 17,
         "cha": 10,
-        "save": { "int": "+3", "wis": "+6", "cha": "+3" },
-        "skill": { "perception": "+9", "stealth": "+5" },
+        "save": {
+          "int": "+3",
+          "wis": "+6",
+          "cha": "+3"
+        },
+        "skill": {
+          "perception": "+9",
+          "stealth": "+5"
+        },
         "senses": ["blindsight 120 ft. (blind beyond this radius)"],
         "passive": 19,
         "conditionImmune": ["blinded", "charmed", "deafened", "frightened", "prone"],
@@ -1217,20 +1933,67 @@
             "name": "Claw (Hunter Form Only)",
             "entries": [
               "Melee Weapon Attack:  +7 to hit, reach 5 ft., one target. 15 (2d10 + 4) slashing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "2d10+4"
+                }
+              ]
+            }
           },
           {
             "name": "Tail",
             "entries": [
               "Melee Weapon Attack:  +7 to hit, reach 10 ft., one target. 22 (4d8 + 4) piercing damage, and the target is grappled (escape DC 15). Until this grapple ends, the target is restrained, and the hunter can't make a Tail attack against another target."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "4d8+4"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "grappled",
+                  "save": "none",
+                  "escape": 15
+                },
+                {
+                  "condition": "restrained",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Mage Tracker (Sentry Form Only)",
             "entries": [
               "The hunter emits a pulse of energy that helps it better locate its magical quarry. Each creature within 120 feet of the hunter that has the ability to cast spells must succeed on a DC 14 Wisdom saving throw or be mystically marked by the hunter for 1 hour.",
               "While marked, a creature can't become hidden from the hunter and gains no benefit from the invisible condition against the hunter. Additionally, while a marked creature is on the same plane of existence as the hunter, the hunter always knows the distance and direction to the creature."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 0,
+              "toHit": null,
+              "targets": 1,
+              "save": {
+                "dc": 14,
+                "ability": "WISDOM"
+              },
+              "damage": []
+            }
           }
         ],
         "bonus": [
@@ -1266,20 +2029,42 @@
         "source": "SCC",
         "page": 180,
         "size": "M",
-        "type": { "type": "humanoid", "tags": ["bullywug"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["bullywug"]
+        },
         "alignment": ["N", "E"],
         "alignmentPrefix": "typically ",
-        "ac": [{ "ac": 16, "from": ["blood aegis"] }],
-        "hp": { "average": 127, "formula": "15d8 + 60" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 16,
+            "from": ["blood aegis"]
+          }
+        ],
+        "hp": {
+          "average": 127,
+          "formula": "15d8 + 60"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 11,
         "dex": 14,
         "con": 18,
         "int": 20,
         "wis": 12,
         "cha": 12,
-        "save": { "con": "+8", "int": "+9", "wis": "+5", "cha": "+5" },
-        "skill": { "deception": "+9", "medicine": "+5", "survival": "+5" },
+        "save": {
+          "con": "+8",
+          "int": "+9",
+          "wis": "+5",
+          "cha": "+5"
+        },
+        "skill": {
+          "deception": "+9",
+          "medicine": "+5",
+          "survival": "+5"
+        },
         "passive": 11,
         "resist": ["necrotic"],
         "conditionImmune": ["exhaustion"],
@@ -1306,21 +2091,61 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["Murgaxor makes two Blood Lash attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["Murgaxor makes two Blood Lash attacks."]
+          },
           {
             "name": "Blood Lash",
             "entries": [
               "Melee Spell Attack:  +9 to hit, reach 10 ft., one target. 21 (3d10 + 5) necrotic damage. If the target is a creature, it can't regain hit points until the start of Murgaxor's next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 9,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "necrotic",
+                  "damage": "3d10+5"
+                }
+              ]
+            }
           },
           {
             "name": "Blood Boil (Recharge 4-6)",
             "entries": [
               "Murgaxor chooses a point within 150 feet of himself, and a 20-foot radius sphere centered on that point fills with a burst of searing, blood-red mist. Each creature of Murgaxor's choice that he can see in that area must make a DC 17 Constitution saving throw. On a failed save, a creature takes 38 (7d10) necrotic damage and is incapacitated until the end of its next turn. On a success, a creature takes half as much damage and isn't incapacitated. A creature dies if reduced to 0 hit points by this necrotic damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 150,
+              "toHit": null,
+              "targets": -1,
+              "damage": [
+                {
+                  "type": "fire",
+                  "damage": "4d10",
+                  "when": "failure"
+                },
+                {
+                  "type": "fire",
+                  "damage": "2d10",
+                  "when": "success"
+                }
+              ],
+              "save": {
+                "dc": 20,
+                "ability": "DEX"
+              }
+            }
           }
         ],
-        "legendaryGroup": { "name": "Murgaxor", "source": "SCC" },
+        "legendaryGroup": {
+          "name": "Murgaxor",
+          "source": "SCC"
+        },
         "actionTags": ["Multiattack"],
         "languageTags": ["C", "X"],
         "damageTags": ["N"],
@@ -1335,18 +2160,36 @@
         "source": "SCC",
         "page": 200,
         "size": "M",
-        "type": { "type": "humanoid", "tags": ["human", "wizard"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["human", "wizard"]
+        },
         "alignment": ["N", "G"],
         "ac": [12],
-        "hp": { "average": 150, "formula": "20d8 + 60" },
-        "speed": { "walk": 30, "fly": { "number": 15, "condition": "(hover)" }, "canHover": true },
+        "hp": {
+          "average": 150,
+          "formula": "20d8 + 60"
+        },
+        "speed": {
+          "walk": 30,
+          "fly": {
+            "number": 15,
+            "condition": "(hover)"
+          },
+          "canHover": true
+        },
         "str": 12,
         "dex": 15,
         "con": 16,
         "int": 21,
         "wis": 20,
         "cha": 18,
-        "save": { "con": "+8", "int": "+10", "wis": "+10", "cha": "+9" },
+        "save": {
+          "con": "+8",
+          "int": "+10",
+          "wis": "+10",
+          "cha": "+9"
+        },
         "skill": {
           "arcana": "+15",
           "insight": "+15",
@@ -1370,7 +2213,8 @@
               "1e": ["power word stun", "scrying (as an action)", "wall of force"]
             },
             "ability": "int",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 18
           }
         ],
         "trait": [
@@ -1390,13 +2234,42 @@
             "name": "Magic Flare",
             "entries": [
               "Ranged or Melee Spell Attack:  +10 to hit, reach 5 ft. or range 60 ft., one target. 24 (3d12 + 5) force damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 10,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "force",
+                  "damage": "3d12+5"
+                }
+              ]
+            }
           },
           {
             "name": "Paradoxy (Recharge 4-6)",
             "entries": [
               "Momentary warps in reality appear at three different points the Oracle can see within 120 feet of her. Each creature in a 20-foot-radius sphere centered on each point must make a DC 18 Strength saving throw. On a failed save, a creature takes 33 (6d10) force damage and is pulled up to 15 feet in a straight line toward the center of the sphere. On a successful save, the creature takes half as much damage and isn't pulled. A creature caught in the area of multiple warps is affected by only one, which the Oracle chooses."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 20,
+              "toHit": null,
+              "targets": -1,
+              "save": {
+                "dc": 18,
+                "ability": "STRENGTH"
+              },
+              "damage": [
+                {
+                  "type": "force",
+                  "damage": "1d6",
+                  "when": "failure"
+                }
+              ]
+            }
           },
           {
             "name": "Teleport",
@@ -1438,20 +2311,42 @@
         "source": "SCC",
         "page": 201,
         "size": "M",
-        "type": { "type": "humanoid", "tags": ["warlock"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["warlock"]
+        },
         "alignment": ["N", "E"],
         "alignmentPrefix": "typically ",
-        "ac": [{ "ac": 16, "from": ["blood aegis"] }],
-        "hp": { "average": 127, "formula": "15d8 + 60" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 16,
+            "from": ["blood aegis"]
+          }
+        ],
+        "hp": {
+          "average": 127,
+          "formula": "15d8 + 60"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 11,
         "dex": 14,
         "con": 18,
         "int": 20,
         "wis": 12,
         "cha": 12,
-        "save": { "con": "+8", "int": "+9", "wis": "+5", "cha": "+5" },
-        "skill": { "deception": "+9", "medicine": "+5", "survival": "+5" },
+        "save": {
+          "con": "+8",
+          "int": "+9",
+          "wis": "+5",
+          "cha": "+5"
+        },
+        "skill": {
+          "deception": "+9",
+          "medicine": "+5",
+          "survival": "+5"
+        },
         "passive": 11,
         "resist": ["necrotic"],
         "conditionImmune": ["exhaustion"],
@@ -1478,18 +2373,55 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The blood mage makes two Blood Lash attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The blood mage makes two Blood Lash attacks."]
+          },
           {
             "name": "Blood Lash",
             "entries": [
               "Melee Spell Attack:  +9 to hit, reach 10 ft., one target. 21 (3d10 + 5) necrotic damage. If the target is a creature, it can't regain hit points until the start of the blood mage's next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 9,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "necrotic",
+                  "damage": "3d10+5"
+                }
+              ]
+            }
           },
           {
             "name": "Blood Boil (Recharge 4-6)",
             "entries": [
               "The blood mage chooses a point within 150 feet of itself, and a 20-foot radius sphere centered on that point fills with a burst of searing, blood-red mist. Each creature of the blood mage's choice that it can see in that area must make a DC 17 Constitution saving throw. On a failed save, a creature takes 38 (7d10) necrotic damage and is incapacitated until the end of its next turn. On a success, a creature takes half as much damage and isn't incapacitated. A creature dies if reduced to 0 hit points by this necrotic damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 150,
+              "toHit": null,
+              "targets": -1,
+              "damage": [
+                {
+                  "type": "fire",
+                  "damage": "4d10",
+                  "when": "failure"
+                },
+                {
+                  "type": "fire",
+                  "damage": "2d10",
+                  "when": "success"
+                }
+              ],
+              "save": {
+                "dc": 18,
+                "ability": "DEX"
+              }
+            }
           }
         ],
         "actionTags": ["Multiattack"],
@@ -1506,20 +2438,42 @@
         "source": "SCC",
         "page": 202,
         "size": "M",
-        "type": { "type": "humanoid", "tags": ["warlock"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["warlock"]
+        },
         "alignment": ["L", "E"],
         "alignmentPrefix": "typically ",
-        "ac": [{ "ac": 16, "from": ["misdirecting defense"] }],
-        "hp": { "average": 55, "formula": "10d8 + 10" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 16,
+            "from": ["misdirecting defense"]
+          }
+        ],
+        "hp": {
+          "average": 55,
+          "formula": "10d8 + 10"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 10,
         "dex": 14,
         "con": 12,
         "int": 17,
         "wis": 15,
         "cha": 18,
-        "save": { "int": "+5", "wis": "+4", "cha": "+6" },
-        "skill": { "arcana": "+5", "deception": "+8", "insight": "+4", "persuasion": "+6" },
+        "save": {
+          "int": "+5",
+          "wis": "+4",
+          "cha": "+6"
+        },
+        "skill": {
+          "arcana": "+5",
+          "deception": "+8",
+          "insight": "+4",
+          "persuasion": "+6"
+        },
         "passive": 12,
         "resist": ["psychic"],
         "conditionImmune": ["charmed", "frightened"],
@@ -1532,9 +2486,13 @@
               "The recruiter casts one of the following spells, requiring no material components and using Charisma as the spellcasting ability (spell save DC 14):"
             ],
             "will": ["disguise self", "silent image"],
-            "daily": { "1": ["suggestion"], "2": ["charm person"] },
+            "daily": {
+              "1": ["suggestion"],
+              "2": ["charm person"]
+            },
             "ability": "cha",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 14
           }
         ],
         "trait": [
@@ -1562,7 +2520,19 @@
             "name": "Psychic Knife",
             "entries": [
               "Ranged or Melee Spell Attack:  +6 to hit, reach 5 ft. or range 30 ft., one creature. 21 (5d6 + 4) psychic damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 6,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "psychic",
+                  "damage": "5d6+4"
+                }
+              ]
+            }
           }
         ],
         "actionTags": ["Multiattack"],
@@ -1580,16 +2550,28 @@
         "size": "T",
         "type": "monstrosity",
         "alignment": ["U"],
-        "ac": [{ "ac": 13, "from": ["natural armor"] }],
-        "hp": { "average": 22, "formula": "4d4 + 12" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 13,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 22,
+          "formula": "4d4 + 12"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 11,
         "dex": 14,
         "con": 17,
         "int": 5,
         "wis": 13,
         "cha": 4,
-        "skill": { "perception": "+3" },
+        "skill": {
+          "perception": "+3"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 13,
         "cr": "1/4",
@@ -1612,7 +2594,19 @@
             "name": "Bite",
             "entries": [
               "Melee Weapon Attack:  +4 to hit, reach 5 ft., one target. 4 (1d4 + 2) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d4+2"
+                }
+              ]
+            }
           }
         ],
         "traitTags": ["Regeneration"],
@@ -1629,19 +2623,34 @@
         "page": 205,
         "size": "M",
         "sizeNote": "or small",
-        "type": { "type": "humanoid", "tags": ["sorcerer"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["sorcerer"]
+        },
         "alignment": ["A"],
         "ac": [12],
-        "hp": { "average": 44, "formula": "8d8 + 8" },
-        "speed": { "walk": 35 },
+        "hp": {
+          "average": 44,
+          "formula": "8d8 + 8"
+        },
+        "speed": {
+          "walk": 35
+        },
         "str": 10,
         "dex": 14,
         "con": 13,
         "int": 12,
         "wis": 13,
         "cha": 15,
-        "save": { "dex": "+4", "cha": "+4" },
-        "skill": { "acrobatics": "+4", "athletics": "+4", "performance": "+6" },
+        "save": {
+          "dex": "+4",
+          "cha": "+4"
+        },
+        "skill": {
+          "acrobatics": "+4",
+          "athletics": "+4",
+          "performance": "+6"
+        },
         "passive": 11,
         "languages": ["Common plus any two languages"],
         "cr": "2",
@@ -1652,9 +2661,12 @@
               "The apprentice casts one of the following spells, requiring no material components and using Charisma as the spellcasting ability (spell save DC 12):"
             ],
             "will": ["minor illusion"],
-            "daily": { "1e": ["gust of wind", "mage armor", "silent image"] },
+            "daily": {
+              "1e": ["gust of wind", "mage armor", "silent image"]
+            },
             "ability": "cha",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 12
           }
         ],
         "action": [
@@ -1662,7 +2674,19 @@
             "name": "Elemental Strike",
             "entries": [
               "Ranged or Melee Spell Attack:  +4 to hit, reach 5 ft. or range 60 ft., one target. 10 (3d6) fire or cold damage (the apprentice's choice)."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "fire",
+                  "damage": "3d6"
+                }
+              ]
+            }
           }
         ],
         "bonus": [
@@ -1686,19 +2710,34 @@
         "page": 205,
         "size": "M",
         "sizeNote": "or small",
-        "type": { "type": "humanoid", "tags": ["sorcerer"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["sorcerer"]
+        },
         "alignment": ["A"],
         "ac": [12],
-        "hp": { "average": 66, "formula": "12d8 + 12" },
-        "speed": { "walk": 35 },
+        "hp": {
+          "average": 66,
+          "formula": "12d8 + 12"
+        },
+        "speed": {
+          "walk": 35
+        },
         "str": 10,
         "dex": 15,
         "con": 13,
         "int": 12,
         "wis": 14,
         "cha": 17,
-        "save": { "dex": "+4", "cha": "+5" },
-        "skill": { "acrobatics": "+4", "athletics": "+4", "performance": "+7" },
+        "save": {
+          "dex": "+4",
+          "cha": "+5"
+        },
+        "skill": {
+          "acrobatics": "+4",
+          "athletics": "+4",
+          "performance": "+7"
+        },
         "passive": 12,
         "languages": ["Common plus any two languages"],
         "cr": "4",
@@ -1709,9 +2748,13 @@
               "The pledgemage casts one of the following spells, requiring no material components and using Charisma as the spellcasting ability (spell save DC 13):"
             ],
             "will": ["minor illusion"],
-            "daily": { "2e": ["gust of wind", "silent image"], "1e": ["mage armor", "water walk"] },
+            "daily": {
+              "2e": ["gust of wind", "silent image"],
+              "1e": ["mage armor", "water walk"]
+            },
             "ability": "cha",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 13
           }
         ],
         "trait": [
@@ -1731,7 +2774,19 @@
             "name": "Elemental Strike",
             "entries": [
               "Ranged or Melee Spell Attack:  +5 to hit, reach 5 ft. or range 60 ft., one target. 12 (3d6 + 2) fire or cold damage (the pledgemage's choice)."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 5,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "fire",
+                  "damage": "3d6+2"
+                }
+              ]
+            }
           },
           {
             "name": "Showstopper (1/Day)",
@@ -1761,18 +2816,31 @@
         "page": 206,
         "size": "M",
         "sizeNote": "or small",
-        "type": { "type": "humanoid", "tags": ["sorcerer"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["sorcerer"]
+        },
         "alignment": ["A"],
         "ac": [13],
-        "hp": { "average": 97, "formula": "15d8 + 30" },
-        "speed": { "walk": 40 },
+        "hp": {
+          "average": 97,
+          "formula": "15d8 + 30"
+        },
+        "speed": {
+          "walk": 40
+        },
         "str": 14,
         "dex": 16,
         "con": 15,
         "int": 15,
         "wis": 13,
         "cha": 19,
-        "save": { "dex": "+6", "int": "+5", "wis": "+4", "cha": "+7" },
+        "save": {
+          "dex": "+6",
+          "int": "+5",
+          "wis": "+4",
+          "cha": "+7"
+        },
         "skill": {
           "acrobatics": "+6",
           "arcana": "+5",
@@ -1791,9 +2859,12 @@
               "The professor casts one of the following spells, requiring no material components and using Charisma as the spellcasting ability (spell save DC 15):"
             ],
             "will": ["minor illusion"],
-            "daily": { "2e": ["fog cloud", "gust of wind", "mage armor"] },
+            "daily": {
+              "2e": ["fog cloud", "gust of wind", "mage armor"]
+            },
             "ability": "cha",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 15
           }
         ],
         "action": [
@@ -1805,7 +2876,19 @@
             "name": "Cinder Strike",
             "entries": [
               "Melee Spell Attack:  +7 to hit, reach 15 ft., one target. 13 (2d8 + 4) fire damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 15,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "fire",
+                  "damage": "2d8+4"
+                }
+              ]
+            }
           },
           {
             "name": "Lightning Flourish (Recharge 6)",
@@ -1835,18 +2918,31 @@
         "page": 206,
         "size": "M",
         "sizeNote": "or small",
-        "type": { "type": "humanoid", "tags": ["sorcerer"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["sorcerer"]
+        },
         "alignment": ["A"],
         "ac": [13],
-        "hp": { "average": 97, "formula": "15d8 + 30" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 97,
+          "formula": "15d8 + 30"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 14,
         "dex": 16,
         "con": 15,
         "int": 15,
         "wis": 13,
         "cha": 19,
-        "save": { "dex": "+6", "int": "+5", "wis": "+4", "cha": "+7" },
+        "save": {
+          "dex": "+6",
+          "int": "+5",
+          "wis": "+4",
+          "cha": "+7"
+        },
         "skill": {
           "acrobatics": "+6",
           "arcana": "+5",
@@ -1870,7 +2966,8 @@
               "2e": ["control water", "create or destroy water", "mage armor", "stone shape"]
             },
             "ability": "cha",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 15
           }
         ],
         "trait": [
@@ -1882,12 +2979,27 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The professor makes three Tidal Strike attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The professor makes three Tidal Strike attacks."]
+          },
           {
             "name": "Tidal Strike",
             "entries": [
               "Ranged or Melee Spell Attack:  +7 to hit, reach 5 ft. or range 60 ft., one target. 13 (2d8 + 4) cold damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "cold",
+                  "damage": "2d8+4"
+                }
+              ]
+            }
           }
         ],
         "bonus": [
@@ -1911,19 +3023,34 @@
         "page": 208,
         "size": "M",
         "sizeNote": "or small",
-        "type": { "type": "humanoid", "tags": ["wizard"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["wizard"]
+        },
         "alignment": ["A"],
         "ac": [11],
-        "hp": { "average": 44, "formula": "8d8 + 8" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 44,
+          "formula": "8d8 + 8"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 10,
         "dex": 12,
         "con": 13,
         "int": 15,
         "wis": 14,
         "cha": 11,
-        "save": { "int": "+4", "wis": "+4" },
-        "skill": { "arcana": "+6", "investigation": "+6", "nature": "+4" },
+        "save": {
+          "int": "+4",
+          "wis": "+4"
+        },
+        "skill": {
+          "arcana": "+6",
+          "investigation": "+6",
+          "nature": "+4"
+        },
         "passive": 12,
         "languages": ["Common plus any two languages"],
         "cr": "2",
@@ -1934,9 +3061,12 @@
               "The apprentice casts one of the following spells, requiring no material components and using Intelligence as the spellcasting ability (spell save DC 12):"
             ],
             "will": ["guidance", "mage hand"],
-            "daily": { "1e": ["enlarge/reduce", "mage armor"] },
+            "daily": {
+              "1e": ["enlarge/reduce", "mage armor"]
+            },
             "ability": "int",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 12
           }
         ],
         "action": [
@@ -1948,7 +3078,23 @@
             "name": "Exponential Lash",
             "entries": [
               "Ranged or Melee Spell Attack:  +4 to hit, reach 5 ft. or range 60 ft., one target. 5 (1d6 + 2) force damage, and the apprentice can cause one creature it can see within 30 feet of the target to take 9 (2d6 + 2) force damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "force",
+                  "damage": "1d6+2"
+                },
+                {
+                  "type": "force",
+                  "damage": "2d6+2"
+                }
+              ]
+            }
           }
         ],
         "actionTags": ["Multiattack"],
@@ -1964,19 +3110,34 @@
         "page": 208,
         "size": "M",
         "sizeNote": "or small",
-        "type": { "type": "humanoid", "tags": ["wizard"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["wizard"]
+        },
         "alignment": ["A"],
         "ac": [12],
-        "hp": { "average": 66, "formula": "12d8 + 12" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 66,
+          "formula": "12d8 + 12"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 10,
         "dex": 14,
         "con": 13,
         "int": 17,
         "wis": 14,
         "cha": 11,
-        "save": { "int": "+5", "wis": "+4" },
-        "skill": { "arcana": "+7", "investigation": "+7", "nature": "+5" },
+        "save": {
+          "int": "+5",
+          "wis": "+4"
+        },
+        "skill": {
+          "arcana": "+7",
+          "investigation": "+7",
+          "nature": "+5"
+        },
         "passive": 12,
         "languages": ["Common plus any two languages"],
         "cr": "4",
@@ -1987,9 +3148,12 @@
               "The pledgemage casts one of the following spells, requiring no material components and using Intelligence as the spellcasting ability (spell save DC 13):"
             ],
             "will": ["guidance", "mage hand"],
-            "daily": { "1e": ["dimension door", "enlarge/reduce", "mage armor", "plant growth"] },
+            "daily": {
+              "1e": ["dimension door", "enlarge/reduce", "mage armor", "plant growth"]
+            },
             "ability": "int",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 13
           }
         ],
         "action": [
@@ -2001,7 +3165,23 @@
             "name": "Exponential Lash",
             "entries": [
               "Ranged or Melee Spell Attack:  +5 to hit, reach 5 ft. or range 60 ft., one target. 6 (1d6 + 3) force damage, and the pledgemage can cause one creature it can see within 30 feet of the target to take 10 (2d6 + 3) force damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "force",
+                  "damage": "1d6+3"
+                },
+                {
+                  "type": "force",
+                  "damage": "2d6+3"
+                }
+              ]
+            }
           }
         ],
         "bonus": [
@@ -2025,19 +3205,37 @@
         "page": 209,
         "size": "M",
         "sizeNote": "or small",
-        "type": { "type": "humanoid", "tags": ["wizard"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["wizard"]
+        },
         "alignment": ["A"],
         "ac": [12],
-        "hp": { "average": 104, "formula": "16d8 + 32" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 104,
+          "formula": "16d8 + 32"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 11,
         "dex": 14,
         "con": 14,
         "int": 19,
         "wis": 14,
         "cha": 13,
-        "save": { "con": "+5", "int": "+7", "wis": "+5", "cha": "+4" },
-        "skill": { "arcana": "+10", "investigation": "+10", "nature": "+7", "perception": "+5" },
+        "save": {
+          "con": "+5",
+          "int": "+7",
+          "wis": "+5",
+          "cha": "+4"
+        },
+        "skill": {
+          "arcana": "+10",
+          "investigation": "+10",
+          "nature": "+7",
+          "perception": "+5"
+        },
         "passive": 15,
         "resist": ["force"],
         "languages": ["Common plus any four languages"],
@@ -2059,16 +3257,36 @@
               ]
             },
             "ability": "int",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 15
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The professor makes two Spatial Blade attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The professor makes two Spatial Blade attacks."]
+          },
           {
             "name": "Spatial Blade",
             "entries": [
               "Ranged or Melee Spell Attack:  +7 to hit (the target can't benefit from cover less than total cover), reach 5 ft. or range 120 ft., one target. 13 (2d8 + 4) force damage, or 22 (4d8 + 4) force damage if the professor is Large or larger, and the professor can push the target horizontally up to 10 feet away."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "force",
+                  "damage": "2d8+4"
+                },
+                {
+                  "type": "force",
+                  "damage": "4d8+4"
+                }
+              ]
+            }
           }
         ],
         "bonus": [
@@ -2111,19 +3329,37 @@
         "page": 209,
         "size": "M",
         "sizeNote": "or small",
-        "type": { "type": "humanoid", "tags": ["wizard"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["wizard"]
+        },
         "alignment": ["A"],
         "ac": [12],
-        "hp": { "average": 97, "formula": "15d8 + 30" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 97,
+          "formula": "15d8 + 30"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 11,
         "dex": 14,
         "con": 14,
         "int": 19,
         "wis": 15,
         "cha": 13,
-        "save": { "con": "+5", "int": "+7", "wis": "+5", "cha": "+4" },
-        "skill": { "arcana": "+10", "insight": "+5", "investigation": "+10", "perception": "+5" },
+        "save": {
+          "con": "+5",
+          "int": "+7",
+          "wis": "+5",
+          "cha": "+4"
+        },
+        "skill": {
+          "arcana": "+10",
+          "insight": "+5",
+          "investigation": "+10",
+          "perception": "+5"
+        },
         "passive": 15,
         "resist": ["psychic"],
         "conditionImmune": ["charmed", "frightened"],
@@ -2145,7 +3381,8 @@
               ]
             },
             "ability": "int",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 15
           }
         ],
         "action": [
@@ -2159,7 +3396,26 @@
             "name": "Heuristic Lance",
             "entries": [
               "Ranged or Melee Spell Attack:  +7 to hit, reach 5 ft. or range 60 ft., one creature. 13 (2d8 + 4) psychic damage, and the target is poisoned until the end of its next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "psychic",
+                  "damage": "2d8+4"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "poisoned",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Overriding Theorem (Recharge 4-6)",
@@ -2190,16 +3446,29 @@
         "size": "H",
         "type": "beast",
         "alignment": ["U"],
-        "ac": [{ "ac": 13, "from": ["natural armor"] }],
-        "hp": { "average": 76, "formula": "8d12 + 24" },
-        "speed": { "walk": 20, "climb": 20 },
+        "ac": [
+          {
+            "ac": 13,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 76,
+          "formula": "8d12 + 24"
+        },
+        "speed": {
+          "walk": 20,
+          "climb": 20
+        },
         "str": 20,
         "dex": 9,
         "con": 17,
         "int": 2,
         "wis": 12,
         "cha": 8,
-        "skill": { "perception": "+3" },
+        "skill": {
+          "perception": "+3"
+        },
         "passive": 13,
         "cr": "2",
         "action": [
@@ -2207,7 +3476,26 @@
             "name": "Claws",
             "entries": [
               "Melee Weapon Attack:  +7 to hit, reach 10 ft., one target. 14 (2d8 + 5) slashing damage, and the target is grappled (escape DC 15). The relic sloth can grapple no more than two targets at a time."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "2d8+5"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "grappled",
+                  "save": "none",
+                  "escape": 15
+                }
+              ]
+            }
           }
         ],
         "reaction": [
@@ -2232,9 +3520,20 @@
         "size": "L",
         "type": "construct",
         "alignment": ["U"],
-        "ac": [{ "ac": 16, "from": ["natural armor"] }],
-        "hp": { "average": 82, "formula": "11d10 + 22" },
-        "speed": { "walk": 30, "burrow": 30 },
+        "ac": [
+          {
+            "ac": 16,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 82,
+          "formula": "11d10 + 22"
+        },
+        "speed": {
+          "walk": 30,
+          "burrow": 30
+        },
         "str": 22,
         "dex": 13,
         "con": 15,
@@ -2266,12 +3565,34 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The ruin grinder makes two Excavator attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The ruin grinder makes two Excavator attacks."]
+          },
           {
             "name": "Excavator",
             "entries": [
               "Melee Weapon Attack:  +9 to hit, reach 5 ft., one target. 13 (2d6 + 6) force damage. If the target is a Huge or smaller creature, it must succeed on a DC 17 Strength saving throw or be pushed up to 10 feet away and knocked prone."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 9,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "force",
+                  "damage": "2d6+6"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "prone",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           }
         ],
         "traitTags": ["Damage Absorption", "Siege Monster"],
@@ -2293,8 +3614,13 @@
         "type": "construct",
         "alignment": ["U"],
         "ac": [12],
-        "hp": { "average": 5, "formula": "2d4" },
-        "speed": { "walk": 20 },
+        "hp": {
+          "average": 5,
+          "formula": "2d4"
+        },
+        "speed": {
+          "walk": 20
+        },
         "str": 4,
         "dex": 14,
         "con": 10,
@@ -2311,7 +3637,19 @@
             "name": "Slam",
             "entries": [
               "Melee Weapon Attack:  +4 to hit, reach 5 ft., one target. 3 (1d3 + 2) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d3+2"
+                }
+              ]
+            }
           }
         ],
         "senseTags": ["B"],
@@ -2326,19 +3664,43 @@
         "source": "SCC",
         "page": 212,
         "size": "G",
-        "type": { "type": "dragon", "tags": ["bard"] },
+        "type": {
+          "type": "dragon",
+          "tags": ["bard"]
+        },
         "alignment": ["N"],
-        "ac": [{ "ac": 21, "from": ["natural armor"] }],
-        "hp": { "average": 363, "formula": "22d20 + 132" },
-        "speed": { "walk": 40, "fly": 80 },
+        "ac": [
+          {
+            "ac": 21,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 363,
+          "formula": "22d20 + 132"
+        },
+        "speed": {
+          "walk": 40,
+          "fly": 80
+        },
         "str": 25,
         "dex": 14,
         "con": 23,
         "int": 18,
         "wis": 18,
         "cha": 26,
-        "save": { "dex": "+9", "con": "+13", "wis": "+11", "cha": "+15" },
-        "skill": { "arcana": "+18", "deception": "+15", "perception": "+11", "persuasion": "+15" },
+        "save": {
+          "dex": "+9",
+          "con": "+13",
+          "wis": "+11",
+          "cha": "+15"
+        },
+        "skill": {
+          "arcana": "+18",
+          "deception": "+15",
+          "perception": "+11",
+          "persuasion": "+15"
+        },
         "senses": ["blindsight 120 ft."],
         "passive": 21,
         "immune": ["psychic", "radiant"],
@@ -2354,7 +3716,8 @@
               "1e": ["darkness", "daylight", "hypnotic pattern", "sending", "suggestion"]
             },
             "ability": "cha",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 23
           }
         ],
         "trait": [
@@ -2372,13 +3735,41 @@
             "name": "Bite",
             "entries": [
               "Melee Weapon Attack:  +14 to hit, reach 15 ft., one target. 12 (1d10 + 7) piercing damage plus 4 (1d8) radiant damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 15,
+              "toHit": 14,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d10+7"
+                },
+                {
+                  "type": "radiant",
+                  "damage": "1d8"
+                }
+              ]
+            }
           },
           {
             "name": "Claw",
             "entries": [
               "Melee Weapon Attack:  +14 to hit, reach 10 ft., one target. 10 (1d6 + 7) slashing damage. If the target is a creature, it is wracked with despair and has disadvantage on attack rolls until the end of its next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 14,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d6+7"
+                }
+              ]
+            }
           },
           {
             "name": "Illuminating Shadow Breath (Recharge 5-6)",
@@ -2388,7 +3779,10 @@
           }
         ],
         "legendary": [
-          { "name": "Claw", "entries": ["Shadrix makes one Claw attack."] },
+          {
+            "name": "Claw",
+            "entries": ["Shadrix makes one Claw attack."]
+          },
           {
             "name": "Shadow Slip (Costs 2 Actions)",
             "entries": [
@@ -2420,19 +3814,34 @@
         "page": 214,
         "size": "M",
         "sizeNote": "or small",
-        "type": { "type": "humanoid", "tags": ["bard"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["bard"]
+        },
         "alignment": ["A"],
         "ac": [12],
-        "hp": { "average": 44, "formula": "8d8 + 8" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 44,
+          "formula": "8d8 + 8"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 10,
         "dex": 14,
         "con": 13,
         "int": 12,
         "wis": 11,
         "cha": 15,
-        "save": { "dex": "+4", "cha": "+4" },
-        "skill": { "deception": "+4", "performance": "+6", "persuasion": "+6" },
+        "save": {
+          "dex": "+4",
+          "cha": "+4"
+        },
+        "skill": {
+          "deception": "+4",
+          "performance": "+6",
+          "persuasion": "+6"
+        },
         "passive": 10,
         "languages": ["Common plus any two languages"],
         "cr": "2",
@@ -2443,9 +3852,12 @@
               "The apprentice casts one of the following spells, requiring no material components and using Charisma as the spellcasting ability (spell save DC 12):"
             ],
             "will": ["dancing lights", "friends"],
-            "daily": { "1e": ["command", "mage armor"] },
+            "daily": {
+              "1e": ["command", "mage armor"]
+            },
             "ability": "cha",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 12
           }
         ],
         "action": [
@@ -2453,7 +3865,23 @@
             "name": "Ink Blade",
             "entries": [
               "Ranged or Melee Spell Attack:  +4 to hit, reach 5 ft. or range 60 ft., one target. 5 (1d6 + 2) piercing damage plus 9 (2d8) psychic damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d6+2"
+                },
+                {
+                  "type": "psychic",
+                  "damage": "2d8"
+                }
+              ]
+            }
           }
         ],
         "reaction": [
@@ -2477,19 +3905,35 @@
         "page": 214,
         "size": "M",
         "sizeNote": "or small",
-        "type": { "type": "humanoid", "tags": ["bard"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["bard"]
+        },
         "alignment": ["A"],
         "ac": [13],
-        "hp": { "average": 66, "formula": "12d8 + 12" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 66,
+          "formula": "12d8 + 12"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 10,
         "dex": 16,
         "con": 13,
         "int": 12,
         "wis": 11,
         "cha": 17,
-        "save": { "dex": "+5", "wis": "+2", "cha": "+5" },
-        "skill": { "deception": "+5", "performance": "+7", "persuasion": "+7" },
+        "save": {
+          "dex": "+5",
+          "wis": "+2",
+          "cha": "+5"
+        },
+        "skill": {
+          "deception": "+5",
+          "performance": "+7",
+          "persuasion": "+7"
+        },
         "passive": 10,
         "languages": ["Common plus any two languages"],
         "cr": "4",
@@ -2500,9 +3944,12 @@
               "The pledgemage casts one of the following spells, requiring no material components and using Charisma as the spellcasting ability (spell save DC 13):"
             ],
             "will": ["dancing lights", "friends"],
-            "daily": { "1e": ["command", "confusion", "mage armor", "tongues"] },
+            "daily": {
+              "1e": ["command", "confusion", "mage armor", "tongues"]
+            },
             "ability": "cha",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 13
           }
         ],
         "action": [
@@ -2510,7 +3957,23 @@
             "name": "Ink Blade",
             "entries": [
               "Ranged or Melee Spell Attack:  +5 to hit, reach 5 ft. or range 60 ft., one target. 5 (1d8 + 3) piercing damage plus 10 (3d6) psychic damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d8+3"
+                },
+                {
+                  "type": "psychic",
+                  "damage": "3d6"
+                }
+              ]
+            }
           }
         ],
         "bonus": [
@@ -2543,19 +4006,37 @@
         "page": 215,
         "size": "M",
         "sizeNote": "or small",
-        "type": { "type": "humanoid", "tags": ["bard"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["bard"]
+        },
         "alignment": ["A"],
         "ac": [12],
-        "hp": { "average": 97, "formula": "15d8 + 30" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 97,
+          "formula": "15d8 + 30"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 11,
         "dex": 14,
         "con": 14,
         "int": 16,
         "wis": 13,
         "cha": 19,
-        "save": { "dex": "+5", "int": "+6", "wis": "+4", "cha": "+7" },
-        "skill": { "arcana": "+6", "deception": "+7", "performance": "+10", "persuasion": "+10" },
+        "save": {
+          "dex": "+5",
+          "int": "+6",
+          "wis": "+4",
+          "cha": "+7"
+        },
+        "skill": {
+          "arcana": "+6",
+          "deception": "+7",
+          "performance": "+10",
+          "persuasion": "+10"
+        },
         "passive": 11,
         "resist": ["radiant"],
         "languages": ["Common plus any four languages"],
@@ -2572,7 +4053,8 @@
               "1e": ["hypnotic pattern", "tongues"]
             },
             "ability": "cha",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 15
           }
         ],
         "action": [
@@ -2586,7 +4068,26 @@
             "name": "Radiant Strike",
             "entries": [
               "Ranged or Melee Spell Attack:  +7 to hit, reach 5 ft. or range 120 ft., one target. 17 (3d8 + 4) radiant damage. If the target is a creature, it must succeed on a DC 15 Constitution saving throw be blinded until the end of its next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "radiant",
+                  "damage": "3d8+4"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "blinded",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           }
         ],
         "actionTags": ["Multiattack"],
@@ -2603,19 +4104,37 @@
         "page": 215,
         "size": "M",
         "sizeNote": "or small",
-        "type": { "type": "humanoid", "tags": ["bard"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["bard"]
+        },
         "alignment": ["A"],
         "ac": [12],
-        "hp": { "average": 97, "formula": "15d8 + 30" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 97,
+          "formula": "15d8 + 30"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 11,
         "dex": 14,
         "con": 14,
         "int": 16,
         "wis": 13,
         "cha": 19,
-        "save": { "dex": "+5", "int": "+6", "wis": "+4", "cha": "+7" },
-        "skill": { "arcana": "+6", "deception": "+10", "persuasion": "+7", "stealth": "+5" },
+        "save": {
+          "dex": "+5",
+          "int": "+6",
+          "wis": "+4",
+          "cha": "+7"
+        },
+        "skill": {
+          "arcana": "+6",
+          "deception": "+10",
+          "persuasion": "+7",
+          "stealth": "+5"
+        },
         "senses": ["darkvision 300 ft."],
         "passive": 11,
         "resist": ["necrotic"],
@@ -2628,9 +4147,13 @@
               "The professor casts one of the following spells, requiring no material components and using Charisma as the spellcasting ability (spell save DC 15):"
             ],
             "will": ["dancing lights", "friends"],
-            "daily": { "2e": ["bane", "command", "darkness", "mage armor"], "1e": ["tongues"] },
+            "daily": {
+              "2e": ["bane", "command", "darkness", "mage armor"],
+              "1e": ["tongues"]
+            },
             "ability": "cha",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 15
           }
         ],
         "trait": [
@@ -2650,7 +4173,26 @@
             "name": "Ink Lance",
             "entries": [
               "Ranged or Melee Spell Attack:  +7 to hit, reach 5 ft. or range 120 ft., one target. 17 (3d8 + 4) necrotic damage. If the target is a creature, it must succeed on a DC 15 Constitution saving throw be blinded until the end of its next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "necrotic",
+                  "damage": "3d8+4"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "blinded",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           }
         ],
         "traitTags": ["Devil's Sight"],
@@ -2670,16 +4212,30 @@
         "size": "M",
         "type": "construct",
         "alignment": ["A"],
-        "ac": [{ "ac": 14, "from": ["natural armor"] }],
-        "hp": { "average": 26, "formula": "4d8 + 8" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 14,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 26,
+          "formula": "4d8 + 8"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 14,
         "dex": 9,
         "con": 15,
         "int": 12,
         "wis": 13,
         "cha": 8,
-        "skill": { "arcana": "+5", "history": "+5", "perception": "+3" },
+        "skill": {
+          "arcana": "+5",
+          "history": "+5",
+          "perception": "+3"
+        },
         "passive": 13,
         "languages": ["any languages it knew in life"],
         "cr": "1/4",
@@ -2696,7 +4252,19 @@
             "name": "Slam",
             "entries": [
               "Melee Weapon Attack:  +4 to hit, reach 5 ft., one target. 5 (1d6 + 2) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d6+2"
+                }
+              ]
+            }
           },
           {
             "name": "Counsel of the Past (2/Day)",
@@ -2721,17 +4289,32 @@
         "type": "construct",
         "alignment": ["L", "G"],
         "alignmentPrefix": "typically ",
-        "ac": [{ "ac": 17, "from": ["natural armor"] }],
-        "hp": { "average": 31, "formula": "7d6 + 7" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 17,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 31,
+          "formula": "7d6 + 7"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 15,
         "dex": 14,
         "con": 13,
         "int": 10,
         "wis": 12,
         "cha": 12,
-        "save": { "dex": "+4" },
-        "skill": { "insight": "+3", "persuasion": "+3" },
+        "save": {
+          "dex": "+4"
+        },
+        "skill": {
+          "insight": "+3",
+          "persuasion": "+3"
+        },
         "senses": ["blindsight 60 ft."],
         "passive": 11,
         "immune": ["poison"],
@@ -2764,12 +4347,27 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The guide makes two Slam attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The guide makes two Slam attacks."]
+          },
           {
             "name": "Slam",
             "entries": [
               "Melee Weapon Attack:  +4 to hit, reach 5 ft., one target. 6 (1d8 + 2) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d8+2"
+                }
+              ]
+            }
           },
           {
             "name": "Smile and Wave",
@@ -2780,7 +4378,12 @@
             ]
           }
         ],
-        "bonus": [{ "name": "Need Directions", "entries": ["The guide takes the Help action."] }],
+        "bonus": [
+          {
+            "name": "Need Directions",
+            "entries": ["The guide takes the Help action."]
+          }
+        ],
         "senseTags": ["B"],
         "actionTags": ["Multiattack"],
         "languageTags": ["C", "X"],
@@ -2797,19 +4400,47 @@
         "source": "SCC",
         "page": 218,
         "size": "G",
-        "type": { "type": "dragon", "tags": ["wizard"] },
+        "type": {
+          "type": "dragon",
+          "tags": ["wizard"]
+        },
         "alignment": ["L", "N"],
-        "ac": [{ "ac": 21, "from": ["natural armor"] }],
-        "hp": { "average": 444, "formula": "24d20 + 192" },
-        "speed": { "walk": 40, "fly": { "number": 80, "condition": "(hover)" }, "canHover": true },
+        "ac": [
+          {
+            "ac": 21,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 444,
+          "formula": "24d20 + 192"
+        },
+        "speed": {
+          "walk": 40,
+          "fly": {
+            "number": 80,
+            "condition": "(hover)"
+          },
+          "canHover": true
+        },
         "str": 28,
         "dex": 14,
         "con": 27,
         "int": 28,
         "wis": 18,
         "cha": 17,
-        "save": { "dex": "+9", "con": "+15", "wis": "+11", "cha": "+10" },
-        "skill": { "arcana": "+23", "investigation": "+23", "nature": "+16", "perception": "+18" },
+        "save": {
+          "dex": "+9",
+          "con": "+15",
+          "wis": "+11",
+          "cha": "+10"
+        },
+        "skill": {
+          "arcana": "+23",
+          "investigation": "+23",
+          "nature": "+16",
+          "perception": "+18"
+        },
         "senses": ["blindsight 120 ft."],
         "passive": 28,
         "immune": ["force", "psychic"],
@@ -2832,7 +4463,8 @@
               ]
             },
             "ability": "int",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 24
           }
         ],
         "trait": [
@@ -2850,19 +4482,64 @@
             "name": "Bite",
             "entries": [
               "Melee Weapon Attack:  +16 to hit, reach 15 ft., one target. 14 (1d10 + 9) piercing damage plus 7 (2d6) force damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 15,
+              "toHit": 16,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d10+9"
+                },
+                {
+                  "type": "force",
+                  "damage": "2d6"
+                }
+              ]
+            }
           },
           {
             "name": "Claw",
             "entries": [
               "Melee Weapon Attack:  +16 to hit, reach 10 ft., one target. 16 (2d6 + 9) slashing damage. If the target is a creature, it is addled by recursive thoughts, reducing its speed to 0 until the start of Tanazir's next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 16,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "2d6+9"
+                }
+              ]
+            }
           },
           {
             "name": "Diminution Breath (Recharge 5-6)",
             "entries": [
               "Tanazir exhales a weakening equation in a 90-foot cone. Each creature in that area must make a DC 23 Constitution saving throw. On a failed save, a creature takes 45 (13d6) force damage and 45 (13d6) psychic damage and is weakened until the start of Tanazir's next turn. While weakened, it has disadvantage on the following rolls that rely on Strength: attack rolls, ability checks, and saving throws. On a successful save, a creature takes half as much damage and isn't weakened."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 90,
+              "toHit": null,
+              "targets": -1,
+              "damage": [
+                {
+                  "type": "necrotic",
+                  "damage": "18d6",
+                  "when": "failure"
+                }
+              ],
+              "save": {
+                "dc": 21,
+                "ability": "CON"
+              }
+            }
           },
           {
             "name": "Teleport",
@@ -2872,7 +4549,10 @@
           }
         ],
         "legendary": [
-          { "name": "Claw", "entries": ["Tanazir makes one Claw attack."] },
+          {
+            "name": "Claw",
+            "entries": ["Tanazir makes one Claw attack."]
+          },
           {
             "name": "Fold Space (Costs 2 Actions)",
             "entries": [
@@ -2902,19 +4582,44 @@
         "source": "SCC",
         "page": 219,
         "size": "G",
-        "type": { "type": "dragon", "tags": ["wizard"] },
+        "type": {
+          "type": "dragon",
+          "tags": ["wizard"]
+        },
         "alignment": ["L", "N"],
-        "ac": [{ "ac": 21, "from": ["natural armor"] }],
-        "hp": { "average": 487, "formula": "25d20 + 225" },
-        "speed": { "walk": 40, "climb": 40, "fly": 80 },
+        "ac": [
+          {
+            "ac": 21,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 487,
+          "formula": "25d20 + 225"
+        },
+        "speed": {
+          "walk": 40,
+          "climb": 40,
+          "fly": 80
+        },
         "str": 30,
         "dex": 14,
         "con": 29,
         "int": 30,
         "wis": 20,
         "cha": 18,
-        "save": { "dex": "+10", "con": "+17", "wis": "+13", "cha": "+12" },
-        "skill": { "arcana": "+18", "history": "+18", "investigation": "+18", "perception": "+13" },
+        "save": {
+          "dex": "+10",
+          "con": "+17",
+          "wis": "+13",
+          "cha": "+12"
+        },
+        "skill": {
+          "arcana": "+18",
+          "history": "+18",
+          "investigation": "+18",
+          "perception": "+13"
+        },
         "senses": ["blindsight 120 ft."],
         "passive": 23,
         "immune": ["thunder"],
@@ -2953,23 +4658,78 @@
             "name": "Bite",
             "entries": [
               "Melee Weapon Attack:  +18 to hit, reach 15 ft., one target. 15 (1d10 + 10) piercing damage plus 6 (1d12) thunder damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 15,
+              "toHit": 18,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d10+10"
+                },
+                {
+                  "type": "thunder",
+                  "damage": "1d12"
+                }
+              ]
+            }
           },
           {
             "name": "Claw",
             "entries": [
               "Melee Weapon Attack:  +18 to hit, reach 10 ft., one target. 13 (1d6 + 10) slashing damage. If the target is a Huge or smaller creature, it is knocked prone."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 18,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d6+10"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "prone",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Battle Tide Breath (Recharge 5-6)",
             "entries": [
               "Velomachus exhales thunderous sound in a 90-foot cone. Each creature in that area must make a DC 25 Constitution saving throw. On a failure, a creature takes 45 (7d12) force damage and 45 (7d12) thunder damage and is pushed up to 20 feet in a horizontal direction of Velomachus' choice. On a success, the creature takes half as much damage and isn't pushed. Objects that aren't being worn or carried take the damage and are pushed as if they were creatures that failed the saving throw."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 90,
+              "toHit": null,
+              "targets": -1,
+              "save": {
+                "dc": 25,
+                "ability": "CONSTITUTION"
+              },
+              "damage": [
+                {
+                  "type": "force",
+                  "damage": "1d6",
+                  "when": "failure"
+                }
+              ]
+            }
           }
         ],
         "legendary": [
-          { "name": "Claw", "entries": ["Velomachus makes one Claw attack."] },
+          {
+            "name": "Claw",
+            "entries": ["Velomachus makes one Claw attack."]
+          },
           {
             "name": "Chaotic Flow (Costs 2 Actions)",
             "entries": [
@@ -3000,19 +4760,39 @@
         "page": 221,
         "size": "M",
         "sizeNote": "or small",
-        "type": { "type": "humanoid", "tags": ["druid"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["druid"]
+        },
         "alignment": ["A"],
-        "ac": [{ "ac": 13, "from": ["leather armor"] }],
-        "hp": { "average": 44, "formula": "8d8 + 8" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 13,
+            "from": ["leather armor"]
+          }
+        ],
+        "hp": {
+          "average": 44,
+          "formula": "8d8 + 8"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 10,
         "dex": 14,
         "con": 13,
         "int": 12,
         "wis": 15,
         "cha": 11,
-        "save": { "con": "+3", "wis": "+4" },
-        "skill": { "medicine": "+4", "nature": "+5", "perception": "+6" },
+        "save": {
+          "con": "+3",
+          "wis": "+4"
+        },
+        "skill": {
+          "medicine": "+4",
+          "nature": "+5",
+          "perception": "+6"
+        },
         "passive": 16,
         "languages": ["Common plus any two languages"],
         "cr": "2",
@@ -3023,7 +4803,9 @@
               "The apprentice casts one of the following spells, requiring no material components and using Wisdom as the spellcasting ability:"
             ],
             "will": ["druidcraft", "spare the dying"],
-            "daily": { "1e": ["pass without trace"] },
+            "daily": {
+              "1e": ["pass without trace"]
+            },
             "ability": "wis",
             "displayAs": "action"
           }
@@ -3047,7 +4829,23 @@
             "name": "Briar Vine",
             "entries": [
               "Melee Spell Attack:  +4 to hit, reach 15 ft., one target. 7 (1d10 + 2) piercing damage plus 9 (2d8) poison damage. If the target is a Large or smaller creature, the apprentice can pull it up to 10 feet closer to itself."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 15,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d10+2"
+                },
+                {
+                  "type": "poison",
+                  "damage": "2d8"
+                }
+              ]
+            }
           }
         ],
         "reaction": [
@@ -3073,19 +4871,39 @@
         "page": 222,
         "size": "M",
         "sizeNote": "or small",
-        "type": { "type": "humanoid", "tags": ["druid"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["druid"]
+        },
         "alignment": ["A"],
-        "ac": [{ "ac": 12, "from": ["15 with vociferous form"] }],
-        "hp": { "average": 66, "formula": "12d8 + 12" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 12,
+            "from": ["15 with vociferous form"]
+          }
+        ],
+        "hp": {
+          "average": 66,
+          "formula": "12d8 + 12"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 10,
         "dex": 15,
         "con": 13,
         "int": 14,
         "wis": 17,
         "cha": 11,
-        "save": { "con": "+3", "wis": "+5" },
-        "skill": { "medicine": "+5", "nature": "+6", "perception": "+7" },
+        "save": {
+          "con": "+3",
+          "wis": "+5"
+        },
+        "skill": {
+          "medicine": "+5",
+          "nature": "+6",
+          "perception": "+7"
+        },
         "passive": 17,
         "immune": ["poison"],
         "conditionImmune": ["poisoned"],
@@ -3098,7 +4916,9 @@
               "The apprentice casts one of the following spells, requiring no material components and using Wisdom as the spellcasting ability:"
             ],
             "will": ["druidcraft", "spare the dying"],
-            "daily": { "1e": ["death ward", "pass without trace", "speak with plants"] },
+            "daily": {
+              "1e": ["death ward", "pass without trace", "speak with plants"]
+            },
             "ability": "wis",
             "displayAs": "action"
           }
@@ -3122,7 +4942,23 @@
             "name": "Briar Vine",
             "entries": [
               "Melee Spell Attack:  +5 to hit, reach 15 ft., one target. 8 (1d10 + 3) piercing damage plus 18 (4d8) poison damage. If the target is a Large or smaller creature, the apprentice can pull it up to 10 feet closer to itself."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 15,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d10+3"
+                },
+                {
+                  "type": "poison",
+                  "damage": "4d8"
+                }
+              ]
+            }
           }
         ],
         "bonus": [
@@ -3156,19 +4992,42 @@
         "page": 223,
         "size": "M",
         "sizeNote": "or small",
-        "type": { "type": "humanoid", "tags": ["druid"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["druid"]
+        },
         "alignment": ["A"],
-        "ac": [{ "ac": 14, "from": ["hide armor"] }],
-        "hp": { "average": 105, "formula": "14d8 + 42" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 14,
+            "from": ["hide armor"]
+          }
+        ],
+        "hp": {
+          "average": 105,
+          "formula": "14d8 + 42"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 11,
         "dex": 14,
         "con": 16,
         "int": 16,
         "wis": 19,
         "cha": 13,
-        "save": { "con": "+6", "int": "+6", "wis": "+7", "cha": "+4" },
-        "skill": { "arcana": "+6", "medicine": "+7", "nature": "+6", "survival": "+7" },
+        "save": {
+          "con": "+6",
+          "int": "+6",
+          "wis": "+7",
+          "cha": "+4"
+        },
+        "skill": {
+          "arcana": "+6",
+          "medicine": "+7",
+          "nature": "+6",
+          "survival": "+7"
+        },
         "passive": 14,
         "resist": ["necrotic"],
         "languages": ["Common plus any four languages"],
@@ -3180,9 +5039,12 @@
               "The professor casts one of the following spells, requiring no material components and using Wisdom as the spellcasting ability (spell save DC 15):"
             ],
             "will": ["druidcraft", "spare the dying"],
-            "daily": { "1e": ["antilife shell", "bane", "feign death", "speak with dead"] },
+            "daily": {
+              "1e": ["antilife shell", "bane", "feign death", "speak with dead"]
+            },
             "ability": "wis",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 15
           }
         ],
         "trait": [
@@ -3204,7 +5066,19 @@
             "name": "Mortality Spear",
             "entries": [
               "Ranged or Melee Spell Attack:  +7 to hit, reach 5 ft. or range 120 ft., one target. 17 (3d8 + 4) necrotic damage, and the target can't regain hit points until the start of the professor's next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "necrotic",
+                  "damage": "3d8+4"
+                }
+              ]
+            }
           },
           {
             "name": "Essence Pulse (Recharge 5-6)",
@@ -3227,19 +5101,42 @@
         "page": 223,
         "size": "M",
         "sizeNote": "or small",
-        "type": { "type": "humanoid", "tags": ["druid"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["druid"]
+        },
         "alignment": ["A"],
-        "ac": [{ "ac": 13, "from": ["hide armor"] }],
-        "hp": { "average": 112, "formula": "15d8 + 45" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 13,
+            "from": ["hide armor"]
+          }
+        ],
+        "hp": {
+          "average": 112,
+          "formula": "15d8 + 45"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 11,
         "dex": 13,
         "con": 16,
         "int": 16,
         "wis": 19,
         "cha": 13,
-        "save": { "con": "+6", "int": "+6", "wis": "+7", "cha": "+4" },
-        "skill": { "arcana": "+6", "medicine": "+7", "nature": "+6", "survival": "+7" },
+        "save": {
+          "con": "+6",
+          "int": "+6",
+          "wis": "+7",
+          "cha": "+4"
+        },
+        "skill": {
+          "arcana": "+6",
+          "medicine": "+7",
+          "nature": "+6",
+          "survival": "+7"
+        },
         "passive": 14,
         "resist": ["poison"],
         "conditionImmune": ["poisoned"],
@@ -3267,12 +5164,31 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The professor makes two Verdant Lash attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The professor makes two Verdant Lash attacks."]
+          },
           {
             "name": "Verdant Lash",
             "entries": [
               "Melee Spell Attack:  +7 to hit, reach 30 ft., one target. 11 (2d6 + 4) piercing damage plus 7 (2d6) poison damage, and the target must succeed on a DC 15 Strength saving throw or be pulled up to 10 feet closer to the professor."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 30,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "2d6+4"
+                },
+                {
+                  "type": "poison",
+                  "damage": "2d6"
+                }
+              ]
+            }
           },
           {
             "name": "Summon Nature's Avatar (Recharges after a Short or Long Rest)",
@@ -3294,19 +5210,41 @@
         "source": "SCC",
         "page": 172,
         "size": "M",
-        "type": { "type": "humanoid", "tags": ["human", "warlock"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["human", "warlock"]
+        },
         "alignment": ["N", "E"],
-        "ac": [{ "ac": 16, "from": ["blood aegis"] }],
-        "hp": { "average": 127, "formula": "15d8 + 60" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 16,
+            "from": ["blood aegis"]
+          }
+        ],
+        "hp": {
+          "average": 127,
+          "formula": "15d8 + 60"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 11,
         "dex": 14,
         "con": 18,
         "int": 20,
         "wis": 12,
         "cha": 12,
-        "save": { "con": "+8", "int": "+9", "wis": "+5", "cha": "+5" },
-        "skill": { "deception": "+9", "medicine": "+5", "survival": "+5" },
+        "save": {
+          "con": "+8",
+          "int": "+9",
+          "wis": "+5",
+          "cha": "+5"
+        },
+        "skill": {
+          "deception": "+9",
+          "medicine": "+5",
+          "survival": "+5"
+        },
         "passive": 11,
         "resist": ["necrotic"],
         "conditionImmune": ["exhaustion"],
@@ -3333,18 +5271,55 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["Y'demi makes two Blood Lash attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["Y'demi makes two Blood Lash attacks."]
+          },
           {
             "name": "Blood Lash",
             "entries": [
               "Melee Spell Attack:  +9 to hit, reach 10 ft., one target. 21 (3d10 + 5) necrotic damage. If the target is a creature, it can't regain hit points until the start of the Y'demi's next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 9,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "necrotic",
+                  "damage": "3d10+5"
+                }
+              ]
+            }
           },
           {
             "name": "Blood Boil (Recharge 4-6)",
             "entries": [
               "Y'demi chooses a point within 150 feet of itself, and a 20-foot radius sphere centered on that point fills with a burst of searing, blood-red mist. Each creature of Y'demi's choice that she can see in that area must make a DC 17 Constitution saving throw. On a failed save, a creature takes 38 (7d10) necrotic damage and is incapacitated until the end of its next turn. On a success, a creature takes half as much damage and isn't incapacitated. A creature dies if reduced to 0 hit points by this necrotic damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 150,
+              "toHit": null,
+              "targets": -1,
+              "damage": [
+                {
+                  "type": "fire",
+                  "damage": "4d10",
+                  "when": "failure"
+                },
+                {
+                  "type": "fire",
+                  "damage": "2d10",
+                  "when": "success"
+                }
+              ],
+              "save": {
+                "dc": 18,
+                "ability": "DEX"
+              }
+            }
           }
         ],
         "bonus": [
@@ -3378,7 +5353,13 @@
           }
         ],
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/SCC/Archaic.webp" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Archaic.webp"
+            }
+          }
         ]
       },
       {
@@ -3396,7 +5377,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SCC/Art Elemental Mascot.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Art Elemental Mascot.webp"
+            }
           }
         ]
       },
@@ -3415,7 +5399,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SCC/Beledros Witherbloom.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Beledros Witherbloom.webp"
+            }
           }
         ]
       },
@@ -3434,7 +5421,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SCC/Brackish Trudge.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Brackish Trudge.webp"
+            }
           }
         ]
       },
@@ -3452,7 +5442,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SCC/Cogwork Archivist.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Cogwork Archivist.webp"
+            }
           }
         ]
       },
@@ -3470,7 +5463,13 @@
           }
         ],
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/SCC/Daemogoth.webp" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Daemogoth.webp"
+            }
+          }
         ]
       },
       {
@@ -3500,7 +5499,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SCC/Daemogoth Titan.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Daemogoth Titan.webp"
+            }
           }
         ]
       },
@@ -3518,7 +5520,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SCC/First-Year Student.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/First-Year Student.webp"
+            }
           }
         ]
       },
@@ -3537,7 +5542,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SCC/Fractal Mascot.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Fractal Mascot.webp"
+            }
           }
         ]
       },
@@ -3556,7 +5564,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SCC/Galazeth Prismari.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Galazeth Prismari.webp"
+            }
           }
         ]
       },
@@ -3572,7 +5583,13 @@
           }
         ],
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/SCC/Groff.webp" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Groff.webp"
+            }
+          }
         ]
       },
       {
@@ -3589,7 +5606,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SCC/Inkling Mascot.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Inkling Mascot.webp"
+            }
           }
         ]
       },
@@ -3620,7 +5640,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SCC/Lorehold Apprentice.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Lorehold Apprentice.webp"
+            }
           }
         ]
       },
@@ -3712,7 +5735,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SCC/Mage Hunter.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Mage Hunter.webp"
+            }
           }
         ]
       },
@@ -3738,7 +5764,13 @@
           }
         ],
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/SCC/Murgaxor.webp" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Murgaxor.webp"
+            }
+          }
         ]
       },
       {
@@ -3756,7 +5788,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SCC/Oracle of Strixhaven.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Oracle of Strixhaven.webp"
+            }
           }
         ]
       },
@@ -3787,7 +5822,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SCC/Oriq Blood Mage.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Oriq Blood Mage.webp"
+            }
           }
         ]
       },
@@ -3818,7 +5856,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SCC/Oriq Recruiter.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Oriq Recruiter.webp"
+            }
           }
         ]
       },
@@ -3836,7 +5877,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SCC/Pest Mascot.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Pest Mascot.webp"
+            }
           }
         ]
       },
@@ -3867,7 +5911,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SCC/Prismari Apprentice.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Prismari Apprentice.webp"
+            }
           }
         ]
       },
@@ -3972,7 +6019,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SCC/Quandrix Apprentice.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Quandrix Apprentice.webp"
+            }
           }
         ]
       },
@@ -4064,7 +6114,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SCC/Relic Sloth.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Relic Sloth.webp"
+            }
           }
         ]
       },
@@ -4082,7 +6135,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SCC/Ruin Grinder.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Ruin Grinder.webp"
+            }
           }
         ]
       },
@@ -4113,7 +6169,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SCC/Shadrix Silverquill.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Shadrix Silverquill.webp"
+            }
           }
         ]
       },
@@ -4144,7 +6203,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SCC/Silverquill Apprentice.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Silverquill Apprentice.webp"
+            }
           }
         ]
       },
@@ -4175,7 +6237,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SCC/Silverquill Pledgemage.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Silverquill Pledgemage.webp"
+            }
           }
         ]
       },
@@ -4244,7 +6309,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SCC/Spirit Statue Mascot.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Spirit Statue Mascot.webp"
+            }
           }
         ]
       },
@@ -4262,7 +6330,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SCC/Strixhaven Campus Guide.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Strixhaven Campus Guide.webp"
+            }
           }
         ]
       },
@@ -4282,7 +6353,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SCC/Tanazir Quandrix.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Tanazir Quandrix.webp"
+            }
           }
         ]
       },
@@ -4302,7 +6376,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SCC/Velomachus Lorehold.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Velomachus Lorehold.webp"
+            }
           }
         ]
       },
@@ -4333,7 +6410,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SCC/Witherbloom Apprentice.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Witherbloom Apprentice.webp"
+            }
           }
         ]
       },
@@ -4364,7 +6444,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SCC/Witherbloom Pledgemage.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SCC/Witherbloom Pledgemage.webp"
+            }
           }
         ]
       },

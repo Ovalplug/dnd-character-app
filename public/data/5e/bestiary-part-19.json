@@ -7,20 +7,41 @@
         "name": "Doric",
         "isNamedCreature": true,
         "source": "HAT-TG",
-        "size": ["M"],
-        "type": { "type": "humanoid", "tags": ["druid"] },
+        "size": "M",
+        "type": {
+          "type": "humanoid",
+          "tags": ["druid"]
+        },
         "alignment": ["N", "G"],
-        "ac": [{ "ac": 14, "from": ["leather armor"] }],
-        "hp": { "average": 104, "formula": "16d8 + 32" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 14,
+            "from": ["leather armor"]
+          }
+        ],
+        "hp": {
+          "average": 104,
+          "formula": "16d8 + 32"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 12,
         "dex": 16,
         "con": 14,
         "int": 16,
         "wis": 19,
         "cha": 10,
-        "save": { "int": "+6", "wis": "+7" },
-        "skill": { "insight": "+7", "nature": "+6", "perception": "+7", "survival": "+7" },
+        "save": {
+          "int": "+6",
+          "wis": "+7"
+        },
+        "skill": {
+          "insight": "+7",
+          "nature": "+6",
+          "perception": "+7",
+          "survival": "+7"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 17,
         "resist": ["fire"],
@@ -33,9 +54,12 @@
               "Doric casts one of the following spells, using Wisdom as the spellcasting ability (spell save DC 15):"
             ],
             "will": ["animal messenger", "beast sense", "speak with animals"],
-            "daily": { "2e": ["cure wounds", "entangle", "faerie fire", "thunderwave"] },
+            "daily": {
+              "2e": ["cure wounds", "entangle", "faerie fire", "thunderwave"]
+            },
             "ability": "wis",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 15
           }
         ],
         "action": [
@@ -49,13 +73,37 @@
             "name": "Shaped Claw",
             "entries": [
               "Melee Spell Attack: +7 to hit, reach 5 ft., one target. 8 (1d8 + 4) slashing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d8+4"
+                }
+              ]
+            }
           },
           {
             "name": "Sling",
             "entries": [
               "Ranged Weapon Attack: +6 to hit, range 30/120 ft., one target. 8 (2d4 + 3) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ranged",
+              "range": 30,
+              "toHit": 6,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "2d4+3"
+                }
+              ]
+            }
           }
         ],
         "bonus": [
@@ -95,19 +143,35 @@
         "name": "Edgin Darvis",
         "isNamedCreature": true,
         "source": "HAT-TG",
-        "size": ["M"],
-        "type": { "type": "humanoid", "tags": ["bard"] },
+        "size": "M",
+        "type": {
+          "type": "humanoid",
+          "tags": ["bard"]
+        },
         "alignment": ["C", "G"],
-        "ac": [{ "ac": 14, "from": ["leather armor"] }],
-        "hp": { "average": 110, "formula": "17d8 + 34" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 14,
+            "from": ["leather armor"]
+          }
+        ],
+        "hp": {
+          "average": 110,
+          "formula": "17d8 + 34"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 14,
         "dex": 16,
         "con": 14,
         "int": 14,
         "wis": 16,
         "cha": 18,
-        "save": { "dex": "+6", "cha": "+7" },
+        "save": {
+          "dex": "+6",
+          "cha": "+7"
+        },
         "skill": {
           "deception": "+7",
           "performance": "+10",
@@ -124,9 +188,13 @@
               "Edgin casts one of the following spells, using Charisma as the spellcasting ability (spell save DC 15):"
             ],
             "will": ["friends", "message"],
-            "daily": { "1": ["suggestion"], "3e": ["charm person", "disguise self"] },
+            "daily": {
+              "1": ["suggestion"],
+              "3e": ["charm person", "disguise self"]
+            },
             "ability": "cha",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 15
           }
         ],
         "action": [
@@ -138,19 +206,61 @@
             "name": "Reinforced Lute",
             "entries": [
               "Melee Weapon Attack: +5 to hit, reach 5 ft., one target. 6 (1d8 + 2) bludgeoning damage plus 11 (2d10) thunder damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d8+2"
+                },
+                {
+                  "type": "thunder",
+                  "damage": "2d10"
+                }
+              ]
+            }
           },
           {
             "name": "Shortsword",
             "entries": [
               "Melee Weapon Attack: +6 to hit, reach 5 ft., one target. 6 (1d6 + 3) piercing damage plus 11 (2d10) thunder damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 6,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d6+3"
+                },
+                {
+                  "type": "thunder",
+                  "damage": "2d10"
+                }
+              ]
+            }
           },
           {
             "name": "Disorienting Words",
             "entries": [
               "Edgin magically taunts up to three creatures he can see within 60 feet of himself. Each creature must succeed on a DC 15 Wisdom saving throw or take 10 (3d6) psychic damage and have disadvantage on the next attack roll it makes before the start of Edgin's next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 60,
+              "toHit": null,
+              "targets": 1,
+              "save": {
+                "dc": 14,
+                "ability": "WIS"
+              }
+            }
           }
         ],
         "reaction": [
@@ -178,19 +288,32 @@
         "name": "Forge Fitzwilliam",
         "isNamedCreature": true,
         "source": "HAT-TG",
-        "size": ["M"],
+        "size": "M",
         "type": "humanoid",
         "alignment": ["N", "E"],
-        "ac": [{ "ac": 17, "from": ["disarming charm"] }],
-        "hp": { "average": 110, "formula": "20d8 + 20" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 17,
+            "from": ["disarming charm"]
+          }
+        ],
+        "hp": {
+          "average": 110,
+          "formula": "20d8 + 20"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 11,
         "dex": 14,
         "con": 13,
         "int": 15,
         "wis": 17,
         "cha": 20,
-        "save": { "dex": "+5", "int": "+5" },
+        "save": {
+          "dex": "+5",
+          "int": "+5"
+        },
         "skill": {
           "acrobatics": "+5",
           "deception": "+11",
@@ -231,13 +354,52 @@
             "name": "Dagger",
             "entries": [
               "Melee or Ranged Weapon Attack: +5 to hit, reach 5 ft. or range 20/60 ft., one target. 4 (1d4 + 2) piercing damage plus 24 (7d6) poison damage, and the target is poisoned until the end of its next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 20,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d4+2"
+                },
+                {
+                  "type": "poison",
+                  "damage": "7d6"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "poisoned",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Heavy Crossbow",
             "entries": [
               "Ranged Weapon Attack: +5 to hit, range 100/400 ft., one target. 7 (1d10 + 2) piercing damage plus 24 (7d6) poison damage. Hit or Miss: If the target is a creature, it has disadvantage on the next attack roll it makes before the start of Forge's next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ranged",
+              "range": 100,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d10+2"
+                },
+                {
+                  "type": "poison",
+                  "damage": "7d6"
+                }
+              ]
+            }
           }
         ],
         "bonus": [
@@ -270,22 +432,45 @@
         "name": "Holga Kilgore",
         "isNamedCreature": true,
         "source": "HAT-TG",
-        "size": ["M"],
+        "size": "M",
         "type": "humanoid",
         "alignment": ["C", "G"],
-        "ac": [{ "ac": 15, "from": ["Unarmored Defense"] }],
-        "hp": { "average": 120, "formula": "16d8 + 48" },
-        "speed": { "walk": 40 },
+        "ac": [
+          {
+            "ac": 15,
+            "from": ["Unarmored Defense"]
+          }
+        ],
+        "hp": {
+          "average": 120,
+          "formula": "16d8 + 48"
+        },
+        "speed": {
+          "walk": 40
+        },
         "str": 19,
         "dex": 14,
         "con": 16,
         "int": 11,
         "wis": 16,
         "cha": 13,
-        "save": { "str": "+7", "con": "+6" },
-        "skill": { "athletics": "+7", "intimidation": "+4", "nature": "+3", "survival": "+6" },
+        "save": {
+          "str": "+7",
+          "con": "+6"
+        },
+        "skill": {
+          "athletics": "+7",
+          "intimidation": "+4",
+          "nature": "+3",
+          "survival": "+6"
+        },
         "passive": 13,
-        "resist": [{ "resist": ["lightning"], "note": "(granted by darksteel greataxe)" }],
+        "resist": [
+          {
+            "resist": ["lightning"],
+            "note": "(granted by darksteel greataxe)"
+          }
+        ],
         "languages": ["Common", "Halfling"],
         "cr": "5",
         "trait": [
@@ -319,13 +504,37 @@
             "name": "Darksteel Greataxe",
             "entries": [
               "Melee Weapon Attack: +7 to hit, reach 5 ft., one target. 10 (1d12 + 4) slashing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d12+4"
+                }
+              ]
+            }
           },
           {
             "name": "Improvised Weapon",
             "entries": [
               "Melee or Ranged Weapon Attack: +7 to hit, reach 5 ft., or range 20/60 ft., one target. 7 (1d6 + 4) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 20,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d6+4"
+                }
+              ]
+            }
           }
         ],
         "bonus": [
@@ -350,19 +559,30 @@
         "name": "Simon Aumar",
         "isNamedCreature": true,
         "source": "HAT-TG",
-        "size": ["M"],
-        "type": { "type": "humanoid", "tags": ["sorcerer"] },
+        "size": "M",
+        "type": {
+          "type": "humanoid",
+          "tags": ["sorcerer"]
+        },
         "alignment": ["C", "G"],
         "ac": [12],
-        "hp": { "average": 99, "formula": "18d8 + 18" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 99,
+          "formula": "18d8 + 18"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 8,
         "dex": 14,
         "con": 13,
         "int": 16,
         "wis": 12,
         "cha": 17,
-        "save": { "con": "+4", "cha": "+6" },
+        "save": {
+          "con": "+4",
+          "cha": "+6"
+        },
         "skill": {
           "arcana": "+6",
           "deception": "+6",
@@ -391,7 +611,8 @@
               "1e": ["Bigby's hand", "major image"]
             },
             "ability": "cha",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 14
           }
         ],
         "trait": [
@@ -425,13 +646,45 @@
             "name": "Quarterstaff",
             "entries": [
               "Melee Weapon Attack: +2 to hit, reach 5 ft., one target. 2 (1d6 - 1) bludgeoning damage, or 3 (1d8 - 1) bludgeoning damage if used with two hands, plus 11 (2d10) force damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 2,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d6-1"
+                },
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d8-1"
+                },
+                {
+                  "type": "force",
+                  "damage": "2d10"
+                }
+              ]
+            }
           },
           {
             "name": "Chaos Bolt",
             "entries": [
               "Ranged Spell Attack: +6 to hit, range 60 ft., one target. 14 (2d10 + 3) damage of a random type determined by rolling a d8: 1, acid; 2, cold; 3, fire; 4, force; 5, lightning; 6, poison; 7, psychic; 8, thunder."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 60,
+              "toHit": 6,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "2d10+3"
+                }
+              ]
+            }
           }
         ],
         "reaction": [
@@ -459,20 +712,35 @@
         "name": "Sofina",
         "isNamedCreature": true,
         "source": "HAT-TG",
-        "size": ["M"],
-        "type": { "type": "humanoid", "tags": ["wizard"] },
+        "size": "M",
+        "type": {
+          "type": "humanoid",
+          "tags": ["wizard"]
+        },
         "alignment": ["N", "E"],
         "ac": [14],
-        "hp": { "average": 161, "formula": "19d8 + 76" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 161,
+          "formula": "19d8 + 76"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 12,
         "dex": 14,
         "con": 18,
         "int": 20,
         "wis": 14,
         "cha": 8,
-        "save": { "int": "+10", "wis": "+7" },
-        "skill": { "arcana": "+10", "history": "+10", "insight": "+7" },
+        "save": {
+          "int": "+10",
+          "wis": "+7"
+        },
+        "skill": {
+          "arcana": "+10",
+          "history": "+10",
+          "insight": "+7"
+        },
         "passive": 12,
         "resist": ["necrotic"],
         "languages": ["Abyssal", "Common", "Draconic", "Infernal", "Thayan"],
@@ -496,7 +764,8 @@
               "1e": ["Evard's black tentacles", "finger of death", "time stop"]
             },
             "ability": "int",
-            "displayAs": "action"
+            "displayAs": "action",
+            "saveDC": 18
           }
         ],
         "trait": [
@@ -508,18 +777,50 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["Sofina makes three Necrotic Strike attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["Sofina makes three Necrotic Strike attacks."]
+          },
           {
             "name": "Necrotic Strike",
             "entries": [
               "Melee or Ranged Spell Attack: +10 to hit, reach 5 ft. or range 120 ft., one target. 32 (5d10 + 5) necrotic damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 120,
+              "toHit": 10,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "necrotic",
+                  "damage": "5d10+5"
+                }
+              ]
+            }
           },
           {
             "name": "Swarm of Meteors (1/Day)",
             "entries": [
               "Sofina magically calls down a meteor swarm that detonates in four 40-foot-radius spheres, each one centered on a point she can see within 1 mile of herself. These spheres can overlap. Each creature in one or more of these spheres must make a DC 18 Dexterity saving throw, taking 35 (10d6) fire damage and 35 (10d6) bludgeoning damage on a failed saving throw, or half as much damage on a successful one. A creature in multiple spheres takes this damage only once."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 40,
+              "toHit": null,
+              "targets": -1,
+              "save": {
+                "dc": 18,
+                "ability": "DEXTERITY"
+              },
+              "damage": [
+                {
+                  "type": "fire",
+                  "damage": "1d6",
+                  "when": "failure"
+                }
+              ]
+            }
           }
         ],
         "bonus": [
@@ -547,20 +848,41 @@
         "name": "Xenk Yendar",
         "isNamedCreature": true,
         "source": "HAT-TG",
-        "size": ["M"],
-        "type": { "type": "humanoid", "tags": ["paladin"] },
+        "size": "M",
+        "type": {
+          "type": "humanoid",
+          "tags": ["paladin"]
+        },
         "alignment": ["L", "G"],
-        "ac": [{ "ac": 15, "from": ["half plate"] }],
-        "hp": { "average": 157, "formula": "21d8 + 63" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 15,
+            "from": ["half plate"]
+          }
+        ],
+        "hp": {
+          "average": 157,
+          "formula": "21d8 + 63"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 19,
         "dex": 11,
         "con": 16,
         "int": 14,
         "wis": 16,
         "cha": 17,
-        "save": { "str": "+8", "cha": "+7" },
-        "skill": { "athletics": "+8", "history": "+6", "insight": "+7", "survival": "+7" },
+        "save": {
+          "str": "+8",
+          "cha": "+7"
+        },
+        "skill": {
+          "athletics": "+8",
+          "history": "+6",
+          "insight": "+7",
+          "survival": "+7"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 13,
         "conditionImmune": ["charmed", "frightened", "poisoned"],
@@ -585,19 +907,67 @@
             "name": "Daggersword",
             "entries": [
               "Choose the attack that corresponds to the daggersword's current form (see Daggersword Shift below):"
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 8,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d6+4"
+                }
+              ]
+            }
           },
           {
             "name": "Longsword",
             "entries": [
               "Melee Weapon Attack: +8 to hit, reach 5 ft., one target. 8 (1d8 + 4) slashing damage, or 9 (1d10 + 4) slashing damage if used with two hands, plus 6 (1d12) radiant damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 8,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d8+4"
+                },
+                {
+                  "type": "slashing",
+                  "damage": "1d10+4"
+                },
+                {
+                  "type": "radiant",
+                  "damage": "1d12"
+                }
+              ]
+            }
           },
           {
             "name": "Shortsword and Dagger",
             "entries": [
               "Melee Weapon Attack: +8 to hit, reach 5 ft., one target. 7 (1d6 + 4) piercing damage plus 6 (1d12) radiant damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 8,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d6+4"
+                },
+                {
+                  "type": "radiant",
+                  "damage": "1d12"
+                }
+              ]
+            }
           },
           {
             "name": "Daggersword Flourish",
@@ -609,13 +979,40 @@
             "name": "Longsword",
             "entries": [
               "Xenk magically detaches the longsword's blade from its hilt, launching the blade at a creature he can see within 30 feet of himself. The target must make a DC 16 Dexterity saving throw. On a failed save, the target is impaled by the blade, taking 14 (3d6 + 4) piercing damage, and is knocked prone. At the end of the current turn, the blade magically reattaches to its hilt."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 0,
+              "toHit": null,
+              "targets": 1,
+              "save": {
+                "dc": 16,
+                "ability": "DEXTERITY"
+              },
+              "damage": []
+            }
           },
           {
             "name": "Shortsword and Dagger",
             "entries": [
               "Xenk lashes out with both weapons. Each creature of his choice within 10 feet of him must make a DC 16 Dexterity throw. On a failed save, the creature takes 7 (2d6) piercing damage and has disadvantage on attack rolls until the start of Xenk's next turn. On a successful save, the creature takes half as much damage and suffers no other effect."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 8,
+              "targets": 2,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d6+4"
+                },
+                {
+                  "type": "piercing",
+                  "damage": "1d4+4"
+                }
+              ]
+            }
           },
           {
             "name": "Cleansing Touch (1/Day)",
@@ -659,7 +1056,13 @@
           }
         ],
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/HAT-TG/Doric.webp" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/HAT-TG/Doric.webp"
+            }
+          }
         ]
       },
       {
@@ -677,7 +1080,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/HAT-TG/Edgin Darvis.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/HAT-TG/Edgin Darvis.webp"
+            }
           }
         ]
       },
@@ -696,7 +1102,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/HAT-TG/Forge Fitzwilliam.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/HAT-TG/Forge Fitzwilliam.webp"
+            }
           }
         ]
       },
@@ -715,7 +1124,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/HAT-TG/Holga Kilgore.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/HAT-TG/Holga Kilgore.webp"
+            }
           }
         ]
       },
@@ -734,7 +1146,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/HAT-TG/Simon Aumar.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/HAT-TG/Simon Aumar.webp"
+            }
           }
         ]
       },
@@ -751,7 +1166,13 @@
           }
         ],
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/HAT-TG/Sofina.webp" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/HAT-TG/Sofina.webp"
+            }
+          }
         ]
       },
       {
@@ -770,7 +1191,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/HAT-TG/Xenk Yendar.webp" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/HAT-TG/Xenk Yendar.webp"
+            }
           }
         ]
       }

@@ -10,9 +10,24 @@
         "page": 20,
         "size": "S",
         "type": "construct",
-        "ac": [{ "ac": 15, "from": ["natural armor"] }],
-        "hp": { "average": 17, "formula": "5d6" },
-        "speed": { "walk": 0, "fly": { "number": 50, "condition": "(hover)" }, "canHover": true },
+        "ac": [
+          {
+            "ac": 15,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 17,
+          "formula": "5d6"
+        },
+        "speed": {
+          "walk": 0,
+          "fly": {
+            "number": 50,
+            "condition": "(hover)"
+          },
+          "canHover": true
+        },
         "str": 10,
         "dex": 17,
         "con": 10,
@@ -49,12 +64,27 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The broom makes two melee attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The broom makes two melee attacks."]
+          },
           {
             "name": "Broomstick",
             "entries": [
               "Melee Weapon Attack: +5 to hit, reach 5 ft., one target. 5 (1d4 + 3) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d4+3"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -71,9 +101,19 @@
         "size": "L",
         "alignment": ["U"],
         "type": "construct",
-        "ac": [{ "ac": 14, "from": ["natural armor"] }],
-        "hp": { "average": 45, "formula": "6d10 + 12" },
-        "speed": { "walk": 10 },
+        "ac": [
+          {
+            "ac": 14,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 45,
+          "formula": "6d10 + 12"
+        },
+        "speed": {
+          "walk": 10
+        },
         "str": 15,
         "dex": 8,
         "con": 14,
@@ -104,12 +144,34 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The library makes two attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The library makes two attacks."]
+          },
           {
             "name": "Chained Book",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. 6 (1d8 + 2) bludgeoning damage, and if the target is a creature, it is grappled (escape 12)."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d8+2"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "grappled",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -128,19 +190,36 @@
         "source": "CM",
         "page": 157,
         "size": "M",
-        "type": { "type": "humanoid", "tags": ["human"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["human"]
+        },
         "alignment": ["N", "E"],
         "ac": [14],
-        "hp": { "average": 135, "formula": "18d8 + 54" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 135,
+          "formula": "18d8 + 54"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 10,
         "dex": 18,
         "con": 16,
         "int": 16,
         "wis": 15,
         "cha": 20,
-        "save": { "int": "+7", "wis": "+6", "cha": "+9" },
-        "skill": { "arcana": "+11", "deception": "+9", "history": "+7", "performance": "+13" },
+        "save": {
+          "int": "+7",
+          "wis": "+6",
+          "cha": "+9"
+        },
+        "skill": {
+          "arcana": "+11",
+          "deception": "+9",
+          "history": "+7",
+          "performance": "+13"
+        },
         "passive": 12,
         "languages": ["Common", "Draconic", "Elvish", "Undercommon"],
         "cr": "11",
@@ -168,7 +247,19 @@
             "name": "Dagger",
             "entries": [
               "Melee Weapon Attack:,rw +8 to hit, reach 5 ft. or range 20/60 ft., one target. 6 (1d4 + 4) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 8,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d4+4"
+                }
+              ]
+            }
           },
           {
             "name": "Quill's Fable (Recharge 6)",
@@ -180,7 +271,17 @@
             "name": "Supreme Mockery",
             "entries": [
               "Quill hurls a string of insults laced with enchantments at a creature he can see within 60 feet of him. If the creature can hear Quill (though it need not understand him), it must succeed on a 17 Wisdom saving throw or take 66 (12d10) psychic damage and have disadvantage on the next attack roll it makes before the end of its next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 60,
+              "toHit": null,
+              "targets": 1,
+              "save": {
+                "dc": 17,
+                "ability": "WIS"
+              }
+            }
           }
         ],
         "hasToken": true,
@@ -198,18 +299,38 @@
         "source": "CM",
         "page": 168,
         "size": "M",
-        "type": { "type": "humanoid", "tags": ["human"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["human"]
+        },
         "alignment": ["L", "E"],
-        "ac": [{ "ac": 17, "from": ["unarmored defense"] }],
-        "hp": { "average": 102, "formula": "12d8 + 48" },
-        "speed": { "walk": 40 },
+        "ac": [
+          {
+            "ac": 17,
+            "from": ["unarmored defense"]
+          }
+        ],
+        "hp": {
+          "average": 102,
+          "formula": "12d8 + 48"
+        },
+        "speed": {
+          "walk": 40
+        },
         "str": 10,
         "dex": 18,
         "con": 18,
         "int": 13,
         "wis": 17,
         "cha": 16,
-        "save": { "str": "+5", "dex": "+9", "con": "+9", "int": "+6", "wis": "+8", "cha": "+8" },
+        "save": {
+          "str": "+5",
+          "dex": "+9",
+          "con": "+9",
+          "int": "+6",
+          "wis": "+8",
+          "cha": "+8"
+        },
         "skill": {
           "acrobatics": "+9",
           "athletics": "+5",
@@ -249,13 +370,53 @@
             "name": "Thunder Strike",
             "entries": [
               "Melee Weapon Attack: +9 to hit, reach 5 ft., one target. 15 (2d10 + 4) thunder damage, and if the target is a creature, it must succeed on a 17 Constitution saving throw or be deafened and stunned until the start of Bak Mei's next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 9,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "thunder",
+                  "damage": "2d10+4"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "stunned",
+                  "save": "none",
+                  "escape": null
+                },
+                {
+                  "condition": "deafened",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Staff of Striking",
             "entries": [
               "Melee Weapon Attack: +9 to hit, reach 5 ft., one target. 3 (1d6) bludgeoning damage, or 4 (1d8) bludgeoning damage when used with two hands, and Bak Mei can expend up to 3 of the staff's charges. For each expended charge, the target takes an extra 1d6 force damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 9,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d6"
+                },
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d8"
+                }
+              ]
+            }
           },
           {
             "name": "Heal Self (Recharges after a Long Rest)",
@@ -265,7 +426,10 @@
           }
         ],
         "bonus": [
-          { "name": "Nimble Escape", "entries": ["Bak Mei takes the Disengage or Hide action."] }
+          {
+            "name": "Nimble Escape",
+            "entries": ["Bak Mei takes the Disengage or Hide action."]
+          }
         ],
         "reaction": [
           {
@@ -304,16 +468,30 @@
         "size": "L",
         "alignment": ["U"],
         "type": "construct",
-        "ac": [{ "ac": 17, "from": ["natural armor"] }],
-        "hp": { "average": 252, "formula": "24d10 + 120" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 17,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 252,
+          "formula": "24d10 + 120"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 20,
         "dex": 10,
         "con": 20,
         "int": 7,
         "wis": 11,
         "cha": 1,
-        "save": { "int": "+3", "wis": "+5", "cha": "+0" },
+        "save": {
+          "int": "+3",
+          "wis": "+5",
+          "cha": "+0"
+        },
         "senses": ["darkvision 120 ft."],
         "passive": 10,
         "immune": ["poison"],
@@ -341,18 +519,45 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The golem makes two attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The golem makes two attacks."]
+          },
           {
             "name": "Slam",
             "entries": [
               "Melee Weapon Attack: +10 to hit, reach 5 ft., one target. 27 (4d10 + 5) force damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 10,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "force",
+                  "damage": "4d10+5"
+                }
+              ]
+            }
           },
           {
             "name": "Crystal Dart",
             "entries": [
               "Ranged Weapon Attack: +10 to hit, range 120 ft., one target. 14 (2d8 + 5) force damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ranged",
+              "range": 120,
+              "toHit": 10,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "force",
+                  "damage": "2d8+5"
+                }
+              ]
+            }
           }
         ],
         "reaction": [
@@ -378,17 +583,37 @@
         "alignment": ["U"],
         "size": "H",
         "type": "undead",
-        "ac": [{ "ac": 15, "from": ["natural armor"] }],
-        "hp": { "average": 104, "formula": "16d12" },
-        "speed": { "walk": 0, "fly": { "number": 40, "condition": "(hover)" }, "canHover": true },
+        "ac": [
+          {
+            "ac": 15,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 104,
+          "formula": "16d12"
+        },
+        "speed": {
+          "walk": 0,
+          "fly": {
+            "number": 40,
+            "condition": "(hover)"
+          },
+          "canHover": true
+        },
         "str": 27,
         "dex": 11,
         "con": 10,
         "int": 12,
         "wis": 16,
         "cha": 17,
-        "save": { "wis": "+7", "cha": "+7" },
-        "skill": { "perception": "+7" },
+        "save": {
+          "wis": "+7",
+          "cha": "+7"
+        },
+        "skill": {
+          "perception": "+7"
+        },
         "senses": ["darkvision 120 ft."],
         "passive": 17,
         "resist": ["cold"],
@@ -413,7 +638,10 @@
               "The ghost casts one of the following spells, using Charisma as the spellcasting ability and requiring no material components:"
             ],
             "will": ["fog cloud"],
-            "daily": { "1": ["control weather"], "3": ["telekinesis"] },
+            "daily": {
+              "1": ["control weather"],
+              "3": ["telekinesis"]
+            },
             "ability": "cha",
             "displayAs": "action"
           }
@@ -439,12 +667,27 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The ghost makes two melee attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The ghost makes two melee attacks."]
+          },
           {
             "name": "Spectral Weapon",
             "entries": [
               "Melee Weapon Attack: +12 to hit, reach 10 ft., one target. 21 (3d8 + 8) force damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 12,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "force",
+                  "damage": "3d8+8"
+                }
+              ]
+            }
           },
           {
             "name": "Etherealness",
@@ -475,9 +718,19 @@
         "page": 149,
         "size": "M",
         "type": "construct",
-        "ac": [{ "ac": 15, "from": ["natural armor"] }],
-        "hp": { "average": 6, "formula": "1d8 + 2" },
-        "speed": { "walk": 25 },
+        "ac": [
+          {
+            "ac": 15,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 6,
+          "formula": "1d8 + 2"
+        },
+        "speed": {
+          "walk": 25
+        },
         "str": 10,
         "dex": 10,
         "con": 15,
@@ -502,7 +755,19 @@
             "name": "Club",
             "entries": [
               "Melee Weapon Attack: +2 to hit, reach 5 ft., one target. 2 (1d4) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 2,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d4"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -519,16 +784,35 @@
         "alignment": ["U"],
         "size": "L",
         "type": "monstrosity",
-        "ac": [{ "ac": 14, "from": ["natural armor"] }],
-        "hp": { "average": 90, "formula": "12d10 + 24" },
-        "speed": { "walk": 50, "fly": { "number": 50, "condition": "(hover)" }, "canHover": true },
+        "ac": [
+          {
+            "ac": 14,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 90,
+          "formula": "12d10 + 24"
+        },
+        "speed": {
+          "walk": 50,
+          "fly": {
+            "number": 50,
+            "condition": "(hover)"
+          },
+          "canHover": true
+        },
         "str": 18,
         "dex": 14,
         "con": 15,
         "int": 11,
         "wis": 17,
         "cha": 16,
-        "save": { "int": "+3", "wis": "+6", "cha": "+6" },
+        "save": {
+          "int": "+3",
+          "wis": "+6",
+          "cha": "+6"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 13,
         "immune": ["poison"],
@@ -544,13 +828,37 @@
             "name": "Hooves",
             "entries": [
               "Melee Weapon Attack: +7 to hit, reach 5 ft., one target. 32 (8d6 + 4) necrotic damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "necrotic",
+                  "damage": "8d6+4"
+                }
+              ]
+            }
           },
           {
             "name": "Horn",
             "entries": [
               "Melee Weapon Attack: +7 to hit, reach 5 ft., one target. 32 (8d6 + 4) necrotic damage. If the target is a humanoid, it must succeed on a 13 Wisdom saving throw or be transformed into a wolf under the avatar's control. This transformation lasts for 1 hour, or until the target drops to 0 hit points or dies. The target's game statistics are replaced by the wolf's statistics, but it retains its hit points. The target is limited in the actions it can perform by the nature of its wolf form, and it can't speak, cast spells, or take any other action that requires hands or speech. The target's gear melds into the new form, and it can't activate, use, wield, or otherwise benefit from any of its equipment."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "necrotic",
+                  "damage": "8d6+4"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -569,16 +877,30 @@
         "size": "G",
         "type": "dragon",
         "alignment": ["N"],
-        "ac": [{ "ac": 20, "from": ["natural armor"] }],
-        "hp": { "average": 341, "formula": "22d20 + 110" },
-        "speed": { "walk": 20 },
+        "ac": [
+          {
+            "ac": 20,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 341,
+          "formula": "22d20 + 110"
+        },
+        "speed": {
+          "walk": 20
+        },
         "str": 25,
         "dex": 10,
         "con": 20,
         "int": 10,
         "wis": 12,
         "cha": 12,
-        "save": { "dex": "+6", "con": "+11", "wis": "+7" },
+        "save": {
+          "dex": "+6",
+          "con": "+11",
+          "wis": "+7"
+        },
         "senses": ["darkvision 120 ft."],
         "passive": 11,
         "resist": ["fire"],
@@ -595,19 +917,62 @@
             "name": "Bite",
             "entries": [
               "Melee Weapon Attack: +13 to hit, reach 15 ft., one target. 26 (3d12 + 7) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 15,
+              "toHit": 13,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "3d12+7"
+                }
+              ]
+            }
           },
           {
             "name": "Claw",
             "entries": [
               "Melee Weapon Attack: +13 to hit, reach 10 ft., one target. 16 (2d8 + 7) slashing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 13,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "2d8+7"
+                }
+              ]
+            }
           },
           {
             "name": "Tail",
             "entries": [
               "Melee Weapon Attack: +13 to hit, reach 15 ft., one target. 26 (3d12 + 7) bludgeoning damage. If the target is a creature, it must succeed on a 20 Strength saving throw or be pushed up to 10 feet away from the dragon tortoise and knocked prone."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 15,
+              "toHit": 13,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "3d12+7"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "prone",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Steam Breath (Recharge 5-6)",
@@ -631,18 +996,35 @@
         "source": "CM",
         "page": 104,
         "size": "M",
-        "type": { "type": "humanoid", "tags": ["elf"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["elf"]
+        },
         "alignment": ["N", "E"],
-        "ac": [{ "ac": 15, "from": ["breastplate"] }],
-        "hp": { "average": 9, "formula": "2d8" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 15,
+            "from": ["breastplate"]
+          }
+        ],
+        "hp": {
+          "average": 9,
+          "formula": "2d8"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 11,
         "dex": 12,
         "con": 11,
         "int": 12,
         "wis": 14,
         "cha": 16,
-        "skill": { "deception": "+5", "insight": "+4", "persuasion": "+5" },
+        "skill": {
+          "deception": "+5",
+          "insight": "+4",
+          "persuasion": "+5"
+        },
         "passive": 12,
         "languages": ["Common", "Elvish"],
         "cr": "1/8",
@@ -659,7 +1041,19 @@
             "name": "Rapier",
             "entries": [
               "Melee Weapon Attack: +3 to hit, reach 5 ft., one target. 5 (1d8 + 1) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 3,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d8+1"
+                }
+              ]
+            }
           }
         ],
         "reaction": [
@@ -686,17 +1080,35 @@
         "size": "M",
         "type": "undead",
         "alignment": ["L", "E"],
-        "ac": [{ "ac": 17, "from": ["natural armor"] }],
-        "hp": { "average": 97, "formula": "13d8 + 39" },
-        "speed": { "walk": 20 },
+        "ac": [
+          {
+            "ac": 17,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 97,
+          "formula": "13d8 + 39"
+        },
+        "speed": {
+          "walk": 20
+        },
         "str": 18,
         "dex": 10,
         "con": 17,
         "int": 11,
         "wis": 18,
         "cha": 16,
-        "save": { "con": "+8", "int": "+5", "wis": "+9", "cha": "+8" },
-        "skill": { "history": "+5", "religion": "+5" },
+        "save": {
+          "con": "+8",
+          "int": "+5",
+          "wis": "+9",
+          "cha": "+8"
+        },
+        "skill": {
+          "history": "+5",
+          "religion": "+5"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 14,
         "immune": [
@@ -719,13 +1131,33 @@
               "The fungal servant is a 10th-level spellcaster. Its spellcasting ability is Wisdom (spell save 17, +9 to hit with spell attacks). The fungal servant has the following cleric spells prepared:"
             ],
             "spells": {
-              "0": { "spells": ["sacred flame", "thaumaturgy"] },
-              "1": { "slots": 4, "spells": ["command", "guiding bolt", "shield of faith"] },
-              "2": { "slots": 3, "spells": ["hold person", "silence", "spiritual weapon"] },
-              "3": { "slots": 3, "spells": ["animate dead", "dispel magic"] },
-              "4": { "slots": 3, "spells": ["divination", "guardian of faith"] },
-              "5": { "slots": 2, "spells": ["contagion", "insect plague"] },
-              "6": { "slots": 1, "spells": ["harm"] }
+              "0": {
+                "spells": ["sacred flame", "thaumaturgy"]
+              },
+              "1": {
+                "slots": 4,
+                "spells": ["command", "guiding bolt", "shield of faith"]
+              },
+              "2": {
+                "slots": 3,
+                "spells": ["hold person", "silence", "spiritual weapon"]
+              },
+              "3": {
+                "slots": 3,
+                "spells": ["animate dead", "dispel magic"]
+              },
+              "4": {
+                "slots": 3,
+                "spells": ["divination", "guardian of faith"]
+              },
+              "5": {
+                "slots": 2,
+                "spells": ["contagion", "insect plague"]
+              },
+              "6": {
+                "slots": 1,
+                "spells": ["harm"]
+              }
             },
             "ability": "wis"
           }
@@ -755,7 +1187,23 @@
             "name": "Rotting Fist",
             "entries": [
               "Melee Weapon Attack: +9 to hit, reach 5 ft., one target. 14 (3d6 + 4) bludgeoning damage plus 21 (6d6) necrotic damage. If the target is a creature, it must succeed on a 16 Constitution saving throw or be cursed with mummy rot. The cursed target can't regain hit points, and its hit point maximum decreases by 10 (3d6) for every 24 hours that elapse. If the curse reduces the target's hit point maximum to 0, the target dies, and its body turns to spores. The curse lasts until removed by the remove curse spell or other magic."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 9,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "3d6+4"
+                },
+                {
+                  "type": "necrotic",
+                  "damage": "6d6"
+                }
+              ]
+            }
           },
           {
             "name": "Dreadful Glare",
@@ -820,12 +1268,21 @@
         "alignment": ["U"],
         "page": 27,
         "size": "S",
-        "type": { "type": "aberration", "tags": ["shapechanger"] },
+        "type": {
+          "type": "aberration",
+          "tags": ["shapechanger"]
+        },
         "ac": [12],
-        "hp": { "average": 39, "formula": "6d6 + 18" },
+        "hp": {
+          "average": 39,
+          "formula": "6d6 + 18"
+        },
         "speed": {
           "walk": 30,
-          "fly": { "number": 30, "condition": "(hover) in its true form only" },
+          "fly": {
+            "number": 30,
+            "condition": "(hover) in its true form only"
+          },
           "canHover": true
         },
         "str": 3,
@@ -853,7 +1310,19 @@
             "name": "Energy Drain (True Form Only)",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 5 ft., one creature. 16 (4d6 + 2) necrotic damage, and the target must succeed on a 12 Constitution saving throw or gain 1 level of exhaustion. When the target finishes a short or long rest, the target loses every level of exhaustion gained from this attack."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "necrotic",
+                  "damage": "4d6+2"
+                }
+              ]
+            }
           },
           {
             "name": "Change Shape",
@@ -877,22 +1346,39 @@
         "page": 99,
         "alignment": ["U"],
         "size": "S",
-        "type": { "type": "humanoid", "tags": ["grippli"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["grippli"]
+        },
         "ac": [12],
-        "hp": { "average": 13, "formula": "3d6 + 3" },
-        "speed": { "walk": 30, "climb": 30, "swim": 30 },
+        "hp": {
+          "average": 13,
+          "formula": "3d6 + 3"
+        },
+        "speed": {
+          "walk": 30,
+          "climb": 30,
+          "swim": 30
+        },
         "str": 10,
         "dex": 15,
         "con": 12,
         "int": 10,
         "wis": 14,
         "cha": 10,
-        "skill": { "athletics": "+2", "stealth": "+4", "survival": "+4" },
+        "skill": {
+          "athletics": "+2",
+          "stealth": "+4",
+          "survival": "+4"
+        },
         "passive": 12,
         "languages": ["Grippli plus one other language (usually Common, Draconic, or Primordial)"],
         "cr": "1/4",
         "trait": [
-          { "name": "Hold Breath", "entries": ["The grippli can hold its breath for 20 minutes."] },
+          {
+            "name": "Hold Breath",
+            "entries": ["The grippli can hold its breath for 20 minutes."]
+          },
           {
             "name": "Standing Leap",
             "entries": [
@@ -911,19 +1397,83 @@
             "name": "Tongue",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 5 ft., one Medium or smaller creature. The target is grappled (escape 12). Until this grapple ends, the target is restrained, and the grippli can't grab another creature."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "4"
+                },
+                {
+                  "type": "bludgeoning",
+                  "damage": "5"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "grappled",
+                  "save": "none",
+                  "escape": null
+                },
+                {
+                  "condition": "restrained",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Trident",
             "entries": [
               "Melee Weapon Attack:,rw +4 to hit, reach 5 ft. or range 20/60 ft., one target. 5 (1d6 + 2) piercing damage, or 6 (1d8 + 2) piercing damage if used with two hands to make a melee attack, plus 2 (1d4) piercing damage if the grippli had advantage on the attack roll."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d6+2"
+                },
+                {
+                  "type": "piercing",
+                  "damage": "1d8+2"
+                },
+                {
+                  "type": "piercing",
+                  "damage": "1d4"
+                }
+              ]
+            }
           },
           {
             "name": "Shortbow",
             "entries": [
               "Ranged Weapon Attack: +4 to hit, range 80/320 ft., one target. 5 (1d6 + 2) piercing damage, plus 2 (1d4) piercing damage if the grippli had advantage on the attack roll."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ranged",
+              "range": 80,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d6+2"
+                },
+                {
+                  "type": "piercing",
+                  "damage": "1d4"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -943,16 +1493,31 @@
         "size": "M",
         "type": "fey",
         "alignment": ["N", "E"],
-        "ac": [{ "ac": 17, "from": ["natural armor"] }],
-        "hp": { "average": 82, "formula": "11d8 + 33" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 17,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 82,
+          "formula": "11d8 + 33"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 18,
         "dex": 12,
         "con": 16,
         "int": 13,
         "wis": 14,
         "cha": 14,
-        "skill": { "arcana": "+3", "deception": "+4", "perception": "+4", "stealth": "+4" },
+        "skill": {
+          "arcana": "+3",
+          "deception": "+4",
+          "perception": "+4",
+          "stealth": "+4"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 14,
         "languages": ["Common", "Draconic", "Sylvan"],
@@ -972,12 +1537,30 @@
               "While all three members of the Fetid Gaze are within 30 feet of one another, they can each cast the following spells from the wizard's spell list but must share the spell slots among themselves:"
             ],
             "spells": {
-              "1": { "slots": 4, "spells": ["charm person", "witch bolt"] },
-              "2": { "slots": 3, "spells": ["alter self", "suggestion"] },
-              "3": { "slots": 3, "spells": ["dispel magic", "glyph of warding", "slow"] },
-              "4": { "slots": 3, "spells": ["blight", "polymorph"] },
-              "5": { "slots": 2, "spells": ["dominate person", "seeming"] },
-              "6": { "slots": 1, "spells": ["Otto's irresistible dance"] }
+              "1": {
+                "slots": 4,
+                "spells": ["charm person", "witch bolt"]
+              },
+              "2": {
+                "slots": 3,
+                "spells": ["alter self", "suggestion"]
+              },
+              "3": {
+                "slots": 3,
+                "spells": ["dispel magic", "glyph of warding", "slow"]
+              },
+              "4": {
+                "slots": 3,
+                "spells": ["blight", "polymorph"]
+              },
+              "5": {
+                "slots": 2,
+                "spells": ["dominate person", "seeming"]
+              },
+              "6": {
+                "slots": 1,
+                "spells": ["Otto's irresistible dance"]
+              }
             },
             "footerEntries": [
               "For casting these spells, each hag is a 12th-level spellcaster that uses Intelligence as her spellcasting ability. The spell save DC is 12 + the hag's Intelligence modifier, and the spell attack bonus is 4 + the hag's Intelligence modifier."
@@ -985,7 +1568,10 @@
           }
         ],
         "trait": [
-          { "name": "Amphibious", "entries": ["The hag can breathe air and water."] },
+          {
+            "name": "Amphibious",
+            "entries": ["The hag can breathe air and water."]
+          },
           {
             "name": "Mimicry",
             "entries": [
@@ -998,7 +1584,19 @@
             "name": "Claws",
             "entries": [
               "Melee Weapon Attack: +6 to hit, reach 5 ft., one target. 13 (2d8 + 4) slashing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 6,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "2d8+4"
+                }
+              ]
+            }
           },
           {
             "name": "Illusory Appearance",
@@ -1031,16 +1629,30 @@
         "alignment": ["U"],
         "size": "M",
         "type": "humanoid",
-        "ac": [{ "ac": 15, "from": ["unarmored defense"] }],
-        "hp": { "average": 65, "formula": "10d8 + 20" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 15,
+            "from": ["unarmored defense"]
+          }
+        ],
+        "hp": {
+          "average": 65,
+          "formula": "10d8 + 20"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 12,
         "dex": 16,
         "con": 14,
         "int": 11,
         "wis": 14,
         "cha": 10,
-        "skill": { "acrobatics": "+6", "perception": "+5", "stealth": "+6" },
+        "skill": {
+          "acrobatics": "+6",
+          "perception": "+5",
+          "stealth": "+6"
+        },
         "passive": 15,
         "languages": ["Common"],
         "cr": "5",
@@ -1053,18 +1665,52 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The monk makes two attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The monk makes two attacks."]
+          },
           {
             "name": "Force Strike",
             "entries": [
               "Melee Weapon Attack: +6 to hit, reach 5 ft., one target. 7 (1d8 + 3) force damage, and if the target is a creature, it must succeed on a 14 Dexterity saving throw or be knocked prone."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 6,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "force",
+                  "damage": "1d8+3"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "prone",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Dart",
             "entries": [
               "Ranged Weapon Attack: +6 to hit, range 20/60 ft., one target. 5 (1d4 + 3) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ranged",
+              "range": 20,
+              "toHit": 6,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d4+3"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -1081,19 +1727,40 @@
         "source": "CM",
         "page": 166,
         "size": "M",
-        "type": { "type": "humanoid", "tags": ["human"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["human"]
+        },
         "alignment": ["L", "E"],
-        "ac": [{ "ac": 15, "from": ["unarmored defense"] }],
-        "hp": { "average": 71, "formula": "11d8 + 21" },
-        "speed": { "walk": 40 },
+        "ac": [
+          {
+            "ac": 15,
+            "from": ["unarmored defense"]
+          }
+        ],
+        "hp": {
+          "average": 71,
+          "formula": "11d8 + 21"
+        },
+        "speed": {
+          "walk": 40
+        },
         "str": 18,
         "dex": 14,
         "con": 15,
         "int": 11,
         "wis": 16,
         "cha": 11,
-        "save": { "str": "+7", "con": "+5" },
-        "skill": { "athletics": "+7", "insight": "+6", "intimidation": "+3", "perception": "+6" },
+        "save": {
+          "str": "+7",
+          "con": "+5"
+        },
+        "skill": {
+          "athletics": "+7",
+          "insight": "+6",
+          "intimidation": "+3",
+          "perception": "+6"
+        },
         "passive": 16,
         "resist": ["poison"],
         "conditionImmune": ["charmed", "frightened"],
@@ -1108,18 +1775,56 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["Jade Tigress makes three attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["Jade Tigress makes three attacks."]
+          },
           {
             "name": "Force Strike",
             "entries": [
               "Melee Weapon Attack: +7 to hit, reach 5 ft., one target. 13 (2d8 + 4) force damage, and if the target is a creature, it must succeed on a 15 Constitution saving throw or be stunned until the of Jade Tigress's next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "force",
+                  "damage": "2d8+4"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "stunned",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Poisoned Dart",
             "entries": [
               "Ranged Weapon Attack: +5 to hit, range 20/60 ft., one target. 4 (1d4 + 2) piercing damage plus 7 (3d4) poison damage, and the target must succeed on a 15 Constitution saving throw or gain 1 level of exhaustion."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ranged",
+              "range": 20,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d4+2"
+                },
+                {
+                  "type": "poison",
+                  "damage": "3d4"
+                }
+              ]
+            }
           },
           {
             "name": "Heal Self (Recharges after a Long Rest)",
@@ -1158,18 +1863,30 @@
         "source": "CM",
         "page": 64,
         "size": "M",
-        "type": { "type": "humanoid", "tags": ["tabaxi"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["tabaxi"]
+        },
         "alignment": ["N", "G"],
         "ac": [11],
-        "hp": { "average": 27, "formula": "5d8 + 5" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 27,
+          "formula": "5d8 + 5"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 10,
         "dex": 12,
         "con": 13,
         "int": 12,
         "wis": 15,
         "cha": 11,
-        "skill": { "medicine": "+4", "nature": "+3", "perception": "+4" },
+        "skill": {
+          "medicine": "+4",
+          "nature": "+3",
+          "perception": "+4"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 14,
         "languages": ["Common", "Druidic"],
@@ -1181,12 +1898,17 @@
               "K'Tulah is a 4th-level spellcaster. K'Tulah's spellcasting ability is Wisdom (spell save 12, +4 to hit with spell attacks). K'Tulah has the following druid spells prepared:"
             ],
             "spells": {
-              "0": { "spells": ["druidcraft", "produce flame", "shillelagh"] },
+              "0": {
+                "spells": ["druidcraft", "produce flame", "shillelagh"]
+              },
               "1": {
                 "slots": 4,
                 "spells": ["entangle", "longstrider", "speak with animals", "thunderwave"]
               },
-              "2": { "slots": 3, "spells": ["animal messenger", "barkskin"] }
+              "2": {
+                "slots": 3,
+                "spells": ["animal messenger", "barkskin"]
+              }
             },
             "ability": "wis"
           }
@@ -1204,13 +1926,45 @@
             "name": "Quarterstaff",
             "entries": [
               "Melee Weapon Attack: +2 to hit (+4 to hit with shillelagh), reach 5 ft., one target. 3 (1d6) bludgeoning damage, 4 (1d8) bludgeoning damage if wielded with two hands, or 6 (1d8 + 2) bludgeoning damage with shillelagh."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 2,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d6"
+                },
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d8"
+                },
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d8+2"
+                }
+              ]
+            }
           },
           {
             "name": "Claws",
             "entries": [
               "Melee Weapon Attack: +2 to hit, reach 5 ft., one target. 2 (1d4) slashing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 2,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d4"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -1229,9 +1983,20 @@
         "alignment": ["U"],
         "size": "S",
         "type": "construct",
-        "ac": [{ "ac": 16, "from": ["natural armor"] }],
-        "hp": { "average": 15, "formula": "2d6 + 8" },
-        "speed": { "walk": 20, "climb": 20 },
+        "ac": [
+          {
+            "ac": 16,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 15,
+          "formula": "2d6 + 8"
+        },
+        "speed": {
+          "walk": 20,
+          "climb": 20
+        },
         "str": 6,
         "dex": 14,
         "con": 18,
@@ -1268,13 +2033,48 @@
             "name": "Bite",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. 4 (1d4 + 2) piercing damage. If the target is a creature, it is grappled by the kiddywidget (escape 8)."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d4+2"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "grappled",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Tail",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. 4 (1d4 + 2) piercing damage plus 2 (1d4) lightning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d4+2"
+                },
+                {
+                  "type": "lightning",
+                  "damage": "1d4"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -1293,17 +2093,37 @@
         "size": "M",
         "alignment": ["U"],
         "type": "undead",
-        "ac": [{ "ac": 20, "from": ["natural armor"] }],
-        "hp": { "average": 225, "formula": "30d8 + 90" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 20,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 225,
+          "formula": "30d8 + 90"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 11,
         "dex": 16,
         "con": 16,
         "int": 14,
         "wis": 20,
         "cha": 16,
-        "save": { "con": "+9", "int": "+8", "wis": "+11", "cha": "+9" },
-        "skill": { "medicine": "+11", "nature": "+14", "perception": "+11", "survival": "+11" },
+        "save": {
+          "con": "+9",
+          "int": "+8",
+          "wis": "+11",
+          "cha": "+9"
+        },
+        "skill": {
+          "medicine": "+11",
+          "nature": "+14",
+          "perception": "+11",
+          "survival": "+11"
+        },
         "senses": ["truesight 120 ft."],
         "passive": 21,
         "resist": ["cold", "necrotic"],
@@ -1352,18 +2172,52 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The lich makes four attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The lich makes four attacks."]
+          },
           {
             "name": "Poisonous Touch",
             "entries": [
               "Melee Weapon Attack: +9 to hit, reach 10 ft., one creature. 17 (5d6) poison damage, and the target must succeed on a 19 Constitution saving throw or be poisoned for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 9,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "poison",
+                  "damage": "5d6"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "poisoned",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Wither",
             "entries": [
               "Ranged Spell Attack: +9 to hit, range 60 ft., one target. 14 (4d6) necrotic damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ranged",
+              "range": 60,
+              "toHit": 9,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "necrotic",
+                  "damage": "4d6"
+                }
+              ]
+            }
           },
           {
             "name": "Fire Storm (7th-Level Spell; 1/Day)",
@@ -1373,7 +2227,10 @@
           }
         ],
         "legendary": [
-          { "name": "Attack", "entries": ["The lich makes an attack."] },
+          {
+            "name": "Attack",
+            "entries": ["The lich makes an attack."]
+          },
           {
             "name": "Poison Prick (Cost 2 Actions)",
             "entries": [
@@ -1387,7 +2244,10 @@
             ]
           }
         ],
-        "legendaryGroup": { "name": "Lichen Lich", "source": "CM" },
+        "legendaryGroup": {
+          "name": "Lichen Lich",
+          "source": "CM"
+        },
         "hasToken": true,
         "traitTags": ["Legendary Resistances", "Rejuvenation"],
         "senseTags": ["U"],
@@ -1407,8 +2267,13 @@
         "type": "construct",
         "alignment": ["N"],
         "ac": [9],
-        "hp": { "average": 93, "formula": "11d8 + 44" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 93,
+          "formula": "11d8 + 44"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 19,
         "dex": 9,
         "con": 18,
@@ -1460,15 +2325,33 @@
               "The golem has advantage on saving throws against spells and other magical effects."
             ]
           },
-          { "name": "Magic Weapons", "entries": ["The golem's weapon attacks are magical."] }
+          {
+            "name": "Magic Weapons",
+            "entries": ["The golem's weapon attacks are magical."]
+          }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The golem makes two slam attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The golem makes two slam attacks."]
+          },
           {
             "name": "Slam",
             "entries": [
               "Melee Weapon Attack: +7 to hit, reach 5 ft., one target. 13 (2d8 + 4) lightning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "lightning",
+                  "damage": "2d8+4"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -1486,10 +2369,18 @@
         "alignment": ["U"],
         "page": 9,
         "size": "M",
-        "type": { "type": "humanoid", "tags": ["any race"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["any race"]
+        },
         "ac": [10],
-        "hp": { "average": 54, "formula": "12d8" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 54,
+          "formula": "12d8"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 8,
         "dex": 10,
         "con": 10,
@@ -1551,7 +2442,19 @@
             "name": "Shocking Grasp (Cantrip)",
             "entries": [
               "Melee Spell Attack: +8 to hit (with advantage if the target is wearing armor made of metal), reach 5 ft., one creature. 13 (3d8) lightning damage, and the target can't take reactions until the start of its next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 8,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "lightning",
+                  "damage": "3d8"
+                }
+              ]
+            }
           },
           {
             "name": "Fireball (3rd-Level Spell; 3/Day)",
@@ -1585,16 +2488,37 @@
         "size": "L",
         "type": "undead",
         "ac": [10],
-        "hp": { "average": 262, "formula": "25d10 + 125" },
-        "speed": { "walk": 0, "fly": { "number": 60, "condition": "(hover)" }, "canHover": true },
+        "hp": {
+          "average": 262,
+          "formula": "25d10 + 125"
+        },
+        "speed": {
+          "walk": 0,
+          "fly": {
+            "number": 60,
+            "condition": "(hover)"
+          },
+          "canHover": true
+        },
         "str": 17,
         "dex": 10,
         "con": 20,
         "int": 18,
         "wis": 15,
         "cha": 23,
-        "save": { "dex": "+7", "con": "+12", "int": "+11", "wis": "+9", "cha": "+13" },
-        "skill": { "arcana": "+11", "history": "+11", "perception": "+16", "stealth": "+14" },
+        "save": {
+          "dex": "+7",
+          "con": "+12",
+          "int": "+11",
+          "wis": "+9",
+          "cha": "+13"
+        },
+        "skill": {
+          "arcana": "+11",
+          "history": "+11",
+          "perception": "+16",
+          "stealth": "+14"
+        },
         "senses": ["blindsight 60 ft.", "darkvision 120 ft.; see also \"x-ray vision\" below"],
         "passive": 26,
         "resist": ["acid", "fire", "lightning", "thunder"],
@@ -1661,7 +2585,19 @@
             "name": "Bite",
             "entries": [
               "Melee Weapon Attack: +10 to hit, reach 5 ft., one target. 34 (9d6 + 3) force damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 10,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "force",
+                  "damage": "9d6+3"
+                }
+              ]
+            }
           },
           {
             "name": "Breath Weapon (Recharge 5-6)",
@@ -1693,7 +2629,10 @@
           }
         ],
         "legendary": [
-          { "name": "Bite", "entries": ["Miirym makes a bite attack."] },
+          {
+            "name": "Bite",
+            "entries": ["Miirym makes a bite attack."]
+          },
           {
             "name": "Teleport (Costs 2 Actions)",
             "entries": [
@@ -1717,18 +2656,33 @@
         "source": "CM",
         "page": 22,
         "size": "M",
-        "type": { "type": "monstrosity", "tags": ["shapechanger"] },
+        "type": {
+          "type": "monstrosity",
+          "tags": ["shapechanger"]
+        },
         "alignment": ["N"],
-        "ac": [{ "ac": 12, "from": ["natural armor"] }],
-        "hp": { "average": 30, "formula": "9d8 + 18" },
-        "speed": { "walk": 15 },
+        "ac": [
+          {
+            "ac": 12,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 30,
+          "formula": "9d8 + 18"
+        },
+        "speed": {
+          "walk": 15
+        },
         "str": 17,
         "dex": 12,
         "con": 15,
         "int": 5,
         "wis": 13,
         "cha": 8,
-        "skill": { "stealth": "+5" },
+        "skill": {
+          "stealth": "+5"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 11,
         "immune": ["acid"],
@@ -1765,13 +2719,41 @@
             "name": "Pseudopod",
             "entries": [
               "Melee Weapon Attack: +5 to hit, reach 5 ft., one target. 7 (1d8 + 3) bludgeoning damage. If the mimic is in object form, the target is subjected to its Adhesive trait."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d8+3"
+                }
+              ]
+            }
           },
           {
             "name": "Bite",
             "entries": [
               "Melee Weapon Attack: +5 to hit, reach 5 ft., one target. 7 (1d8 + 3) piercing damage plus 4 (1d8) acid damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d8+3"
+                },
+                {
+                  "type": "acid",
+                  "damage": "1d8"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -1791,16 +2773,34 @@
         "type": "fey",
         "alignment": ["C", "E"],
         "ac": [17],
-        "hp": { "average": 306, "formula": "36d10 + 108" },
-        "speed": { "walk": 40, "fly": { "number": 40, "condition": "(hover)" }, "canHover": true },
+        "hp": {
+          "average": 306,
+          "formula": "36d10 + 108"
+        },
+        "speed": {
+          "walk": 40,
+          "fly": {
+            "number": 40,
+            "condition": "(hover)"
+          },
+          "canHover": true
+        },
         "str": 16,
         "dex": 24,
         "con": 16,
         "int": 17,
         "wis": 15,
         "cha": 24,
-        "save": { "str": "+8", "dex": "+12", "wis": "+7" },
-        "skill": { "deception": "+12", "insight": "+7", "perception": "+7" },
+        "save": {
+          "str": "+8",
+          "dex": "+12",
+          "wis": "+7"
+        },
+        "skill": {
+          "deception": "+12",
+          "insight": "+7",
+          "perception": "+7"
+        },
         "senses": ["truesight 60 ft."],
         "passive": 17,
         "conditionImmune": ["charmed", "exhaustion", "stunned"],
@@ -1812,7 +2812,9 @@
             "headerEntries": [
               "Nintra casts one of the following spells, using Charisma as the spellcasting ability (save 20) and requiring no material components:"
             ],
-            "daily": { "3e": ["dispel magic", "faerie fire", "mirror image"] },
+            "daily": {
+              "3e": ["dispel magic", "faerie fire", "mirror image"]
+            },
             "ability": "cha",
             "displayAs": "action"
           }
@@ -1824,18 +2826,52 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["Nintra makes two attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["Nintra makes two attacks."]
+          },
           {
             "name": "Claw",
             "entries": [
               "Melee Weapon Attack: +12 to hit, reach 5 ft., one target. 12 (2d4 + 7) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 12,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "2d4+7"
+                }
+              ]
+            }
           },
           {
             "name": "Shard of Shadow",
             "entries": [
               "Ranged Spell Attack: +12 to hit, range 120 ft., one target. 10 (1d6 + 7) necrotic damage, and if the target is a creature, it must succeed on a 20 Constitution saving throw or be poisoned until the end of its next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ranged",
+              "range": 120,
+              "toHit": 12,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "necrotic",
+                  "damage": "1d6+7"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "poisoned",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Storm of Shattered Glass (Recharge 6)",
@@ -1845,7 +2881,10 @@
           }
         ],
         "legendary": [
-          { "name": "Attack", "entries": ["Nintra makes one attack."] },
+          {
+            "name": "Attack",
+            "entries": ["Nintra makes one attack."]
+          },
           {
             "name": "Fey Step",
             "entries": [
@@ -1859,7 +2898,10 @@
             ]
           }
         ],
-        "legendaryGroup": { "name": "Nintra Siotta", "source": "CM" },
+        "legendaryGroup": {
+          "name": "Nintra Siotta",
+          "source": "CM"
+        },
         "hasToken": true,
         "traitTags": ["Legendary Resistances"],
         "senseTags": ["U"],
@@ -1878,16 +2920,30 @@
         "size": "H",
         "type": "undead",
         "alignment": ["N", "E"],
-        "ac": [{ "ac": 17, "from": ["natural armor"] }],
-        "hp": { "average": 168, "formula": "16d12 + 64" },
-        "speed": { "walk": 50, "climb": 40 },
+        "ac": [
+          {
+            "ac": 17,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 168,
+          "formula": "16d12 + 64"
+        },
+        "speed": {
+          "walk": 50,
+          "climb": 40
+        },
         "str": 23,
         "dex": 16,
         "con": 18,
         "int": 7,
         "wis": 14,
         "cha": 12,
-        "skill": { "perception": "+6", "stealth": "+7" },
+        "skill": {
+          "perception": "+6",
+          "stealth": "+7"
+        },
         "senses": ["darkvision 90 ft."],
         "passive": 16,
         "immune": ["lightning"],
@@ -1902,13 +2958,53 @@
             "name": "Bite",
             "entries": [
               "Melee Weapon Attack: +10 to hit, reach 10 ft., one target. 22 (3d10 + 6) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 10,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "3d10+6"
+                }
+              ]
+            }
           },
           {
             "name": "Constrict",
             "entries": [
               "Melee Weapon Attack: +10 to hit, reach 5 ft., one Large or smaller creature. 17 (2d10 + 6) bludgeoning damage plus 17 (2d10 + 6) slashing damage. The target is grappled (escape 16) if the behir isn't already constricting a creature, and the target is restrained until this grapple ends."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 10,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "2d10+6"
+                },
+                {
+                  "type": "slashing",
+                  "damage": "2d10+6"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "grappled",
+                  "save": "none",
+                  "escape": null
+                },
+                {
+                  "condition": "restrained",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Lightning Breath (Recharge 5-6)",
@@ -1922,7 +3018,25 @@
               "The behir makes one bite attack against a Medium or smaller target it is grappling. If the attack hits, the target is also swallowed, and the grapple ends. While swallowed, the target is blinded and restrained, it has total cover against attacks and other effects outside the behir, and it takes 21 (6d6) acid damage at the start of each of the behir's turns. A behir can have only one creature swallowed at a time.",
               "Any creature swallowed by a parasite-infested behir must succeed on a 19 Constitution saving throw at the start of each of the behir's turns or be feasted upon by blood parasites, taking 36 (8d8) necrotic damage on a failed save, or half as much damage on a successful save. This damage is in addition to the damage caused by the behir's digestive acids.",
               "If the behir takes 30 damage or more on a single turn from the swallowed creature, the behir must succeed on a 14 Constitution saving throw at the end of that turn or regurgitate the creature, which falls prone in a space within 10 feet of the behir. If the behir dies, a swallowed creature is no longer restrained by it and can escape from the corpse by using 15 feet of movement, exiting prone."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": null,
+              "targets": 1,
+              "inflictsConditions": [
+                {
+                  "condition": "blinded",
+                  "save": "none",
+                  "escape": null
+                },
+                {
+                  "condition": "restrained",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           }
         ],
         "senseTags": ["D"],
@@ -1940,18 +3054,35 @@
         "source": "CM",
         "page": 132,
         "size": "M",
-        "type": { "type": "humanoid", "tags": ["dragonborn"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["dragonborn"]
+        },
         "alignment": ["C", "N"],
-        "ac": [{ "ac": 13, "from": ["leather armor"] }],
-        "hp": { "average": 33, "formula": "6d8 + 6" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 13,
+            "from": ["leather armor"]
+          }
+        ],
+        "hp": {
+          "average": 33,
+          "formula": "6d8 + 6"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 11,
         "dex": 14,
         "con": 12,
         "int": 10,
         "wis": 13,
         "cha": 14,
-        "skill": { "deception": "+4", "persuasion": "+4", "religion": "+2" },
+        "skill": {
+          "deception": "+4",
+          "persuasion": "+4",
+          "religion": "+2"
+        },
         "passive": 11,
         "resist": ["fire"],
         "languages": ["Common", "Draconic"],
@@ -1963,9 +3094,17 @@
               "Ram Sugar is a 4th-level spellcaster. Its spellcasting ability is Wisdom (spell save 11, +3 to hit with spell attacks). Ram Sugar has the following cleric spells prepared:"
             ],
             "spells": {
-              "0": { "spells": ["light", "sacred flame", "thaumaturgy"] },
-              "1": { "slots": 4, "spells": ["command", "inflict wounds", "shield of faith"] },
-              "2": { "slots": 3, "spells": ["hold person", "spiritual weapon"] }
+              "0": {
+                "spells": ["light", "sacred flame", "thaumaturgy"]
+              },
+              "1": {
+                "slots": 4,
+                "spells": ["command", "inflict wounds", "shield of faith"]
+              },
+              "2": {
+                "slots": 3,
+                "spells": ["hold person", "spiritual weapon"]
+              }
             },
             "ability": "wis"
           }
@@ -1979,12 +3118,27 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["Ram Sugar makes two melee attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["Ram Sugar makes two melee attacks."]
+          },
           {
             "name": "Dagger",
             "entries": [
               "Melee Weapon Attack:,rw +4 to hit, reach 5 ft. or range 20/60 ft., one creature. 4 (1d4 + 2) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d4+2"
+                }
+              ]
+            }
           },
           {
             "name": "Breath Weapon (Recharges after a Short or Long Rest)",
@@ -2008,10 +3162,18 @@
         "page": 9,
         "alignment": ["U"],
         "size": "M",
-        "type": { "type": "humanoid", "tags": ["any race"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["any race"]
+        },
         "ac": [10],
-        "hp": { "average": 22, "formula": "5d8" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 22,
+          "formula": "5d8"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 8,
         "dex": 10,
         "con": 10,
@@ -2058,7 +3220,19 @@
             "name": "Shocking Grasp (Cantrip)",
             "entries": [
               "Melee Spell Attack: +6 to hit (with advantage if the target is wearing armor made of metal), reach 5 ft., one creature. 9 (2d8) lightning damage, and the target can't take reactions until the start of its next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 6,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "lightning",
+                  "damage": "2d8"
+                }
+              ]
+            }
           }
         ],
         "reaction": [
@@ -2082,9 +3256,19 @@
         "size": "L",
         "type": "construct",
         "alignment": ["U"],
-        "ac": [{ "ac": 17, "from": ["natural armor"] }],
-        "hp": { "average": 178, "formula": "17d10 + 85" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 17,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 178,
+          "formula": "17d10 + 85"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 22,
         "dex": 9,
         "con": 20,
@@ -2123,21 +3307,49 @@
               "The golem has advantage on saving throws against spells and other magical effects."
             ]
           },
-          { "name": "Magic Weapons", "entries": ["The golem's weapon attacks are magical."] }
+          {
+            "name": "Magic Weapons",
+            "entries": ["The golem's weapon attacks are magical."]
+          }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The golem makes two slam attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The golem makes two slam attacks."]
+          },
           {
             "name": "Slam",
             "entries": [
               "Melee Weapon Attack: +10 to hit, reach 5 ft., one target. 19 (3d8 + 6) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 10,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "3d8+6"
+                }
+              ]
+            }
           },
           {
             "name": "Slow (Recharge 5-6)",
             "entries": [
               "The golem targets one or more creatures it can see within 10 feet of it. Each target must make a 17 Wisdom saving throw against this magic. On a failed save, a target can't use reactions, its speed is halved, and it can't make more than one attack on its turn. In addition, the target can take either an action or a bonus action on its turn, not both. These effects last for 1 minute. A target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 10,
+              "toHit": null,
+              "targets": -1,
+              "save": {
+                "dc": 17,
+                "ability": "WIS"
+              }
+            }
           },
           {
             "name": "Sapphire",
@@ -2166,16 +3378,32 @@
         "size": "M",
         "type": "undead",
         "ac": [13],
-        "hp": { "average": 31, "formula": "7d8" },
-        "speed": { "walk": 0, "fly": { "number": 40, "condition": "(hover)" }, "canHover": true },
+        "hp": {
+          "average": 31,
+          "formula": "7d8"
+        },
+        "speed": {
+          "walk": 0,
+          "fly": {
+            "number": 40,
+            "condition": "(hover)"
+          },
+          "canHover": true
+        },
         "str": 6,
         "dex": 17,
         "con": 10,
         "int": 17,
         "wis": 14,
         "cha": 16,
-        "save": { "int": "+5", "wis": "+4" },
-        "skill": { "perception": "+4", "stealth": "+7" },
+        "save": {
+          "int": "+5",
+          "wis": "+4"
+        },
+        "skill": {
+          "perception": "+4",
+          "stealth": "+7"
+        },
         "senses": ["darkvision 120 ft."],
         "passive": 14,
         "resist": ["acid", "bludgeoning", "fire", "lightning", "piercing", "slashing", "thunder"],
@@ -2212,13 +3440,42 @@
             "name": "Maddening Touch",
             "entries": [
               "Melee Spell Attack: +5 to hit, reach 5 ft., one target. 17 (4d6 + 3) psychic damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "psychic",
+                  "damage": "4d6+3"
+                }
+              ]
+            }
           },
           {
             "name": "Whispers of Violence",
             "entries": [
               "Shemshime chooses up to two creatures it can see within 60 feet of it. Each target must succeed on a 13 Wisdom saving throw, or that target takes 7 (1d8 + 3) psychic damage and must use its reaction to make a melee weapon attack against one creature it can reach (Shemshime's choice) that Shemshime can see."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 60,
+              "toHit": null,
+              "targets": 2,
+              "damage": [
+                {
+                  "type": "psychic",
+                  "damage": "1d8+3",
+                  "when": "failure"
+                }
+              ],
+              "save": {
+                "dc": 13,
+                "ability": "WIS"
+              }
+            }
           },
           {
             "name": "Howling Babble (Recharge 6)",
@@ -2241,9 +3498,20 @@
         "size": "M",
         "alignment": ["U"],
         "type": "construct",
-        "ac": [{ "ac": 18, "from": ["natural armor"] }],
-        "hp": { "average": 85, "formula": "10d8 + 40" },
-        "speed": { "walk": 30, "climb": 30 },
+        "ac": [
+          {
+            "ac": 18,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 85,
+          "formula": "10d8 + 40"
+        },
+        "speed": {
+          "walk": 30,
+          "climb": 30
+        },
         "str": 16,
         "dex": 14,
         "con": 18,
@@ -2286,13 +3554,55 @@
             "name": "Bite",
             "entries": [
               "Melee Weapon Attack: +6 to hit, reach 5 ft., one target. 10 (2d6 + 3) piercing damage. If the target is a creature, it is grappled by the skitterwidget (escape 13)."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 6,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "2d6+3"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "grappled",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Tail",
             "entries": [
               "Melee Weapon Attack: +6 to hit, reach 5 ft., one target. 6 (1d6 + 3) piercing damage plus 10 (3d6) lightning damage, and if the target is a creature, it must succeed on a 15 Constitution saving throw or be stunned until the end of its next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 6,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d6+3"
+                },
+                {
+                  "type": "lightning",
+                  "damage": "3d6"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "stunned",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           }
         ],
         "reaction": [
@@ -2320,19 +3630,40 @@
         "source": "CM",
         "page": 164,
         "size": "M",
-        "type": { "type": "humanoid", "tags": ["human"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["human"]
+        },
         "alignment": ["L", "E"],
-        "ac": [{ "ac": 17, "from": ["unarmored defense"] }],
-        "hp": { "average": 76, "formula": "9d8 + 36" },
-        "speed": { "walk": 40 },
+        "ac": [
+          {
+            "ac": 17,
+            "from": ["unarmored defense"]
+          }
+        ],
+        "hp": {
+          "average": 76,
+          "formula": "9d8 + 36"
+        },
+        "speed": {
+          "walk": 40
+        },
         "str": 13,
         "dex": 18,
         "con": 18,
         "int": 13,
         "wis": 17,
         "cha": 14,
-        "save": { "dex": "+7", "int": "+4" },
-        "skill": { "acrobatics": "+7", "deception": "+5", "perception": "+6", "stealth": "+7" },
+        "save": {
+          "dex": "+7",
+          "int": "+4"
+        },
+        "skill": {
+          "acrobatics": "+7",
+          "deception": "+5",
+          "perception": "+6",
+          "stealth": "+7"
+        },
         "passive": 16,
         "resist": ["poison", "psychic"],
         "languages": ["Common"],
@@ -2346,18 +3677,59 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["Steel Crane makes three attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["Steel Crane makes three attacks."]
+          },
           {
             "name": "Force Strike",
             "entries": [
               "Melee Weapon Attack: +7 to hit, reach 5 ft., one target. 8 (1d8 + 4) force damage, and if the target is a creature, it must succeed on a 15 Constitution saving throw or be stunned until the start of Steel Crane's next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "force",
+                  "damage": "1d8+4"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "stunned",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Whip",
             "entries": [
               "Melee Weapon Attack: +7 to hit, reach 10 ft., one target. 6 (1d4 + 4) slashing damage or, if the target is a creature, Steel Crane can grapple the target instead (escape 15). Steel Crane can't make attacks with the whip while using it to grapple a creature. Anytime on his turn, he can release a creature grappled by the whip (no action required)."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d4+4"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "grappled",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Heal Self (Recharges after a Long Rest)",
@@ -2396,17 +3768,32 @@
         "size": "H",
         "alignment": ["U"],
         "type": "undead",
-        "ac": [{ "ac": 13, "from": ["armor scraps"] }],
-        "hp": { "average": 204, "formula": "24d12 + 48" },
-        "speed": { "walk": 50 },
+        "ac": [
+          {
+            "ac": 13,
+            "from": ["armor scraps"]
+          }
+        ],
+        "hp": {
+          "average": 204,
+          "formula": "24d12 + 48"
+        },
+        "speed": {
+          "walk": 50
+        },
         "str": 29,
         "dex": 14,
         "con": 15,
         "int": 3,
         "wis": 8,
         "cha": 1,
-        "save": { "str": "+14", "con": "+7" },
-        "skill": { "perception": "+4" },
+        "save": {
+          "str": "+14",
+          "con": "+7"
+        },
+        "skill": {
+          "perception": "+4"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 14,
         "resist": ["cold"],
@@ -2423,13 +3810,41 @@
             "name": "Greatsword",
             "entries": [
               "Melee Weapon Attack: +14 to hit, reach 10 ft., one target. 30 (6d6 + 9) slashing damage plus 18 (4d8) necrotic damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 14,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "6d6+9"
+                },
+                {
+                  "type": "necrotic",
+                  "damage": "4d8"
+                }
+              ]
+            }
           },
           {
             "name": "Rock",
             "entries": [
               "Ranged Weapon Attack: +14 to hit, reach 60/240 ft., one target. 35 (4d12 + 9) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ranged",
+              "range": 0,
+              "toHit": 14,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "4d12+9"
+                }
+              ]
+            }
           },
           {
             "name": "Lightning Strike (Recharge 5-6)",
@@ -2450,10 +3865,28 @@
         "page": 19,
         "size": "M",
         "alignment": ["U"],
-        "type": { "type": "construct", "swarmSize": "T" },
-        "ac": [{ "ac": 12, "from": ["natural armor"] }],
-        "hp": { "average": 22, "formula": "4d8 + 4" },
-        "speed": { "walk": 0, "fly": { "number": 30, "condition": "(hover)" }, "canHover": true },
+        "type": {
+          "type": "construct",
+          "swarmSize": "T"
+        },
+        "ac": [
+          {
+            "ac": 12,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 22,
+          "formula": "4d8 + 4"
+        },
+        "speed": {
+          "walk": 0,
+          "fly": {
+            "number": 30,
+            "condition": "(hover)"
+          },
+          "canHover": true
+        },
         "str": 10,
         "dex": 13,
         "con": 12,
@@ -2496,7 +3929,23 @@
             "name": "Book Club",
             "entries": [
               "Melee Weapon Attack: +3 to hit, reach 0 ft., one target in the swarm's space. 6 (2d4 + 1) bludgeoning damage, or 3 (1d4 + 1) bludgeoning damage if the swarm has half its hit points or fewer."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 0,
+              "toHit": 3,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "2d4+1"
+                },
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d4+1"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -2514,17 +3963,35 @@
         "size": "M",
         "type": "undead",
         "alignment": ["L", "E"],
-        "ac": [{ "ac": 17, "from": ["natural armor"] }],
-        "hp": { "average": 97, "formula": "13d8 + 39" },
-        "speed": { "walk": 20 },
+        "ac": [
+          {
+            "ac": 17,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 97,
+          "formula": "13d8 + 39"
+        },
+        "speed": {
+          "walk": 20
+        },
         "str": 18,
         "dex": 10,
         "con": 17,
         "int": 11,
         "wis": 18,
         "cha": 16,
-        "save": { "con": "+8", "int": "+5", "wis": "+9", "cha": "+8" },
-        "skill": { "history": "+5", "religion": "+5" },
+        "save": {
+          "con": "+8",
+          "int": "+5",
+          "wis": "+9",
+          "cha": "+8"
+        },
+        "skill": {
+          "history": "+5",
+          "religion": "+5"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 14,
         "immune": [
@@ -2547,13 +4014,33 @@
               "Valin Sarnaster is a 10th-level spellcaster. Her spellcasting ability is Wisdom (spell save 17, +9 to hit with spell attacks). Valin has the following cleric spells prepared:"
             ],
             "spells": {
-              "0": { "spells": ["sacred flame", "thaumaturgy"] },
-              "1": { "slots": 4, "spells": ["command", "guiding bolt", "shield of faith"] },
-              "2": { "slots": 3, "spells": ["hold person", "silence", "spiritual weapon"] },
-              "3": { "slots": 3, "spells": ["clairvoyance", "dispel magic"] },
-              "4": { "slots": 3, "spells": ["divination", "dimension door"] },
-              "5": { "slots": 2, "spells": ["contagion", "scrying"] },
-              "6": { "slots": 1, "spells": ["harm"] }
+              "0": {
+                "spells": ["sacred flame", "thaumaturgy"]
+              },
+              "1": {
+                "slots": 4,
+                "spells": ["command", "guiding bolt", "shield of faith"]
+              },
+              "2": {
+                "slots": 3,
+                "spells": ["hold person", "silence", "spiritual weapon"]
+              },
+              "3": {
+                "slots": 3,
+                "spells": ["clairvoyance", "dispel magic"]
+              },
+              "4": {
+                "slots": 3,
+                "spells": ["divination", "dimension door"]
+              },
+              "5": {
+                "slots": 2,
+                "spells": ["contagion", "scrying"]
+              },
+              "6": {
+                "slots": 1,
+                "spells": ["harm"]
+              }
             },
             "ability": "wis"
           }
@@ -2583,7 +4070,23 @@
             "name": "Rotting Fist",
             "entries": [
               "Melee Weapon Attack: +9 to hit, reach 5 ft., one target. 14 (3d6 + 4) bludgeoning damage plus 21 (6d6) necrotic damage. If the target is a creature, it must succeed on a 16 Constitution saving throw or be cursed with mummy rot. The cursed target can't regain hit points, and its hit point maximum decreases by 10 (3d6) for every 24 hours that elapse. If the curse reduces the target's hit point maximum to 0, the target dies, and its body turns to dust. The curse lasts until removed by the remove curse spell or other magic."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 9,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "3d6+4"
+                },
+                {
+                  "type": "necrotic",
+                  "damage": "6d6"
+                }
+              ]
+            }
           },
           {
             "name": "Dreadful Glare",
@@ -2622,7 +4125,10 @@
             ]
           }
         ],
-        "legendaryGroup": { "name": "Valin Sarnaster", "source": "CM" },
+        "legendaryGroup": {
+          "name": "Valin Sarnaster",
+          "source": "CM"
+        },
         "hasToken": true,
         "traitTags": ["Magic Resistance", "Rejuvenation"],
         "senseTags": ["D"],
@@ -2650,18 +4156,35 @@
         "source": "CM",
         "page": 63,
         "size": "M",
-        "type": { "type": "humanoid", "tags": ["elf"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["elf"]
+        },
         "alignment": ["C", "G"],
-        "ac": [{ "ac": 15, "from": ["breastplate"] }],
-        "hp": { "average": 9, "formula": "2d8" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 15,
+            "from": ["breastplate"]
+          }
+        ],
+        "hp": {
+          "average": 9,
+          "formula": "2d8"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 11,
         "dex": 12,
         "con": 11,
         "int": 12,
         "wis": 14,
         "cha": 16,
-        "skill": { "deception": "+5", "insight": "+4", "persuasion": "+5" },
+        "skill": {
+          "deception": "+5",
+          "insight": "+4",
+          "persuasion": "+5"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 12,
         "languages": ["Common", "Elvish"],
@@ -2675,12 +4198,27 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["Varnyr makes two attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["Varnyr makes two attacks."]
+          },
           {
             "name": "Cane",
             "entries": [
               "Melee Weapon Attack: +3 to hit, reach 5 ft., one target. 2 (1d4) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 3,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d4"
+                }
+              ]
+            }
           }
         ],
         "reaction": [
@@ -2705,18 +4243,31 @@
         "source": "CM",
         "page": 187,
         "size": "M",
-        "type": { "type": "humanoid", "tags": ["elf"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["elf"]
+        },
         "alignment": ["N", "E"],
         "ac": [12],
-        "hp": { "average": 45, "formula": "10d8" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 45,
+          "formula": "10d8"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 9,
         "dex": 14,
         "con": 10,
         "int": 17,
         "wis": 13,
         "cha": 12,
-        "skill": { "arcana": "+6", "deception": "+5", "perception": "+4", "stealth": "+5" },
+        "skill": {
+          "arcana": "+6",
+          "deception": "+5",
+          "perception": "+4",
+          "stealth": "+5"
+        },
         "senses": ["darkvision 120 ft."],
         "passive": 14,
         "languages": ["Elvish", "Undercommon"],
@@ -2728,7 +4279,9 @@
               "The wood elf's innate spellcasting ability is Charisma (spell save 12). It can innately cast the following spells, requiring no material components:"
             ],
             "will": ["dancing lights"],
-            "daily": { "1e": ["darkness", "faerie fire", "levitate (self only)"] },
+            "daily": {
+              "1e": ["darkness", "faerie fire", "levitate (self only)"]
+            },
             "ability": "cha"
           },
           {
@@ -2737,15 +4290,29 @@
               "The wood elf is a 10th-level spellcaster. Its spellcasting ability is Intelligence (spell save 14, +6 to hit with spell attacks). The wood elf has the following wizard spells prepared:"
             ],
             "spells": {
-              "0": { "spells": ["mage hand", "minor illusion", "poison spray", "ray of frost"] },
+              "0": {
+                "spells": ["mage hand", "minor illusion", "poison spray", "ray of frost"]
+              },
               "1": {
                 "slots": 4,
                 "spells": ["mage armor", "magic missile", "shield", "witch bolt"]
               },
-              "2": { "slots": 3, "spells": ["alter self", "misty step", "web"] },
-              "3": { "slots": 3, "spells": ["fly", "lightning bolt"] },
-              "4": { "slots": 3, "spells": ["Evard's black tentacles", "greater invisibility"] },
-              "5": { "slots": 2, "spells": ["cloudkill"] }
+              "2": {
+                "slots": 3,
+                "spells": ["alter self", "misty step", "web"]
+              },
+              "3": {
+                "slots": 3,
+                "spells": ["fly", "lightning bolt"]
+              },
+              "4": {
+                "slots": 3,
+                "spells": ["Evard's black tentacles", "greater invisibility"]
+              },
+              "5": {
+                "slots": 2,
+                "spells": ["cloudkill"]
+              }
             },
             "ability": "int"
           }
@@ -2763,7 +4330,27 @@
             "name": "Staff",
             "entries": [
               "Melee Weapon Attack: +2 to hit, reach 5 ft., one target. 2 (1d6 - 1) bludgeoning damage, or 3 (1d8 - 1) bludgeoning damage if used with two hands, plus 3 (1d6) poison damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 2,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d6-1"
+                },
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d8-1"
+                },
+                {
+                  "type": "poison",
+                  "damage": "1d6"
+                }
+              ]
+            }
           },
           {
             "name": "Summon Demon (1/Day)",
@@ -2786,37 +4373,79 @@
         "isNpc": true,
         "isNamedCreature": true,
         "source": "CM",
-        "hp": { "average": 144, "formula": "18d8 + 18" },
+        "hp": {
+          "average": 144,
+          "formula": "18d8 + 18"
+        },
         "languages": ["Aquan", "Common", "Primordial", "Sahuagin", "Undercommon"],
         "srd": true,
         "otherSources": [
-          { "source": "CoS" },
-          { "source": "SKT" },
-          { "source": "WDH" },
-          { "source": "WDMM" },
-          { "source": "GoS" },
-          { "source": "BGDIA" },
-          { "source": "ERLW" },
-          { "source": "IMR" },
-          { "source": "EGW" }
+          {
+            "source": "CoS"
+          },
+          {
+            "source": "SKT"
+          },
+          {
+            "source": "WDH"
+          },
+          {
+            "source": "WDMM"
+          },
+          {
+            "source": "GoS"
+          },
+          {
+            "source": "BGDIA"
+          },
+          {
+            "source": "ERLW"
+          },
+          {
+            "source": "IMR"
+          },
+          {
+            "source": "EGW"
+          }
         ],
         "size": "M",
-        "type": { "type": "humanoid", "tags": ["water genasi"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["water genasi"]
+        },
         "alignment": ["A"],
-        "ac": [12, { "ac": 15, "condition": "with mage armor", "braces": true }],
-        "speed": { "walk": 30, "swim": 30 },
+        "ac": [
+          12,
+          {
+            "ac": 15,
+            "condition": "with mage armor",
+            "braces": true
+          }
+        ],
+        "speed": {
+          "walk": 30,
+          "swim": 30
+        },
         "str": 10,
         "dex": 14,
         "con": 12,
         "int": 20,
         "wis": 15,
         "cha": 16,
-        "save": { "int": "+9", "wis": "+6" },
-        "skill": { "arcana": "+13", "history": "+13" },
+        "save": {
+          "int": "+9",
+          "wis": "+6"
+        },
+        "skill": {
+          "arcana": "+13",
+          "history": "+13"
+        },
         "passive": 12,
         "resist": [
           "acid",
-          { "special": "damage from spells" },
+          {
+            "special": "damage from spells"
+          },
           {
             "resist": ["bludgeoning", "piercing", "slashing"],
             "note": "(from stoneskin)",
@@ -2838,22 +4467,44 @@
                 "slots": 4,
                 "spells": ["detect magic", "identify", "mage armor*", "magic missile"]
               },
-              "2": { "slots": 3, "spells": ["detect thoughts", "mirror image", "misty step"] },
-              "3": { "slots": 3, "spells": ["counterspell", "fly", "lightning bolt"] },
-              "4": { "slots": 3, "spells": ["banishment", "fire shield", "stoneskin*"] },
+              "2": {
+                "slots": 3,
+                "spells": ["detect thoughts", "mirror image", "misty step"]
+              },
+              "3": {
+                "slots": 3,
+                "spells": ["counterspell", "fly", "lightning bolt"]
+              },
+              "4": {
+                "slots": 3,
+                "spells": ["banishment", "fire shield", "stoneskin*"]
+              },
               "5": {
                 "slots": 3,
                 "spells": ["cone of cold", "scrying", "wall of force", "conjure elemental"]
               },
-              "6": { "slots": 1, "spells": ["globe of invulnerability"] },
-              "7": { "slots": 1, "spells": ["teleport"] },
-              "8": { "slots": 1, "spells": ["mind blank*"] },
-              "9": { "slots": 1, "spells": ["time stop"] }
+              "6": {
+                "slots": 1,
+                "spells": ["globe of invulnerability"]
+              },
+              "7": {
+                "slots": 1,
+                "spells": ["teleport"]
+              },
+              "8": {
+                "slots": 1,
+                "spells": ["mind blank*"]
+              },
+              "9": {
+                "slots": 1,
+                "spells": ["time stop"]
+              }
             },
             "will": ["disguise self", "invisibility"],
             "hidden": ["will"],
             "footerEntries": ["*Zikran casts these spells on itself before combat."],
-            "ability": "int"
+            "ability": "int",
+            "saveDC": 17
           }
         ],
         "trait": [
@@ -2863,14 +4514,29 @@
               "Zikran has advantage on saving throws against spells and other magical effects."
             ]
           },
-          { "name": "Amphibious", "entries": ["Zikran can breathe air and water."] }
+          {
+            "name": "Amphibious",
+            "entries": ["Zikran can breathe air and water."]
+          }
         ],
         "action": [
           {
             "name": "Dagger",
             "entries": [
               "Melee or Ranged Weapon Attack: +6 to hit, reach 5 ft. or range 20/60 ft., one target. Hit: 4 (1d4 + 2) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 20,
+              "toHit": 6,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d4+2"
+                }
+              ]
+            }
           }
         ],
         "variant": [
@@ -2892,17 +4558,37 @@
         "size": "H",
         "type": "undead",
         "alignment": ["L", "E"],
-        "ac": [{ "ac": 19, "from": ["natural armor"] }],
-        "hp": { "average": 225, "formula": "18d12 + 108" },
-        "speed": { "walk": 40, "burrow": 30, "fly": 80 },
+        "ac": [
+          {
+            "ac": 19,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 225,
+          "formula": "18d12 + 108"
+        },
+        "speed": {
+          "walk": 40,
+          "burrow": 30,
+          "fly": 80
+        },
         "str": 25,
         "dex": 10,
         "con": 23,
         "int": 16,
         "wis": 15,
         "cha": 19,
-        "save": { "dex": "+6", "con": "+12", "wis": "+8", "cha": "+10" },
-        "skill": { "perception": "+14", "stealth": "+6" },
+        "save": {
+          "dex": "+6",
+          "con": "+12",
+          "wis": "+8",
+          "cha": "+10"
+        },
+        "skill": {
+          "perception": "+14",
+          "stealth": "+6"
+        },
         "senses": ["blindsight 60 ft.", "darkvision 120 ft."],
         "passive": 24,
         "resist": ["necrotic"],
@@ -2933,19 +4619,59 @@
             "name": "Bite",
             "entries": [
               "Melee Weapon Attack: +13 to hit, reach 10 ft., one target. 18 (2d10 + 7) piercing damage plus 5 (1d10) lightning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 13,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "2d10+7"
+                },
+                {
+                  "type": "lightning",
+                  "damage": "1d10"
+                }
+              ]
+            }
           },
           {
             "name": "Claw",
             "entries": [
               "Melee Weapon Attack: +13 to hit, reach 5 ft., one target. 14 (2d6 + 7) slashing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 13,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "2d6+7"
+                }
+              ]
+            }
           },
           {
             "name": "Tail",
             "entries": [
               "Melee Weapon Attack: +13 to hit, reach 15 ft., one target. 16 (2d8 + 7) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 15,
+              "toHit": 13,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "2d8+7"
+                }
+              ]
+            }
           },
           {
             "name": "Frightful Presence",
@@ -2961,8 +4687,14 @@
           }
         ],
         "legendary": [
-          { "name": "Detect", "entries": ["Zikzokrishka makes a Wisdom (Perception) check."] },
-          { "name": "Tail Attack", "entries": ["Zikzokrishka makes a tail attack."] },
+          {
+            "name": "Detect",
+            "entries": ["Zikzokrishka makes a Wisdom (Perception) check."]
+          },
+          {
+            "name": "Tail Attack",
+            "entries": ["Zikzokrishka makes a tail attack."]
+          },
           {
             "name": "Wing Attack (Costs 2 Actions)",
             "entries": [
@@ -2970,7 +4702,10 @@
             ]
           }
         ],
-        "legendaryGroup": { "name": "Zikzokrishka", "source": "CM" },
+        "legendaryGroup": {
+          "name": "Zikzokrishka",
+          "source": "CM"
+        },
         "traitTags": ["Legendary Resistances", "Magic Resistance"],
         "senseTags": ["B", "SD"],
         "actionTags": ["Frightful Presence", "Multiattack"],
@@ -2997,7 +4732,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/CM/Animated Chained Library.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/CM/Animated Chained Library.jpg"
+            }
           }
         ]
       },
@@ -3017,7 +4755,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/CM/Arrant Quill.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/CM/Arrant Quill.jpg"
+            }
           }
         ]
       },
@@ -3036,7 +4777,13 @@
           }
         ],
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/CM/Bak Mei.jpg" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/CM/Bak Mei.jpg"
+            }
+          }
         ]
       },
       {
@@ -3053,7 +4800,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/CM/Canopic Golem.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/CM/Canopic Golem.jpg"
+            }
           }
         ]
       },
@@ -3093,7 +4843,13 @@
           }
         ],
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/CM/Chwinga.png" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/CM/Chwinga.png"
+            }
+          }
         ]
       },
       {
@@ -3102,7 +4858,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/CM/Cloud Giant Ghost.png" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/CM/Cloud Giant Ghost.png"
+            }
           }
         ]
       },
@@ -3122,7 +4881,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/CM/Constructed Commoner.png" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/CM/Constructed Commoner.png"
+            }
           }
         ]
       },
@@ -3141,7 +4903,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/CM/Corrupted Avatar of Lurue.png" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/CM/Corrupted Avatar of Lurue.png"
+            }
           }
         ]
       },
@@ -3169,7 +4934,13 @@
           }
         ],
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/CM/Faerl.png" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/CM/Faerl.png"
+            }
+          }
         ]
       },
       {
@@ -3199,7 +4970,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/CM/Grippli Warrior.png" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/CM/Grippli Warrior.png"
+            }
           }
         ]
       },
@@ -3218,7 +4992,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/CM/Hag of the Fetid Gaze.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/CM/Hag of the Fetid Gaze.jpg"
+            }
           }
         ]
       },
@@ -3236,7 +5013,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/CM/Jade Tigress.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/CM/Jade Tigress.jpg"
+            }
           }
         ]
       },
@@ -3265,7 +5045,13 @@
           }
         ],
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/CM/Kiddywidget.png" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/CM/Kiddywidget.png"
+            }
+          }
         ]
       },
       {
@@ -3281,7 +5067,13 @@
           }
         ],
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/CM/Lichen Lich.jpg" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/CM/Lichen Lich.jpg"
+            }
+          }
         ]
       },
       {
@@ -3308,7 +5100,13 @@
           }
         ],
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/CM/Master Sage.png" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/CM/Master Sage.png"
+            }
+          }
         ]
       },
       {
@@ -3326,7 +5124,13 @@
           }
         ],
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/CM/Miirym.jpg" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/CM/Miirym.jpg"
+            }
+          }
         ]
       },
       {
@@ -3344,7 +5148,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/CM/Nintra Siotta.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/CM/Nintra Siotta.jpg"
+            }
           }
         ]
       },
@@ -3384,7 +5191,13 @@
           }
         ],
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/CM/Sage.png" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/CM/Sage.png"
+            }
+          }
         ]
       },
       {
@@ -3422,7 +5235,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/CM/Sapphire Sentinel.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/CM/Sapphire Sentinel.jpg"
+            }
           }
         ]
       },
@@ -3430,7 +5246,13 @@
         "name": "Shemshime",
         "source": "CM",
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/CM/Shemshime.png" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/CM/Shemshime.png"
+            }
+          }
         ]
       },
       {
@@ -3447,7 +5269,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/CM/Skitterwidget.png" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/CM/Skitterwidget.png"
+            }
           }
         ]
       },
@@ -3464,7 +5289,13 @@
           }
         ],
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/CM/Steel Crane.jpg" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/CM/Steel Crane.jpg"
+            }
+          }
         ]
       },
       {
@@ -3473,7 +5304,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/CM/Swarm of Animated Books.png" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/CM/Swarm of Animated Books.png"
+            }
           }
         ]
       },
@@ -3503,7 +5337,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/CM/Valin Sarnaster.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/CM/Valin Sarnaster.jpg"
+            }
           }
         ]
       },
@@ -3539,7 +5376,13 @@
           }
         ],
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/CM/Zikran.jpg" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/CM/Zikran.jpg"
+            }
+          }
         ]
       },
       {
@@ -3562,7 +5405,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/CM/Zikzokrishka.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/CM/Zikzokrishka.jpg"
+            }
           }
         ]
       }

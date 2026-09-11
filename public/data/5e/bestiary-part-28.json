@@ -7,20 +7,37 @@
         "name": "Brain in a Jar",
         "source": "LLK",
         "page": 38,
-        "otherSources": [{ "source": "IMR" }],
+        "otherSources": [
+          {
+            "source": "IMR"
+          }
+        ],
         "size": "M",
         "type": "undead",
         "alignment": ["A"],
-        "ac": [{ "ac": 11, "from": ["natural armor"] }],
-        "hp": { "average": 58, "formula": "9d8 + 18" },
-        "speed": { "walk": 0 },
+        "ac": [
+          {
+            "ac": 11,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 58,
+          "formula": "9d8 + 18"
+        },
+        "speed": {
+          "walk": 0
+        },
         "str": 1,
         "dex": 1,
         "con": 15,
         "int": 19,
         "wis": 10,
         "cha": 15,
-        "save": { "int": "+7", "cha": "+5" },
+        "save": {
+          "int": "+7",
+          "cha": "+5"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 10,
         "immune": ["necrotic", "poison", "psychic"],
@@ -42,7 +59,8 @@
                 "Tasha's hideous laughter"
               ]
             },
-            "ability": "int"
+            "ability": "int",
+            "saveDC": 15
           }
         ],
         "trait": [
@@ -64,7 +82,24 @@
             "name": "Mind Blast (Recharge 5-6)",
             "entries": [
               "The brain in a jar magically emits psychic energy in a 60-foot cone. Each creature in that area must succeed on a DC 15 Intelligence saving throw or take 13 (2d8 + 4) psychic damage and be stunned for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 60,
+              "toHit": null,
+              "targets": -1,
+              "save": {
+                "dc": 15,
+                "ability": "INTELLIGENCE"
+              },
+              "damage": [
+                {
+                  "type": "psychic",
+                  "damage": "1d6",
+                  "when": "failure"
+                }
+              ]
+            }
           }
         ],
         "traitTags": ["Magic Resistance"],
@@ -82,9 +117,19 @@
         "size": "L",
         "type": "construct",
         "alignment": ["U"],
-        "ac": [{ "ac": 17, "from": ["natural armor"] }],
-        "hp": { "average": 142, "formula": "15d10 + 60" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 17,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 142,
+          "formula": "15d10 + 60"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 20,
         "dex": 12,
         "con": 18,
@@ -136,7 +181,19 @@
             "name": "Tentacle Slam",
             "entries": [
               "Melee Weapon Attack: +9 to hit, reach 5 ft., one target. 12 (2d6 + 5) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 9,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "2d6+5"
+                }
+              ]
+            }
           }
         ],
         "traitTags": ["Magic Resistance"],
@@ -154,9 +211,19 @@
         "size": "M",
         "type": "humanoid",
         "alignment": ["C", "N"],
-        "ac": [{ "ac": 14, "from": ["natural armor"] }],
-        "hp": { "average": 44, "formula": "8d8 + 8" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 14,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 44,
+          "formula": "8d8 + 8"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 11,
         "dex": 14,
         "con": 12,
@@ -179,7 +246,9 @@
               "Garret is a 2nd-level spellcaster. His spellcasting ability is Charisma (spell save DC 13, +5 to hit with spell attacks). He has the following bard spells prepared:"
             ],
             "spells": {
-              "0": { "spells": ["blade ward", "vicious mockery"] },
+              "0": {
+                "spells": ["blade ward", "vicious mockery"]
+              },
               "1": {
                 "slots": 3,
                 "spells": [
@@ -191,7 +260,8 @@
                 ]
               }
             },
-            "ability": "cha"
+            "ability": "cha",
+            "saveDC": 13
           }
         ],
         "trait": [
@@ -225,7 +295,19 @@
             "name": "Shortsword",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. 5 (1d6 + 2) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d6+2"
+                }
+              ]
+            }
           }
         ],
         "traitTags": ["Sneak Attack"],
@@ -244,17 +326,35 @@
         "size": "M",
         "type": "humanoid",
         "alignment": ["N"],
-        "ac": [{ "ac": 12, "from": ["Bracers of Defense", "Ring of Protection"] }],
-        "hp": { "average": 45, "formula": "7d8 + 14" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 12,
+            "from": ["Bracers of Defense", "Ring of Protection"]
+          }
+        ],
+        "hp": {
+          "average": 45,
+          "formula": "7d8 + 14"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 10,
         "dex": 12,
         "con": 10,
         "int": 14,
         "wis": 14,
         "cha": 15,
-        "save": { "wis": "+4", "cha": "+4" },
-        "skill": { "arcana": "+4", "medicine": "+4", "nature": "+4", "religion": "+4" },
+        "save": {
+          "wis": "+4",
+          "cha": "+4"
+        },
+        "skill": {
+          "arcana": "+4",
+          "medicine": "+4",
+          "nature": "+4",
+          "religion": "+4"
+        },
         "passive": 12,
         "languages": ["Abyssal", "Celestial", "Common", "Elvish", "Infernal", "Sylvan"],
         "cr": "2",
@@ -265,7 +365,9 @@
               "Mary is a 5th-level spellcaster. Her spellcasting ability is Charisma (spell save DC 12, +4 to hit with spell attacks). She regains her expended spell slots when she finishes a short or long rest. She knows the following warlock spells:"
             ],
             "spells": {
-              "0": { "spells": ["chill touch", "eldritch blast", "mage hand"] },
+              "0": {
+                "spells": ["chill touch", "eldritch blast", "mage hand"]
+              },
               "3": {
                 "lower": 1,
                 "slots": 3,
@@ -279,7 +381,8 @@
                 ]
               }
             },
-            "ability": "cha"
+            "ability": "cha",
+            "saveDC": 12
           }
         ],
         "trait": [
@@ -307,7 +410,19 @@
             "name": "Quarterstaff",
             "entries": [
               "Melee Weapon Attack: +2 to hit, reach 5 ft., one target. 3 (1d6) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 2,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d6"
+                }
+              ]
+            }
           }
         ],
         "traitTags": ["Fey Ancestry"],
@@ -325,9 +440,19 @@
         "size": "M",
         "type": "ooze",
         "alignment": ["U"],
-        "ac": [{ "ac": 10, "from": ["natural armor"] }],
-        "hp": { "average": 19, "formula": "2d8 + 10" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 10,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 19,
+          "formula": "2d8 + 10"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 14,
         "dex": 3,
         "con": 20,
@@ -361,13 +486,37 @@
             "name": "Glass Longsword",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 5 ft., one creature. 6 (1d8 + 2) slashing damage. If a 1 is rolled on an attack roll with a glass longsword, it shatters and can no longer be used."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d8+2"
+                }
+              ]
+            }
           },
           {
             "name": "Pseudopod",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 5 ft., one creature. 5 (1d6 + 2) acid damage. "
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "acid",
+                  "damage": "1d6+2"
+                }
+              ]
+            }
           }
         ],
         "senseTags": ["B"],

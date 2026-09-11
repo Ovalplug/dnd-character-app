@@ -8,18 +8,33 @@
         "source": "KKW",
         "page": 167,
         "size": "S",
-        "type": { "type": "humanoid", "tags": ["goblinoid"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["goblinoid"]
+        },
         "alignment": ["N", "E"],
-        "ac": [{ "ac": 14, "from": ["leather armor"] }],
-        "hp": { "average": 10, "formula": "3d6" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 14,
+            "from": ["leather armor"]
+          }
+        ],
+        "hp": {
+          "average": 10,
+          "formula": "3d6"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 8,
         "dex": 16,
         "con": 10,
         "int": 10,
         "wis": 10,
         "cha": 8,
-        "skill": { "stealth": "+5" },
+        "skill": {
+          "stealth": "+5"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 10,
         "languages": ["Common", "Goblin"],
@@ -37,13 +52,37 @@
             "name": "Dagger",
             "entries": [
               "Melee Weapon Attack: +5 to hit, reach 5 ft., one target. Hit: 5 (1d4 + 3) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d4+3"
+                }
+              ]
+            }
           },
           {
             "name": "Light Crossbow",
             "entries": [
               "Ranged Weapon Attack: +5 to hit, range 80/320 ft., one target. Hit: 7 (1d8 + 3) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ranged",
+              "range": 80,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d8+3"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -58,18 +97,35 @@
         "source": "KKW",
         "page": 168,
         "size": "S",
-        "type": { "type": "humanoid", "tags": ["goblinoid"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["goblinoid"]
+        },
         "alignment": ["N", "E"],
-        "ac": [{ "ac": 17, "from": ["chain shirt", "shield"] }],
-        "hp": { "average": 21, "formula": "6d6" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 17,
+            "from": ["chain shirt", "shield"]
+          }
+        ],
+        "hp": {
+          "average": 21,
+          "formula": "6d6"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 10,
         "dex": 14,
         "con": 10,
         "int": 10,
         "wis": 8,
         "cha": 14,
-        "skill": { "stealth": "+6", "deception": "+4", "persuasion": "+4" },
+        "skill": {
+          "stealth": "+6",
+          "deception": "+4",
+          "persuasion": "+4"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 9,
         "languages": ["Common", "Goblin"],
@@ -83,18 +139,49 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["Krenko makes two attacks with his scimitar."] },
+          {
+            "name": "Multiattack",
+            "entries": ["Krenko makes two attacks with his scimitar."]
+          },
           {
             "name": "Scimitar",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. Hit: 5 (1d6 + 2) slashing damage plus 2 (1d4) poison damage.."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d6+2"
+                },
+                {
+                  "type": "poison",
+                  "damage": "1d4"
+                }
+              ]
+            }
           },
           {
             "name": "Light Crossbow",
             "entries": [
               "Ranged Weapon Attack: +4 to hit, range 80/320 ft., one target. Hit: 6 (1d8 + 2) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ranged",
+              "range": 80,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d8+2"
+                }
+              ]
+            }
           }
         ],
         "reaction": [
@@ -118,11 +205,23 @@
         "source": "KKW",
         "page": 170,
         "size": "L",
-        "type": { "type": "construct" },
+        "type": {
+          "type": "construct"
+        },
         "alignment": ["U"],
-        "ac": [{ "ac": 18, "from": ["natural armor"] }],
-        "hp": { "average": 39, "formula": "6d10 + 6" },
-        "speed": { "walk": 25 },
+        "ac": [
+          {
+            "ac": 18,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 39,
+          "formula": "6d10 + 6"
+        },
+        "speed": {
+          "walk": 25
+        },
         "str": 18,
         "dex": 11,
         "con": 13,
@@ -158,12 +257,27 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["The armor makes two melee attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The armor makes two melee attacks."]
+          },
           {
             "name": "Slam",
             "entries": [
               "Melee Weapon Attack: +6 to hit, reach 5 ft., one target. Hit: 7 (1d6 + 4) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 6,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d6+4"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,

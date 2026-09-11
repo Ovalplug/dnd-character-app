@@ -7,20 +7,44 @@
         "name": "Anchorite of Talos",
         "source": "DIP",
         "page": 51,
-        "otherSources": [{ "source": "DC" }, { "source": "SDW" }],
+        "otherSources": [
+          {
+            "source": "DC"
+          },
+          {
+            "source": "SDW"
+          }
+        ],
         "size": "M",
-        "type": { "type": "humanoid", "tags": ["half-orc", "shapechanger"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["half-orc", "shapechanger"]
+        },
         "alignment": ["N", "E"],
-        "ac": [{ "ac": 13, "from": ["hide armor"] }],
-        "hp": { "average": 58, "formula": "9d8 + 18" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 13,
+            "from": ["hide armor"]
+          }
+        ],
+        "hp": {
+          "average": 58,
+          "formula": "9d8 + 18"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 16,
         "dex": 13,
         "con": 14,
         "int": 9,
         "wis": 15,
         "cha": 12,
-        "skill": { "nature": "+1", "stealth": "+3", "survival": "+4" },
+        "skill": {
+          "nature": "+1",
+          "stealth": "+3",
+          "survival": "+4"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 12,
         "languages": ["Common", "Orc"],
@@ -35,7 +59,8 @@
               "3": ["thunderwave (2d8 damage)"],
               "1e": ["augury", "bless", "lightning bolt (8d6 damage)", "revivify"]
             },
-            "ability": "wis"
+            "ability": "wis",
+            "saveDC": 12
           }
         ],
         "trait": [
@@ -51,13 +76,37 @@
             "name": "Clawed Gauntlet (Humanoid Form Only)",
             "entries": [
               "Melee Weapon Attack: +5 to hit, reach 5 ft., one target. Hit: 5 (1d4 + 3) slashing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d4+3"
+                }
+              ]
+            }
           },
           {
             "name": "Tusk (Boar Form Only)",
             "entries": [
               "Melee Weapon Attack: +5 to hit, reach 5 ft., one target. Hit: 6 (1d6 + 3) slashing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d6+3"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -74,19 +123,33 @@
         "source": "DIP",
         "page": 56,
         "size": "M",
-        "type": { "type": "humanoid", "tags": ["human"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["human"]
+        },
         "alignment": ["N"],
         "ac": [10],
-        "hp": { "average": 44, "formula": "8d8 + 8" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 44,
+          "formula": "8d8 + 8"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 11,
         "dex": 10,
         "con": 13,
         "int": 12,
         "wis": 10,
         "cha": 14,
-        "save": { "dex": "+2", "con": "+3" },
-        "skill": { "deception": "+4", "persuasion": "+4" },
+        "save": {
+          "dex": "+2",
+          "con": "+3"
+        },
+        "skill": {
+          "deception": "+4",
+          "persuasion": "+4"
+        },
         "passive": 10,
         "languages": ["Common", "Dwarvish"],
         "cr": "1/2",
@@ -103,18 +166,45 @@
           }
         ],
         "action": [
-          { "name": "Multiattack", "entries": ["Don-Jon makes three melee attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["Don-Jon makes three melee attacks."]
+          },
           {
             "name": "Dagger",
             "entries": [
               "Melee or Ranged Weapon Attack: +2 to hit, reach 5 ft. or range 20/60 ft., one target. Hit: 2 (1d4) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 20,
+              "toHit": 2,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d4"
+                }
+              ]
+            }
           },
           {
             "name": "Sling",
             "entries": [
               "Ranged Weapon Attack: +2 to hit, range 30/120 ft., one target. Hit: 2 (1d4) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ranged",
+              "range": 30,
+              "toHit": 2,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d4"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -129,19 +219,39 @@
         "source": "DIP",
         "page": 56,
         "size": "M",
-        "type": { "type": "humanoid", "tags": ["human"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["human"]
+        },
         "alignment": ["N", "G"],
-        "ac": [{ "ac": 14, "from": ["studded leather armor"] }],
-        "hp": { "average": 112, "formula": "15d8 + 45" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 14,
+            "from": ["studded leather armor"]
+          }
+        ],
+        "hp": {
+          "average": 112,
+          "formula": "15d8 + 45"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 14,
         "dex": 15,
         "con": 16,
         "int": 11,
         "wis": 16,
         "cha": 15,
-        "save": { "dex": "+4", "wis": "+5" },
-        "skill": { "athletics": "+4", "perception": "+7", "survival": "+5" },
+        "save": {
+          "dex": "+4",
+          "wis": "+5"
+        },
+        "skill": {
+          "athletics": "+4",
+          "perception": "+7",
+          "survival": "+5"
+        },
         "passive": 17,
         "languages": ["Common"],
         "cr": "4",
@@ -168,13 +278,41 @@
             "name": "Longsword",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. Hit: 6 (1d8 + 2) slashing damage, or 7 (1d10 + 2) slashing damage if used with two hands."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d8+2"
+                },
+                {
+                  "type": "slashing",
+                  "damage": "1d10+2"
+                }
+              ]
+            }
           },
           {
             "name": "Longbow",
             "entries": [
               "Ranged Weapon Attack: +4 to hit, range 150/600 ft., one target. Hit: 11 (2d8 + 2) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ranged",
+              "range": 150,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "2d8+2"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -191,9 +329,19 @@
         "size": "H",
         "type": "monstrosity",
         "alignment": ["C", "E"],
-        "ac": [{ "ac": 15, "from": ["natural armor"] }],
-        "hp": { "average": 73, "formula": "7d12 + 28" },
-        "speed": { "walk": 50 },
+        "ac": [
+          {
+            "ac": 15,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 73,
+          "formula": "7d12 + 28"
+        },
+        "speed": {
+          "walk": 50
+        },
         "str": 20,
         "dex": 11,
         "con": 19,
@@ -203,7 +351,10 @@
         "senses": ["darkvision 60 ft."],
         "passive": 10,
         "resist": [
-          { "resist": ["bludgeoning", "piercing", "slashing"], "note": "from nonmagical attacks" }
+          {
+            "resist": ["bludgeoning", "piercing", "slashing"],
+            "note": "from nonmagical attacks"
+          }
         ],
         "immune": ["lightning", "thunder"],
         "cr": "6",
@@ -226,13 +377,45 @@
             "name": "Lightning Tusks",
             "entries": [
               "Melee Weapon Attack: +8 to hit, reach 10 ft., one target. Hit: 12 (2d6 + 5) slashing damage plus 7 (2d6) lightning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 8,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "2d6+5"
+                },
+                {
+                  "type": "lightning",
+                  "damage": "2d6"
+                }
+              ]
+            }
           },
           {
             "name": "Thunder Hooves",
             "entries": [
               "Melee Weapon Attack: +8 to hit, reach 10 ft., one target. Hit: 12 (2d6 + 5) bludgeoning damage plus 7 (2d6) thunder damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 8,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "2d6+5"
+                },
+                {
+                  "type": "thunder",
+                  "damage": "2d6"
+                }
+              ]
+            }
           },
           {
             "name": "Lightning Bolt (Recharge 6)",
@@ -252,18 +435,36 @@
         "source": "DIP",
         "page": 62,
         "size": "S",
-        "type": { "type": "humanoid", "tags": ["gnome"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["gnome"]
+        },
         "alignment": ["C", "N"],
-        "ac": [10, { "ac": 13, "condition": "with mage armor", "braces": true }],
-        "hp": { "average": 7, "formula": "2d6" },
-        "speed": { "walk": 25 },
+        "ac": [
+          10,
+          {
+            "ac": 13,
+            "condition": "with mage armor",
+            "braces": true
+          }
+        ],
+        "hp": {
+          "average": 7,
+          "formula": "2d6"
+        },
+        "speed": {
+          "walk": 25
+        },
         "str": 6,
         "dex": 11,
         "con": 10,
         "int": 15,
         "wis": 10,
         "cha": 13,
-        "skill": { "arcana": "+4", "history": "+4" },
+        "skill": {
+          "arcana": "+4",
+          "history": "+4"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 10,
         "languages": ["Common", "Gnomish"],
@@ -288,7 +489,8 @@
                 ]
               }
             },
-            "ability": "int"
+            "ability": "int",
+            "saveDC": 12
           }
         ],
         "trait": [
@@ -304,13 +506,39 @@
             "name": "Magic Missile (Expends a 1st-Level Spell Slot)",
             "entries": [
               "The gnome creates three magical darts. Each dart hits a creature the gnome chooses within 120 feet of it and deals 3 (1d4 + 1) force damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 120,
+              "toHit": null,
+              "targets": 3,
+              "damage": [
+                {
+                  "type": "force",
+                  "damage": "1d4+1",
+                  "when": "auto"
+                }
+              ],
+              "notes": "Magic Missile auto-hits, 3 darts"
+            }
           },
           {
             "name": "Ray of Frost",
             "entries": [
               "Ranged Spell Attack: +4 to hit, range 60 ft., one creature. Hit: 4 (1d8) cold damage, and the target's speed is reduced by 10 feet until the start of the gnome's next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ranged",
+              "range": 60,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "cold",
+                  "damage": "1d8"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -340,7 +568,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/DIP/Anchorite of Talos.png" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/DIP/Anchorite of Talos.png"
+            }
           }
         ]
       },
@@ -363,7 +594,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/DIP/Don-Jon Raskin.png" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/DIP/Don-Jon Raskin.png"
+            }
           }
         ]
       },
@@ -386,7 +620,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/DIP/Falcon the Hunter.png" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/DIP/Falcon the Hunter.png"
+            }
           }
         ]
       },
@@ -409,7 +646,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/DIP/Gorthok the Thunder Boar.png" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/DIP/Gorthok the Thunder Boar.png"
+            }
           }
         ]
       },

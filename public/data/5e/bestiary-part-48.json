@@ -10,16 +10,28 @@
         "size": "L",
         "type": "construct",
         "alignment": ["U"],
-        "ac": [{ "ac": 13, "from": ["natural armor"] }],
-        "hp": { "average": 34, "formula": "7d10 + 21" },
-        "speed": { "walk": 40 },
+        "ac": [
+          {
+            "ac": 13,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 34,
+          "formula": "7d10 + 21"
+        },
+        "speed": {
+          "walk": 40
+        },
         "str": 20,
         "dex": 12,
         "con": 17,
         "int": 3,
         "wis": 12,
         "cha": 7,
-        "skill": { "perception": "+3" },
+        "skill": {
+          "perception": "+3"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 13,
         "immune": ["poison", "psychic"],
@@ -48,7 +60,19 @@
             "name": "Beak",
             "entries": [
               "Melee Weapon Attack: +7 to hit, reach 5 ft., one creature. Hit: 10 (1d10 + 5) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d10+5"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -65,16 +89,29 @@
         "size": "M",
         "type": "construct",
         "alignment": ["C", "E"],
-        "ac": [{ "ac": 16, "from": ["hide armor", "shield"] }],
-        "hp": { "average": 27, "formula": "5d8 + 5" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 16,
+            "from": ["hide armor", "shield"]
+          }
+        ],
+        "hp": {
+          "average": 27,
+          "formula": "5d8 + 5"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 15,
         "dex": 14,
         "con": 13,
         "int": 8,
         "wis": 11,
         "cha": 9,
-        "skill": { "stealth": "+6", "survival": "+2" },
+        "skill": {
+          "stealth": "+6",
+          "survival": "+2"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 10,
         "immune": ["poison", "psychic"],
@@ -103,7 +140,19 @@
             "name": "Bashin' Banjo",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. Hit: 6 (1d8 + 2) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d8+2"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -132,14 +181,29 @@
           }
         },
         "size": "L",
-        "hp": { "formula": "9d8 + 18", "average": 75 },
-        "speed": { "walk": 0 },
+        "hp": {
+          "formula": "9d8 + 18",
+          "average": 75
+        },
+        "speed": {
+          "walk": 0
+        },
         "cr": "3",
         "hasToken": true,
-        "type": { "type": "monstrosity", "tags": ["shapechanger"] },
+        "type": {
+          "type": "monstrosity",
+          "tags": ["shapechanger"]
+        },
         "alignment": ["N"],
-        "ac": [{ "ac": 12, "from": ["natural armor"] }],
-        "skill": { "stealth": "+5" },
+        "ac": [
+          {
+            "ac": 12,
+            "from": ["natural armor"]
+          }
+        ],
+        "skill": {
+          "stealth": "+5"
+        },
         "senses": ["darkvision 60 ft."],
         "conditionImmune": ["prone"],
         "immune": ["acid"],
@@ -180,13 +244,41 @@
             "name": "Pseudopod",
             "entries": [
               "Melee Weapon Attack: +5 to hit, reach 5 ft., one target. Hit: 7 (1d8 + 3) bludgeoning damage. If the mimic is in object form, the target is subjected to its Adhesive trait."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d8+3"
+                }
+              ]
+            }
           },
           {
             "name": "Bite",
             "entries": [
               "Melee Weapon Attack: +5 to hit, reach 5 ft., one target. Hit: 7 (1d8 + 3) piercing damage plus 4 (1d8) acid damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d8+3"
+                },
+                {
+                  "type": "acid",
+                  "damage": "1d8"
+                }
+              ]
+            }
           }
         ],
         "str": 17,
@@ -204,8 +296,13 @@
         "type": "construct",
         "alignment": ["C", "E"],
         "ac": [12],
-        "hp": { "average": 22, "formula": "5d8" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 22,
+          "formula": "5d8"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 13,
         "dex": 15,
         "con": 10,
@@ -232,13 +329,37 @@
             "name": "Bite",
             "entries": [
               "Melee Weapon Attack: +2 to hit, reach 5 ft., one creature. Hit: 9 (2d6 + 2) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 2,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "2d6+2"
+                }
+              ]
+            }
           },
           {
             "name": "Claws",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. Hit: 7 (2d4 + 2) slashing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "2d4+2"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -254,16 +375,28 @@
         "size": "S",
         "type": "plant",
         "alignment": ["N", "E"],
-        "ac": [{ "ac": 13, "from": ["natural armor"] }],
-        "hp": { "average": 4, "formula": "1d6 + 1" },
-        "speed": { "walk": 20 },
+        "ac": [
+          {
+            "ac": 13,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 4,
+          "formula": "1d6 + 1"
+        },
+        "speed": {
+          "walk": 20
+        },
         "str": 6,
         "dex": 13,
         "con": 12,
         "int": 4,
         "wis": 8,
         "cha": 3,
-        "skill": { "stealth": "+3" },
+        "skill": {
+          "stealth": "+3"
+        },
         "senses": ["blindsight 60 ft. (blind beyond this radius)"],
         "passive": 9,
         "vulnerable": ["fire"],
@@ -283,7 +416,19 @@
             "name": "Claws",
             "entries": [
               "Melee Weapon Attack: +3 to hit, reach 5 ft., one target. Hit: 3 (1d4 + 1) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 3,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d4+1"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -297,14 +442,24 @@
         "name": "Meeseeks",
         "source": "RMBRE",
         "page": 16,
-        "_copy": { "name": "Commoner", "source": "MM" },
-        "hp": { "special": "—(immune to damage)" },
+        "_copy": {
+          "name": "Commoner",
+          "source": "MM"
+        },
+        "hp": {
+          "special": "—(immune to damage)"
+        },
         "hasToken": true,
         "size": "M",
-        "type": { "type": "humanoid", "tags": ["any race"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["any race"]
+        },
         "alignment": ["A"],
         "ac": [10],
-        "speed": { "walk": 30 },
+        "speed": {
+          "walk": 30
+        },
         "languages": ["any one language (usually Common)"],
         "cr": "0",
         "action": [
@@ -312,7 +467,19 @@
             "name": "Club",
             "entries": [
               "Melee Weapon Attack: +2 to hit, reach 5 ft., one target. Hit: 2 (1d4) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 2,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d4"
+                }
+              ]
+            }
           }
         ],
         "str": 10,
@@ -329,16 +496,28 @@
         "size": "M",
         "type": "construct",
         "alignment": ["C", "E"],
-        "ac": [{ "ac": 13, "from": ["hide armor"] }],
-        "hp": { "average": 15, "formula": "2d8 + 6" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 13,
+            "from": ["hide armor"]
+          }
+        ],
+        "hp": {
+          "average": 15,
+          "formula": "2d8 + 6"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 16,
         "dex": 12,
         "con": 16,
         "int": 7,
         "wis": 11,
         "cha": 10,
-        "skill": { "intimidation": "+2" },
+        "skill": {
+          "intimidation": "+2"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 10,
         "immune": ["poison", "psychic"],
@@ -367,7 +546,19 @@
             "name": "Clay Jug",
             "entries": [
               "Melee Weapon Attack: +5 to hit, reach 5 ft., one target. Hit: 7 (1d8 + 3) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d8+3"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -384,9 +575,19 @@
         "size": "L",
         "type": "construct",
         "alignment": ["C", "E"],
-        "ac": [{ "ac": 11, "from": ["hide armor"] }],
-        "hp": { "average": 59, "formula": "7d10 + 21" },
-        "speed": { "walk": 40 },
+        "ac": [
+          {
+            "ac": 11,
+            "from": ["hide armor"]
+          }
+        ],
+        "hp": {
+          "average": 59,
+          "formula": "7d10 + 21"
+        },
+        "speed": {
+          "walk": 40
+        },
         "str": 19,
         "dex": 8,
         "con": 16,
@@ -413,7 +614,19 @@
             "name": "Webby Hands",
             "entries": [
               "Melee Weapon Attack: +6 to hit, reach 5 ft., one target. Hit: 8 (1d8 + 4) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 6,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d8+4"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -430,18 +643,39 @@
           "name": "Bugbear",
           "source": "MM",
           "_mod": {
-            "*": { "mode": "replaceTxt", "replace": "Tommy", "with": "Tommy", "flags": "i" }
+            "*": {
+              "mode": "replaceTxt",
+              "replace": "Tommy",
+              "with": "Tommy",
+              "flags": "i"
+            }
           }
         },
         "int": 21,
         "hasToken": true,
         "size": "M",
-        "type": { "type": "humanoid", "tags": ["goblinoid"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["goblinoid"]
+        },
         "alignment": ["C", "E"],
-        "ac": [{ "ac": 16, "from": ["hide armor", "shield"] }],
-        "hp": { "average": 27, "formula": "5d8 + 5" },
-        "speed": { "walk": 30 },
-        "skill": { "stealth": "+6", "survival": "+2" },
+        "ac": [
+          {
+            "ac": 16,
+            "from": ["hide armor", "shield"]
+          }
+        ],
+        "hp": {
+          "average": 27,
+          "formula": "5d8 + 5"
+        },
+        "speed": {
+          "walk": 30
+        },
+        "skill": {
+          "stealth": "+6",
+          "survival": "+2"
+        },
         "senses": ["darkvision 60 ft."],
         "languages": ["Common", "Goblin"],
         "cr": "1",
@@ -464,13 +698,41 @@
             "name": "Morningstar",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. Hit: 11 (2d8 + 2) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "2d8+2"
+                }
+              ]
+            }
           },
           {
             "name": "Javelin",
             "entries": [
               "Melee or Ranged Weapon Attack: +4 to hit, reach 5 ft. or range 30/120 ft., one target. Hit: 9 (2d6 + 2) piercing damage in melee or 5 (1d6 + 2) piercing damage at range."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 30,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "2d6+2"
+                },
+                {
+                  "type": "piercing",
+                  "damage": "1d6+2"
+                }
+              ]
+            }
           }
         ],
         "str": 15,
@@ -582,7 +844,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/RMBRE/Lycanthropickle.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/RMBRE/Lycanthropickle.jpg"
+            }
           }
         ]
       },

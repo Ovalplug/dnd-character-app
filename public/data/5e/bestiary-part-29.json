@@ -11,15 +11,22 @@
         "type": "undead",
         "alignment": ["N", "E"],
         "ac": [8],
-        "hp": { "average": 22, "formula": "3d8 + 9" },
-        "speed": { "walk": 20 },
+        "hp": {
+          "average": 22,
+          "formula": "3d8 + 9"
+        },
+        "speed": {
+          "walk": 20
+        },
         "str": 13,
         "dex": 6,
         "con": 16,
         "int": 3,
         "wis": 6,
         "cha": 5,
-        "save": { "wis": "+0" },
+        "save": {
+          "wis": "+0"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 8,
         "immune": ["poison"],
@@ -45,7 +52,19 @@
             "name": "Slam",
             "entries": [
               "Melee Weapon Attack: +3 to hit, reach 5 ft., one target. Hit: 4 (1d6 + 1) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 3,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d6+1"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -60,21 +79,39 @@
         "isNpc": true,
         "source": "LMoP",
         "page": 57,
-        "otherSources": [{ "source": "RMBRE" }],
+        "otherSources": [
+          {
+            "source": "RMBRE"
+          }
+        ],
         "size": "M",
-        "type": { "type": "humanoid", "tags": ["human"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["human"]
+        },
         "alignment": ["L", "E"],
         "ac": [12],
-        "hp": { "average": 22, "formula": "5d8" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 22,
+          "formula": "5d8"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 9,
         "dex": 14,
         "con": 11,
         "int": 17,
         "wis": 12,
         "cha": 11,
-        "save": { "int": "+5", "wis": "+3" },
-        "skill": { "arcana": "+5", "history": "+5" },
+        "save": {
+          "int": "+5",
+          "wis": "+3"
+        },
+        "skill": {
+          "arcana": "+5",
+          "history": "+5"
+        },
         "passive": 11,
         "languages": ["Common", "Draconic", "Dwarvish", "Elvish"],
         "cr": "1",
@@ -85,11 +122,20 @@
               "The mage is a 4th-level spellcaster that uses Intelligence as its spellcasting ability (spell save DC 13; +5 to hit with spell attacks). The mage knows the following spells from the wizard's spell list:"
             ],
             "spells": {
-              "0": { "spells": ["light", "mage hand", "shocking grasp"] },
-              "1": { "slots": 4, "spells": ["charm person", "magic missile"] },
-              "2": { "slots": 3, "spells": ["hold person", "misty step"] }
+              "0": {
+                "spells": ["light", "mage hand", "shocking grasp"]
+              },
+              "1": {
+                "slots": 4,
+                "spells": ["charm person", "magic missile"]
+              },
+              "2": {
+                "slots": 3,
+                "spells": ["hold person", "misty step"]
+              }
             },
-            "ability": "int"
+            "ability": "int",
+            "saveDC": 13
           }
         ],
         "action": [
@@ -97,11 +143,28 @@
             "name": "Quarterstaff",
             "entries": [
               "Melee Weapon Attack: +1 to hit, reach 5 ft., one target. Hit: 3 (1d8 - 1) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 1,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d8-1"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
-        "altArt": [{ "name": "Evil Mage", "source": "RMBRE" }],
+        "altArt": [
+          {
+            "name": "Evil Mage",
+            "source": "RMBRE"
+          }
+        ],
         "languageTags": ["C", "D", "DR", "E"],
         "damageTags": ["B"],
         "spellcastingTags": ["CW"],
@@ -112,14 +175,25 @@
         "isNpc": true,
         "source": "LMoP",
         "page": 41,
-        "_copy": { "name": "Commoner", "source": "MM" },
+        "_copy": {
+          "name": "Commoner",
+          "source": "MM"
+        },
         "hasToken": true,
         "size": "M",
-        "type": { "type": "humanoid", "tags": ["any race"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["any race"]
+        },
         "alignment": ["A"],
         "ac": [10],
-        "hp": { "average": 4, "formula": "1d8" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 4,
+          "formula": "1d8"
+        },
+        "speed": {
+          "walk": 30
+        },
         "languages": ["any one language (usually Common)"],
         "cr": "0",
         "action": [
@@ -127,7 +201,19 @@
             "name": "Club",
             "entries": [
               "Melee Weapon Attack: +2 to hit, reach 5 ft., one target. Hit: 2 (1d4) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 2,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d4"
+                }
+              ]
+            }
           }
         ],
         "str": 10,
@@ -146,8 +232,14 @@
         "type": "undead",
         "alignment": ["N", "E"],
         "ac": [13],
-        "hp": { "average": 45, "formula": "6d8 + 18" },
-        "speed": { "walk": 0, "fly": 60 },
+        "hp": {
+          "average": 45,
+          "formula": "6d8 + 18"
+        },
+        "speed": {
+          "walk": 0,
+          "fly": 60
+        },
         "str": 6,
         "dex": 16,
         "con": 16,
@@ -198,7 +290,19 @@
             "name": "Life Drain",
             "entries": [
               "Melee Weapon Attack: +5 to hit, reach 5 ft., one creature. Hit: 16 (3d8 + 3) necrotic damage, and the target must succeed on a DC 13 Constitution saving throw or its hit point maximum is reduced by an amount equal to the damage taken. If this attack reduces the target's hit point maximum to 0, the target dies. This reduction to the target's hit point maximum lasts until the target finishes a long rest."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 5,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "necrotic",
+                  "damage": "3d8+3"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -214,19 +318,41 @@
         "source": "LMoP",
         "page": 59,
         "size": "M",
-        "type": { "type": "humanoid", "tags": ["elf"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["elf"]
+        },
         "alignment": ["N", "E"],
-        "ac": [11, { "ac": 14, "condition": "with mage armor", "braces": true }],
-        "hp": { "average": 27, "formula": "6d8" },
-        "speed": { "walk": 30 },
+        "ac": [
+          11,
+          {
+            "ac": 14,
+            "condition": "with mage armor",
+            "braces": true
+          }
+        ],
+        "hp": {
+          "average": 27,
+          "formula": "6d8"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 9,
         "dex": 13,
         "con": 10,
         "int": 16,
         "wis": 14,
         "cha": 13,
-        "save": { "int": "+5", "wis": "+4" },
-        "skill": { "arcana": "+5", "perception": "+4", "stealth": "+3" },
+        "save": {
+          "int": "+5",
+          "wis": "+4"
+        },
+        "skill": {
+          "arcana": "+5",
+          "perception": "+4",
+          "stealth": "+3"
+        },
         "senses": ["darkvision 120 ft."],
         "passive": 14,
         "languages": ["Elvish", "Undercommon"],
@@ -238,7 +364,9 @@
               "Nezznar can innately cast the following spells, requiring no material components:"
             ],
             "will": ["dancing lights"],
-            "daily": { "1e": ["darkness", "faerie fire (save DC 12)"] }
+            "daily": {
+              "1e": ["darkness", "faerie fire (save DC 12)"]
+            }
           },
           {
             "name": "Spellcasting",
@@ -246,15 +374,27 @@
               "Nezznar is a 4th-level spellcaster that uses Intelligence as his spellcasting ability (spell save DC 13; +5 to hit with spell attacks). Nezznar has the following spells prepared from the wizard's spell list:"
             ],
             "spells": {
-              "0": { "spells": ["mage hand", "ray of frost", "shocking grasp"] },
-              "1": { "slots": 4, "spells": ["mage armor", "magic missile", "shield"] },
-              "2": { "slots": 3, "spells": ["invisibility", "suggestion"] }
+              "0": {
+                "spells": ["mage hand", "ray of frost", "shocking grasp"]
+              },
+              "1": {
+                "slots": 4,
+                "spells": ["mage armor", "magic missile", "shield"]
+              },
+              "2": {
+                "slots": 3,
+                "spells": ["invisibility", "suggestion"]
+              }
             },
-            "ability": "int"
+            "ability": "int",
+            "saveDC": 13
           }
         ],
         "trait": [
-          { "name": "Special Equipment", "entries": ["Nezznar has a spider staff."] },
+          {
+            "name": "Special Equipment",
+            "entries": ["Nezznar has a spider staff."]
+          },
           {
             "name": "Fey Ancestry",
             "entries": [
@@ -273,7 +413,23 @@
             "name": "Spider Staff",
             "entries": [
               "Melee Weapon Attack: +1 to hit, reach 5 ft., one target. Hit: 2 (1d6 - 1) bludgeoning damage plus 3 (1d6) poison damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 1,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d6-1"
+                },
+                {
+                  "type": "poison",
+                  "damage": "1d6"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -290,14 +446,25 @@
         "isNpc": true,
         "source": "LMoP",
         "page": 50,
-        "_copy": { "name": "Commoner", "source": "MM" },
+        "_copy": {
+          "name": "Commoner",
+          "source": "MM"
+        },
         "hasToken": true,
         "size": "M",
-        "type": { "type": "humanoid", "tags": ["any race"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["any race"]
+        },
         "alignment": ["A"],
         "ac": [10],
-        "hp": { "average": 4, "formula": "1d8" },
-        "speed": { "walk": 30 },
+        "hp": {
+          "average": 4,
+          "formula": "1d8"
+        },
+        "speed": {
+          "walk": 30
+        },
         "languages": ["any one language (usually Common)"],
         "cr": "0",
         "action": [
@@ -305,7 +472,19 @@
             "name": "Club",
             "entries": [
               "Melee Weapon Attack: +2 to hit, reach 5 ft., one target. Hit: 2 (1d4) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 2,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d4"
+                }
+              ]
+            }
           }
         ],
         "str": 10,
@@ -320,28 +499,58 @@
         "source": "LMoP",
         "page": 61,
         "size": "M",
-        "type": { "type": "humanoid", "tags": ["human"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["human"]
+        },
         "alignment": ["N", "E"],
-        "ac": [{ "ac": 14, "from": ["studded leather armor"] }],
-        "hp": { "average": 16, "formula": "3d8 + 3" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 14,
+            "from": ["studded leather armor"]
+          }
+        ],
+        "hp": {
+          "average": 16,
+          "formula": "3d8 + 3"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 11,
         "dex": 14,
         "con": 12,
         "int": 9,
         "wis": 9,
         "cha": 11,
-        "skill": { "intimidation": "+2" },
+        "skill": {
+          "intimidation": "+2"
+        },
         "passive": 9,
         "languages": ["Common"],
         "cr": "1/2",
         "action": [
-          { "name": "Multiattack", "entries": ["The ruffian makes two melee attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["The ruffian makes two melee attacks."]
+          },
           {
             "name": "Shortsword",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. Hit: 5 (1d6 + 2) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d6+2"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -356,35 +565,80 @@
         "source": "LMoP",
         "page": 61,
         "size": "M",
-        "type": { "type": "humanoid", "tags": ["human"] },
+        "type": {
+          "type": "humanoid",
+          "tags": ["human"]
+        },
         "alignment": ["N", "G"],
-        "ac": [{ "ac": 16, "from": ["chain mail"] }],
-        "hp": { "average": 27, "formula": "5d8 + 5" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 16,
+            "from": ["chain mail"]
+          }
+        ],
+        "hp": {
+          "average": 27,
+          "formula": "5d8 + 5"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 13,
         "dex": 10,
         "con": 12,
         "int": 10,
         "wis": 11,
         "cha": 10,
-        "save": { "str": "+3", "con": "+3" },
-        "skill": { "perception": "+2" },
+        "save": {
+          "str": "+3",
+          "con": "+3"
+        },
+        "skill": {
+          "perception": "+2"
+        },
         "passive": 12,
         "languages": ["Common"],
         "cr": "1",
         "action": [
-          { "name": "Multiattack", "entries": ["Sildar makes two melee attacks."] },
+          {
+            "name": "Multiattack",
+            "entries": ["Sildar makes two melee attacks."]
+          },
           {
             "name": "Longsword",
             "entries": [
               "Melee Weapon Attack: +3 to hit, reach 5 ft., one target. Hit: 5 (1d8 + 1) slashing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 3,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d8+1"
+                }
+              ]
+            }
           },
           {
             "name": "Heavy Crossbow",
             "entries": [
               "Ranged Weapon Attack: +2 to hit, range 100/400 ft., one target. Hit: 5 (1d10) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ranged",
+              "range": 100,
+              "toHit": 2,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d10"
+                }
+              ]
+            }
           }
         ],
         "reaction": [
@@ -410,23 +664,54 @@
           "name": "Young Green Dragon",
           "source": "MM",
           "_mod": {
-            "*": { "mode": "replaceTxt", "replace": "Venomfang", "with": "Venomfang", "flags": "i" }
+            "*": {
+              "mode": "replaceTxt",
+              "replace": "Venomfang",
+              "with": "Venomfang",
+              "flags": "i"
+            }
           }
         },
         "size": "L",
         "type": "dragon",
         "alignment": ["L", "E"],
-        "ac": [{ "ac": 18, "from": ["natural armor"] }],
-        "hp": { "average": 136, "formula": "16d10 + 48" },
-        "speed": { "walk": 40, "fly": 80, "swim": 40 },
-        "save": { "dex": "+4", "con": "+6", "wis": "+4", "cha": "+5" },
-        "skill": { "deception": "+5", "perception": "+7", "stealth": "+4" },
+        "ac": [
+          {
+            "ac": 18,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 136,
+          "formula": "16d10 + 48"
+        },
+        "speed": {
+          "walk": 40,
+          "fly": 80,
+          "swim": 40
+        },
+        "save": {
+          "dex": "+4",
+          "con": "+6",
+          "wis": "+4",
+          "cha": "+5"
+        },
+        "skill": {
+          "deception": "+5",
+          "perception": "+7",
+          "stealth": "+4"
+        },
         "senses": ["blindsight 30 ft.", "darkvision 120 ft."],
         "languages": ["Common", "Draconic"],
         "cr": "8",
         "conditionImmune": ["poisoned"],
         "immune": ["poison"],
-        "trait": [{ "name": "Amphibious", "entries": ["Venomfang can breathe air and water."] }],
+        "trait": [
+          {
+            "name": "Amphibious",
+            "entries": ["Venomfang can breathe air and water."]
+          }
+        ],
         "action": [
           {
             "name": "Multiattack",
@@ -436,19 +721,64 @@
             "name": "Bite",
             "entries": [
               "Melee Weapon Attack: +7 to hit, reach 10 ft., one target. Hit: 15 (2d10 + 4) piercing damage plus 7 (2d6) poison damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "2d10+4"
+                },
+                {
+                  "type": "poison",
+                  "damage": "2d6"
+                }
+              ]
+            }
           },
           {
             "name": "Claw",
             "entries": [
               "Melee Weapon Attack: +7 to hit, reach 5 ft., one target. Hit: 11 (2d6 + 4) slashing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 7,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "2d6+4"
+                }
+              ]
+            }
           },
           {
             "name": "Poison Breath (Recharge 5-6)",
             "entries": [
               "Venomfang exhales poisonous gas in a 30-foot cone. Each creature in that area must make a DC 14 Constitution saving throw, taking 42 (12d6) poison damage on a failed save, or half as much damage on a successful one."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 30,
+              "toHit": null,
+              "targets": -1,
+              "save": {
+                "dc": 14,
+                "ability": "CONSTITUTION"
+              },
+              "damage": [
+                {
+                  "type": "poison",
+                  "damage": "1d6",
+                  "when": "failure"
+                }
+              ]
+            }
           }
         ],
         "str": 19,
@@ -555,7 +885,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/LMoP/Nezznar the Black Spider.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/LMoP/Nezznar the Black Spider.jpg"
+            }
           }
         ]
       },

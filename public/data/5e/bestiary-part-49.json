@@ -10,16 +10,31 @@
         "size": "L",
         "type": "monstrosity",
         "alignment": ["U"],
-        "ac": [{ "ac": 14, "from": ["natural armor"] }],
-        "hp": { "average": 75, "formula": "10d10 + 20" },
-        "speed": { "walk": 15, "climb": 30 },
+        "ac": [
+          {
+            "ac": 14,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 75,
+          "formula": "10d10 + 20"
+        },
+        "speed": {
+          "walk": 15,
+          "climb": 30
+        },
         "str": 15,
         "dex": 14,
         "con": 14,
         "int": 4,
         "wis": 10,
         "cha": 7,
-        "skill": { "athletics": "+4", "perception": "+2", "stealth": "+4" },
+        "skill": {
+          "athletics": "+4",
+          "perception": "+2",
+          "stealth": "+4"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 12,
         "cr": "4",
@@ -34,13 +49,60 @@
             "name": "Bite",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 5 ft., one creature grappled by the decapus. 7 (2d4 + 2) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "2d4+2"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "grappled",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Tentacles",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 10 ft., one target. 24 (9d4 + 2) bludgeoning damage or 14 (5d4 + 2) bludgeoning damage if the decapus is grappling a creature other than the target or if the decapus is on the ground or floor. The target is also grappled (escape DC 14) unless the decapus is already grappling a creature. Until this grapple ends, the target is restrained."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "9d4+2"
+                },
+                {
+                  "type": "bludgeoning",
+                  "damage": "5d4+2"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "grappled",
+                  "save": "none",
+                  "escape": 14
+                },
+                {
+                  "condition": "restrained",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -57,16 +119,29 @@
         "size": "S",
         "type": "elemental",
         "alignment": ["N"],
-        "ac": [{ "ac": 17, "from": ["natural armor"] }],
-        "hp": { "average": 26, "formula": "4d6 + 12" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 17,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 26,
+          "formula": "4d6 + 12"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 12,
         "dex": 10,
         "con": 16,
         "int": 9,
         "wis": 14,
         "cha": 11,
-        "skill": { "perception": "+4", "stealth": "+2" },
+        "skill": {
+          "perception": "+4",
+          "stealth": "+2"
+        },
         "senses": ["darkvision 60 ft.", "tremorsense 30 ft."],
         "passive": 14,
         "cr": "1/4",
@@ -83,7 +158,19 @@
             "name": "Club",
             "entries": [
               "Melee Weapon Attack: +3 to hit, reach 5 ft., one target. 3 (1d4 + 1) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 3,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d4+1"
+                }
+              ]
+            }
           },
           {
             "name": "Stone Tell",
@@ -105,16 +192,29 @@
         "size": "L",
         "type": "monstrosity",
         "alignment": ["U"],
-        "ac": [{ "ac": 13, "from": ["natural armor"] }],
-        "hp": { "average": 66, "formula": "6d10 + 18" },
-        "speed": { "walk": 10, "climb": 10 },
+        "ac": [
+          {
+            "ac": 13,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 66,
+          "formula": "6d10 + 18"
+        },
+        "speed": {
+          "walk": 10,
+          "climb": 10
+        },
         "str": 14,
         "dex": 13,
         "con": 16,
         "int": 1,
         "wis": 12,
         "cha": 5,
-        "skill": { "perception": "+3" },
+        "skill": {
+          "perception": "+3"
+        },
         "senses": ["darkvision 60 ft."],
         "passive": 13,
         "languages": ["Abyssal", "Aquan", "Common"],
@@ -125,8 +225,11 @@
             "headerEntries": [
               "The slug's innate spellcasting ability is Wisdom (spell save DC 11, +3 to hit with spell attacks). It can innately cast the following spells, requiring no material components:"
             ],
-            "daily": { "1e": ["guiding bolt", "sanctuary", "spiritual weapon"] },
-            "ability": "wis"
+            "daily": {
+              "1e": ["guiding bolt", "sanctuary", "spiritual weapon"]
+            },
+            "ability": "wis",
+            "saveDC": 11
           }
         ],
         "trait": [
@@ -150,13 +253,49 @@
             "name": "Tentacles",
             "entries": [
               "Melee Weapon Attack: +8 to hit, reach 10 ft., one creature. 4 (1d4 + 2) poison damage, and the target must succeed on a DC 13 Constitution saving throw or be poisoned for 1 minute. Until this poison ends, the target is paralyzed. The target can repeat the saving throw at the end of each of its turns, ending the poison on itself on a success."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 8,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "poison",
+                  "damage": "1d4+2"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "paralyzed",
+                  "save": "none",
+                  "escape": null
+                },
+                {
+                  "condition": "poisoned",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           },
           {
             "name": "Bite",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. 7 (2d4 + 2) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "2d4+2"
+                }
+              ]
+            }
           }
         ],
         "reaction": [
@@ -183,9 +322,19 @@
         "size": "S",
         "type": "undead",
         "alignment": ["C", "E"],
-        "ac": [{ "ac": 13, "from": ["natural armor"] }],
-        "hp": { "average": 13, "formula": "3d6 + 3" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 13,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 13,
+          "formula": "3d6 + 3"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 7,
         "dex": 15,
         "con": 12,
@@ -218,7 +367,30 @@
             "name": "Venomous Claws",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. 4 (1d4 + 2) slashing damage plus 2 (1d4) poison damage, and the target must succeed on a DC 11 Constitution saving throw or be poisoned until the end of the target's next turn."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d4+2"
+                },
+                {
+                  "type": "poison",
+                  "damage": "1d4"
+                }
+              ],
+              "inflictsConditions": [
+                {
+                  "condition": "poisoned",
+                  "save": "none",
+                  "escape": null
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -256,7 +428,13 @@
           }
         ],
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/TTP/Decapus.jpg" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/TTP/Decapus.jpg"
+            }
+          }
         ]
       },
       {
@@ -290,7 +468,13 @@
           }
         ],
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/TTP/Geonid.jpg" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/TTP/Geonid.jpg"
+            }
+          }
         ]
       },
       {
@@ -316,7 +500,13 @@
           }
         ],
         "images": [
-          { "type": "image", "href": { "type": "internal", "path": "bestiary/TTP/Topi.jpg" } }
+          {
+            "type": "image",
+            "href": {
+              "type": "internal",
+              "path": "bestiary/TTP/Topi.jpg"
+            }
+          }
         ]
       }
     ],

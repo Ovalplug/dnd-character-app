@@ -9,16 +9,29 @@
         "size": "H",
         "type": "undead",
         "alignment": ["U"],
-        "ac": [{ "ac": 13, "from": ["natural armor"] }],
-        "hp": { "average": 126, "formula": "11d12 + 55" },
-        "speed": { "walk": 20, "swim": 50 },
+        "ac": [
+          {
+            "ac": 13,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 126,
+          "formula": "11d12 + 55"
+        },
+        "speed": {
+          "walk": 20,
+          "swim": 50
+        },
         "str": 23,
         "dex": 11,
         "con": 21,
         "int": 1,
         "wis": 10,
         "cha": 5,
-        "skill": { "perception": "+3" },
+        "skill": {
+          "perception": "+3"
+        },
         "senses": ["blindsight 60 ft."],
         "passive": 13,
         "immune": ["poison"],
@@ -38,7 +51,19 @@
             "name": "Bite",
             "entries": [
               "Melee Weapon Attack: +9 to hit, reach 5 ft., one target. Hit: 22 (3d10 + 6) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 9,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "3d10+6"
+                }
+              ]
+            }
           }
         ],
         "senseTags": ["B"],
@@ -53,17 +78,38 @@
         "size": "H",
         "type": "dragon",
         "alignment": ["L", "G"],
-        "ac": [{ "ac": 19, "from": ["natural armor"] }],
-        "hp": { "average": 212, "formula": "17d12 + 102" },
-        "speed": { "walk": 40, "fly": 80, "swim": 40 },
+        "ac": [
+          {
+            "ac": 19,
+            "from": ["natural armor"]
+          }
+        ],
+        "hp": {
+          "average": 212,
+          "formula": "17d12 + 102"
+        },
+        "speed": {
+          "walk": 40,
+          "fly": 80,
+          "swim": 40
+        },
         "str": 25,
         "dex": 10,
         "con": 23,
         "int": 16,
         "wis": 15,
         "cha": 19,
-        "save": { "dex": "+5", "con": "+11", "wis": "+7", "cha": "+9" },
-        "skill": { "insight": "+7", "perception": "+12", "stealth": "+5" },
+        "save": {
+          "dex": "+5",
+          "con": "+11",
+          "wis": "+7",
+          "cha": "+9"
+        },
+        "skill": {
+          "insight": "+7",
+          "perception": "+12",
+          "stealth": "+5"
+        },
         "senses": ["blindsight 60 ft.", "darkvision 120 ft."],
         "passive": 22,
         "immune": ["lightning"],
@@ -78,7 +124,8 @@
             "daily": {
               "1e": ["create food and water", "detect thoughts", "fog cloud", "speak with animals"]
             },
-            "ability": "cha"
+            "ability": "cha",
+            "saveDC": 17
           },
           {
             "name": "Spellcasting",
@@ -86,20 +133,35 @@
               "Lhammaruntosz is an 8th-level spellcaster. Her spellcasting ability is Charisma (spell save DC 17; +9 to hit with spell attacks). She has the following sorcerer spells prepared:"
             ],
             "spells": {
-              "0": { "spells": ["light", "mage hand", "mending"] },
+              "0": {
+                "spells": ["light", "mage hand", "mending"]
+              },
               "1": {
                 "slots": 4,
                 "spells": ["charm person", "detect magic", "expeditious retreat", "sleep"]
               },
-              "2": { "slots": 3, "spells": ["darkness", "invisibility", "suggestion"] },
-              "3": { "slots": 3, "spells": ["dispel magic", "protection from energy"] },
-              "4": { "slots": 2, "spells": ["dimension door", "stoneskin"] }
+              "2": {
+                "slots": 3,
+                "spells": ["darkness", "invisibility", "suggestion"]
+              },
+              "3": {
+                "slots": 3,
+                "spells": ["dispel magic", "protection from energy"]
+              },
+              "4": {
+                "slots": 2,
+                "spells": ["dimension door", "stoneskin"]
+              }
             },
-            "ability": "cha"
+            "ability": "cha",
+            "saveDC": 17
           }
         ],
         "trait": [
-          { "name": "Amphibious", "entries": ["Lhammaruntosz can breathe air and water."] },
+          {
+            "name": "Amphibious",
+            "entries": ["Lhammaruntosz can breathe air and water."]
+          },
           {
             "name": "Legendary Resistance (3/Day)",
             "entries": ["If Lhammaruntosz fails a saving throw, she can choose to succeed instead."]
@@ -120,25 +182,72 @@
             "name": "Bite",
             "entries": [
               "Melee Weapon Attack: +12 to hit, reach 10 ft., one target. Hit: 18 (2d10 + 7) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 10,
+              "toHit": 12,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "2d10+7"
+                }
+              ]
+            }
           },
           {
             "name": "Claw",
             "entries": [
               "Melee Weapon Attack: +12 to hit, reach 5 ft., one target. Hit: 14 (2d6 + 7) slashing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 12,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "2d6+7"
+                }
+              ]
+            }
           },
           {
             "name": "Tail",
             "entries": [
               "Melee Weapon Attack: +12 to hit, reach 15 ft., one target. Hit: 16 (2d8 + 7) bludgeoning damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 15,
+              "toHit": 12,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "2d8+7"
+                }
+              ]
+            }
           },
           {
             "name": "Frightful Presence",
             "entries": [
               "Each creature of Lhammaruntosz's choice that is within 120 feet of her and aware of her must succeed on a DC 17 Wisdom saving throw or become frightened for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success. If a creature's saving throw is successful or the effect ends for it, the creature is immune to Lhammaruntosz's Frightful Presence for the next 24 hours."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 0,
+              "toHit": null,
+              "targets": 1,
+              "save": {
+                "dc": 17,
+                "ability": "WISDOM"
+              },
+              "damage": []
+            }
           },
           {
             "name": "Breath Weapons (Recharge 5-6)",
@@ -154,7 +263,18 @@
             "name": "Repulsion Breath",
             "entries": [
               "Lhammaruntosz exhales repulsion energy in a 30-foot cone. Each creature in that area must succeed on a DC 19 Strength saving throw. On a failed save, the creature is pushed 60 feet away from the dragon."
-            ]
+            ],
+            "attackDetails": {
+              "type": "spell",
+              "range": 30,
+              "toHit": null,
+              "targets": -1,
+              "save": {
+                "dc": 19,
+                "ability": "STRENGTH"
+              },
+              "damage": []
+            }
           },
           {
             "name": "Change Shape",
@@ -165,8 +285,14 @@
           }
         ],
         "legendary": [
-          { "name": "Detect", "entries": ["Lhammaruntosz makes a Wisdom (Perception) check."] },
-          { "name": "Tail Attack", "entries": ["Lhammaruntosz makes a tail attack."] },
+          {
+            "name": "Detect",
+            "entries": ["Lhammaruntosz makes a Wisdom (Perception) check."]
+          },
+          {
+            "name": "Tail Attack",
+            "entries": ["Lhammaruntosz makes a tail attack."]
+          },
           {
             "name": "Wing Attack (Costs 2 Actions)",
             "entries": [
@@ -174,7 +300,10 @@
             ]
           }
         ],
-        "legendaryGroup": { "name": "Bronze Dragon", "source": "MM" },
+        "legendaryGroup": {
+          "name": "Bronze Dragon",
+          "source": "MM"
+        },
         "hasToken": true,
         "traitTags": ["Amphibious", "Legendary Resistances", "Regeneration"],
         "senseTags": ["B", "SD"],
@@ -227,7 +356,10 @@
         "images": [
           {
             "type": "image",
-            "href": { "type": "internal", "path": "bestiary/SDW/Lhammaruntosz.jpg" }
+            "href": {
+              "type": "internal",
+              "path": "bestiary/SDW/Lhammaruntosz.jpg"
+            }
           }
         ]
       }

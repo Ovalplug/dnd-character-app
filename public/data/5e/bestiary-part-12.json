@@ -10,16 +10,28 @@
         "level": 1,
         "size": "M",
         "type": "humanoid",
-        "ac": [{ "ac": 14, "from": ["studded leather armor"] }],
-        "hp": { "average": 11, "formula": "2d8 + 2" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 14,
+            "from": ["studded leather armor"]
+          }
+        ],
+        "hp": {
+          "average": 11,
+          "formula": "2d8 + 2"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 10,
         "dex": 15,
         "con": 12,
         "int": 13,
         "wis": 10,
         "cha": 14,
-        "save": { "dex": "+4" },
+        "save": {
+          "dex": "+4"
+        },
         "skill": {
           "acrobatics": "+4",
           "performance": "+4",
@@ -44,19 +56,55 @@
             "name": "Shortsword",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. Hit: 5 (1d6 + 2) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d6+2"
+                }
+              ]
+            }
           },
           {
             "name": "Dagger",
             "entries": [
               "Melee or Ranged Weapon Attack: +4 to hit, reach 5 ft. or range 20/60 ft., one target. Hit: 4 (1d4 + 2) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 20,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d4+2"
+                }
+              ]
+            }
           },
           {
             "name": "Shortbow",
             "entries": [
               "Ranged Weapon Attack: +4 to hit, range 80/320 ft., one target. Hit: 6 (1d8 + 2) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ranged",
+              "range": 80,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d8+2"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
@@ -71,17 +119,33 @@
         "level": 1,
         "size": "M",
         "type": "humanoid",
-        "ac": [{ "ac": 12, "from": ["leather armor"] }],
-        "hp": { "average": 9, "formula": "2d8" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 12,
+            "from": ["leather armor"]
+          }
+        ],
+        "hp": {
+          "average": 9,
+          "formula": "2d8"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 10,
         "dex": 12,
         "con": 10,
         "int": 15,
         "wis": 14,
         "cha": 13,
-        "save": { "wis": "+4" },
-        "skill": { "arcana": "+4", "investigation": "+4", "religion": "+4" },
+        "save": {
+          "wis": "+4"
+        },
+        "skill": {
+          "arcana": "+4",
+          "investigation": "+4",
+          "religion": "+4"
+        },
         "passive": 12,
         "languages": ["Common", "plus one of your choice"],
         "spellcasting": [
@@ -91,10 +155,16 @@
               "The spellcaster's spellcasting ability is Wisdom (spell save DC 12, +4 to hit with spell attacks). The spellcaster has following cleric spells prepared:"
             ],
             "spells": {
-              "0": { "spells": ["guidance", "sacred flame"] },
-              "1": { "slots": 2, "spells": ["cure wounds"] }
+              "0": {
+                "spells": ["guidance", "sacred flame"]
+              },
+              "1": {
+                "slots": 2,
+                "spells": ["cure wounds"]
+              }
             },
-            "ability": "wis"
+            "ability": "wis",
+            "saveDC": 12
           },
           {
             "name": "Spellcasting (Mage)",
@@ -102,10 +172,16 @@
               "The spellcaster's spellcasting ability is Intelligence (spell save DC 12, +4 to hit with spell attacks). The spellcaster has following wizard spells prepared:"
             ],
             "spells": {
-              "0": { "spells": ["fire bolt", "light"] },
-              "1": { "slots": 2, "spells": ["sleep"] }
+              "0": {
+                "spells": ["fire bolt", "light"]
+              },
+              "1": {
+                "slots": 2,
+                "spells": ["sleep"]
+              }
             },
-            "ability": "int"
+            "ability": "int",
+            "saveDC": 12
           }
         ],
         "trait": [
@@ -121,11 +197,32 @@
             "name": "Quarterstaff",
             "entries": [
               "Melee Weapon Attack: +2 to hit, reach 5 ft., one target. Hit: 3 (1d6) bludgeoning damage, or 4 (1d8) bludgeoning damage if used with two hands."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 2,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d6"
+                },
+                {
+                  "type": "bludgeoning",
+                  "damage": "1d8"
+                }
+              ]
+            }
           }
         ],
         "hasToken": true,
-        "altArt": [{ "name": "Spellcaster (Healer)", "source": "ESK" }],
+        "altArt": [
+          {
+            "name": "Spellcaster (Healer)",
+            "source": "ESK"
+          }
+        ],
         "languageTags": ["C"],
         "damageTags": ["B"],
         "spellcastingTags": ["CC", "CW"],
@@ -138,17 +235,33 @@
         "level": 1,
         "size": "M",
         "type": "humanoid",
-        "ac": [{ "ac": 16, "from": ["chain shirt", "shield"] }],
-        "hp": { "average": 13, "formula": "2d8 + 4" },
-        "speed": { "walk": 30 },
+        "ac": [
+          {
+            "ac": 16,
+            "from": ["chain shirt", "shield"]
+          }
+        ],
+        "hp": {
+          "average": 13,
+          "formula": "2d8 + 4"
+        },
+        "speed": {
+          "walk": 30
+        },
         "str": 15,
         "dex": 13,
         "con": 14,
         "int": 10,
         "wis": 12,
         "cha": 10,
-        "save": { "con": "+4" },
-        "skill": { "athletics": "+4", "perception": "+3", "survival": "+3" },
+        "save": {
+          "con": "+4"
+        },
+        "skill": {
+          "athletics": "+4",
+          "perception": "+3",
+          "survival": "+3"
+        },
         "passive": 13,
         "languages": ["Common", "plus one of your choice"],
         "trait": [
@@ -180,13 +293,41 @@
             "name": "Longsword",
             "entries": [
               "Melee Weapon Attack: +4 to hit, reach 5 ft., one target. Hit: 6 (1d8 + 2) slashing damage, or 7 (1d10 + 2) slashing damage if used with two hands."
-            ]
+            ],
+            "attackDetails": {
+              "type": "melee",
+              "range": 5,
+              "toHit": 4,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "slashing",
+                  "damage": "1d8+2"
+                },
+                {
+                  "type": "slashing",
+                  "damage": "1d10+2"
+                }
+              ]
+            }
           },
           {
             "name": "Longbow",
             "entries": [
               "Ranged Weapon Attack: +3 to hit, range 150/600 ft., one target. Hit: 5 (1d8 + 1) piercing damage."
-            ]
+            ],
+            "attackDetails": {
+              "type": "ranged",
+              "range": 150,
+              "toHit": 3,
+              "targets": 1,
+              "damage": [
+                {
+                  "type": "piercing",
+                  "damage": "1d8+1"
+                }
+              ]
+            }
           }
         ],
         "reaction": [
@@ -198,7 +339,12 @@
           }
         ],
         "hasToken": true,
-        "altArt": [{ "name": "Warrior (Defender)", "source": "ESK" }],
+        "altArt": [
+          {
+            "name": "Warrior (Defender)",
+            "source": "ESK"
+          }
+        ],
         "languageTags": ["C"],
         "damageTags": ["P", "S"],
         "miscTags": ["MW", "RNG", "RW"]
