@@ -242,6 +242,29 @@ export class SimulationEngine {
    * Apply flanking: check all enemies adjacent to this combatant's allies.
    * If a target is on opposite sides of two friendly combatants, mark flanked.
    */
+  /**
+   * Calculate which enemies are within range of a given combatant's reach.
+   * Used for opportunity attacks and AoE targeting.
+   */
+  getEnemiesInRange(
+    combatant: SimulatorCombatant,
+    allCombatants: SimulatorCombatant[],
+    range: number = 5
+  ): SimulatorCombatant[] {
+    const targets: SimulatorCombatant[] = [];
+
+    for (const enemy of allCombatants) {
+      if (enemy === combatant || enemy.currentHp <= 0) continue;
+
+      const dist = combatant.position.distanceTo(enemy.position);
+      if (dist <= range) {
+        targets.push(enemy);
+      }
+    }
+
+    return targets;
+  }
+
   private applyFlanking(friendlyCombatant: SimulatorCombatant): void {
     const allies = this.state.combatants.filter(
       c =>

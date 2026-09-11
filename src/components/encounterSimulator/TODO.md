@@ -21,12 +21,12 @@
 
 ## Phase 3: Enhanced Features
 
-- [ ] Add opportunity attacks when leaving reach
-- [ ] Implement hit dice usage for out-of-combat healing
-- [ ] Add environmental hazards and traps
-- [ ] Implement side objectives with behavioral influence
-- [ ] Add morale system for AI decision making
-- [ ] Enhance AoE spell targeting with multiple placement options
+- [x] Add opportunity attacks when leaving reach
+- [x] Implement hit dice usage for out-of-combat healing
+- [x] Add environmental hazards and traps
+- [x] Implement side objectives with behavioral influence
+- [x] Add morale system for AI decision making
+- [x] Enhance AoE spell targeting with multiple placement options
 
 ## Phase 4: Performance & Optimization
 

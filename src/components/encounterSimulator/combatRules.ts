@@ -6,7 +6,16 @@
 
 import type { PRNG } from './diceRollFunctions';
 import { DiceRoller } from './diceRollFunctions';
-import type { SimulatorCombatant, DamageRoll, SpellSaveResult } from './emulatorTyping';
+import type {
+  SimulatorCombatant,
+  DamageRoll,
+  SpellSaveResult,
+  OpportunityAttackResult,
+  HitDiceHealResult,
+  AoESpellTargetResult,
+} from './emulatorTyping';
+import { Position } from './emulatorTyping';
+import type { DiceType } from './emulatorTyping';
 import { Condition } from './emulatorTyping';
 import type { Monster } from '../../types';
 import { MovementResolver } from './movement';
@@ -353,6 +362,148 @@ export class CombatResolver {
   /**
    * Get ability modifier from monster stats.
    */
+  /**
+   * Get all combatants within an AoE spell area of effect.
+   * Supports sphere, cone, line, burst, and blob targeting.
+   */
+  getAoETargets(
+    center: Position,
+    radius: number,
+    aoeType: 'sphere' | 'cone' | 'line' | 'burst' | 'blob',
+    allCombatants: SimulatorCombatant[],
+    caster: SimulatorCombatant,
+    casterPosition?: Position
+  ): SimulatorCombatant[] {
+    const targets: SimulatorCombatant[] = [];
+
+    for (const combatant of allCombatants) {
+      if (combatant.currentHp <= 0 || !combatant.isConscious) continue;
+      if (combatant === caster) continue;
+
+      const dist = combatant.position.distanceTo(center);
+
+      if (aoeType === 'sphere' || aoeType === 'burst' || aoeType === 'blob') {
+        if (dist <= radius) {
+          targets.push(combatant);
+        }
+      } else if (aoeType === 'cone') {
+        if (casterPosition) {
+          const dx = casterPosition.x - center.x;
+          const dy = casterPosition.y - center.y;
+          const toTargetX = combatant.position.x - center.x;
+          const toTargetY = combatant.position.y - center.y;
+          const dot = dx * toTargetX + dy * toTargetY;
+          const mag1 = Math.sqrt(dx * dx + dy * dy);
+          const mag2 = Math.sqrt(toTargetX * toTargetX + toTargetY * toTargetY);
+          if (mag1 > 0 && mag2 > 0) {
+            const cosAngle = dot / (mag1 * mag2);
+            if (cosAngle > 0.5 && dist <= radius) {
+              targets.push(combatant);
+            }
+          }
+        } else if (dist <= radius) {
+          targets.push(combatant);
+        }
+      } else if (aoeType === 'line') {
+        if (casterPosition) {
+          const dx = center.x - casterPosition.x;
+          const dy = center.y - casterPosition.y;
+          const toTargetX = combatant.position.x - casterPosition.x;
+          const toTargetY = combatant.position.y - casterPosition.y;
+          const cross = Math.abs(dx * toTargetY - dy * toTargetX);
+          if (cross <= radius && dist <= radius) {
+            targets.push(combatant);
+          }
+        } else if (dist <= radius) {
+          targets.push(combatant);
+        }
+      }
+    }
+
+    targets.sort((a, b) => a.position.distanceTo(center) - b.position.distanceTo(center));
+    return targets;
+  }
+
+  /**
+   * Resolve an AoE spell with multiple placement options.
+   */
+  resolveAoESpell(
+    caster: SimulatorCombatant,
+    targets: SimulatorCombatant[],
+    spellName: string,
+    damageExpression: string,
+    dc?: number,
+    savingThrowAbility: 'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha' = 'dex',
+    halfDamageOnSuccess: boolean = true,
+    conditionOnFail?: string,
+    conditionDuration?: number,
+    aoeType: 'sphere' | 'cone' | 'line' | 'burst' | 'blob' = 'sphere',
+    centerPosition?: Position
+  ): AoESpellTargetResult {
+    let totalDamage = 0;
+    const affectedNames: string[] = [];
+    let saveSucceeded = 0;
+    let saveFailed = 0;
+
+    for (const target of targets) {
+      let baseDamage: number;
+      let succeeded: boolean;
+      let finalDamage: number;
+      if (dc !== undefined) {
+        const abilityModifier = this.getAbilityModifier(target.monster, savingThrowAbility);
+        const saveRoll = this.roller.rollD20(abilityModifier);
+        succeeded = saveRoll >= dc;
+        if (saveRoll === 1) succeeded = false;
+        else if (saveRoll === 20) succeeded = true;
+
+        baseDamage = this.roller.parseDamageExpression(damageExpression);
+
+        if (succeeded && halfDamageOnSuccess) {
+          const resistance = this.checkResistance(target.monster, 'untyped');
+          if (resistance === 'immune') finalDamage = 0;
+          else if (resistance === 'resist') finalDamage = Math.ceil(baseDamage / 4);
+          else finalDamage = Math.ceil(baseDamage / 2);
+          saveSucceeded++;
+        } else {
+          const resistance = this.checkResistance(target.monster, 'untyped');
+          if (resistance === 'immune') finalDamage = 0;
+          else if (resistance === 'resist') finalDamage = Math.floor(baseDamage / 2);
+          else finalDamage = baseDamage;
+          saveFailed++;
+
+          if (conditionOnFail) {
+            target.addCondition(
+              new Condition(conditionOnFail, conditionDuration ?? 1, caster.getName())
+            );
+          }
+        }
+      } else {
+        baseDamage = this.roller.parseDamageExpression(damageExpression);
+        finalDamage = baseDamage;
+      }
+
+      target.takeDamage(finalDamage);
+      caster.totalDamageDealt += finalDamage;
+
+      if (finalDamage > 0 && target.concentratingOn) {
+        target.checkConcentration(finalDamage, () => this.roller.rng());
+      }
+
+      totalDamage += finalDamage;
+      affectedNames.push(target.getName());
+    }
+
+    return {
+      spellName,
+      aoeType,
+      centerPosition: centerPosition || new Position(0, 0),
+      radius: 15,
+      damageDealt: totalDamage,
+      targetsAffected: affectedNames,
+      saveResult: dc ? { succeeded: saveSucceeded, failed: saveFailed } : undefined,
+    };
+  }
+
   private getAbilityModifier(
     monster: Monster,
     ability: 'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha'
@@ -439,6 +590,189 @@ export class CombatResolver {
    */
   rollDamage(expression: string): number {
     return this.roller.parseDamageExpression(expression);
+  }
+
+  /**
+   * Check if an opponent triggers an opportunity attack when this combatant moves.
+   * Triggers when a creature leaves an opponent's reach (typically 5ft melee).
+   */
+  canOpportunityAttack(combatant: SimulatorCombatant, opponent: SimulatorCombatant): boolean {
+    if (combatant.team === opponent.team) return false;
+    if (combatant.currentHp <= 0 || opponent.currentHp <= 0) return false;
+    if (!combatant.isConscious || !opponent.isConscious) return false;
+    if (opponent.reactionUsed) return false;
+    if (combatant.disengage) return false;
+    const reach = opponent.profile?.attacks?.some(a => a.isMelee && a.reach >= 5);
+    if (!reach) return false;
+    const distance = combatant.position.distanceTo(opponent.position);
+    if (distance > (opponent.profile?.attacks?.find(a => a.isMelee)?.reach ?? 5)) return false;
+    if (
+      opponent.hasCondition('incapacitated') ||
+      opponent.hasCondition('paralyzed') ||
+      opponent.hasCondition('restrained') ||
+      opponent.hasCondition('grappled')
+    ) {
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * Resolve an opportunity attack when a combatant leaves an opponent's reach.
+   */
+  resolveOpportunityAttack(
+    attacker: SimulatorCombatant,
+    target: SimulatorCombatant,
+    _moveFrom: any,
+    _moveTo: any
+  ): OpportunityAttackResult {
+    if (!this.canOpportunityAttack(target, attacker)) {
+      return {
+        triggered: false,
+        isHit: false,
+        finalDamage: 0,
+        combatantName: attacker.getName(),
+        targetName: target.getName(),
+      };
+    }
+
+    const meleeAttack = attacker.profile?.attacks.find(a => a.isMelee);
+    if (!meleeAttack) {
+      return {
+        triggered: false,
+        isHit: false,
+        finalDamage: 0,
+        combatantName: attacker.getName(),
+        targetName: target.getName(),
+      };
+    }
+
+    const attackRoll = this.roller.rollD20(meleeAttack.attackBonus);
+    const targetAC = target.getAc();
+    const isHit = attackRoll >= targetAC;
+    const isCrit = attackRoll === 20;
+
+    let finalDamage = 0;
+    if (isHit) {
+      const rollResult = this.roller.parseDamageExpressionDetailed(
+        meleeAttack.damageExpression,
+        isCrit
+      );
+      finalDamage = rollResult.total;
+      target.takeDamage(finalDamage);
+      attacker.totalDamageDealt += finalDamage;
+      attacker.reactionUsed = true;
+    }
+
+    if (!isHit) {
+      attacker.missCount++;
+    } else if (isCrit) {
+      attacker.critCount++;
+    } else {
+      attacker.hitCount++;
+    }
+
+    return {
+      triggered: true,
+      isHit,
+      finalDamage,
+      combatantName: attacker.getName(),
+      targetName: target.getName(),
+    };
+  }
+
+  /**
+   * Check if movement triggers opportunity attacks.
+   */
+  checkOpportunityAttacks(
+    movingCombatant: SimulatorCombatant,
+    fromPos: any,
+    toPos: any,
+    allCombatants: SimulatorCombatant[],
+    _map: any
+  ): OpportunityAttackResult[] {
+    const results: OpportunityAttackResult[] = [];
+    const enemies = allCombatants.filter(
+      c => c.team !== movingCombatant.team && c.currentHp > 0 && c.isConscious
+    );
+
+    for (const enemy of enemies) {
+      if (this.canOpportunityAttack(movingCombatant, enemy)) {
+        const reach = enemy.profile?.attacks?.find(a => a.isMelee)?.reach || 5;
+        const distStart = fromPos.distanceTo(enemy.position);
+        const distEnd = toPos.distanceTo(enemy.position);
+        if (distStart <= reach && distEnd > reach) {
+          const result = this.resolveOpportunityAttack(enemy, movingCombatant, fromPos, toPos);
+          results.push(result);
+          if (result.triggered) break;
+        }
+      }
+    }
+    return results;
+  }
+
+  /**
+   * Resolve hit dice healing for a combatant out of combat.
+   * Each hit die rolled = dice roll + CON mod.
+   */
+  resolveHitDiceHealing(combatant: SimulatorCombatant, hitDiceToSpend: number): HitDiceHealResult {
+    const conMod = this.getAbilityModifier(combatant.monster, 'con');
+    const hitDieSize = this.getHitDieSize(combatant.monster);
+    const maxHitDice = this.getMaxHitDice(combatant.monster);
+
+    let hitDiceRolled = 0;
+    let totalHealed = 0;
+
+    for (let i = 0; i < Math.min(hitDiceToSpend, maxHitDice); i++) {
+      const hitDieMap: Record<number, DiceType> = {
+        4: 'd4',
+        6: 'd6',
+        8: 'd8',
+        10: 'd10',
+        12: 'd12',
+        20: 'd20',
+        100: 'd100',
+      };
+      const hitDieType = hitDieMap[hitDieSize] ?? 'd6';
+      const roll = this.roller.rollSingleDie(hitDieType);
+      const healAmount = roll + conMod;
+      if (healAmount > 0) {
+        combatant.currentHp = Math.min(combatant.getMaxHp(), combatant.currentHp + healAmount);
+        totalHealed += healAmount;
+        hitDiceRolled++;
+      }
+    }
+
+    return {
+      hitDiceRolled,
+      conMod,
+      totalHealed,
+      currentHp: combatant.currentHp,
+      hitDiceRemaining: maxHitDice - hitDiceRolled,
+    };
+  }
+
+  private getHitDieSize(monster: any): number {
+    if (monster.hitDie && typeof monster.hitDie === 'number') return monster.hitDie;
+    const cr = this.getCRValue(monster.cr);
+    if (cr <= 5) return 8;
+    if (cr <= 10) return 10;
+    return 12;
+  }
+
+  private getMaxHitDice(monster: any): number {
+    if (monster.hitDice && typeof monster.hitDice === 'number') return monster.hitDice;
+    const cr = this.getCRValue(monster.cr);
+    return Math.ceil(cr * 2 + 2);
+  }
+
+  private getCRValue(cr: any): number {
+    if (typeof cr === 'number') return cr;
+    if (typeof cr === 'string' && cr.includes('/')) {
+      const parts = cr.split('/');
+      return parseInt(parts[0] || '0', 10) / parseInt(parts[1] || '1', 10);
+    }
+    return parseInt(cr || '1', 10) || 1;
   }
 
   /**

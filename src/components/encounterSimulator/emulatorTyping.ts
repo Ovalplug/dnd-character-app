@@ -36,6 +36,16 @@ export type ActionType =
   | 'dash'
   | 'action_other';
 
+export type HazardType =
+  | 'floor_fire'
+  | 'pit'
+  | 'toxic_cloud'
+  | 'lightning_storm'
+  | 'quaking_ground'
+  | 'acid_splash';
+
+export type MoraleState = 'fearless' | 'steadfast' | 'wary' | 'faltering' | 'rout';
+
 export type Team = 'allies' | 'enemies' | 'neutral';
 
 export type DiceType = 'd4' | 'd6' | 'd8' | 'd10' | 'd12' | 'd20' | 'd100';
@@ -222,6 +232,28 @@ export interface SimulationConfig {
   roundLimit: number;
   /** Keyed by lowercase spell name. Populated from dataStore before running. */
   spellMap?: Record<string, SimSpell>;
+  /** Optional side objectives that influence AI behavior. */
+  sideObjectives?: SideObjective[];
+  /** Optional environmental hazards active in the encounter. */
+  hazards?: Hazard[];
+}
+
+export interface SideObjective {
+  id: string;
+  name: string;
+  description: string;
+  /** If true, AI prioritizes reaching/holding this position. */
+  holdPosition?: boolean;
+  /** Grid position the objective is centered on. */
+  position?: { x: number; y: number };
+  /** Radius in grid cells. */
+  radius?: number;
+  /** How much the objective boosts AI action score when active. */
+  priorityWeight?: number;
+  /** Condition to complete the objective (e.g. 'enemies_near_position'). */
+  completionCondition?: string;
+  /** Bonus score if objective is active. */
+  activeScore?: number;
 }
 
 export interface SimulationResult {
@@ -284,6 +316,84 @@ export interface SimulationBatch {
   created: number;
   runs: SimulationRun[];
   aggregatedStats: BatchStatistics;
+}
+
+export interface Hazard {
+  type: HazardType;
+  position: { x: number; y: number };
+  radius: number;
+  /** Damage expression (e.g. '3d6'). Null for non-damaging hazards. */
+  damageExpression?: string;
+  /** Save DC. Null if no save. */
+  saveDC?: number;
+  /** Save ability. Null if no save. */
+  saveAbility?: 'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha';
+  /** Duration in rounds. -1 = permanent until triggered/disposed. */
+  duration?: number;
+  /** Whether the hazard has been triggered/active this round. */
+  triggered?: boolean;
+  /** Trigger description. */
+  triggerText?: string;
+}
+
+export interface MoraleCheck {
+  combatantName: string;
+  roll: number;
+  modifier: number;
+  total: number;
+  result: MoraleState;
+  fled: boolean;
+  reason: string;
+}
+
+export interface MoraleCheck {
+  combatantName: string;
+  roll: number;
+  modifier: number;
+  total: number;
+  result: MoraleState;
+  fled: boolean;
+  reason: string;
+}
+
+export interface HazardResult {
+  name: string;
+  damageDealt: number;
+  targetsAffected: string[];
+  saveResult?: { succeeded: boolean; failed: boolean };
+  triggerDescription: string;
+}
+
+export interface MoraleResult {
+  checks: MoraleCheck[];
+  fledCount: number;
+  routTriggered: boolean;
+}
+
+export interface AoESpellTargetResult {
+  spellName: string;
+  aoeType: 'sphere' | 'cone' | 'line' | 'burst' | 'blob';
+  centerPosition: Position;
+  radius: number;
+  damageDealt: number;
+  targetsAffected: string[];
+  saveResult?: { succeeded: number; failed: number };
+}
+
+export interface OpportunityAttackResult {
+  triggered: boolean;
+  isHit: boolean;
+  finalDamage: number;
+  combatantName: string;
+  targetName: string;
+}
+
+export interface HitDiceHealResult {
+  hitDiceRolled: number;
+  conMod: number;
+  totalHealed: number;
+  currentHp: number;
+  hitDiceRemaining: number;
 }
 
 export interface SpellSaveResult {
