@@ -333,7 +333,14 @@ export class SimulationEngine {
               : undefined,
             inflictsConditions: ad?.inflictsConditions,
             saveDC: ad?.save?.dc,
-            saveAbility: ad?.save?.ability as 'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha' | undefined,
+            saveAbility: ad?.save?.ability as
+              | 'str'
+              | 'dex'
+              | 'con'
+              | 'int'
+              | 'wis'
+              | 'cha'
+              | undefined,
           });
         }
       }
@@ -572,95 +579,6 @@ export class SimulationEngine {
     return [...candidates].sort((a, b) => (b.score ?? 0) - (a.score ?? 0))[0] ?? null;
   }
 
-  /**
-   * Execute a save-based attack (e.g., breath weapon, gaze, cone).
-   * Applies to all targets specified in attackDetails.
-   */
-  private executeSaveAttack(
-    combatant: SimulatorCombatant,
-    action: ActionCandidate,
-    enemies: SimulatorCombatant[]
-  ): TurnResult {
-    if (!action.saveDC || !action.saveAbility) {
-      return {
-        events: ['Save attack missing DC or save ability'],
-        combatantUpdates: [],
-        actionExecuted: false,
-      };
-    }
-
-    const saveDC = action.saveDC;
-    const saveAbility = action.saveAbility;
-    const damageExpr = action.damageExpression ?? '1d6';
-    const damageType = action.damageType ?? 'untyped';
-
-    // Determine which targets to apply to
-    let targets: SimulatorCombatant[];
-    if (action.isAreaAttack) {
-      targets = enemies.filter(e => this.combatResolver.isAlive(e));
-    } else if (action.targetIndex !== undefined) {
-      const target = this.state.combatants[action.targetIndex];
-      targets = target && this.combatResolver.isAlive(target) ? [target] : [];
-    } else {
-      targets = enemies.filter(e => this.combatResolver.isAlive(e));
-    }
-
-    if (targets.length === 0) {
-      return {
-        events: ['No valid targets for save attack'],
-        combatantUpdates: [],
-        actionExecuted: false,
-      };
-    }
-
-    // Resolve save for each target
-    const saveResults = this.combatResolver.resolveSave(
-      combatant,
-      targets,
-      saveDC,
-      damageExpr,
-      saveAbility,
-      true,
-      undefined,
-      action.damageType
-    );
-
-    const totalDamage = saveResults.reduce((sum, r) => sum + r.finalDamage, 0);
-    combatant.totalDamageDealt += totalDamage;
-
-    // Build event messages
-    const events = saveResults.map(r => {
-      const status = r.succeeded ? 'save succeeded' : 'save failed';
-      const condStr = r.conditionApplied ? ` [${r.conditionApplied}]` : '';
-      return `${combatant.getName()} hits ${r.targetName} with ${action.name} [${status}] (${
-        r.finalDamage
-      } damage)${condStr}`;
-    });
-
-    // Extract first condition for reporting
-    const firstCondition = saveResults[0]?.conditionApplied;
-
-    return {
-      events,
-      combatantUpdates: [],
-      actionExecuted: true,
-      damageDealt: totalDamage,
-      saveResult: firstCondition
-        ? {
-            targetName: saveResults[0]?.targetName ?? '',
-            dc: saveDC,
-            rolled: saveResults[0]?.rolled ?? 0,
-            ability: saveAbility,
-            succeeded: saveResults[0]?.succeeded ?? false,
-            halfDamageOnSuccess: false,
-            baseDamage: 0,
-            finalDamage: saveResults[0]?.finalDamage ?? 0,
-            conditionApplied: firstCondition,
-          }
-        : undefined,
-    };
-  }
-
   private executeAttack(combatant: SimulatorCombatant, action: ActionCandidate): TurnResult {
     if (action.targetIndex === undefined) {
       return { events: ['No target found'], combatantUpdates: [], actionExecuted: false };
@@ -822,7 +740,7 @@ export class SimulationEngine {
       const validTargets = action.isAreaAttack
         ? enemies
         : action.targetIndex !== undefined
-        ? [this.state.combatants[action.targetIndex]].filter(Boolean)
+        ? [this.state.combatants[action.targetIndex] as SimulatorCombatant]
         : enemies;
 
       if (validTargets.length === 0) {

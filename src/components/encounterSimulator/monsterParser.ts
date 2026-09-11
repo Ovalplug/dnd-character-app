@@ -385,7 +385,11 @@ export class MonsterParser {
       targets: ad.targets !== undefined ? ad.targets : 1,
       damage: Array.isArray(ad.damage)
         ? ad.damage.map(
-            (d: { type?: string; damage?: string; when?: string }): { type: string; damage: string; when?: string } => ({
+            (d: {
+              type?: string;
+              damage?: string;
+              when?: string;
+            }): { type: string; damage: string; when?: string } => ({
               type: d.type || 'untyped',
               damage: d.damage || '1d6',
               when: d.when || 'failure',
@@ -395,7 +399,11 @@ export class MonsterParser {
       save: ad.save ? { dc: ad.save.dc || 0, ability } : undefined,
       inflictsConditions: ad.inflictsConditions
         ? ad.inflictsConditions.map(
-            (c: { condition?: string; save?: string; escape?: number | null }): { condition: string; save?: string; escape: number | null } => ({
+            (c: {
+              condition?: string;
+              save?: string;
+              escape?: number | null;
+            }): { condition: string; save?: string; escape: number | null } => ({
               condition: c.condition || '',
               save: c.save || undefined,
               escape: c.escape !== undefined ? c.escape : null,
