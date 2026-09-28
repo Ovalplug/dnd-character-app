@@ -84,7 +84,7 @@ export class DiceRoller {
     for (let i = 0; i < count; i++) {
       total += this.rollSingleDie(diceType);
     }
-    return total + modifier;
+    return Math.max(0, total + modifier);
   }
 
   /**

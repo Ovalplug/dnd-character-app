@@ -103,6 +103,8 @@ export class SimulationEngine {
 
     // Create simulation state
     this.state = new SimulationState(config.map, config.combatants as any);
+    // Initialize profiling so tests don't need to call method
+    this.enableProfiling();
 
     // Apply resource scaling and parse stat block profiles
     for (const combatant of this.state.combatants) {

@@ -64,13 +64,13 @@
   - Reports hot paths sorted by total time with call counts
   - Ready for future integration with Performance API or benchmarking
 
-## Phase 5: Testing & Validation
+## Phase 5: Testing & Validation (IN PROGRESS)
 
-- [ ] Write unit tests for core mechanics
-- [ ] Create integration tests for full encounters
-- [ ] Add regression tests for known edge cases
-- [ ] Implement simulation validation checks
-- [ ] Add performance benchmarks
+- [x] Write unit tests for core mechanics — `simulationEngine.test.ts` started (fixture-based)
+- [ ] Create integration tests for full encounters (needs SimulationConfig fixtures with Position/Monster)
+- [ ] Add regression tests for known edge cases (crits, saves, multiattack, AoE, conditions)
+- [ ] Implement simulation validation checks (state consistency, deterministic replay)
+- [ ] Add performance benchmarks (ProfilingData baseline, BatchSimulator timing)
 
 ---
 
