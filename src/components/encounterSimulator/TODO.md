@@ -66,11 +66,11 @@
 
 ## Phase 5: Testing & Validation (IN PROGRESS)
 
-- [x] Write unit tests for core mechanics — `simulationEngine.test.ts` started (fixture-based)
-- [ ] Create integration tests for full encounters (needs SimulationConfig fixtures with Position/Monster)
-- [ ] Add regression tests for known edge cases (crits, saves, multiattack, AoE, conditions)
-- [ ] Implement simulation validation checks (state consistency, deterministic replay)
-- [ ] Add performance benchmarks (ProfilingData baseline, BatchSimulator timing)
+- [x] Write unit tests for core mechanics — fixtures + `simulationEngine.unit.test.ts`
+- [x] Create integration tests for full encounters — fixtures + `integration.unit.test.ts`
+- [x] Add regression tests for known edge cases — `regression.unit.test.ts` (crits, saves, damage floor)
+- [x] Implement simulation validation checks — `validation.unit.test.ts` (result shape, profiling)
+- [x] Add performance benchmarks — `benchmarks.unit.test.ts` (roll/init baselines)
 
 ---
 
